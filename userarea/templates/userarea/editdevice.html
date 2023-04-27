@@ -1,0 +1,192 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'editdevice/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Edit Device Details | ITSA Inventory System</title>
+	</head>
+
+	<div class='shadow2'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+                <div>
+                    <h5><a href={% url 'DeviceInventory' %}>Devices Inventory </a> > {{ MainDeviceData.deviceid }} </h5>
+                    <br/>
+					<h1>Edit Device Data</h1>
+					<h5>You can make changes to device with ID: <span>{{ MainDeviceData.deviceid }}</span>.</h5>
+				</div>
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+            </div>
+            {% comment %} MAIN FORM STARTS HERE {% endcomment %}
+            <div class='DevicEditform'>
+                {% comment %} <h1>ANOTHER FORM FORMAT</h1> {% endcomment %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class='hidethis'>
+                        {{ form.user }}
+                    </div>
+                    <input name='deviceid' hidden value={{MainDeviceData.deviceid}} />
+                    {% comment %} <input name='deviceuser' value={{MainDeviceData.deviceuser}} {{staffName}} /> {% endcomment %}
+                    <input name='deviceuseremail' hidden value={{MainDeviceData.deviceuseremail}} />
+                    <input name='deviceuserfirstname' hidden value={{MainDeviceData.deviceuserfirstname}} />
+                    <input name='deviceuserlastname' hidden value={{MainDeviceData.deviceuserlastname}} />
+                    <input name='devicedepreciationrate' hidden value={{MainDeviceData.devicedepreciationrate}} />
+                    <div class='formSectionMain'>
+                        <div class='formSectionOne'>
+                            <div class="fieldWrapper">
+                                {{ form.deviceip.errors }}
+                                <label for="id_subject">
+                                    <h4>Device IP Address: </h4>
+                                </label>
+                                <br/>
+                                {{ form.deviceip }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_lastname">
+                                    <h4>Device Name: </h4>
+                                </label>
+                                <br/>
+                                {{ form.devicename }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device MAC Address:</h4>
+                                </label>
+                                <br/>
+                                {{ form.devicemacaddress }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Status:</h4>
+                                </label>
+                                <br/>
+                                {{ form.devicestatus }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Working Condition:</h4>
+                                </label>
+                                <br/>
+                                {{ form.deviceworkingcondition }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device User's Department:</h4>
+                                </label>
+                                <br/>
+                                {{ form.deviceusedepartment }}
+                            </div>
+                        </div>
+                        <div class='formSectionTwo'>
+                            {% comment %} <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Port Number:</h4>
+                                </label>
+                                <br/>
+                                {{ form.deviceportnumber }}
+                            </div> {% endcomment %}
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Type:</h4>
+                                </label>
+                                <br/>
+                                {{ form.devicetype }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device's Location:</h4>
+                                </label>
+                                <br/>
+                                {{ form.devicelocation }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Brand:</h4>
+                                </label>
+                                <br/>
+                                {{ form.devicebrand }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device OS:</h4>
+                                </label>
+                                <br/>
+                                {{ form.deviceos }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Cost Of Purchase:</h4>
+                                </label>
+                                <br/>
+                                {{ form.devicecostofpurchase }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Device Year Of Purchase:</h4>
+                                </label>
+                                <br/>
+                                {{ form.deviceyearofpurchase }}
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <button type="submit">Save</button>
+                    {% comment %} <div class='editDeviceUser'>
+                        <hr/>
+                        <br/>
+                        <h1>This device's user details can be changed below:</h1>
+                        <br/>
+                        <div class="fieldWrapper">
+                            <label for="id_email">
+                                <h4>Device's User Name:</h4>
+                            </label>
+                            <br/>
+                            {{ form.deviceuser }}
+                        </div>
+                        <div class="fieldWrapper">
+                            <label for="id_email">
+                                <h4>Device's User Email Address:</h4>
+                            </label>
+                            <br/>
+                            {{ form.deviceuseremail }}
+                        </div>
+                        <div class="fieldWrapper">
+                            <label for="id_email">
+                                <h4>Device's User Phone Number:</h4>
+                            </label>
+                            <br/>
+                            {{ form.deviceuserphonenumber }}
+                        </div>
+                    </div> {% endcomment %}
+                    {% comment %} <button type="submit">Save</button> {% endcomment %}
+                </form>
+            </div>
+
+
+            {% comment %} MAIN FORM ENDS HERE {% endcomment %}
+
+
+        </div>
+    </body>
+</html>
+{% endblock content %}

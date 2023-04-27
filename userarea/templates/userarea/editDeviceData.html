@@ -1,0 +1,42 @@
+{% load static %}
+<html>
+    <head>
+        
+		<link rel="stylesheet" href={% static 'editdevice/css/style.css' %} />
+    </heead>
+</html>
+<form method='POST'>
+    {% csrf_token %}
+    {{form}}
+    <button type='submit'>Submit</button>
+</form>
+
+<h1>BETER FORMATTED FOR TEST STARTS HERE</h1>
+
+<div class='form'>
+    <h1>ANOTHER FORM FORMAT</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class='hidethis'>
+            {{ form.user }}
+        </div>
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ form.firstname.errors }}
+            <label for="id_subject">Deviceip:</label>
+            {{ form.deviceip }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.lastname.errors }}
+            <label for="id_lastname">Your lastname:</label>
+            {{ form.lastname }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.email.errors }}
+            <label for="id_email">Your email address:</label>
+            {{ form.email }}
+        </div>
+        <button type="submit" > Save</button>
+        {% comment %} <p><input value="Send message" /></p> {% endcomment %}
+    </form>
+</div>

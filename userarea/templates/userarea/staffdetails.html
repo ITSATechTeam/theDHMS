@@ -1,0 +1,200 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'editprofile/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'staffdetails/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="build/css/intlTelInput.css">
+		<title>Staff Member's Details | ITSA Inventory System</title>
+	</head>
+	<div class='shadow1'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+				<div>
+                    <a href = {% url 'StaffMembers' %} ><h4>Staff Members > </a>Staff Details</h4><br/>
+					<h1>Staff Details</h1>
+					<h5>View Employee Details.</h5>
+				</div>
+			</div>
+            <div class='staffdetailsbox'>
+                <div class='uploadpic'>
+                    <h5>PERSONAL INFORMATION</h5>
+                    <img src={% static 'editprofile/img/line.png' %} />
+                </div>
+                <div>
+                    <div class='staffpersonalinfo'>
+                        <div class='staffpersonalinfoin'>
+                            <img src={% static 'staffdetails/img/user.png' %} />
+                            <div>
+                                <div class='datatext'><span>Name: </span>{{ allStaff.deviceuserfirstname }} {{ allStaff.deviceuserlastname }}<br/></div>
+                                <div class='datatext'><span>Role: </span>{{ allStaff.staffrole }}<br/></div>
+                                <div class='datatext'><span>Location: </span>{{ allStaff.devicelocation }}<br/></div>
+                                <div class='datatext'><span>Email: </span>{{ allStaff.deviceuseremail }}<br/></div>
+                                <div class='datatext'><span>Contact Number: </span>{{ allStaff.deviceuserphonenumber }}<br/></div>
+                            </div>
+                        </div>
+                        <div  class='staffdetailsbtnout' >
+                            <div class='staffdetailsbtn delstaff'>
+                                <a href= /member/deletestaff/{{ allStaff.id }}/ >
+                                <div class='editpic1'>
+                                    <img src={% static 'staffdetails/img/bin.png' %} />
+                                </div>
+                                <button>Delete Staff </button>
+                                </a>
+                            </div>
+                            <div class='staffdetailsbtn editstaff'>
+                                <a href= /member/editstaffdetails/{{ allStaff.id }}/ >
+                                <div class='editpic2'>
+                                    <img src={% static 'staffdetails/img/edit2.png' %} />
+                                </div>
+                                <button>Edit Staff </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div><br/>
+                    <div class='uploadpic'>
+                        <h5>ASSIGNED DEVICE(S)</h5>
+                        <img src={% static 'editprofile/img/line.png' %} />
+                    </div>
+                    <div class='staffsearchout'>
+                        <div class='staffsearch'>
+                            <div class='searchdashboardout'>
+                                <div class='searchdashboard'>
+                                    <input type='text' placeholder='Search Devices' />
+                                    <img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+                                </div>
+                        
+                                <div class='filter filtercategory'>
+                                    <img src={% static 'inventory/img/filter.png' %} />
+                                    <p>Filter</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='staffdetailsaddtn'>
+                            <button>
+                                <img src={% static 'staffdetails/img/adddevice.png' %} />
+                                <p>Assign New Device</p>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <table>
+                            <tr>
+                              <th>
+                                <input type='checkbox' />
+                              </th>
+                              <th>Device Name</th>
+                              <th>Category</th>
+                              <th>Device ID</th>
+                              <th>Assigned</th>
+                              <th>Device Status</th>
+                              <th>Unassign Device</th>
+                              <th>Device Info</th>
+                            </tr>
+                            {% for allUploadedDevices in allUploadedDevices %}
+                            {% if allUploadedDevices.deviceuser == allStaff.deviceuser %}
+                            <tr>
+                              <td>
+                                <input type='checkbox' />
+                              </td>
+                              <td>{{ allUploadedDevices.devicename }}</td>
+                              <td>{{ allUploadedDevices.devicetype }}</td>
+                              <td><a href='#'>{{ allUploadedDevices.deviceid }}</a></td>
+                              <td>{{ allUploadedDevices.created_at  | timesince }} ago</td>
+                              <td class={{ allUploadedDevices.devicestatus }}>
+                                {{ allUploadedDevices.devicestatus }}
+                              </td>
+                              <td>
+                                <div class='actionbtns'>
+                                    <button><a href=/member/editdevice/{{ allUploadedDevices.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
+                                    <button><a href= /member/deletedevice/{{ allUploadedDevices.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>
+                                </div>
+                              </td>
+                              <td class='moredetailsbtn'>
+                                <button>More Details</button>
+                              </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </table>
+                        
+				<div class='pagesdetailsseection'>
+					<div class='perpagecount'>
+						<div>
+							<div class='selectedNumber'>
+								<p>{{ numberOfDevicesPerPage }}</p>
+								<img src={% static 'inventory/img/selectnav.png' %} />
+							</div>
+							<div class='selectPerPageCountBox'>
+								<div class='selectPerPageCountBoxintro'>
+									<h4>Select number of items to display per page</h4>
+									<img src={% static 'inventory/img/close.png' %} />
+								</div>
+								<hr/>
+								<form method='POST'>
+									{% csrf_token %}
+									<div class='numofitemsperpageout'>
+											<select class='numofitemsperpage' name='numofitemsperpage'>
+												<option value='1'>1</option>
+												<option value='2'>2</option>
+												<option value='3'>3</option>
+												<option value='4'>4</option>
+												<option value='5'>5</option>
+												<option value='6'>6</option>
+												<option value='7'>7</option>
+												<option value='8'>8</option>
+												<option value='9'>9</option>
+												<option value='10'>10</option>
+											</select>
+										<button type='submit'>Activate</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div>
+							<p>items per page</p>
+						</div>
+					</div>
+					<div class='perpagecount2'>
+						1-<span>{{ numberOfDevicesPerPage }}</span> items of <i>{{ allUploadedDevicesCount }}</i>
+					</div>
+					<div id="pagination-numbers">
+      
+					</div>
+
+					<div class='pages'>
+						{% comment %} <div>
+							<select>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+								<option>4</option>
+							</select>
+						</div> {% endcomment %}
+						
+						<div id="pagination-numbers"></div>
+						<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
+						<div class='navigation'>
+							<img class='navLeft' id='prev-button' src={% static 'inventory/img/left.png' %} />
+							<img id="next-button" src={% static 'inventory/img/right.png' %} />
+						</div>
+					</div>
+				</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<script src={% static 'inventory/js/main.js' %}>
+    </body>
+{% endblock %}

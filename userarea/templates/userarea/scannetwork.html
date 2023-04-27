@@ -1,0 +1,115 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'scannetwork/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Scan Your Network | ITSA Inventory System</title>
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		<div class='main'>
+            <div class='mainintro'>
+                <h1>Scan your network</h1>
+                <p>
+                    Kindly follow the outlined steps to quickly discover connected devices
+                </p>
+            </div>
+            {% comment %} ALL STAGES FOR NETWORK SCAN STARTS HERE {% endcomment %}
+            <div class='allStages'>
+                <div class='stage1'>
+                    <div class='scanproper'>
+                        <h4>Step One</h4><br/>
+                        <h4>
+                            Download and install our recommended third-party lightweight software (WakeMeOnLan)
+                        </h4>
+                        <a href='http://www.nirsoft.net/utils/wakemeonlan.zip'><p>
+                            <li>Click here to download WakeMeOnLan(32-bit)</li>
+                        </p></a>
+                        <a href='http://www.nirsoft.net/utils/wakemeonlan-x64.zip'><p>
+                            <li>Click here to download WakeMeOnLan(64-bit)</li>
+                        </p></a>
+                    </div>
+                    <br/>
+                    <hr/>
+                    <br/>
+                    <h4>See what an installed version of WakeMeOnLan looks like below:</h4>
+                    <img src={% static 'scannetwork/img/scannetworkpic1.PNG' %} />
+                </div>
+                <div class='stage2'>
+                    <h4>Step Two</h4><br/>
+                    <h4>
+                        Click on the green play button at the top of the page as indicated on the image below to start scan
+                    </h4>
+                    <img src={% static 'scannetwork/img/scannetworkpic2.PNG' %} />
+                </div>
+                <div class='stage3'>
+                    <h4>Step Three</h4><br/>
+                    <h4>
+                        Once the scanning process is finished, a list of connected devices will appear. You can then click on the "<span>Edit</span>" icon to reveal a dropdown menu and select the option "<span>Select All</span>" in order to choose all of the devices listed.
+                    </h4>
+                    <img src={% static 'scannetwork/img/scannetworkpic3.PNG' %} />
+                </div>
+                <div class='stage4'>
+                    <h4>Step Four</h4><br/>
+                    <h4>
+                        Copy all selected devices and paste into this <a href={% url 'downloadSampleCSVHeaders' %}>CSV File</a>. </br>Note: Please start pasting from the second line and ensure that the details on the first line of the Excel sheet remain unchanged.
+                    </h4>
+                    <img src={% static 'scannetwork/img/scannetworkpic4.PNG' %} />
+                </div>
+                <div class='stage5'>
+                    <h4>Step Five</h4><br/>
+                    <h4>
+                        Once you have pasted the device details, please remove the second line of the copied file, which contains the header.
+                    </h4><br/>
+                    <a href={% url 'downloadSampleCSV' %}><h4>
+                        Click here to download a sample CSV file
+                    </h4></a>
+                    <img src={% static 'scannetwork/img/csvusesample.PNG' %} />
+                </div>
+                <div class='stage6'>
+                    <h4>Step Six</h4><br/>
+                    <h4>
+                        After completing the previous task, please provide additional information on the CSV file to complete the section. Once completed, save the CSV file and import it into your inventory system.
+                    </h4>
+                    <img src={% static 'scannetwork/img/csvusesample1.PNG' %} />
+                </div>
+            </div>
+            {% comment %} ALL STAGES FOR NETWORK SCAN ENDS HERE {% endcomment %}
+        </div>
+        <footer>
+            <div class='allsteps'>
+                <div class='step step1 active'></div>
+                <div class='step step2'></div>
+                <div class='step step3'></div>
+                <div class='step step4'></div>
+                <div class='step step5'></div>
+                <div class='step step6'></div>
+                <div class='stepCount'><h5>Step <span>1</span> of 6</h5></div>
+            </div>
+            <div class='footerBtns'>
+                {% comment %} <h5 class='previous'>Previous</h5> {% endcomment %}
+                <button class='previous'>Previous</button>
+                <button class='next'>Next</button>
+                <div class='upload'>
+                    <img src={% static 'scannetwork/img/upload.PNG' %} />
+                    <button>Upload CSV File</button>
+                </div>
+            </div>
+        </footer>
+		<script src={% static 'scannetwork/js/main.js' %}></script>
+    </body>
+</html>
+{% endblock content %}

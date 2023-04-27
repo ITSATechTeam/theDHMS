@@ -1,0 +1,75 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Search Result | ITSA Inventory System</title>
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		<div class='main'>
+            <h1>Search Result Display Page</h1>
+			<h3>{{deviceSearchCount}} result(s) found</h3>
+			{% comment %} {% for deviceSearch in deviceSearch %} {% endcomment %}
+			<div>
+				{% comment %} {{ deviceSearch.deviceid }} {% endcomment %}
+				
+				{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+				<div>
+					<table>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>MAC ID</th>
+                          <th>Category</th>
+                          <th>User</th>
+                          <th>Status</th>
+                          <th>Location</th>
+                          <th>Date Uploaded</th>
+                          <th>Action</th>
+                          <th>More Details</th>
+                        </tr>
+						{% for deviceSearch in deviceSearch %}
+                        <tr>
+                          <td>{{ deviceSearch.deviceid }}</td>
+                          <td>{{ deviceSearch.devicebrand }}</td>
+                          <td>{{ deviceSearch.devicemacaddress }}</td>
+                          <td>{{ deviceSearch.devicetype }}</td>
+                          <td><a href=''>{{ deviceSearch.deviceuser }}</a></td>
+                          <td class={{ deviceSearch.devicestatus }}>{{ deviceSearch.devicestatus }}</td>
+                          <td>{{ deviceSearch.devicelocation }}</td>
+                          <td>{{ deviceSearch.created_at }}</td>
+                          <td>
+							<div class='actionbtns'>
+								<img src={% static 'dashboard/img/edit.png' %} />
+								<img src={% static 'dashboard/img/delete.png' %} />
+							</div>
+						  </td>
+						  <td class='moredetailsbtn'>
+							<button>More Details</button>
+						  </td>
+					</tr>
+						{% endfor %}
+                    </table>
+				</div>
+				{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
+			</div>
+			{% comment %} {% endfor %} {% endcomment %}
+        </div>
+    </body>
+</html>
+{% endblock content %}

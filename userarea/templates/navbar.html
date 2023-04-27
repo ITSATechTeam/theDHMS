@@ -1,0 +1,151 @@
+{% load static %} 
+{% block content %}
+<body>
+    <nav>
+        <div>
+            <img src={% static 'general/img/itsalogopng1.png' %} />
+        </div>
+        <div class='search'>
+            <form method='GET' action="{% url 'Searchresult' %}">
+                <input type='text' name='q' placeholder='Search Devices' />
+            </form>
+            <img class='searchIcon' src={% static 'general/img/searchicon.png' %} />
+        </div>
+        <div class='navBtn'>
+            <button>
+                <p>Visit ITSA Website</p>
+            </button>
+        </div>
+        <div class='notifysection'>
+            <div class='notifyout' >
+                <img class='notify' src={% static 'general/img/notify.png' %} />
+                <img class='notifyactive' src={% static 'general/img/notify-active.png' %} />
+            </div>
+            <div class='notifysectioninner'>
+                <h4>{{ request.user }}</h4>
+                {% comment %} <img src={% static 'general/img/user1.png' %} /> {% endcomment %}
+                {% for allProfileImages in allProfileImages %}
+                {% if allProfileImages.user.username == request.user.username %}
+                {% if allProfileImages.profilepicture %}
+                <div class='profileimgproper'><img src = {{allProfileImages.profilepicture.url}} /></div>
+                {% else %}
+                <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
+                {% endif %}
+                {% comment %} {% else %}
+                <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div> {% endcomment %}
+                {% endif %}
+                {% endfor %}
+                <img src={% static 'general/img/arrow-down.png' %} />
+            </div>
+        </div>
+    </nav>
+    {% comment %} SIDE BAR STARTS HERE {% endcomment %}
+    <div class='sidebarsection'>
+        <a href={% url 'Dashboard' %}>
+            <div class='sidebar dashboard'>
+                {% comment %} <img class='dashboardicon' src={% static 'general/img/dashboardsvg.svg' %} /> {% endcomment %}
+                <img src={% static 'dashboard/img/dashboard.png' %} />             
+                <p>Dashboard</p>
+            </div>
+        </a>
+        <a href={% url 'DeviceInventory' %}>
+            <div class='sidebar deviceinventory '>
+                <img src={% static 'general/img/device.png' %} />
+                <p>Device Inventory</p>
+            </div>
+        </a>
+        <a href={% url 'StaffMembers' %}>
+            <div class='sidebar staffmembers'>
+                <img src={% static 'general/img/userimg.png' %} />
+                <p>Staff Members</p>
+            </div>
+        </a>
+        <a href={% url 'Reports' %}>
+            <div class='sidebar reports'>
+                <img src={% static 'general/img/reports.png' %} />
+                <p>Reports</p>
+            </div>
+        </a>
+        <a href={% url 'Support' %}>
+            <div class='sidebar support'>
+                <img src={% static 'general/img/help.png' %} />
+                <p>Help and Support</p>
+            </div>
+        </a>
+        <a href={% url 'Maintainance' %}>
+            <div class='sidebar maintain'>
+                <img src={% static 'general/img/maintainance.png' %} />
+                <p>Maintainance</p>
+            </div>
+        </a>
+        <a href={% url 'Settings' %}>
+            <div class='sidebar settings'>
+                <img src={% static 'general/img/settings.png' %} />
+                <p>Settings</p>
+            </div>
+        </a>
+        
+        
+        <a href={% url 'Logout' %}>
+            <div class='sidebar logout'>
+                <img src={% static 'general/img/logout.png' %} />
+                <p>Logout</p>
+                {{allSignUps.companyname}}
+            </div>
+        </a>
+    </div>
+    {% comment %} SIDE BAR ENDS HERE {% endcomment %}
+
+    
+
+		{% comment %} PROFILE BOX SECTION STARTS HERE {% endcomment %}
+		<div class='profileBox'>
+			<div class='profileBoxintro'>
+                <div>
+                    <h2>{{ request.user }}</h2>
+                    <p>Admin</p>
+                </div>
+                <div class='closereguser1'>
+                    <img src={% static 'dashboard/img/close.png' %} />
+                </div>
+			</div>
+			<hr/>
+			<ul>
+                {% for allSignUps in allSignUps %}
+                {% if request.user.username == allSignUps.companyname %}
+                <a href = /member/editcompanydetails/{{allSignUps.id}}/ >
+				<li>
+					<img src={% static 'dashboard/img/edit.png' %} />
+					<p>Update Profile
+				</li>
+                </a>
+                {% endif %}
+                {% endfor %}
+
+
+                {% for allSignUps in allSignUps %}
+                {% if request.user.username == allSignUps.companyname %}
+                <a href= /member/profilepage/{{allSignUps.id}}/ >
+                <li>
+                    <img src={% static 'dashboard/img/profile.png' %} />
+                    <p>View Profile
+                    </li>
+                </a>
+                {% endif %}
+                {% endfor %}
+				<li>
+					<img src={% static 'dashboard/img/lock.png' %} />
+					<p>Change Password
+				</li>
+				<hr/>
+				<div class='logout2'>
+					<li>
+						<img src={% static 'dashboard/img/logout2.png' %} />
+						<p>Log out</p>
+					</li>
+				</div>
+			</ul>
+		</div>
+		{% comment %} PROFILE BOX SECTION ENDS HERE {% endcomment %}
+</body>
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'formtest/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Signup System | ITSA Inventory System</title>
+	</head>
+    <div class='form'>
+        <h1>ANOTHER FORM FORMAT</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="fieldWrapper">
+                {{ form.firstname.errors }}
+                <label for="id_subject">Firstname:</label>
+                {{ form.firstname }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.lastname.errors }}
+                <label for="id_lastname">Your lastname:</label>
+                {{ form.lastname }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.email.errors }}
+                <label for="id_email">Your email address:</label>
+                {{ form.email }}
+            </div>
+            <button type="submit" > Send Message</button>
+            {% comment %} <p><input value="Send message" /></p> {% endcomment %}
+        </form>
+    </div>
+
+{% endblock %}

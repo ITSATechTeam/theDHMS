@@ -1,0 +1,128 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 270px;
+}
+
+.subIntroSection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.MaintenanceSelectSection{
+    display: flex;
+}
+
+.MaintenanceSelectSection h5{
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.maintainRequestCount{
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    background-color: #EB5757;
+}
+
+.MaintenanceSelectSectionInner{
+    display: flex;
+    align-items: center;
+}
+
+.maintainRequestCount{
+    margin-left: 5px;
+    color: white;
+}
+
+.maintainRequestCount p{
+    padding-top: 2px;
+    margin: auto;
+    text-align: center;
+    align-items: center;
+}
+
+.maintainLine{
+    width: 100%;
+    margin-top: 5px;
+    height: 5px;
+    border-radius: 20px;
+    background-color: #2A66B0;
+}
+
+.MaintenanceSelectSectionInner2 {
+    margin-top: 5px;
+}
+
+.maintainReqMain{
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    width: 270px;
+    /* padding: 2px; */
+    padding-top: 10px;
+    transition: .3s ease-in-out;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.maintainReqMain img{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.maintainReqMainOut{
+    display: flex;
+    width: 97%;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+/* deviceinventorymaintop starts here */
+.deviceinventorymaintop{
+    width: 97%;
+}
+
+.showdeviceuploadpopup button{
+    background-color: #E1E7FC;
+    color: #2A66B0;
+    width: 100px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.scannetworkbtn button{
+    background-color: #2A66B0;
+    color: white;
+    width: 100%;
+    height: 50px;
+}
+
+.scannetworkbtn img{
+    margin-right: 10px;
+}
+
+.maintainReqMain:hover{
+    transform: scale(1.06);
+}
+
+
+
+
+
+
+
+/* #E1E7FC */
+
+/* deviceinventorymaintop ends here */

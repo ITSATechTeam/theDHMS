@@ -1,0 +1,202 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    /* font-size: .9rem; */
+}
+
+
+
+/* NAV BAR STARTS HERE */
+nav{
+    background-color: #FFFFFF;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    width: 100vw;
+    z-index: 3;
+}
+
+/* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); */
+
+.closereguser1 img{
+    width: 20px;
+    background-color: #E1E7FC;
+    padding: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+} 
+
+
+.profileBoxintro{
+    display: flex;
+    align-items: top;
+    justify-content: space-between;
+}
+
+
+.profileBox a li{
+    color: grey;
+}
+
+.notifysectioninner{
+    cursor: pointer;
+}
+
+.notifysectioninner p{
+    cursor: pointer;
+}
+
+.notifysection{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notifysection img{
+    margin-right: 10px;
+}
+
+.notifysectioninner{
+    align-items: center;
+    display: flex;
+    padding-right: 20px;
+}
+
+.notifysectioninner p{
+    margin-top: 13px;
+}
+
+.notifysectioninner img{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.profileimgproper img{
+    width: 50px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.search input{
+    display: flex;
+    align-items: center;
+    border: solid rgb(190, 190, 190) 1px;
+    border-radius: 8px;
+    width: 500px;
+    position: relative;
+    height: 40px;
+    padding: 20px;
+    padding-left: 50px;
+    background-color: transparent;
+}
+
+.searchIcon{
+    position: absolute;
+    top: 18px;
+    padding-left: 7px;
+}
+
+input:focus{
+    outline: none;
+}
+
+.search p{
+    margin-top: 13px;
+}
+
+.search img{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+nav button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 150px;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 8px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.notifyout{
+    position: relative;
+}
+
+.notifyactive{
+    position: absolute;
+    right: -3px;
+}
+
+/* NAV BAR ENDS HERE */
+
+/* SIDE BAR STARTS HERE */
+.sidebarsection{
+    padding-top: 100px;
+    padding-left: 20px;
+    height: 100vh;
+    width: 220px;
+    position: fixed;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    color: black;
+}
+
+
+.sidebar{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    width: 95%;
+    padding: 0px 5px;
+    border-radius: 8px;
+    color: rgb(105, 105, 105);
+}
+
+.sidebar:hover{
+    color: #FFFFFF;
+    background-color: #2A66B0;
+}
+
+.sidebar img{
+    margin-right: 10px;
+}
+
+.sidebar p{
+    margin-top: 10px;
+    font-size: 1.3rem;
+}
+
+.logout{
+    position: absolute;
+    bottom: 40px;
+    width: 85%;
+}
+
+.active{
+    background-color: #2A66B0;
+    color: white;
+    width: 95%;
+    padding: 0px 5px;
+    border-radius: 8px;
+}
+
+.active p{
+    color: white;
+}
+
+.dashboard svg{
+    fill: black;
+    margin-right: 10px;
+}
+/* SIDE BAR ENDS HERE */

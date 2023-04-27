@@ -1,0 +1,396 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Dashboard | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+				<div>
+					<h1>Welcome back {{request.user}},</h1>
+					<h5>Get a detailed overview of your devices health and statuses.</h5>
+				</div>
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+
+				<div class='addnewdevicebtn'>
+					<button>
+						<img src={% static 'dashboard/img/add.png' %} />
+						<p>Add New Device</p>
+					</button>
+				</div>
+			</div>
+			{% comment %} ALL DEVICES DETAILS LIST SECTION STARTS HERE {% endcomment %}
+			<div class='introdetailssection'>
+				<div class='introdetailsbar alldevices'>
+					<img src={% static 'dashboard/img/alldevices.png' %} />
+					<h1>{{ allUploadedDevicesCount }}</h1>
+					<p>All Devices</p>
+				</div>
+				<div class='introdetailsbar deviceatrisk'>
+					<img src={% static 'dashboard/img/deviceatrisk.png' %} />
+					{% if badSystems %}
+						<h1>{{ badSystems }}</h1>
+					{% else %}
+						<h1>0</h1>
+					{% endif %}
+					<p>Devices at risk</p>
+				</div>
+				<div class='introdetailsbar allusers'>
+					<img src={% static 'dashboard/img/allusers.png' %} />
+					{% if StaffCount  %}
+					<h1>{{ StaffCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>All Users/Staff</p>
+				</div>
+				<div class='devicesreport'>
+					<div class='deviceschartintro'>
+						<h3>Devices Report Summary</h3>
+						{% comment %} <p>
+							<select>
+								<option>This Week</option>
+								<option>Last Week</option>
+								<option>Two Weeks Ago</option>
+							</select>
+						</p> {% endcomment %}
+					</div>
+					<div class='deviceschartout'>
+						<div class='deviceschartimgmain'>
+							<div id="container">
+								<canvas id="pie-chart"></canvas>
+							</div>
+						</div>
+						<div class='deviceschart'>
+							<div class='devicestatus'>
+								<img src={% static 'dashboard/img/blue.png' %} />
+								<p>Healthy</p>
+							</div>
+							<div class='devicestatus'>
+								<img src={% static 'dashboard/img/yellow.png' %} />
+								<p>Critical</p>
+							</div>
+							<div class='devicestatus'>
+								<img src={% static 'dashboard/img/red.png' %} />
+								<p>Faulty</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% comment %} ALL DEVICES DETAILS LIST SECTION ENDS HERE {% endcomment %}
+			{% comment %} DEVICE ONBOARD CHOICE SECTION STARTS HERE {% endcomment %}
+			<div class='deviceonboardall'>
+				{% comment %} UPLOAD CSV {% endcomment %}
+				<div class='uploaddevicecsv'>
+					<div class='uploaddevicecsvtext'>
+						<p>Upload devices through a CSV file</p>
+					</div>
+					<div class='showdeviceuploadpopup'>					
+						<button>
+							<img src={% static 'dashboard/img/uploaddevice.png' %} />
+							<p>Upload</p>
+						</button>
+					</div>
+					{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+					<div class='uploaddevicepopup'>
+						<div class='uploaddevicepopupintro'>
+							<h1>Upload A CSV File</h1>
+							<div class='uploaddevicepopupintroclose'>
+								<img src={% static 'dashboard/img/close2.png' %} />
+							</div>
+						</div>
+						<ul>
+							<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
+							<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
+						</ul><br/>
+						<form method = 'POST' enctype="multipart/form-data" >
+							{% csrf_token %}
+							<div>
+								<label for="images" class="drop-container">
+									<img src={% static 'dashboard/img/csv.png' %} />
+									<input type='text' hidden name='username' value = {{request.user}}  />
+									<input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
+									<span class="drop-title">Click To Select File</span>
+									{% comment %} or {% endcomment %}
+									<input  name='csv_file' type="file" id="images" required>
+								  </label>
+							</div>
+							<button type='submit'>Upload</button>
+						</form>
+					</div>
+					{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
+				</div>
+				{% comment %} name='csv_file' {% endcomment %}
+				{% comment %} SCAN NETWORK {% endcomment %}
+				<div class='uploaddevicecsv'>
+					<div class='uploaddevicecsvtext'>
+						<p>Scan your network for connected devices</p>
+					</div>
+					<div class='scannetworkbtn'>
+						<a href={% url 'ScanNetwork' %}><button>
+							<img src={% static 'dashboard/img/scannetwork.png' %} />
+							<p>Scan</p>
+						</button></a>
+					</div>
+				</div>
+			</div>
+			{% comment %} DEVICE ONBOARD CHOICE SECTION ENDS HERE {% endcomment %}
+			{% comment %} DEVICE INVENTORY LIST SECTION STARTS HERE {% endcomment %}
+			<div class='deviceinventorymain'>
+				<div class='deviceinventorymaintop'>
+					<div class='deviceinventorymaintitle'>
+						<h2>Device Inventory</h2>
+					</div>
+					<div class='searchdashboardsection'>
+						<div class='searchdashboard'>
+							<form method='GET' action="{% url 'Searchresult' %}">
+								<input type='text' name='q' placeholder='Search Devices' />
+							</form>
+							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+						</div>
+						<div class='filter filtercategory'>
+							<img src={% static 'dashboard/img/filter.png' %} />
+							<p>Filter</p>
+						</div>
+						<div class='filter filtercalendar'>
+							<img src={% static 'dashboard/img/calendar.png' %} />
+							<p>Filter</p>
+						</div>
+						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+						<div class='filterbox filterbox1'>
+							<h2>Filter by</h2>
+							<div class='closefilter'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									<p>Device health</p>
+									<div class='selecthealth'>
+										<select name='q'>
+											<option>All</option>
+											<option value='Desktop'>Healthy</option>
+											<option value='Laptop'>Critical</option>
+											<option value='Printer'>Faulty</option>
+										</select>
+									</div>
+									{% comment %} <br/> {% endcomment %}
+									<p>Device Category</p>
+									<select name='q'>
+										<option>All</option>
+										<option value='Desktop'>Desktop</option>
+										<option value='Laptop'>Laptop</option>
+										<option value='Printer'>Printer</option>
+										<option value='Scanner'>Scanner</option>
+										<option value='OtherDevices'>Other Devices</option>
+									</select>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+						{% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
+						<div class='filterbox filterbox2'>
+							<h2>By Date</h2>
+							<div class='closefilter2'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div class='filterbydatemain'>
+								<form method='GET' action={% url 'Searchresult' %}>
+									<div>
+										<div class='filterdateselection'>
+											<input name='q' class='thisweek' type='checkbox' />
+											<p>This Week</p>
+										</div>
+										<div class='filterdateselection'>
+											<input name='q' class='thismonth' type='checkbox' />
+											<p>This Month</p>
+										</div>
+										<div class='filterdateselection'>
+											<input name='q' value={{thisYear}} type='checkbox' />
+											<p>This Year</p>
+										</div>
+									</div>
+									<div>
+										<div class='filterdateselection'>
+											<input name='q' class='lastweek' type='checkbox' />
+											<p>Last Week</p>
+										</div>
+										<div class='filterdateselection'>
+											<input name='q' class='lastMonth' type='checkbox' />
+											<p>Last Month</p>
+										</div>
+										<div class='filterdateselection'>
+											<input name='q' value='2022' type='checkbox' />
+											<p>Last Year</p>
+										</div>
+									</div>
+								</div>
+								{% comment %} <hr/>
+								<div class='filterdateselection'>
+									<input type='checkbox' />
+									<p>Date Range</p>
+								</div> {% endcomment %}
+								<button>Filter</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+				<div>
+					<table>
+                        <tr>
+                          <th>ID</th>
+                          <th>Name</th>
+                          <th>MAC ID</th>
+                          <th>Category</th>
+                          <th>User</th>
+                          <th>Status</th>
+                          <th>Location</th>
+                          <th>Date Uploaded</th>
+                          {% comment %} <th>Action</th> {% endcomment %}
+                        </tr>
+						{% for allUploadedDevices in allUploadedDevices %}
+						{% if request.user == allUploadedDevices.user %}
+                        <tr>
+                          <td>{{ allUploadedDevices.deviceid }}</td>
+                          <td>{{ allUploadedDevices.devicebrand }}</td>
+                          <td>{{ allUploadedDevices.devicemacaddress }}</td>
+                          <td>{{ allUploadedDevices.devicetype }}</td>
+                          <td><a href=''>{{ allUploadedDevices.deviceuserfirstname }} {{ allUploadedDevices.deviceuserlastname }}</a></td>
+                          <td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+                          <td>{{ allUploadedDevices.devicelocation }}</td>
+                          <td>{{ allUploadedDevices.created_at }}</td>
+                          {% comment %} <td>
+							<div class='actionbtns'>
+								<img src={% static 'dashboard/img/edit.png' %} />
+								<img src={% static 'dashboard/img/delete.png' %} />
+							</div>
+						  </td> {% endcomment %}
+                        </tr>
+						{% endif %}
+						{% endfor %}
+                    </table>
+				</div>
+				{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
+			</div>
+		</div>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
+		<div class='registerDevice'>
+			<form method = 'POST'>
+				{% csrf_token %}
+				<div class='registerDeviceIntro'>
+					<div>
+						<h1>Add New Device</h1>
+					</div>
+					<div class='closeaddnewdeviceopoup'>
+						<img src={% static 'dashboard/img/close2.png' %} />
+					</div>
+				</div>
+				<input hidden name='savetimedata' class='sendsavetimedata' />
+				<div>
+					<div class='adddevicedashboard'>
+						<p>Select device type</p>
+						<select name='devicetype'>
+							<option value='Laptop'>Laptop</option>
+							<option value='Desktop'>Desktop</option>
+							<option value='Printer'>Printer</option>
+							<option value='Scanner'>Scanner</option>
+						</select>
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Name</p>
+						<input name='devicename' type='text'placeholder='Enter Device Name' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device MAC ID</p>
+						<input name='devicemacaddress' type='text'placeholder='Use the format: XX:XX:XX:XX:XX' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device User' Name</p>
+						<input name='deviceuser' type='text'placeholder='Enter Device User Name' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device IP Address</p>
+						<input name='deviceip' type='text'placeholder='Enter Device IP Address' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Working Condition</p>
+						<select name='devicestatus'>
+							<option value='Working'>Working</option>
+							<option value='Faulty'>Faulty</option>
+							<option value='Critical'>Critical</option>
+						</select>
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Location/Department</p>
+						<input name='devicelocation' type='text'placeholder='Enter Device Location/Department' />
+						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
+					</div>
+				</div>
+				<button type='sum'>Add Device</button>
+			</form>
+		</div>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+        <script src={% static 'dashboard/js/main.js' %}></script>
+		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+		<script>
+			var config = {
+				type: 'doughnut',
+				data: {
+				  datasets: [{
+					data: {{ data|safe }}, 
+					backgroundColor: [
+					  '#59A2EA', '#F98888', '#FFCC91'
+					],
+					label: 'Population'
+				  }],
+				  labels: {{ labels|safe }}
+				},
+				options: {
+				  responsive: true,
+				  legend: {
+					display: false
+				}
+				  
+				}
+			  };
+			
+			  window.onload = function() {
+				var ctx = document.getElementById('pie-chart').getContext('2d');
+				window.myPie = new Chart(ctx, config);
+			  };
+			
+			</script>
+
+
+
+		{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
+    </body>
+</html>
+{% endblock content %}
+
+

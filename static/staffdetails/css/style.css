@@ -1,0 +1,183 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 250px;
+    width: 98%;
+}
+
+
+.uploadpic{
+    display: grid;
+    grid-template-columns: 15% 85%;
+    align-items: center;
+}
+
+/* p{
+    font-weight: bold;
+} */
+
+span{
+    color: #2A66B0;
+}
+
+
+/* STAFF DETAILS BOS STARTS HERE */
+.staffdetailsbox{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.staffdetailsbtnout{
+    display: flex;
+}
+
+.staffdetailsbtn button{
+    background-color: #2A66B0;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+    margin-left: 10px;
+    padding-left: 30px;
+    position: relative;
+}
+
+.staffpersonalinfo{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.delstaff button{
+    background-color: #E1E7FC;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    /* width: 100%; */
+    color: red;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+    margin-left: 10px;
+    padding-left: 40px;
+}
+
+.editpic1 img{
+    width: 20px;
+}
+
+.editpic2 img{
+    width: 20px;
+}
+
+.delstaff{
+    position: relative;
+}
+
+.editpic1{
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    z-index: 5;
+}
+
+.editstaff{
+    position: relative;
+}
+
+.editpic2{
+    position: absolute;
+    left: 14px;
+    top: 10px;
+    z-index: 5;
+}
+
+.staffpersonalinfo span{
+    color: #BDBDBD;
+}
+
+
+.datatext{
+    margin-bottom: 10px;
+}
+.staffpersonalinfo {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+select{
+    height: 20px;
+}
+
+
+.staffdetailsaddtn button{
+    background-color: #2A66B0;
+    border: none;
+    /* height: 100px; */
+    border-radius: 10px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+    margin-left: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.staffdetailsaddtn button p{
+    margin-top: 10px;
+}
+
+.staffdetailsaddtn button img{
+    margin-right: 10px;
+}
+
+
+.staffpersonalinfoin img{
+    margin-bottom: 20px;
+}
+
+.searchdashboardout{
+    display: flex;
+}
+
+
+.staffsearchout{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+
+/* STAFF DETAILS BOS ENDS HERE */
