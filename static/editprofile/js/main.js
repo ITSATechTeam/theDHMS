@@ -38,3 +38,12 @@ eyeicon3.addEventListener("click", function(){
     eyeicon3.style.display = 'none'
   })
 
+
+
+  // PROFILE IMAGE UPLOAD DETECTION STARTS HERE
+let profilepicture = document.querySelector('.profilepicture')
+let formsubmitbtn = document.querySelector('.formsubmitbtn')
+  if(profilepicture.value != "") {
+    console.log("profilepicture")
+    formsubmitbtn.style.display = 'block'
+ }

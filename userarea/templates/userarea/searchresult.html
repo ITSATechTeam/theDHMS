@@ -43,13 +43,14 @@
                           <th>Action</th>
                           <th>More Details</th>
                         </tr>
+						{% comment %} {% if deviceSearch.user.username == request.user %} {% endcomment %}
 						{% for deviceSearch in deviceSearch %}
                         <tr>
                           <td>{{ deviceSearch.deviceid }}</td>
                           <td>{{ deviceSearch.devicebrand }}</td>
                           <td>{{ deviceSearch.devicemacaddress }}</td>
                           <td>{{ deviceSearch.devicetype }}</td>
-                          <td><a href=''>{{ deviceSearch.deviceuser }}</a></td>
+                          <td><a href=''>{{ deviceSearch.deviceuserfirstname }} {{ deviceSearch.deviceuserlastname }}</a></td>
                           <td class={{ deviceSearch.devicestatus }}>{{ deviceSearch.devicestatus }}</td>
                           <td>{{ deviceSearch.devicelocation }}</td>
                           <td>{{ deviceSearch.created_at }}</td>
@@ -64,12 +65,14 @@
 						  </td>
 					</tr>
 						{% endfor %}
+						{% comment %} {% endif %} {% endcomment %}
                     </table>
 				</div>
 				{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
 			</div>
 			{% comment %} {% endfor %} {% endcomment %}
         </div>
+        <script src={% static 'dashboard/js/search.js' %}></script>
     </body>
 </html>
 {% endblock content %}

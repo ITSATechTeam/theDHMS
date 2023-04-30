@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-
-
 class StaffDataSet(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     deviceuserfirstname = models.CharField(max_length= 200, null=True, blank = True)
@@ -14,6 +12,8 @@ class StaffDataSet(models.Model):
     deviceuserphonenumber = models.CharField(max_length= 200, null=True, blank = True)
     deviceuseremail = models.CharField(max_length= 200, null=True, blank = True)
     staffDevice = models.CharField(max_length= 200, null=True, blank = True)
+    staffDeviceName = models.CharField(max_length= 200, null=True, blank = True)
+    staffDeviceStatus = models.CharField(max_length= 200, null=True, blank = True)
     staffrole = models.CharField(max_length= 200, null=True, blank = True)
     devicelocation = models.CharField(max_length= 200, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -56,6 +56,7 @@ class DeviceRegisterUpload(models.Model):
     devicedepreciationrate = models.CharField(max_length = 1500, null=True, blank = True)
     deviceid = models.CharField(max_length = 1500, null=True, blank = True)
     savetimedata = models.CharField(max_length = 1500, null=True, blank = True)
+    weekNumberSaved = models.CharField(max_length = 1500, null=True, blank = True)
     #
     # date = models.DateField(auto_now=False)
     #

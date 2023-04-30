@@ -38,9 +38,9 @@ class UserRegistrationForm(forms.ModelForm):
     email = forms.CharField(max_length=32)
     class Meta:
         model = SignupForm
-        fields = '__all__'
+        # fields = '__all__'
         # fields = ['user', 'companyname', 'email', 'phone', 'city', 'country', 'address', 'password', 'repassword']
-        # fields = ['user', 'companyname', 'email', 'phone', 'city', 'country', 'address', 'password', 'repassword', 'profilepicture']
+        fields = ['user', 'companyname', 'email', 'phone', 'city', 'country', 'address']
 
 
 

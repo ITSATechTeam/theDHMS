@@ -1,0 +1,83 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'editprofile/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Upload Profile Image | ITSA Inventory System</title>
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		<div class='main'>
+            <br/><div>
+                <h5> <a href = {% url 'Dashboard' %} >Dashboard</a> > Upload Profile Image </h5>
+            <br/>
+            </div>
+            <div class='profileintro'>
+                    <h1>Upload A Profile Image</h1>           
+                    <div id="flash">
+                        {% if messages %} {% for message in messages %}
+                        <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                            <strong style="color: red">{{ message }}</strong>
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+                </div>
+                <br/>
+            <div>
+                {% for allSignUps in allSignUps %}
+                <h5>{{allSignUps.companyname}} you can upload a profile image here</h5>
+                {% endfor %}
+            </div><br/>
+            {% comment %} FORM PROPER STARTS BELOW {% endcomment %}
+            <div class='profileUpdateSection'>
+                <form method='POST' enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    <label for='images' class="uploadProfilePic">
+                        <div class='profilepicinner'>
+                            <div class='userimg' >
+                                <div class='profileimgproper'>
+                                    {% if allProfileImages.userReg == request.user.username %}
+                                    {% if allProfileImages.profilepicture %}
+                                    <img src = {{allProfileImages.profilepicture.url}} />
+                                    {% else %}
+                                    <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <input name="profileImg" hidden />
+                            <div name='profilepicture'>
+                                <input type="file" name='profilepicture' accept='image/*' hidden id='images' /></br>
+                            </div>
+                            <div class='cam' >
+                                <img src={% static 'editprofile/img/cam.png' %} />
+                            </div>
+                        </div>
+                    </label>
+                    <div class='formsubmitbtn'>
+                    <button type='submit'>Upload</button>
+                    </div>
+                </form>
+                <h5 class='clickinfo'>Click to select a profile image</h5>
+            </div>
+            {% comment %} FORM PROPER ENDS HERE {% endcomment %}
+        </div>
+        <script src = {% static 'editprofile/js/profilepic.js' %} ></script>
+    </body>
+</html>
+{% endblock content %}

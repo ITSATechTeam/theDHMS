@@ -65,9 +65,11 @@
                                     <input type='checkbox' />
                                     <p>Remember me</p>
                                 </div>
-                                <div class='forgotpwd2'>
-                                    <a href=''><p>Forgot password</p></a>
-                                </div>
+                                <a href ={% url 'password_reset' %} >
+                                    <div class='forgotpwd2'>
+                                        <p>Forgot password</p>
+                                    </div>
+                                </a>
                             </div>
                             <div class='formsubmitbtn'>
                                 <button type='submit'>Sign in</button>

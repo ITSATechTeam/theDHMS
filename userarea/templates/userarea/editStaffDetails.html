@@ -45,8 +45,8 @@
                     <div class='hidethis'>
                         {{ form.user }}
                     </div>
-                    <input name='staffDevice' hidden value={{currentStaff.staffDevice}} />
-                    <input name='staffrole' hidden value={{currentStaff.staffrole}} />
+                    {% comment %} <input name='staffDevice' hidden value={{currentStaff.staffDevice}} />
+                    <input name='staffrole' hidden value={{currentStaff.staffrole}} /> {% endcomment %}
                     <div class='formSectionMain'>
                         <div class='formSectionOne'>
                             <div class="fieldWrapper">
@@ -71,6 +71,20 @@
                                 <br/>
                                 {{ form.deviceuserphonenumber }}
                             </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Staff's Device Name:</h4>
+                                </label>
+                                <br/>
+                                {{ form.staffDeviceName }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Staff's Device ID:</h4>
+                                </label>
+                                <br/>
+                                {{ form.staffDevice }}
+                            </div>
                         </div>
                         <div class='formSectionTwo'>
                             <div class="fieldWrapper">
@@ -93,6 +107,13 @@
                                 </label>
                                 <br/>
                                 {{ form.devicelocation }}
+                            </div>
+                            <div class="fieldWrapper">
+                                <label for="id_email">
+                                    <h4>Staff's Device Status[Faulty or Working]:</h4>
+                                </label>
+                                <br/>
+                                {{ form.staffDeviceStatus }}
                             </div>
                         </div>
                     </div>

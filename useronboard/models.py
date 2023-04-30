@@ -20,8 +20,6 @@ class UserProfileImage(models.Model):
         return self.userReg
 
 
-
-
 class SignupForm(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     companyname = models.CharField(max_length=200, null=True, blank=True)

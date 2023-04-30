@@ -23,18 +23,15 @@
             </div>
             <div class='notifysectioninner'>
                 <h4>{{ request.user }}</h4>
-                {% comment %} <img src={% static 'general/img/user1.png' %} /> {% endcomment %}
-                {% for allProfileImages in allProfileImages %}
-                {% if allProfileImages.user.username == request.user.username %}
-                {% if allProfileImages.profilepicture %}
-                <div class='profileimgproper'><img src = {{allProfileImages.profilepicture.url}} /></div>
-                {% else %}
-                <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
-                {% endif %}
-                {% comment %} {% else %}
-                <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div> {% endcomment %}
-                {% endif %}
-                {% endfor %}
+                <div class='profileimgpropernav'>
+                    {% if allProfileImages.userReg == request.user.username or allProfileImages.user.username == request.user.username  %}
+                    {% if allProfileImages.profilepicture %}
+                    <img src = {{allProfileImages.profilepicture.url}} />
+                    {% else %}
+                    <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
+                    {% endif %}
+                    {% endif %}
+                </div>
                 <img src={% static 'general/img/arrow-down.png' %} />
             </div>
         </div>
@@ -43,7 +40,6 @@
     <div class='sidebarsection'>
         <a href={% url 'Dashboard' %}>
             <div class='sidebar dashboard'>
-                {% comment %} <img class='dashboardicon' src={% static 'general/img/dashboardsvg.svg' %} /> {% endcomment %}
                 <img src={% static 'dashboard/img/dashboard.png' %} />             
                 <p>Dashboard</p>
             </div>
@@ -133,17 +129,21 @@
                 </a>
                 {% endif %}
                 {% endfor %}
-				<li>
+				<a href ={% url 'password_reset' %} >
+                <li>
 					<img src={% static 'dashboard/img/lock.png' %} />
 					<p>Change Password
 				</li>
+                </a>
 				<hr/>
-				<div class='logout2'>
-					<li>
-						<img src={% static 'dashboard/img/logout2.png' %} />
-						<p>Log out</p>
-					</li>
-				</div>
+				<a href={% url 'Logout' %}>
+                    <div class='logout2'>
+                        <li>
+                            <img src={% static 'dashboard/img/logout2.png' %} />
+                            <p>Log out</p>
+                        </li>
+				    </div>
+                </a>
 			</ul>
 		</div>
 		{% comment %} PROFILE BOX SECTION ENDS HERE {% endcomment %}

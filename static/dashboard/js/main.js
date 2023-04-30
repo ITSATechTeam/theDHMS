@@ -79,8 +79,8 @@ const thisweek = document.querySelector('.thisweek')
 const lastweek = document.querySelector('.lastweek')
 const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const newDate = new Date();
-let currentMonth = month[newDate.getMonth()];
-let previousMonth = month[newDate.getMonth() - 1];
+let currentMonth = month [newDate.getMonth()];
+let previousMonth = month [newDate.getMonth() - 1];
 thismonth.value = currentMonth
 lastMonth.value = previousMonth
 
@@ -96,14 +96,14 @@ var days = Math.floor((currentDate - startDate) /
     (24 * 60 * 60 * 1000));
 
 var weekNumber = Math.ceil(days / 7);
-    
+
 // Display the calculated result      
 console.log("Week number of " + currentDate +
     " is :   " + weekNumber);
 
 // send in current and previous week number
-thisweek.value = `week${weekNumber}`;
-lastweek.value = `week${weekNumber- 1}` ;
+thisweek.value = `${weekNumber}`;
+lastweek.value = `${weekNumber- 1}` ;
 
 // current yeah
 let date =  new Date().getFullYear();
@@ -112,6 +112,7 @@ console.log(date);
 
 // send main savetimedata pack to db
 const savetimedata = document.querySelector('.sendsavetimedata');
-savetimedata.value = `currentWeek is week${weekNumber} and this month is month${currentMonth} and this year is year${date}`
-console.log(`currentWeek is week${weekNumber} and this month is month${currentMonth} and this year is year${date}`);
+savetimedata.value = 'currentWeek is week '+ weekNumber +' and this month is ' + currentMonth +' and this year is year '+ date 
+console.log(weekNumber)
 
+// console.log('currentWeek is   ' + weekNumber +' and this month is  '+ currentMonth +' and this year is ' +date );

@@ -16,6 +16,7 @@ from datetime import datetime
 from django.utils.crypto import get_random_string
 import json
 from django.contrib.auth.models import User
+from datetime import date
 
 # import datetime; 
 
@@ -25,23 +26,27 @@ from django.contrib.auth.models import User
 @login_required(login_url='Login')
 def NavBar(request):
     allSignUps = SignupForm.objects.all()
-    allProfileImages = UserProfileImage.objects.all()
+    allProfileImages = UserProfileImage.objects.all().first
     context = {'allProfileImages':allProfileImages, 'allSignUps': allSignUps}
     return render(request, 'general.html', context)
 
 
 @login_required(login_url='Login')
 def Reports(request):
-    allProfileImages = UserProfileImage.objects.all()
-    context = {'allProfileImages':allProfileImages}
-    return render(request, 'userarea/reports.html')
+    allProfileImages = UserProfileImage.objects.all().first
+    allUsers = User.objects.all()
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    return render(request, 'userarea/reports.html', context)
 
 
 @login_required(login_url='Login')
 def Support(request):
-    allProfileImages = UserProfileImage.objects.all()
-    context = {'allProfileImages':allProfileImages}
-    return render(request, 'userarea/support.html')
+    allProfileImages = UserProfileImage.objects.all().first
+    allUsers = User.objects.all()
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    return render(request, 'userarea/support.html', context)
 
 
 @login_required(login_url='Login')
@@ -50,14 +55,20 @@ def Maintainance(request):
     allMaintains = MaintenanceRequest.objects.filter(user = request.user)
     allMaintainsCount = allMaintains.count()
     numberOfDevicesPerPage = DeviceCountPerPage.objects.filter(user = request.user).first()
-    allProfileImages = UserProfileImage.objects.all()
-    context = {'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
+    allProfileImages = UserProfileImage.objects.all().first
+    allUsers = User.objects.all()
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
     return render(request, 'userarea/maintainance.html', context)
 
 
 @login_required(login_url='Login')
 def Settings(request):
-    return render(request, 'userarea/settings.html')
+    allProfileImages = UserProfileImage.objects.all().first
+    allUsers = User.objects.all()
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    return render(request, 'userarea/settings.html', context)
 
 
 @login_required(login_url='Login')
@@ -120,6 +131,10 @@ def DeviceInventory(request):
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
                     return redirect('Dashboard')
                 elif len(row) > 9:
+                    today = date.today()
+
+                    dateForWeekNumber = datetime.today()
+                    weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
                     # print(len(row))
                     if row[20]:
@@ -162,7 +177,8 @@ def DeviceInventory(request):
                         deviceyearofpurchase = row[21],
                         devicedepreciationrate = depreciateRateReal,
                         deviceid = uniqueId,
-                        savetimedata = datetime.now()
+                        savetimedata = today.strftime("%B %d, %Y"),
+                        weekNumberSaved = weekNumber
                     ),
                     StaffDataSet.objects.create(
                         user = request.user,
@@ -173,7 +189,8 @@ def DeviceInventory(request):
                         deviceuseremail = row[17],
                         staffDevice = uniqueId,
                         staffrole = row[8],
-                        # deviceuserdateofresumption = row[17]
+                        staffDeviceName = row[1],
+                        staffDeviceStatus = row[6]
                     )
                 else:
                     messages.error(request, 'Device List Updated Unsuccessfully')
@@ -213,19 +230,21 @@ def DeviceInventory(request):
     badSystems = badSystems1.count()
     allUploadedDevicesCount = allUploadedDevices.count()
     numberOfDevicesPerPage = DeviceCountPerPage.objects.filter(user = request.user).first()
-    allProfileImages = UserProfileImage.objects.all()
-    allProfileImages = UserProfileImage.objects.all()
-    context = {'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
+    allProfileImages = UserProfileImage.objects.all().first
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
     return render(request, 'userarea/deviceinventory.html', context)
 
 
 @login_required(login_url='Login')
 def StaffMembers(request):
     staffMembers = StaffDataSet.objects.filter(user = request.user)
-    allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
+    allUploadedDevices = DeviceRegisterUpload.objects.all()
+    # allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     staffCount = staffMembers.count()
-    allProfileImages = UserProfileImage.objects.all()
-    context = {'allProfileImages':allProfileImages, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
+    allProfileImages = UserProfileImage.objects.all().first
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
     return render(request, 'userarea/staffpage.html', context)
 
 
@@ -233,8 +252,9 @@ def StaffMembers(request):
 def StaffDetails(request, id):
     allStaff = StaffDataSet.objects.get(id = id)
     allUploadedDevices = DeviceRegisterUpload.objects.all()
-    allProfileImages = UserProfileImage.objects.all()
-    context = {'allProfileImages':allProfileImages, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices}
+    allProfileImages = UserProfileImage.objects.all().first
+    allSignUps = SignupForm.objects.all()
+    context = {'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices}
     return render(request, 'userarea/staffdetails.html', context)
 
 
@@ -247,32 +267,20 @@ def registerStaff(request, name):
     return render(request, 'userarea/regstaffpage.html', context)
 
 
-# def EditProfile(request):
-#     return render(request, 'userarea/editprofile.html')
-
 
 # EDIT USER SIGNUP DETAILS STARTS BELOW
 @login_required(login_url='Login')
 def EditUserSignupDetails(request, id):
     currentUser = SignupForm.objects.get(id = id)
     form = UserRegistrationForm(request.POST or None, instance = currentUser)
-    # userProfileImage = ProfileImageUpload.objects.all()
-    # form = UserRegistrationForm(request.POST or None, request.FILES, instance = currentUser)
-    # UserformUpdate = UpdateUserForm(request.POST or None, instance = request.user)
-    # if request.POST and form.is_valid() and request.FILES:
-    if form.is_valid():
-    # if form.is_valid() and request.FILES:
+    if request.POST and form.is_valid():
         print('data validated!')
         userReg = form.save(commit=False)
         user = userReg.user
         user.username = form.cleaned_data['companyname']
         user.email = form.cleaned_data['email']
-        # userProfileImage = form.request.FILES.get['profileImg']
-        # userProfileImage = request.FILES.get('profilepicture', False)
-        # profilepicture = request.FILES.get('profileimage', False)
         user.save()
         userReg.save()
-        # userProfileImage.save()
         if form.save():
             print('data saved!')
             messages.success(request, 'Your Company details have been updated successfully')
@@ -280,9 +288,10 @@ def EditUserSignupDetails(request, id):
         else:
             messages.success(request, 'Error saving company details')
             return redirect('ProfilePage', pk=currentUser.id)
+
+
     allSignUps = SignupForm.objects.all()
-    allProfileImages = UserProfileImage.objects.all()
-    # allUser = User.objects.all()
+    allProfileImages = UserProfileImage.objects.all().first
     context = {'allProfileImages':allProfileImages, 'allSignUps':allSignUps, 'form' : form, 'currentUser' : currentUser}
     return render(request, 'userarea/editprofile.html', context)
 
@@ -346,6 +355,10 @@ def Dashboard(request):
                     return redirect('Dashboard')
                 elif len(row) > 9:
                     # print(len(row))
+                    today = date.today()
+                                        
+                    dateForWeekNumber = datetime.today()
+                    weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
                     if row[20]:
                         depreciateRate = 2023 - int(row[21])
@@ -387,8 +400,9 @@ def Dashboard(request):
                         deviceyearofpurchase = row[21],
                         devicedepreciationrate = depreciateRateReal,
                         deviceid = uniqueId,
-                        # deviceid = 'Device-' + get_random_string(length=5),
-                        savetimedata = datetime.now()
+                        savetimedata = today.strftime("%B %d, %Y"),
+                        # savetimedata = today.strftime("%b-%d-%Y")
+                        weekNumberSaved = weekNumber
                     ),
                     StaffDataSet.objects.create(
                         user = request.user,
@@ -399,6 +413,8 @@ def Dashboard(request):
                         deviceuseremail = row[17],
                         staffDevice = uniqueId,
                         staffrole = row[8],
+                        staffDeviceName = row[1],
+                        staffDeviceStatus = row[6]
                         # deviceuserdateofresumption = row[17]
                     )
                 else:
@@ -453,8 +469,7 @@ def Dashboard(request):
     thisYear = datetime.today().year
     allSignUps = SignupForm.objects.all()
     allUsers = User.objects.all()
-    allProfileImages = UserProfileImage.objects.all()
-    # allProfileImages = UserProfileImage.objects.all()
+    allProfileImages = UserProfileImage.objects.all().first
     context = {'allProfileImages':allProfileImages, 'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
     return render(request, 'userarea/dashboard.html', context)
 
@@ -494,7 +509,8 @@ def EditStaff(request, staffid):
             messages.success(request, 'Staff details edited successfully')
         else:
             messages.success(request, 'Error saving staff details')
-    context = {'form' : form, 'currentStaff' : currentStaff}
+    allUsers = User.objects.all()
+    context = {'allUsers':allUsers, 'form' : form, 'currentStaff' : currentStaff}
     return render(request, 'userarea/editStaffDetails.html', context)
 
 
@@ -577,11 +593,14 @@ def SearchResult(request):
 
 
 
-@login_required(login_url='Login')
+# @login_required(login_url='Login')
 def Searchresult(request):
+    print('seaching...')
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    if request.method == 'GET':
+        print(q)
     deviceSearch = DeviceRegisterUpload.objects.filter(
-        Q(deviceid__icontains = q) | 
+       Q( Q(deviceid__icontains = q) | 
         Q(deviceuserfirstname__icontains = q) |
         Q(deviceuserlastname__icontains = q) |
         Q(devicemacaddress__icontains = q) |
@@ -591,18 +610,25 @@ def Searchresult(request):
         Q(created_at__icontains = q) |
         Q(devicetype__icontains = q) |
         Q(devicelocation__icontains = q) |
-        Q(savetimedata__icontains = q) 
-        # Q(devicename__icontains = q)
-    )
-
+        Q(savetimedata__icontains = q) |
+        Q(weekNumberSaved__icontains = q)
+    ) & Q(user = request.user))
+# Q(devicestatus = 'Faulty') & Q(user = request.user)
     deviceSearchCount = deviceSearch.count()
     thisYear = datetime.today().year
     today = datetime.today()
     dateNow = datetime.now()
     month1 = dateNow.strftime("%b")
+    # month1 = 'April'
     print("Current Month Full Name:", month1)
+    print("dateNow", dateNow)
+    print("today", today)
+    date = datetime.today()
+    weekNumber = date.isocalendar().week
+    print('this week number:', weekNumber)
+    allUsers = User.objects.all()
     
-    context = {'deviceSearch': deviceSearch, 'deviceSearchCount':deviceSearchCount}
+    context = {'allUsers':allUsers, 'deviceSearch': deviceSearch, 'deviceSearchCount':deviceSearchCount}
     return render(request, 'userarea/searchresult.html', context)
 
 
@@ -664,3 +690,30 @@ def DeleteStaff(request, pk):
 
 
 
+def EditProfileImg(request):
+    if request.method == 'POST' and profilepicture in request.POST:
+        profilepicture = request.FILES['profilepicture']
+        UserProfileImage.objects.create(user = request.user, userReg = request.user.username, profilepicture = Profilepicture)
+    return render(request, 'userarea/updateimage.html')
+
+
+
+def UploadProfileImg(request, pk):
+    allSignUps = SignupForm.objects.filter(id = pk)
+    if request.method == 'POST':
+        profilepictureproper = request.FILES['profilepicture']
+
+        if not request.FILES['profilepicture']:
+            messages.error(request, 'Error saving company profile image')
+
+        ProfileImgForm = UserProfileImage.objects.create(user = request.user, userReg = request.user.username, 
+        profilepicture = profilepictureproper)
+        ProfileImgForm.save()
+    # else:
+    #     messages.success(request, 'Error saving company profile image')
+
+    # messages.success(request, 'Error saving company profile image')
+    allUsers = User.objects.all()
+    allProfileImages = UserProfileImage.objects.all().first
+    context = {'allProfileImages':allProfileImages, 'allUsers':allUsers, 'allSignUps': allSignUps}
+    return render(request, 'userarea/updateimage.html', context)

@@ -72,8 +72,9 @@
 					  <th>More Info</th>
 					</tr>
           {% for staffMembers in staffMembers %}
-          {% for allUploadedDevices in allUploadedDevices %}
-          {% if allUploadedDevices.deviceid == staffMembers.staffDevice %}
+          {% comment %} {% for allUploadedDevices in allUploadedDevices %} {% endcomment %}
+          {% if staffMembers.user == request.user %}
+          {% comment %} {% if allUploadedDevices.deviceid == staffMembers.staffDevice %} {% endcomment %}
 					<tr>
 					  <td>
 						<input type='checkbox' />
@@ -86,9 +87,9 @@
 					  <td>{{ staffMembers.deviceuserphonenumber }}</td>
 					  <td>{{ staffMembers.deviceuseremail }}</td>
 					  {% comment %} <td><a href="mailto={{ staffMembers.deviceuseremail }}">{{ staffMembers.deviceuseremail }}</a></td> {% endcomment %}
-					  <td><p>{{ allUploadedDevices.devicename }}</p></td>
-					  <td><a href=''>{{ allUploadedDevices.deviceid }}</a></td>
-					  <td class={{ allUploadedDevices.devicestatus }} >{{ allUploadedDevices.devicestatus }}</td>
+					  <td><p>{{ staffMembers.staffDeviceName }}</p></td>
+					  <td><a href=''>{{ staffMembers.staffDevice }}</a></td>
+					  <td class={{ staffMembers.staffDeviceStatus }} >{{ staffMembers.staffDeviceStatus }}</td>
 					  <td>
               <div class='actionbtns'>
                 <button><a href= /member/editstaffdetails/{{ staffMembers.id }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
@@ -100,7 +101,7 @@
 					  </td>
 					</tr>
           {% endif %}
-          {% endfor %}
+          {% comment %} {% endfor %} {% endcomment %}
           {% endfor %}
 				</table>
 				<div class='pagesdetailsseection'>

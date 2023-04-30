@@ -27,14 +27,9 @@ body{
     background-color: #828282;
 }
 
-.profilepic{
-    /* position: relative; */
-}
 
 .userimg img{
     position: absolute;
-    /* top: 28px;
-    left: 28px; */
     height: 140px;
     width: 140px;
 }
@@ -83,6 +78,9 @@ body{
     margin-bottom: 20px;
 }
 
+.editBoxCountry h4{
+    margin-bottom: -10px;
+}
 /* 
 .passwordsection{
     margin-top: 25px;
@@ -100,6 +98,10 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.addresssection{
+    margin-top: 0px;
 }
 
 .generaleditprofilesection{
@@ -211,12 +213,11 @@ body{
 
 /* uploadProfilePic starts here */
 .uploadProfilePic{
-    /* background-color: red; */
     height: 140px;
     width: 140px;
     position: relative;
     cursor: pointer;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2s); */
     /* border: 4px solid red; */
     border-radius: 150px;
 }
@@ -227,6 +228,79 @@ body{
     align-items: center;
     justify-content: space-between;
 }
+
+/* profileUpdateSection starts here */
+.profileUpdateSection form button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    /* width: 100px; */
+    /* text-align: center; */
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-right: 30px;
+
+}
+
+
+
+.formsubmitbtn{
+    display: none;
+}
+
+
+.clickinfo{
+    display: none;
+}
+
+.profilepicinner img{
+    margin-left: -20px;
+}
+
+.profileUpdateSection{
+    width: 200px;
+    padding: 50px;
+    /* background-color: red; */
+}
+
+
+.userimg{
+    background-color: transparent;
+}
+
+
+
+/* .profileimgproper{
+    border: 1px solid grey;
+    background-color: rgba(158, 157, 157, 0.397);
+    height: 140px;
+    width: 140px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+} */
+.profileimgproper img{
+    margin-left: 0px;
+}
+
+.profileimgpropernav img{
+    border: 1px solid grey;
+    background-color: rgba(158, 157, 157, 0.397);
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+
+/* profileUpdateSection ends here */
 
 
 

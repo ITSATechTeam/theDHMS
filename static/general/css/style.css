@@ -76,6 +76,17 @@ nav{
     margin-right: 5px;
     margin-left: 5px;
 }
+/* 
+.profileimgpropernav img{
+    border: 1px solid grey;
+    background-color: rgba(158, 157, 157, 0.397);
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+} */
 
 .profileimgproper img{
     width: 50px;

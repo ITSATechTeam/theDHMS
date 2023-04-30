@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'userarea.apps.UserareaConfig',
     'useronboard.apps.UseronboardConfig',
-    'django_countries'
+    'django_countries',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +133,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SENDING EMAILS TO SHELL/CONSOLE
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# SENDING EMAILS WITH GMAIL
+# SENDING EMAILS WITH GMAIL
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_PORT = 587
+# EMAIL_HOST_PORT = 25
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'dhmsinventoryapp@gmail.com'
+EMAIL_HOST_PASSWORD = 'vkxvjodeeuingrvo'
