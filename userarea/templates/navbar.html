@@ -23,14 +23,9 @@
             </div>
             <div class='notifysectioninner'>
                 <h4>{{ request.user }}</h4>
-                <div class='profileimgpropernav'>
-                    {% if allProfileImages.userReg == request.user.username or allProfileImages.user.username == request.user.username  %}
-                    {% if allProfileImages.profilepicture %}
-                    <img src = {{allProfileImages.profilepicture.url}} />
-                    {% else %}
-                    <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
-                    {% endif %}
-                    {% endif %}
+                <div class='profileimgsectiontext'>
+                    <h1></h1>
+                    <p class='requestUser'>{{ request.user }}</p>
                 </div>
                 <img src={% static 'general/img/arrow-down.png' %} />
             </div>

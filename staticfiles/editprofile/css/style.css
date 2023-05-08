@@ -1,0 +1,307 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 250px;
+    width: 98%;
+}
+
+.uploadpic{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
+}
+
+.uploadpic img{
+    width: 100%;
+    height: 1px;
+    background-color: #828282;
+}
+
+
+.userimg img{
+    position: absolute;
+    height: 140px;
+    width: 140px;
+}
+
+.cam img{
+    position: absolute;
+    bottom: 10px;
+    left: 110px;
+}
+
+.filesize{
+    font-size: 1.3rem;
+    margin-left: 13px;
+    margin-top: 10px;
+}
+
+.uploadpic2{
+    display: grid;
+    grid-template-columns: 10% 90%;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.uploadpic2 img{
+    width: 100%;
+    height: 1px;
+    background-color: #828282;
+}
+
+/* EDIT PROFILE DETAILS PROPER */
+
+.editBox input,select{
+    width: 450px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    background-color: #F2F2F2;
+    font-size: 1.2rem;
+    padding-left: 35px;
+    position: relative;
+    margin-top: -35px;
+}
+
+.editBoxCountry img{
+    margin-bottom: 20px;
+}
+
+.editBoxCountry h4{
+    margin-bottom: -10px;
+}
+/* 
+.passwordsection{
+    margin-top: 25px;
+    padding-bottom: -35px;
+}
+
+.passwordsection2{
+    margin-top: 20px;
+    padding-bottom: -35px;
+} */
+
+
+.profileedit{
+    margin-top: -30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addresssection{
+    margin-top: 0px;
+}
+
+.generaleditprofilesection{
+    margin-top: 100px;
+}
+
+.add{
+    position: relative;
+    top: 33px;
+    left: 10px;
+    z-index: 5;
+    width: 20px;
+}
+
+.editBoxImg{
+    position: relative;
+    left: 10px;
+    top: 18px;
+    z-index: 2;
+    width: 22px;
+}
+
+.editBox{
+    margin-bottom: 50px;
+}
+
+.eyeicon img{
+    width: 22px;
+}
+
+.eyeicon{
+    position: relative;
+    left: 400px;
+    top: -35px;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.eyeicon2{
+    position: relative;
+    left: 400px;
+    top: -35px;
+    display: none;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.eyeicon2 img{
+    width: 25px;
+}
+
+.eyeicon3{
+    position: relative;
+    left: 400px;
+    top: -35px;
+    display: none;
+    z-index: 5;
+    cursor: pointer;
+    width: 25px;
+    overflow: hidden;
+}
+
+.eyeicon3 img{
+    width: 25px;
+}
+
+.submitdata button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    /* width: 100px; */
+    /* text-align: center; */
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-right: 30px;
+}
+.submitdata button:nth-child(1){
+    display: flex;
+    background-color: #E1E7FC;
+    border: none;
+    color: #2A66B0;
+    align-items: center;
+    /* width: 100px; */
+    /* text-align: center; */
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-right: 30px;
+}
+
+.hidethis{
+    display: none;
+}
+
+.submitdata{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+
+/* uploadProfilePic starts here */
+.uploadProfilePic{
+    height: 140px;
+    width: 140px;
+    position: relative;
+    cursor: pointer;
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2s); */
+    /* border: 4px solid red; */
+    border-radius: 150px;
+}
+
+
+.profileintro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* profileUpdateSection starts here */
+.profileUpdateSection form button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    /* width: 100px; */
+    /* text-align: center; */
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-right: 30px;
+
+}
+
+
+
+.formsubmitbtn{
+    display: none;
+}
+
+
+.clickinfo{
+    display: none;
+}
+
+.profilepicinner img{
+    margin-left: -20px;
+}
+
+.profileUpdateSection{
+    width: 200px;
+    padding: 50px;
+    /* background-color: red; */
+}
+
+
+.userimg{
+    background-color: transparent;
+}
+
+
+
+/* .profileimgproper{
+    border: 1px solid grey;
+    background-color: rgba(158, 157, 157, 0.397);
+    height: 140px;
+    width: 140px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+} */
+.profileimgproper img{
+    margin-left: 0px;
+}
+
+.profileimgpropernav img{
+    border: 1px solid grey;
+    background-color: rgba(158, 157, 157, 0.397);
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+
+/* profileUpdateSection ends here */
+
+
+
+/* uploadProfilePic ends here */

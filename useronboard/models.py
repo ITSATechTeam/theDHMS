@@ -8,7 +8,7 @@ class UserProfileImage(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     userReg = models.CharField(max_length=200, null=True, blank=True)
     profilepicture = models.ImageField(
-        upload_to='profileimages', blank=True, null=True)
+        upload_to='profileimages/', blank=True, null=True)
         # upload_to='profileimages', blank=True, null=True, default="profileimages/default.png")
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)

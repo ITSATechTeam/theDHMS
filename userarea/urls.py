@@ -31,6 +31,7 @@ urlpatterns = [
     path('editcompanydetails/<str:id>/', views.EditUserSignupDetails, name="EditUserSignupDetails"),
     path('profilepage/<str:pk>/', views.ProfilePage, name="ProfilePage"),
     path('uploadprofileimagepage/<str:pk>/', views.UploadProfileImg, name="UploadProfileImg"),
+    path('testpage/', views.TestPage, name="TestPage"),
 ]
     
 

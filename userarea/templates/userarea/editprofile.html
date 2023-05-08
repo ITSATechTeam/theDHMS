@@ -34,41 +34,6 @@
                         </div>
                     </div>
     
-					<div class='uploadpic'>
-                        <h5>UPLOAD/CHANGE PROFILE PICTURE</h5>
-                        <img src={% static 'editprofile/img/line.png' %} />
-                    </div>
-				</div>
-            </div>
-            {% comment %} UPLOAD PROFILE PICTURE PROPER SECTION STARTS HERE {% endcomment %}            
-            <div class='profilepic'>
-                <a href = /member/uploadprofileimagepage/{{ currentUser.id }}/ >
-                    <label for='images' class="uploadProfilePic">
-                        <div class='profilepicinner'>
-                            <div class='userimg' >
-                                {% if allProfileImages.userReg == request.user.username or allProfileImages.user.username == request.user.username %}
-                                <div class='profileimgproper'>
-                                    {% if allProfileImages.profilepicture %}
-                                    <img src = {{allProfileImages.profilepicture.url}} />
-                                    {% else %}
-                                    <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
-                                    {% endif %}
-                                </div>
-                                    {% endif %}
-                            </div>
-                            {% comment %} <input  name="profileImg" hidden />
-                            <input  type="file" name='profilepicture' accept='image/*' hidden  id='images' /></br> {% endcomment %}
-                            <div class='cam' >
-                                <img src={% static 'editprofile/img/cam.png' %} />
-                            </div>
-                        </div>
-                    </label>
-                </a>
-                    {% comment %} <button type='submit'>Upload</button> {% endcomment %}
-            </div>
-            <div class='filesize'>
-                <p>Max Photo Size: 5MB</p>
-            </div>
             {% comment %} UPLOAD PROFILE PICTURE PROPER SECTION ENDS HERE {% endcomment %}
             {% comment %} <form method = 'POST'>
                 {% csrf_token %}
@@ -400,7 +365,7 @@
                             </div>
                     </div>
                     <div class='submitdata'>
-                        <a href= {% url 'Dashboard' %}><button>Cancel</button></a>
+                        <button><a href= {% url 'Dashboard' %}>Cancel</a></button>
                         <button type='submit'>Save Changes</button>
                     </div>
                     

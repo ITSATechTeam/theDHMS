@@ -1,0 +1,415 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 250px;
+    width: 98%;
+}
+
+.maintopbtns{
+    display: flex;
+}
+
+.maintop{
+    width: 100%;
+    padding-right: 0px;
+}
+
+.maintopbtns button{
+    margin-left: 20px;
+    width: 180px;
+}
+
+.scannetworkbtn button{
+    width: 140px;
+    border: none;
+    background-color: #E1E7FC;
+}
+
+/* SUB TOP SECTION STARTS HERE */
+.introbox{
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: 200px;
+    /* height: 60px; */
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    display: flex;
+    padding: 2px 18px;
+    align-items: center;
+    /* justify-content: space-around; */
+}
+
+
+.shadow2{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    /* display: none; */
+}
+
+.introbox img{
+    margin-right: 10px;
+}
+
+.introbox h3{
+    margin-top: 10px;
+}
+.sectionintro{
+    display: flex;
+    justify-content: space-between;
+    /* margin-right: 50px; */
+}
+
+/* SEARCH SECTION STARTS HERE */
+.deviceinventorymaintop{
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+
+.filter{
+    border: none;
+    padding: 15px;
+    width: 70px;
+    /* display: flex; */
+    align-items: center;
+    border-radius: 10px;
+    margin-right: -0px;
+    height: 10px;
+    margin-left: 3px;
+    cursor: pointer;
+    /* background-color: red; */
+    transition: .4s ease-in-out;
+}
+
+.filter img{
+    margin-left: -10px;
+}
+
+.filter:hover{
+    background-color: #E1E7FC;
+}
+
+
+.filter p{
+    margin-top: 10px;
+    margin-left: 3px;
+    font-size: 1.2rem;
+}
+
+
+.scannetworkbtn button{
+    background-color: white;
+    border: #2A66B0 solid 1px;
+    color:#2A66B0;
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    width: 150px;
+    height: 50px;
+    align-items: center;
+    border: none;
+    justify-content: space-around;
+    background-color: #E1E7FC;
+}
+
+.scannetworkbtn2 button{
+    background-color: white;
+    border: #2A66B0 solid 1px;
+    color:#2A66B0;
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    width: 150px;
+    height: 50px;
+    align-items: center;
+    border: none;
+    justify-content: space-around;
+    background-color: #E1E7FC;
+}
+
+
+.scannetworkbtn button p{
+    margin-top: 10px;
+}
+.searchsidebtns{
+    display: flex;
+}
+
+.uploaddevicecsv {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-top: 0px;
+    align-items: center;
+}
+
+/* SEARCH SECTION ENDS HERE */
+
+/* SUB TOP SECTION ENDS HERE */
+
+
+/* DEVICES DISPLAY COUNT SETTINGS STARTS HERE */
+.pagesdetailsseection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 50px;
+}
+.pagesdetailsseection select{
+    border: solid 1px black;
+    border-radius: 10px;
+    width: 40px;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+
+table .workingstatus{
+    background-color: #B7D5F2;
+    /* padding: 4px; */
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    border-radius: 30px;
+}
+
+.perpagecount{
+    display: flex;
+    align-items: center;
+}
+
+.perpagecount p{
+    margin-top: 10px;
+}
+
+
+.pages{
+    display: flex;
+    align-items: center;
+}
+
+.moredetailsbtn button{
+    background-color: #E1E7FC;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100px;
+    color: #2A66B0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.navigation{
+    margin-left: 20px;
+}
+
+.navLeft{
+    margin-right: 10px;
+}
+
+.navigation img{
+    width: 8px;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.navigation img:hover{
+    transform: scale(1.2);
+}
+
+/* DEVICES DISPLAY COUNT SETTINGS ENDS HERE */
+
+.uploaddevicepopup form button{
+    padding-left: 45%;
+}
+
+
+/* uploaddevicepopup ends here */
+
+/* PAGINATION STARTS HERE */
+
+.hidden {
+    display: none;
+}
+
+.pagination-container {
+width: calc(100% - 2rem);
+display: flex;
+align-items: center;
+position: absolute;
+bottom: 0;
+padding: 1rem 0;
+justify-content: center;
+}
+
+.pagination-number,
+.pagination-button{
+font-size: 1.1rem;
+background-color: transparent;
+border: none;
+margin: 0.25rem 0.25rem;
+cursor: pointer;
+height: 2.5rem;
+width: 2.5rem;
+border-radius: .2rem;
+}
+
+.pagination-number:hover,
+.pagination-button:not(.disabled):hover {
+background: #fff;
+}
+
+.pagination-number.active {
+color: #fff;
+background: #0085b6;
+}
+
+.disabled{
+    display: none;
+}
+
+.selectedNumber{
+    border: solid 1px black;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 40px;
+    margin-right: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    padding: 2px;
+    cursor: pointer;
+} 
+
+.selectedNumber p{
+    margin: 0px;
+}
+
+.selectPerPageCountBox{
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    height: 110px;
+    /* text-align: center; */
+    width: 300px;
+    padding: 10px;
+    z-index: 7;
+    display: none;
+}
+
+.numofitemsperpageout select{
+    width: 50px;
+    font-size: 1.2rem;
+}
+
+.selectPerPageCountBoxintro img{
+    width: 30px;
+    cursor: pointer;
+    padding: 5px;
+    transition: .2s ease-in-out;
+    background-color: #E1E7FC;
+    
+}
+.selectPerPageCountBoxintro img:hover{
+    border-radius: 10px;
+
+}
+
+
+.selectPerPageCountBoxintro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.numofitemsperpageout button{
+    background-color: #2A66B0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 1.1rem;
+    /* width: 45px; */
+}
+
+
+.numofitemsperpageout{
+    text-align: center;
+}
+
+
+/* PAGINATION ENDS HERE */
+
+/* FILTER BY CATEGORY STARTS HERE */
+.filterbox{
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    z-index: 7;
+    text-align: left;
+    display: none;
+}
+
+/* FILTER BY CATEGORY ENDS HERE */
+
+/* DELETE POP UP SECTION STARTS HERE */
+.predelete{
+    width: 500px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    left: 40%;
+    top: 20%;
+    background-color: white;
+    z-index: 7;
+    /* display: none; */
+
+}
+
+.predeletebtns button{
+    background-color: #2A66B0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 1.3rem;
+
+}
+
+/* .predeletebtns span{
+    color: #2A66B0;
+} */
+
+
+/* DELETE POP UP SECTION ENDS HERE */

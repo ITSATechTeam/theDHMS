@@ -1,0 +1,192 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 250px;
+    width: 98%;
+}
+
+.maintopbtns{
+    display: flex;
+}
+
+.maintop{
+    width: 100%;
+    padding-right: 0px;
+}
+
+/* SEARCH SECTION STARTS HERE */
+
+.searchdashboardout{
+    display: flex;
+    align-items: center;
+}
+
+.filter{
+    border: none;
+    margin-left: 10px;
+    padding-left: 10px;
+    font-size: 1.2rem;
+}
+
+.filter:hover{
+    background-color: #E1E7FC;
+}
+
+.staffsearch{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.staffsearch button{
+    background-color: #2A66B0;
+    border: none;
+    padding: 0px;
+    border-radius: 10px;
+    width: 140px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+}
+
+
+.staffsearch button p{
+    margin-top: 10px;
+}
+
+.staffsearch button img{
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+
+/* SEARCH SECTION ENDS HERE */
+
+/* REGISTER USER SECTION STARTS HERE */
+.regsiteruser{
+    position: absolute;
+    top: 20%;
+    margin-left: 45%;
+    background-color: white;
+    padding: 17px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 300px;
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+.regsiteruser p{
+    font-size: 1.4rem;
+}
+
+.phonenumbersection{
+    /* display: grid;
+    grid-template-columns: 50% 40%; */
+    justify-content: space-between;
+}
+
+
+.regsiteruser input{
+    width: 100%;
+    height: 50px;
+    background-color: #EFF1F9;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+    border: none;
+}
+
+.regsiteruser button{
+    background-color: #2A66B0;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    align-items: center;
+
+}
+
+
+
+
+.countrycode{
+    margin-right: 10px;
+}
+.adduserintro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.regsiteruser h1{
+    font-size: 1.6rem;
+}
+
+
+.closereguser img{
+    width: 20px;
+    background-color: #E1E7FC;
+    padding: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+} 
+
+/* REGISTER USER SECTION ENDS HERE */
+
+.shadow1{
+    position: absolute;
+    margin-left: 220px;
+    height: 100vh;
+    width: 100%;
+    /* background-color: red; */
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+form select{
+    
+    width: 100%;
+    height: 50px;
+    background-color: #EFF1F9;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+    border: none;
+}
+
+.form img{
+    width: 20px;
+}
+
+
+
+table a{
+    color: #2A66B0;
+    cursor: pointer;
+    font-weight: bold;
+}

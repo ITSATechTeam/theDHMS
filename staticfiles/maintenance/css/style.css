@@ -1,0 +1,67 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 270px;
+}
+
+.subIntroSection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.MaintenanceSelectSection{
+    display: flex;
+}
+
+.MaintenanceSelectSection h5{
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.maintainRequestCount{
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    background-color: #EB5757;
+}
+
+.MaintenanceSelectSectionInner{
+    display: flex;
+    align-items: center;
+}
+
+.maintainRequestCount{
+    margin-left: 5px;
+    color: white;
+}
+
+.maintainRequestCount p{
+    padding-top: 2px;
+    margin: auto;
+    text-align: center;
+    align-items: center;
+}
+
+.maintainLine{
+    width: 100%;
+    margin-top: 5px;
+    height: 5px;
+    border-radius: 20px;
+    background-color: #2A66B0;
+}
+
+.MaintenanceSelectSectionInner2 {
+    margin-top: 5px;
+}

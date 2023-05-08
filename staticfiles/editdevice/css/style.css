@@ -1,0 +1,59 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 250px;
+    width: 98%;
+}
+
+
+.main span{
+    color: black;
+    font-weight: bold;
+}
+
+.fieldWrapper input{
+    width: 300px;
+    height: 50px;
+    font-size: 1.4rem;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.formSectionMain{
+    display: flex;
+    align-items: top;
+    justify-content: space-between;
+    margin-right: 200px;
+    margin-bottom: 50px;
+}
+
+.DevicEditform{
+    margin-bottom: 50px;
+}
+
+
+form .hidethis{
+    display: none;
+}
+
+form button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    text-align: center;
+    width: 100px;
+    font-size: 1.8rem;
+    height: 40px;
+    border-radius: 10px;
+    font-weight: bold;
+}

@@ -1,0 +1,403 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+
+main{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 100px;
+    padding-left: 50px;
+}
+
+.mainimg img{
+    width: 600px;
+}
+
+.sidenote{
+    width: 500px;
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.sidenote h1{
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidenote-p{
+    font-size: .8rem;
+    width: 400px;
+    margin-left: 30px;
+}
+
+.sidenote button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 230px;
+    justify-content: space-around;
+    font-size: 1rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 40px;
+
+}
+.sidenote button p{
+    margin-top: 10px;
+}
+
+.box{
+    position: fixed;
+    top: 70px;
+    right: 0px;
+    z-index: 1;
+    height: 100px;
+}
+.box img{
+    height: 400px;
+    z-index: -2;
+}
+
+
+/* GENERAL NAV BAR EDITS STARTS HERE */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;    
+    font-family: 'Poppins', sans-serif;
+}
+
+
+nav{
+    background-color: white;
+    padding: 5px;
+    width: 100%;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+
+nav img{
+    width: 200px;
+    background-color: white;
+    margin: auto;
+}
+/* GENERAL NAV BAR EDITS ENDS HERE */
+
+/* FOOTER STARST HERE */
+
+.footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+/* MAIN BODY EDITS STARTS HERE */
+main{
+    display: flex;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+}
+
+/* .sideimagesection{
+    background-color: #2A66B0 ;
+    height: 100vh;
+    width: 50%;
+    padding: 30px;
+    position: fixed;
+    top: 0;
+    text-align: center;
+    align-items: center;
+    z-index: 3;
+} */
+
+
+/* .sideimagesection img{
+    width: 450px;
+    margin: auto;
+    margin-top: 25%;
+} */
+/* MAIN BODY EDITS ENDS HERE */
+
+/* FORM SECTION STARTS HERE*/
+.nav{
+    /* position: fixed; */
+    width: 50%;
+    height: 100px;
+}
+
+.navmain {
+    /* background-color: red; */
+    padding: 5px;
+    padding-left: 10%;
+    width: 100%;
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); */
+    z-index: 1;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 70px;
+}
+
+/* .navmain img{
+    margin-left: 30px;
+} */
+
+.nav{
+    background-color: white;
+    padding: 5px;
+    display: inline;
+    width: 60%;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 70px;
+}
+
+
+.nav img{
+    width: 200px;
+    background-color: white;
+    margin: auto;
+}
+
+.googlesignin img{
+    width: 20px;
+}
+
+form{
+    width: 100%;
+    /* margin-left: 30px; */
+    /* background-color: red; */
+}
+
+
+.registerform{
+    padding-top: 50px;
+    /* padding-top: 40px; */
+    /* margin: auto; */
+    margin-left: 10%;
+    margin-top: 10%;
+    width: 60%;
+    /* background-color: green; */
+}
+
+.registerform input{
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    border: .7px solid rgb(179, 179, 179);
+    border-radius: 5px;
+    background-color: white;
+    /* margin-top: 0px; */
+}
+
+.registerform p{
+    font-size: .8rem;
+    width: 70%;
+}
+
+.formsection{
+    margin-top: 20px;
+}
+
+.formsection p{
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.formsubmitbtn button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 100%;
+    font-size: 1rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: auto;
+    /* margin-top: 40px; */
+
+}
+
+.googlesignin {
+    border: none;
+    height: 40px;
+    display: flex;
+    background-color: #E1E7FC;
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+    color: #2A66B0;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button{
+    border: none;
+}
+
+
+.googlesignin img{
+    /* margin-left: 40px; */
+    margin: auto;
+    background-color: transparent;
+}
+
+.googlesigninner{
+    width: 190px;
+    align-items: center;
+    margin: auto;
+    height: 40px;
+    display: flex;
+    /* background-color: red; */
+}
+
+.googlesigninner p{
+    margin-top: 16px;
+    margin-left: -16px;
+}
+
+.logininstead{
+    margin: auto;
+    margin-top: 30px;
+    margin-left: 140px;
+}
+
+input:focus{
+    outline: none;
+}
+
+
+.logininstead a{
+    color: #2A66B0;
+    font-weight: bold;
+}
+
+.sideimagesection{
+    background-color: #2A66B0;
+    width: 40%;
+    top: 0;
+    text-align: center;
+    align-items: center;
+    z-index: 3;
+    position: fixed;
+    height: 100vh;
+}
+
+
+.sideimagesection img{
+    height: 100%;
+    width: 100%;
+}
+
+
+
+.bckgImg{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #2a66b086;
+}
+
+/* FORM SECTION ENDS HERE*/
+
+/* FORGOT PASSWORD STARTS HERE */
+.forgotpwd1{
+    display: flex;
+    width: 30%;
+    align-items: center;
+}
+
+.forgotpwd1 p{
+    margin-top: 10px;
+}
+.forgotpwd2 p{
+    display: flex;
+    width: 110px;
+    align-items: center;
+    text-align: end;
+    margin-top: 15px;
+    font-weight: bold;
+    /* background-color: white; */
+}
+
+.forgotpwd1 input{
+    width: 20px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+
+.forgotpwd{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.passwordinput{
+    position: relative;
+}
+
+
+.passwordinput input{
+    padding-left: 30px;
+}
+
+
+.pwdlock img{
+    width: 10px;
+    background-color: transparent;
+}
+
+.pwdlock{
+    position: absolute;
+    top: 30px;
+    left: 15px;
+}
+
+.pwdeye img{
+    width: 20px;
+    background-color: transparent;
+}
+
+.eyeicon2{
+    display: none;
+}
+
+.pwdeye{
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    cursor: pointer;
+}
+/* FORGOT PASSWORD ENDS HERE */
+

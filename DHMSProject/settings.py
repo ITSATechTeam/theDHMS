@@ -14,9 +14,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = 'DHMSProject.urls'
@@ -122,13 +124,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR / 'static')
 ]
 
-# STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT =os.path.join(BASE_DIR, 'static')
+STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 # MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR.join_path('media/')
+# MEDIA_ROOT = BASE_DIR.joinpath('media/')
 
-MEDIA_URL = '/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type
@@ -147,3 +152,10 @@ EMAIL_HOST_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'dhmsinventoryapp@gmail.com'
 EMAIL_HOST_PASSWORD = 'vkxvjodeeuingrvo'
+
+
+
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+

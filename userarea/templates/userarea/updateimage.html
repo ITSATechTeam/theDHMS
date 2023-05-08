@@ -51,13 +51,18 @@
                         <div class='profilepicinner'>
                             <div class='userimg' >
                                 <div class='profileimgproper'>
-                                    {% if allProfileImages.userReg == request.user.username %}
+                                    {% comment %} <img src="{{MEDIA_URL}}pic_folder/someimage.jpg" /> {% endcomment %}
+                                    {% comment %} {% if allProfileImages.userReg == request.user.username %} {% endcomment %}
+                                    {% comment %} {% if allSignUps.companyname == allProfileImages2.userReg %} {% endcomment %}
                                     {% if allProfileImages.profilepicture %}
-                                    <img src = {{allProfileImages.profilepicture.url}} />
+                                    {% comment %} <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div> {% endcomment %}
+                                    <div class='profileimgproper'><img src ={{allProfileImages.profilepicture.url}} /></div>
+                                    {% comment %} <div class='profileimgproper'><img src = "{{allProfileImages2.profilepicture.url}}" /></div> {% endcomment %}
                                     {% else %}
                                     <div class='profileimgproper'><img src={% static 'editprofile/img/user.png' %} /></div>
                                     {% endif %}
-                                    {% endif %}
+                                    {% comment %} {% endif %} {% endcomment %}
+                                    {% comment %} {% endif %} {% endcomment %}
                                 </div>
                             </div>
                             <input name="profileImg" hidden />

@@ -714,6 +714,14 @@ def UploadProfileImg(request, pk):
 
     # messages.success(request, 'Error saving company profile image')
     allUsers = User.objects.all()
-    allProfileImages = UserProfileImage.objects.all().first
-    context = {'allProfileImages':allProfileImages, 'allUsers':allUsers, 'allSignUps': allSignUps}
+    allProfileImages2 = UserProfileImage.objects.all()
+    allProfileImages = UserProfileImage.objects.filter(userReg = request.user.username).first()
+    context = {'allProfileImages2':allProfileImages2, 'allProfileImages':allProfileImages, 'allUsers':allUsers, 'allSignUps': allSignUps}
     return render(request, 'userarea/updateimage.html', context)
+
+
+def TestPage(request):
+    allProfileImages2 = UserProfileImage.objects.all()
+    allProfileImages = UserProfileImage.objects.filter(userReg = request.user.username).first()
+    context = {'allProfileImages2':allProfileImages2, 'allProfileImages':allProfileImages}
+    return render(request, 'userarea/test.html', context)
