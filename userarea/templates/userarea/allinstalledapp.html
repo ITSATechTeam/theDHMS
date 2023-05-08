@@ -1,0 +1,64 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'staff/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Dashboard | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<div class='shadow'></div>
+	<body>
+		<div class='main'>
+			<div class='maintop'>
+				<div>
+					{% comment %} <h1>{{request.user}}</h1> {% endcomment %}
+					<h1>Installed Application,</h1>
+					<h5>See all software installed on this device, versions and installation dates.</h5>
+				</div>
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+			</div>
+				{% comment %} INSTALLED APP TABLE STARTS HERE {% endcomment %}
+				<div>
+					<table>
+						<tr>
+						<th>App Name</th>
+						<th>App Version</th>
+						<th>App Installation Date</th>
+						</tr>
+						{% for item in item %}
+						<tr>
+						<td>{{item.name}}</td>
+						<td>{{item.version}}</td>
+						<td>{{item.install_date}}</td>
+						</tr>
+						{% endfor %}
+					</table>
+				</div>
+				{% comment %} INSTALLED APP TABLE ENDS HERE {% endcomment %}
+		</div>
+	</body>
+</html>
+{% endblock content %}
+
+

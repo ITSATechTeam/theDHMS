@@ -1,6 +1,6 @@
 {% load static %} 
 
-{% for allProfileImages2 in allProfileImages2 %}
+{% comment %} {% for allProfileImages2 in allProfileImages2 %}
 
 {{ allProfileImages2.userReg }}<br/>
 {% if allProfileImages2.profilepicture %}
@@ -8,4 +8,35 @@
 <br/>
 {%  endif%}
 
+{% endfor %} {% endcomment %}
+
+{% for item in item %}
+{{item.name}} {{item.version}} {{item.install_date}}
+<br/>
 {% endfor %}
+
+{% comment %} INSTALLED APP TABLE STARTS HERE {% endcomment %}
+<div>
+    <table>
+        <tr>
+          <th>App Name</th>
+          <th>App Version</th>
+          <th>App Installation Date</th>
+          {% comment %} <th>Action</th> {% endcomment %}
+        </tr>
+        {% for item in item %}
+        <tr>
+          <td>{{item.name}}</td>
+          <td>{{item.version}}</td>
+          <td>{{item.install_date}}</td>
+          {% comment %} <td>
+            <div class='actionbtns'>
+                <img src={% static 'dashboard/img/edit.png' %} />
+                <img src={% static 'dashboard/img/delete.png' %} />
+            </div>
+          </td> {% endcomment %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% comment %} INSTALLED APP TABLE ENDS HERE {% endcomment %}

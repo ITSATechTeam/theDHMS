@@ -1,8 +1,6 @@
 # from site import USER_BASE
 from django.urls import reverse
 from django.contrib import messages
-# from django.http import HttpResponse
-# from django.http import HttpResponseRedirect
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -17,6 +15,7 @@ from django.utils.crypto import get_random_string
 import json
 from django.contrib.auth.models import User
 from datetime import date
+import winapps
 
 # import datetime; 
 
@@ -725,3 +724,20 @@ def TestPage(request):
     allProfileImages = UserProfileImage.objects.filter(userReg = request.user.username).first()
     context = {'allProfileImages2':allProfileImages2, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/test.html', context)
+
+
+# FIND ALL INSTALLED APPS ON THIS PC
+def AllInstalledApp(request):
+    item = winapps.list_installed
+    print(item)
+    context = {'item':item}
+    return render(request, 'userarea/test.html', context)
+
+
+
+def AllInstalledSoftwares(request):
+    item = winapps.list_installed
+    allSignUps = SignupForm.objects.all()
+    context = {'item':item, 'allSignUps':allSignUps}
+    return render(request, 'userarea/allinstalledapp.html', context)
+
