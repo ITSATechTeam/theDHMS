@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -16,6 +17,7 @@ import json
 from django.contrib.auth.models import User
 from datetime import date
 import winapps
+import random
 
 # import datetime; 
 
@@ -50,15 +52,168 @@ def Support(request):
 
 @login_required(login_url='Login')
 def Maintainance(request):
-    #  & Q(user = request.user)
+    if request.method == 'GET' and 'dataToExport'  in request.GET:
+        dataToExport = request.GET.get('dataToExport') if request.GET.get('dataToExport') != None else ''
+        dataToExportNew = list(dataToExport.split(","))
+        # print(type(dataToExportNew))
+        dataToExportNewNoDuplicate = []
+        [dataToExportNewNoDuplicate.append(i) for i in dataToExportNew if i not in dataToExportNewNoDuplicate]
+        # get latest array entry ID for edit and delete features
+        maintainElementID = dataToExportNewNoDuplicate[-1]
+        maintainElementIDMain = MaintenanceRequest.objects.get(MaintainDeviceName = maintainElementID).pk
+        # print(maintainElementIDMain)
+        for i in dataToExportNew:
+            if dataToExportNew.count(i) == 2:
+                dataToExportNew.remove(i)
+            # print(dataToExportNewNoDuplicate.count(i))
+
+            response = HttpResponse(content_type = 'text/csv')
+            writer = csv.writer(response)
+            writer.writerow(['Device Name', 'Device ID', 'Device IP Address', 'Device MAC ID', 
+            'Device Type', 'Device Category', 'Device Location', 'Maintenance Status', 'Device User', 
+            'Maintenance Requester', 'Maintenance Request ID', 'Maintenance Request Description', 'Date For Request'])
+
+            # for data in dataToExportNewNoDuplicate:
+            for data in dataToExportNew:
+                if data is not None:
+                    for maintenanceDevice in MaintenanceRequest.objects.filter(MaintainDeviceName = data).values_list('MaintainDeviceName', 
+                    'MaintainDeviceID', 'MaintainDeviceIP', 'MaintainDeviceMAC_ID', 'MaintainType', 'MaintainDeviceCategory', 
+                    'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUser', 'MaintainRequester', 'MaintainRequestID', 
+                    'MaintainRequestDescription', 'created_at'):
+                        writer.writerow(maintenanceDevice)
+
+                    response['Content-Disposition'] = 'attachment; filename =  maintenancerequests.csv'
+                    messages.error(request, 'Export complete.')
+                else:
+                    messages.error(request, 'Please select a section to export.')
+                    return redirect('Maintainance')
+
+            return response
+    
+    if request.method == 'GET' and 'deviceToDelete' in request.GET:
+        currentDevice = MaintenanceRequest.objects.all()
+        deviceToDelete = request.GET['deviceToDelete']
+        deviceToDeleteArr = []
+        deviceToDeleteArrNew = []
+        deviceToDeleteArr = list(deviceToDelete.split(","))
+        print(len(deviceToDeleteArr))
+        for i in deviceToDeleteArr:
+            if len(deviceToDeleteArr) == 1:
+                currentDevice = MaintenanceRequest.objects.get(MaintainDeviceName = i)
+                messages.error(request, 'Maintenance Request(s) deleted succesfully.')
+                currentDevice.delete()
+                # return redirect('Maintainance')
+            else:
+                print(i)
+                currentDevice = MaintenanceRequest.objects.get(MaintainDeviceName = i)
+                print(currentDevice)
+                currentDevice.delete()
+                messages.error(request, 'Maintenance Request(s) deleted succesfully.')
+        return redirect('Maintainance')
+
+    # REDIRECT TO VIEW DETAILS PAGE FOR SELECTED MAINTENANCE REQUEST
+    if request.method == 'GET' and 'requesttoviewdetails' in request.GET:
+        requesttoviewdetailsMain = request.GET['requesttoviewdetails']
+        print(requesttoviewdetailsMain)
+        currentDevice = MaintenanceRequest.objects.filter(MaintainDeviceName = requesttoviewdetailsMain)
+        return redirect('MaintainanceDetails', name = requesttoviewdetailsMain )
+        # return redirect('ProfilePage', pk=currentUser.id)
+
+    # REDIRECT TO EDIT MAINTENANCE REQUEST BELOW
+    if request.method == 'GET' and 'idforeditmain' in request.GET:
+        idforedit = request.GET['idforeditmain']
+        currentDevice = MaintenanceRequest.objects.get(MaintainDeviceName = idforedit).MaintainDeviceName
+        return redirect('EditMaintenenceRequest', name = currentDevice )
+
+
+
     allMaintains = MaintenanceRequest.objects.filter(user = request.user)
     allMaintainsCount = allMaintains.count()
     numberOfDevicesPerPage = DeviceCountPerPage.objects.filter(user = request.user).first()
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
+    allCompletedRequests = MaintenanceRequest.objects.filter(Q(MaintainStatus = 'Completed') & Q(user = request.user))
+    # (Q(devicestatus = 'Working') & Q(user = request.user))
+    allCompletedRequestsCount = allCompletedRequests.count()
+    allCanceledRequests = MaintenanceRequest.objects.filter(Q(MaintainStatus = 'Canceled') & Q(user = request.user))
+    allCanceledRequestsCount = allCanceledRequests.count()
+    allOngoingRequests = MaintenanceRequest.objects.filter(Q(MaintainStatus = 'Ongoing') & Q(user = request.user))
+    allOngoingRequestsCount = allOngoingRequests.count()
+    context = {'allOngoingRequestsCount':allOngoingRequestsCount, 'allCompletedRequestsCount':allCompletedRequestsCount, 'allCanceledRequestsCount':allCanceledRequestsCount, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
     return render(request, 'userarea/maintainance.html', context)
+
+
+
+def MaintainanceDetails(request, name):
+    if request.method == 'POST' and 'addedComment' in request.POST:
+        addedComentMain = request.POST['addedComment']
+        if addedComentMain == '':
+            return redirect('MaintainanceDetails', name = name)
+        commenter = request.POST['commenter']
+        CommentedMaintainDeviceName = request.POST['CommentedMaintainDeviceName']
+        CommentedMaintainDeviceUser = request.POST['CommentedMaintainDeviceUser']
+        CommentedMaintainRequester = request.POST['CommentedMaintainRequester']
+        CommentedMaintainRequestID = request.POST['CommentedMaintainRequestID']
+        form = AddedMaintenanceComments.objects.create(
+            commenter = commenter,
+            commentProper = addedComentMain,
+            CommentedMaintainDeviceName = CommentedMaintainDeviceName,
+            CommentedMaintainDeviceUser = CommentedMaintainDeviceUser, 
+            CommentedMaintainRequester = CommentedMaintainRequester,
+            CommentedMaintainRequestID = CommentedMaintainRequestID
+        )
+        form.save()
+
+    currentDevice = str(MaintenanceRequest.objects.get(MaintainDeviceName = name))
+    AllCommments = AddedMaintenanceComments.objects.all()
+    AllDevice = MaintenanceRequest.objects.filter( user = request.user )
+    context = {'AllCommments':AllCommments, 'AllDevice':AllDevice, 'currentDevice':currentDevice}
+    return render(request, 'userarea/maintainrequestdetails.html', context)
+
+
+def DeleteAddedComment(request, pk, name):
+    commentToDelete = AddedMaintenanceComments.objects.get(id = pk)
+    commentToDelete.delete()
+    messages.error(request, 'Comment has been deleted')
+    # return response
+    return redirect('MaintainanceDetails', name = name)
+
+
+def EditMaintenenceRequest(request, name):
+    selectedRequest = MaintenanceRequest.objects.get(MaintainDeviceName = name)
+    form = EditMaintenanceRequest(request.POST or None, instance = selectedRequest)
+    if request.POST and form.is_valid():
+        print('data validated!')
+        form.save()
+        return redirect('MaintainanceDetails', name = name)
+    context = {'form':form, 'selectedRequest':selectedRequest}
+    return render(request, 'userarea/editmaintenancereq.html', context)
+
+
+def AllMaintenanceDelete(request):
+    AllRequests = MaintenanceRequest.objects.filter(user = request.user)
+    messages.error(request, 'All maintenance request have been deleted successfully!')
+    AllRequests.delete()
+    return redirect('Maintainance')
+
+
+def ExportMaintenance(request):
+        response = HttpResponse(content_type = 'text/csv')
+        writer = csv.writer(response)
+        writer.writerow(['Device Name', 'Device ID', 'Device IP Address', 'Device MAC ID', 
+        'Device Type', 'Device Category', 'Device Location', 'Maintenance Status', 'Device User', 
+        'Maintenance Requester', 'Maintenance Request ID', 'Maintenance Request Description', 'Date For Request'])
+        for maintenanceDevice in MaintenanceRequest.objects.filter(user = request.user).values_list('MaintainDeviceName', 
+        'MaintainDeviceID', 'MaintainDeviceIP', 'MaintainDeviceMAC_ID', 'MaintainType', 'MaintainDeviceCategory', 
+        'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUser', 'MaintainRequester', 'MaintainRequestID', 
+        'MaintainRequestDescription', 'created_at'):
+            writer.writerow(maintenanceDevice)
+        response['Content-Disposition'] = 'attachment; filename =  maintenancerequests.csv'
+
+        return response
+
+        return render(request, 'userarea/maintainance.html')
 
 
 @login_required(login_url='Login')
@@ -85,7 +240,6 @@ def DeviceInventory(request):
         deviceid = 'Device-' + get_random_string(length=5)
 
         if not request.POST['devicename']:
-            messages.error(request, 'Please give this device a name.')
             return redirect('DeviceInventory')
         
         if not request.POST['devicetype']:
@@ -107,18 +261,17 @@ def DeviceInventory(request):
         print(str(filedata))
         if 'csv' not in str(filedata):
             messages.success(request, 'Wrong File Format. Please Use The Recommended CSV File.')
-            return redirect('Dashboard')
+            return redirect('DeviceInventory')
 
         if request.FILES.get('csv_file') is None:
             messages.success(request, 'Device List Updated Failed! Please Select A File.')
-            return redirect('Dashboard')
+            return redirect('DeviceInventory')
         
         if not request.POST['username']:
             messages.success(request, 'Device List Updated Failed! User Name Missing Login Again.')
-            return redirect('Dashboard')
+            return redirect('DeviceInventory')
 
         form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
-        form.save()
         obj = uploadedDeviceData.objects.all().first()
 
         with open(obj.mainfile.path, 'r') as f:
@@ -126,20 +279,28 @@ def DeviceInventory(request):
             for i, row in enumerate(reader):
                 if i == 0:
                     pass
-                elif len(row) < 9:
+                elif len(row) < 22:
+                # elif len(row) < 9:
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
-                    return redirect('Dashboard')
+                    return redirect('DeviceInventory')
                 elif len(row) > 9:
                     today = date.today()
 
                     dateForWeekNumber = datetime.today()
+                    randomNumber = random.randint(1000, 9999)
                     weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
+                    # ('Samsung·', 3501)
+                    DeviceNameProper = row[14] + '·' + str(randomNumber)
+                    # DeviceNameProper = str(row[14] '·' get_random_string(length=5))
+                    print(DeviceNameProper)
                     # print(len(row))
-                    if row[20]:
+                    # if row[21] is not None and row[21] != '':
+                    if row[21]:
                         depreciateRate = 2023 - int(row[21])
                     else:
                         depreciateRate = 2020
+                    # calc depreciateRateReal from depreciateRate below:
                     if depreciateRate <= 0:
                         depreciateRateReal = '100%'
                     elif depreciateRate == 1:
@@ -150,6 +311,10 @@ def DeviceInventory(request):
                         depreciateRateReal = '25%'
                     elif depreciateRate >= 4:
                         depreciateRateReal = '0%'
+                    else:
+                        depreciateRateReal = 'Nil'
+                        # messages.success(request, 'Upload Failed: Please confirm that you are using the correct file import procedure or sontact support for assistance.')
+                        # return redirect('Dashboard')
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
                         deviceip = row[0],
@@ -166,7 +331,7 @@ def DeviceInventory(request):
                         index = row[11],
                         devicetype = row[12],
                         devicelocation = row[13],
-                        devicebrand = row[14],
+                        devicebrand = DeviceNameProper,
                         deviceos = row[15],
                         devicecostofpurchase = row[16],
                         deviceuseremail = row[17],
@@ -195,6 +360,7 @@ def DeviceInventory(request):
                     messages.error(request, 'Device List Updated Unsuccessfully')
                     return redirect('DeviceInventory')
             obj.save()
+            form.save()
         messages.success(request, 'Device List Updated Successfully')
         return redirect('DeviceInventory')
     # CSV UPLOAD ENDS HERE
@@ -207,20 +373,85 @@ def DeviceInventory(request):
         messages.success(request, 'Device display per page count saved successfully')
         return redirect('DeviceInventory')
     # PAGINATION COUNT FORM ENDS HERE
+
     
-    # DEVICE DELETE FUNCTIONALITY STARTS HERE
-    if request.method == 'POST' and 'requestFrom' in request.POST:
-        print('deleteChoice gotten')
-        deleteChoice = request.POST['deleteChoice']
-        DeletedDevices.objects.create()
-        print(deleteChoice)
-        userData = request.POST['requestFrom']
-        deviceSearch = DeviceRegisterUpload.objects.filter(id = deleteChoice)
-        if deviceSearch is None:
-            messages.success(request, 'Device delete failed: Device not found!')
-            return redirect('DeviceInventory')
-        
-    # DEVICE DELETE FUNCTIONALITY ENDS HERE
+    # GROUP AND DELETE FUNCTIONALY STARTS HERE
+    if request.method == 'GET' and 'deviceToDelete' in request.GET:
+        currentDevice = DeviceRegisterUpload.objects.all()
+        deviceToDelete = request.GET['deviceToDelete']
+        deviceToDeleteArr = []
+        deviceToDeleteArrNew = []
+        deviceToDeleteArr = list(deviceToDelete.split(","))
+        print(len(deviceToDeleteArr))
+        for i in deviceToDeleteArr:
+            if len(deviceToDeleteArr) == 1:
+                currentDevice = DeviceRegisterUpload.objects.get(devicebrand = i)
+                messages.error(request, 'Device(s) deleted succesfully.')
+                currentDevice.delete()
+                # return redirect('DeviceInventory')
+            else:
+                print(i)
+                currentDevice = DeviceRegisterUpload.objects.get(devicebrand = i)
+                print(currentDevice)
+                currentDevice.delete()
+                messages.error(request, 'Device(s) deleted succesfully.')
+        return redirect('DeviceInventory')
+
+        # GROUP AND DELETE FUNCTIONALY ENDS HERE
+
+    # EXPORT DEVICE DATA SETTINGS STARTS HERE 
+    if request.method == 'GET' and 'dataToExport'  in request.GET:
+        dataToExport = request.GET.get('dataToExport') if request.GET.get('dataToExport') != None else ''
+        dataToExportNew = list(dataToExport.split(","))
+        # print(type(dataToExportNew))
+        dataToExportNewNoDuplicate = []
+        [dataToExportNewNoDuplicate.append(i) for i in dataToExportNew if i not in dataToExportNewNoDuplicate]
+        # get latest array entry ID for edit and delete features
+        maintainElementID = dataToExportNewNoDuplicate[-1]
+        maintainElementIDMain = DeviceRegisterUpload.objects.get(devicebrand = maintainElementID).pk
+        # print(maintainElementIDMain)
+        for i in dataToExportNew:
+            if dataToExportNew.count(i) == 2:
+                dataToExportNew.remove(i)
+            # print(dataToExportNewNoDuplicate.count(i))
+
+            response = HttpResponse(content_type = 'text/csv')
+            writer = csv.writer(response)
+            writer.writerow(['Device IP', 'Device Name', 'Device MAC Address', 'Device Network Adapter Company', 'Device User Firstname', 'Device User Lastname',
+            'Device Status', 'Device Workgroup', 'Device Department', 'Device Port Number', 'Device Multiple Packet', 'Device Type', 'Device Location', 'Device Brand', 
+            'Device OS', 'Device Cost Of Purchase', 'Device User Email Address', 'Device User Phone Number', 'Device User Date Of Job Resumption', 'Device Working Condition', 'Device Year Of Purchase', 'Device Depreciation Rate', 'Device ID'])
+
+            # for data in dataToExportNewNoDuplicate:
+            for data in dataToExportNew:
+                if data is not None:
+                    for DeviceInfo in DeviceRegisterUpload.objects.filter(devicebrand = data).values_list('deviceip', 'devicename', 'devicemacaddress',
+                    'devicenetworkadaptercompany', 'deviceuserfirstname', 'deviceuserlastname', 'devicestatus', 'deviceworkgroup', 'deviceusedepartment', 'deviceportnumber', 'devicemultiplepacket', 'devicetype', 
+                    'devicelocation', 'devicebrand', 'deviceos', 'devicecostofpurchase', 'deviceuseremail', 'deviceuserphonenumber', 'deviceuserdateofresumption', 'deviceworkingcondition', 'deviceyearofpurchase', 'devicedepreciationrate',
+                    'deviceid'):
+                        writer.writerow(DeviceInfo)
+
+                    response['Content-Disposition'] = 'attachment; filename =  DeviceRegisterUploads.csv'
+                    messages.error(request, 'Export complete.')
+                else:
+                    messages.error(request, 'Please select a section to export.')
+                    return redirect('DeviceInventory')
+
+            return response
+            # EXPORT DEVICE DATA DETAILS ENDS HERE
+
+     # REDIRECT TO EDIT Details REQUEST BELOW
+    if request.method == 'GET' and 'idforeditmain' in request.GET:
+        idforedit = request.GET['idforeditmain']
+        currentDevice = DeviceRegisterUpload.objects.get(devicebrand = idforedit).deviceid
+        return redirect('EditDevice', deviceid = currentDevice )
+
+
+
+    if request.method == 'GET' and 'viewdetailsdetails' in request.GET:
+        viewdetailsdetailsMain = request.GET['viewdetailsdetails']
+        print(viewdetailsdetailsMain)
+        # currentDevice = DeviceRegisterUpload.objects.filter(devicename = viewdetailsdetailsMain)
+        return redirect('ViewDeviceDetails', name = viewdetailsdetailsMain )
 
     allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     workingSystems1 = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(user = request.user))
@@ -233,6 +464,64 @@ def DeviceInventory(request):
     allSignUps = SignupForm.objects.all()
     context = {'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
     return render(request, 'userarea/deviceinventory.html', context)
+
+
+# VIEW DEVICE DETAILS PAGE
+def ViewDeviceDetails(request, name):
+    print(type(name))
+    currentDeviceList = DeviceRegisterUpload.objects.get(Q(devicebrand = name)  & Q(user = request.user))
+    print(type(currentDeviceList))
+    context = {'name':name, 'currentDeviceList':currentDeviceList}
+    return render(request, 'userarea/devicedetails.html', context)
+
+
+
+# EXPORT DEVICES FROM INVENTORY
+def ExportDevice(request):
+        response = HttpResponse(content_type = 'text/csv')
+        writer = csv.writer(response)
+        writer.writerow(['Device IP', 'Device Name', 'Device MAC Address', 'Device Network Adapter Company', 'Device User Firstname', 'Device User Lastname',
+            'Device Status', 'Device Workgroup', 'Device Department', 'Device Port Number', 'Device Multiple Packet', 'Device Type', 'Device Location', 'Device Brand', 
+            'Device OS', 'Device Cost Of Purchase', 'Device User Email Address', 'Device User Phone Number', 'Device User Date Of Job Resumption', 'Device Working Condition', 'Device Year Of Purchase', 'Device Depreciation Rate', 'Device ID'])
+        for DeviceInfo in DeviceRegisterUpload.objects.filter(user = request.user).values_list('deviceip', 'devicename', 'devicemacaddress',
+                    'devicenetworkadaptercompany', 'deviceuserfirstname', 'deviceuserlastname', 'devicestatus', 'deviceworkgroup', 'deviceusedepartment', 'deviceportnumber', 'devicemultiplepacket', 'devicetype', 
+                    'devicelocation', 'devicebrand', 'deviceos', 'devicecostofpurchase', 'deviceuseremail', 'deviceuserphonenumber', 'deviceuserdateofresumption', 'deviceworkingcondition', 'deviceyearofpurchase', 'devicedepreciationrate',
+                    'deviceid'):
+                        writer.writerow(DeviceInfo)
+        response['Content-Disposition'] = 'attachment; filename =  maintenancerequests.csv'
+
+        return response
+
+        return render(request, 'userarea/deviceinventory.html')
+
+
+
+# # EDIT DEVICE OPTION ON TABLE ON DEVICE INVENTORY PAGE
+# def EditMaintenenceRequest(request, name):
+#     selectedRequest = MaintenanceRequest.objects.get(MaintainDeviceName = name)
+#     form = EditMaintenanceRequest(request.POST or None, instance = selectedRequest)
+#     if request.POST and form.is_valid():
+#         print('data validated!')
+#         form.save()
+#         return redirect('MaintainanceDetails', name = name)
+#     context = {'form':form, 'selectedRequest':selectedRequest}
+#     return render(request, 'userarea/editmaintenancereq.html', context)
+
+
+
+
+# MAIN DEVICE EDIT DATA PAGE LINKED BELOW
+def EditDevice(request, deviceid):
+    MainDeviceData = DeviceRegisterUpload.objects.get(deviceid=deviceid)
+    form = DeviceRegisterForm(request.POST or None, instance = MainDeviceData)
+    if request.POST and form.is_valid():
+        form.save()
+        if form.save():
+            messages.success(request, 'Device data saved successfully')
+        else:
+            messages.success(request, 'Error saving device data')
+    context = {'form':form, 'id': id, 'MainDeviceData':MainDeviceData}
+    return render(request, 'userarea/editdevice.html', context)
 
 
 @login_required(login_url='Login')
@@ -349,7 +638,7 @@ def Dashboard(request):
             for i, row in enumerate(reader):
                 if i == 0:
                     pass
-                elif len(row) < 9:
+                elif len(row) < 22:
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
                     return redirect('Dashboard')
                 elif len(row) > 9:
@@ -359,10 +648,12 @@ def Dashboard(request):
                     dateForWeekNumber = datetime.today()
                     weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
-                    if row[20]:
-                        depreciateRate = 2023 - int(row[21])
+                    DeviceNameProper = row[14] + '·' + str(randomNumber)
+                    if row[21]:
+                        depreciateRate = 2023 - int(row[21])                        
                     else:
-                        depreciateRate = '0%'
+                        depreciateRate = 2020
+                    # calc depreciateRateReal from depreciateRate below:
                     if depreciateRate <= 0:
                         depreciateRateReal = '100%'
                     elif depreciateRate == 1:
@@ -373,6 +664,9 @@ def Dashboard(request):
                         depreciateRateReal = '25%'
                     elif depreciateRate >= 4:
                         depreciateRateReal = '0%'
+                    else:                        
+                        depreciateRateReal = 'Nil'
+
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
                         deviceip = row[0],
@@ -389,7 +683,7 @@ def Dashboard(request):
                         index = row[11],
                         devicetype = row[12],
                         devicelocation = row[13],
-                        devicebrand = row[14],
+                        devicebrand = DeviceNameProper,
                         deviceos = row[15],
                         devicecostofpurchase = row[16],
                         deviceuseremail = row[17],
@@ -481,21 +775,6 @@ def EditDeviceData(request, deviceip):
         form.save()
     context = {'form':form, 'id': id}
     return render(request, 'userarea/editDeviceData.html', context)
-
-
-
-# MAIN DEVICE EDIT DATA PAGE LINKED BELOW
-def EditDevice(request, deviceid):
-    MainDeviceData = DeviceRegisterUpload.objects.get(deviceid=deviceid)
-    form = DeviceRegisterForm(request.POST or None, instance = MainDeviceData)
-    if request.POST and form.is_valid():
-        form.save()
-        if form.save():
-            messages.success(request, 'Device data saved successfully')
-        else:
-            messages.success(request, 'Error saving device data')
-    context = {'form':form, 'id': id, 'MainDeviceData':MainDeviceData}
-    return render(request, 'userarea/editdevice.html', context)
 
 
 # EDIT STAFF DETAILS STARTS BELOW

@@ -13,6 +13,9 @@ urlpatterns = [
     path('support/', views.Support, name="Support"),
     path('searchresult/', views.Searchresult, name="Searchresult"),
     path('maintainance/', views.Maintainance, name="Maintainance"),
+    path('allmaintenancereqdelete/', views.AllMaintenanceDelete, name="AllMaintenanceDelete"),
+    path('maintenancedetails/<str:name>/', views.MaintainanceDetails, name="MaintainanceDetails"),
+    path('editmaintenancerequest/<str:name>/', views.EditMaintenenceRequest, name="EditMaintenenceRequest"),
     path('settings/', views.Settings, name="Settings"),
     path('staffdetails/<str:id>/', views.StaffDetails, name="StaffDetails"),
     path('registerStaff/<str:name>/', views.registerStaff, name="registerStaff"),
@@ -34,6 +37,10 @@ urlpatterns = [
     # path('testpage/', views.TestPage, name="TestPage"),
     path('testpage/', views.AllInstalledApp, name="AllInstalledApp"),
     path('software/', views.AllInstalledSoftwares, name="AllInstalledSoftwares"),
+    path('exportmaintenance/', views.ExportMaintenance, name="ExportMaintenance"),
+    path('exportdevices/', views.ExportDevice, name="ExportDevice"),
+    path('deletecomment/<str:pk>/<str:name>/', views.DeleteAddedComment, name="DeleteAddedComment"),
+    path('viewdevicedetails/<str:name>/', views.ViewDeviceDetails, name="ViewDeviceDetails"),
 ]
     
 

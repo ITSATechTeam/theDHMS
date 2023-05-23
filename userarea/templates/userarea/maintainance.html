@@ -9,7 +9,7 @@
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}>
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
-		<link rel="stylesheet" href={% static 'maintainance/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'maintenance/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<title>Maintainance | ITSA Inventory System</title>
+		<title>Maintenance | ITSA Inventory System</title>
 	</head>
 	<div class='shadow'></div>
 	<body class='body'>
@@ -32,6 +32,15 @@
 					</h5>
 				</div>
 				<div class='MaintenanceSelectSection'>
+				
+					<div id="flash">
+						{% if messages %} {% for message in messages %}
+						<div class="alert alert-{{ message.tags}} m-0" role="alert">
+							<strong style="color: red">{{ message }}</strong>
+						</div>
+						{% endfor %} {% endif %}
+					</div>
+	
 					<h5>
 						<div class='MaintenanceSelectSectionInner'>
 							Maintenance Request
@@ -56,7 +65,7 @@
 							<img src={% static 'maintenance/img/red.png' %} />
 						</div>
 						<div>
-							<h1>30</h1>
+							<h1 class='maintenanceReqeustCount'>{{ allMaintainsCount }}</h1>
 							<p>Maintenance Request</p>
 						</div>
 					</div>
@@ -65,7 +74,7 @@
 							<img src={% static 'maintenance/img/yellow.png' %} />
 						</div>
 						<div>
-							<h1>15</h1>
+							<h1>{{ allOngoingRequestsCount }}</h1>
 							<p>Ongoing Maintenance</p>
 						</div>
 					</div>
@@ -74,7 +83,7 @@
 							<img src={% static 'maintenance/img/green.png' %} />
 						</div>
 						<div>
-							<h1>15</h1>
+							<h1>{{ allCompletedRequestsCount }}</h1>
 							<p>Resolved Issues</p>
 						</div>
 					</div>
@@ -134,12 +143,14 @@
 					</div>
 				</div>
 				<div class='searchsidebtns'>
-					<div class='uploaddevicecsv showdeviceuploadpopup'>
-						<button>
-							<img src={% static 'maintenance/img/export.png' %} />
-							<p>Export</p>
-						</button>
-					</div>
+					<a href = /member/exportmaintenance/ >
+						<div class='uploaddevicecsv showdeviceuploadpopup'>
+							<button>
+								<img src={% static 'maintenance/img/export.png' %} />
+								<p>Export</p>
+							</button>
+						</div>
+					</a>
 					<div class='scannetworkbtn'>
 						<button>
 							<img src={% static 'maintenance/img/support.png' %} />
@@ -155,60 +166,45 @@
 				<table  id="paginated-list" >
 					<tr>
 						<th class='topCheckBox'>
-						<input type='checkbox' />
+							<input type='radio' />
 						</th>
-						<th>Device ID</th>
 						<th>Device Name</th>
+						<th>Device ID</th>
+						<th>Device Category</th>
 						<th>Device MAC ID</th>
-						<th>Device Type</th>
-						<th>Device User</th>
+						<th>Reported By</th>
+						<th>Maintenance Type</th>
 						<th>Maintenance Status</th>
-						<th>Device Location</th>
-						{% comment %} <th>Date Uploaded</th> {% endcomment %}
-						<th>Action</th>
-						<th>More Info</th>
+						{% comment %} <th>Action</th> {% endcomment %}
 					</tr>
 					{% for allMaintains in allMaintains %}
 					<div class='item'>
 						<tr class='item'>
-							<td class='sectionCheckBox'>
-								<input type='checkbox' />
+							<td class='sectionCheckBox' id= "{{ allMaintains.MaintainDeviceName }}">
+								<input class='sectionCheckBoxinput' type='radio' value={{ allMaintains.MaintainDeviceName }} />
+								{% comment %} <input class='sectionCheckID'  value={{ allMaintains.id }} /> {% endcomment %}
+							</td>
+							<td class='maintainName'>
+								<p>{{ allMaintains.MaintainDeviceName }}</p>
+								<strong>{{ allMaintains.id }}</strong>
 							</td>
 							<td>{{ allMaintains.MaintainDeviceID }}</td>
-								<td>{{ allMaintains.MaintainDeviceName }}</td>
-								<td>{{ allMaintains.MaintainDeviceMAC_ID }}</td>
-								<td>{{ allMaintains.MaintainType }}</td>
-								<td><a href=''>{{ allMaintains.MaintainDeviceUser }}</a></td>
-								<td class={{ allMaintains.MaintainStatus }}>{{ allMaintains.MaintainStatus }}</td>
-								<td>{{ allMaintains.MaintainDeviceLocation }}</td>
-								{% comment %} <td>{{ allMaintains.devicelocation }}, id: {{ allMaintains.id }}</td> {% endcomment %}
-								{% comment %} <td>{{ allMaintains.created_at }}</td> {% endcomment %}
-							<td>
-								<div class='actionbtns'>
-									<div class='testbox'></div>
-									<button class='editDeviceData'><img src={% static 'dashboard/img/edit.png' %} /></button>
-										<input hidden name='IdRequest' value={{ allMaintains.id }} />
-										<button ><a href= /member/deletedevice/{{ allMaintains.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>
-										{% comment %} <button class='delIn' onclick=loadDelPopUp() ><img src={% static 'dashboard/img/delete.png' %} /></button> {% endcomment %}
-									
-									{% comment %} DELETE DEVICE PROMPT STARTS HERE {% endcomment %}
-									{% comment %} <div class='predelete'>
-										<h3>Are you sure you want to delete this device?</h3><br/>
-										<div class='predeletebtns'>
-											<a href={% url 'DeviceInventory' %}><button>Return</button></a>
-											<a href= /member/deletedevice/{{ allMaintains.id }}/  /><button>Delete This Device</button></a>
-										</div>
-									</div> {% endcomment %}
-									{% comment %} DELETE DEVICE PROMPT ENDS HERE {% endcomment %}
+							<td>{{ allMaintains.MaintainDeviceCategory }}</td>
+							<td>{{ allMaintains.MaintainDeviceMAC_ID }}</td>
+							<td>{{ allMaintains.MaintainRequester }}</td>
+							<td>{{ allMaintains.MaintainType }}</td>
+							<td class={{ allMaintains.MaintainStatus }}>{{ allMaintains.MaintainStatus }}</td>
+							{% comment %} <td class='downarrow'>
+								<div class='downarrow'>
+									<img src={% static 'maintenance/img/downarrow.png' %} />
 								</div>
-							</td>
-							<td class='moredetailsbtn'>
-								<button>More Details</button>
-							</td>
+								<div class="{{ allMaintains.MaintainDeviceName }}" id= "noshow"></div>
+							</td> {% endcomment %}
 						</tr>
 					</div>
 					{% endfor %}
 				</table>
+				<hr/>
 				<div class='pagesdetailsseection'>
 					<div class='perpagecount'>
 						<div>
@@ -271,11 +267,103 @@
 						</div>
 					</div>
 				</div>
+				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY STARTS HERE {% endcomment %}
+				<div class='detailsTabOut'>
+					<div class='detailsTab'>
+						<div class='detailsTabCount'>
+							{% comment %} <img class='detailsTabInner' src={% static 'maintenance/img/close.png' %} /> {% endcomment %}
+							<div class='detailsTabCountInnner'>
+								<strong>  </strong>Request(s) Selected
+							</div>
+						</div>
+						<div class='detailsTabOtherOptions'>
+							{% comment %} <a href = /member/maintenancedetails/{{}} > {% endcomment %}
+							<form method='GET'>
+								{% csrf_token %}
+								<div class='idforedit'>
+									<input name='idforeditmain' hidden />
+								</div>
+								<div class='detailsTabInner detailsTabInnerEdit'>
+									<button type='submit'>
+										<img src={% static 'maintenance/img/edit.png' %} />
+										Edit
+									</button>
+								</div>
+							</form>
+							<div class='notSelectionDelete'>
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='deviceToDelete'>
+										<input name='deviceToDelete' hidden />
+									</div>
+									<div class='detailsTabInner'>
+										<button>
+											<img src={% static 'maintenance/img/delete.png' %} />
+											Delete
+										</button>
+									</div>
+								</form>
+							</div>
+
+							{% comment %} GENERAL SELECTION DELETE BUTTON STARTS HERE {% endcomment %}
+							<div class='detailsTabInner generalSelectionDelete'>
+								<a href = /member/allmaintenancereqdelete/ >
+									<button>
+										<img src={% static 'maintenance/img/delete.png' %} />
+										Delete
+									</button>
+								</a>
+							</div>
+							{% comment %} GENERAL SELECTION DELETE BUTTON ENDS HERE {% endcomment %}
+							<form method = 'GET'>
+								{% csrf_token %}
+								<div class='requesttoviewdetails'>
+									<input hidden name='requesttoviewdetails' />
+								</div>
+								<div class='detailsTabInner detailsTabInnerViewDetails'>
+									<button type='submit'>
+										<img src={% static 'maintenance/img/details.png' %} />
+										View Details
+									</button>
+								</div>
+							</form>
+							<div class='notSelectionExport'>
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='ExportDataHere'>
+										<input name='dataToExport' hidden />
+									</div>
+										<div class='detailsTabInner'>
+											<img src={% static 'maintenance/img/export2.png' %} />
+											<button type='submit'>Export</button>
+										</div>
+								</form>
+							</div>
+
+							{% comment %} GENRAL SELCTION EXPORT BUTTON STARTS HERE {% endcomment %}
+							<div class='detailsTabInner generalSelectionExport'>
+								<a href = /member/exportmaintenance/  >
+									<img src={% static 'maintenance/img/export2.png' %} />
+									<button type='submit'>Export</button>
+								</a>
+							</div>
+							{% comment %} GENERAL SELECTION EXPORT BUTTON ENDS HERE {% endcomment %}
+
+							{% comment %} <a href= /member/exportmaintenance/ >
+								<div class='detailsTabInner'>
+									<img src={% static 'maintenance/img/export2.png' %} />
+									Export
+								</div>
+							</a> {% endcomment %}
+						</div>
+					</div>
+				</div>
+				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
 			</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
         </div>
 		{% comment %} MAIN ENDS HERE {% endcomment %}
-		<script src={% static 'inventory/js/main.js' %}></script>
+		<script src={% static 'maintenance/js/main.js' %}></script>
     </body>
 </html>
 {% endblock content %}

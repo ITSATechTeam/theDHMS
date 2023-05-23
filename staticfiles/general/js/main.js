@@ -93,6 +93,7 @@ let support = document.querySelector('.support')
 let maintain = document.querySelector('.maintain')
 let settings = document.querySelector('.settings')
 let logout = document.querySelector('.logout')
+let software = document.querySelector('.software')
 
 dashboard.addEventListener('click', () => {
     console.log('dashboard clicked')
@@ -148,6 +149,22 @@ if (window.location.href.includes('setting')){
     maintain.classList.remove('active')
     settings.classList.add('active')
 }
+
+
+if (window.location.href.includes('software')){
+    dashboard.classList.remove('active')
+    deviceinventory.classList.remove('active')
+    staffmembers.classList.remove('active')
+    support.classList.remove('active')
+    reports.classList.remove('active')
+    maintain.classList.remove('active')
+    settings.classList.remove('active')
+    software.classList.add('active')
+}
+
+
+
+
 
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP STARTS HERE
 let requestUser = document.querySelector('.requestUser').innerHTML

@@ -1,0 +1,68 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}>
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'maintenance/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Maintenance | ITSA Inventory System</title>
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		{% comment %} MAIN STARTS HERE {% endcomment %}
+		<div class='main'>
+			<h4><a href = {% url 'Maintainance' %} >Maintenance</a> > Maintenance Request Details</h4><br/>
+            <div>
+                <h3>Edit your maintenence request for {{selectedRequest.MaintainDeviceName}} device</h3><br/>
+				<hr/><br/>
+                <div id="flash">
+                    {% if messages %} {% for message in messages %}
+                    <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                        <strong style="color: red">{{ message }}</strong>
+                    </div>
+                    {% endfor %} {% endif %}
+                </div>
+            </div>
+			{% comment %} FORM STARTS HERE {% endcomment %}
+			<div class='editmaintainregform'>
+				<form method='POST'>
+					{% csrf_token %}
+					{% comment %} {{form}} {% endcomment %}
+					<div class='editBox'>
+						<h4>Change Device Maintenance Status</h4><br/>
+						<div class='editBoxImg'>
+							{% comment %} <img src={% static 'editprofile/img/company.png' %} /> {% endcomment %}
+						</div>
+						<div>
+							{{form.MaintainStatus}}
+						</div>
+					</div><br/><br/>
+					<div class='editBox'>
+						<h4> Change Maintenance Description</h4><br/>
+						{{form.MaintainRequestDescription}} 
+					</div>
+					<div class='editdevicebtnssect'>
+						<a href=/member/maintenancedetails/{{selectedRequest.MaintainDeviceName}}/  ><h4>Cancel</h4></a>
+						<button type='submit'>Submit</button>
+					</div>
+				</form>
+			</div>
+        </div>
+		{% comment %} MAIN ENDS HERE {% endcomment %}
+		<script src={% static 'maintenance/js/main.js' %}></script>
+    </body>
+</html>
+{% endblock content %}

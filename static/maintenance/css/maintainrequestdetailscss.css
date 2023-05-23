@@ -1,0 +1,269 @@
+.bodytopbarinner{
+    margin-top: 20px;
+    /* margin-bottom: 20px; */
+    display: flex;
+    justify-content: space-between;
+}
+
+.bodytopbarinner h4{
+    padding: 10px;
+    cursor: pointer;
+    /* transition: .4s ease-in-out; */
+}
+
+.bodytopbarinner h4:hover{
+    border-bottom: 4px solid #2A66B0;
+}
+
+.activebar{
+    border-bottom: 4px solid #2A66B0;
+}
+
+hr{
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-top: -8px;
+}
+
+.subIntroSectioninner{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.scannetworkbtn{
+    margin-right: -20px;
+}
+
+.devicedetailssection h3{
+    color: #2A66B0;
+    font-weight: bold;
+}
+
+.devicedetailssection h4{
+    padding-bottom: 10px;
+}
+
+.devicedetailssection{
+    display: flex;
+    justify-content: space-between;
+}
+
+.requestDescriptionSection{
+    background-color: #FAFAFA;
+    margin-top: 10px;
+    width: 330px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #E0E0E0;
+}
+
+/* deviceinventorymaintop starts here */
+.deviceinventorymaintop{
+    width: 97%;
+}
+
+.showdeviceuploadpopup button{
+    background-color: #E1E7FC;
+    color: #2A66B0;
+    width: 100px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.scannetworkbtn button{
+    background-color: #2A66B0;
+    color: white;
+    width: 100%;
+    height: 50px;
+}
+
+.scannetworkbtn img{
+    margin-right: 10px;
+}
+
+.maintainReqMain:hover{
+    transform: scale(1.06);
+}
+
+/* Maintenance request starts edits starts here */
+.Ongoing{
+    background-color: #f2c84c38;
+    color: #F2C94C;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;    
+    border-radius: 30px;
+    font-size: 1.2rem;  
+}
+.Completed{
+    background-color: #21965446;
+    color: #219653;
+    height: 23px;
+    width: 90px;
+    border-radius: 30px;
+    padding-left: 5px;  
+    font-weight: bold;  
+    font-size: 1.4rem;  
+}
+.Canceled{
+    background-color: #eb575738;
+    color: #EB5757;
+    border-radius: 30px;
+    font-size: 1.4rem;  
+    height: 23px;
+    width: 80px;
+    padding-left: 5px;
+    font-weight: bold;    
+}
+
+.maintainstatic img{
+    width: 10px;
+    margin-left: 3px;
+    margin-top: 2px;
+}
+
+.maintainstatic{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* Maintenance request starts edits ends here */
+
+
+.main{
+    margin-bottom: 50px;
+}
+
+.addcommentbtn button{
+    background-color: #2A66B0;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+
+.addcommentbtn{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* addcommentbtn starts here */
+
+.addcommentproper{
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    padding-bottom: 40px;
+    margin-bottom: 50px;
+    display: none;
+}
+
+
+.addcommentproper textarea{
+    height: 100px;
+    width: 330px;
+    font-size: 1.4rem;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.addcommentproperbtns{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 44px;
+}
+
+.addcommentsubmit{
+    background-color: #2A66B0;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.addcommentcancel{
+    border: none;
+    font-size: 1.2rem;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    /* margin-left: 100px; */
+}
+
+
+
+
+/* addcommentbtn ends here */
+
+
+/* editcomment STARTS HERE */
+.editcomment{
+    display: flex;
+    align-items: center;
+    border: 1px solid grey;
+    width: 80px;
+    border-radius: 20px;
+    padding: 5px;
+    margin-right: 5px;
+    /* background-color: red; */
+
+}
+
+.editcomment h4{
+    /* margin-top: 16px; */
+    height: 10px;
+}
+
+.editcomment img{
+    margin-right: 5px;
+}
+
+/* commentsSection starts here */
+.commentsSection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); */
+}
+
+.commentsSectionout{
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.commentsSectionInner{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.maincommentproper{
+    background-color: #FAFAFA;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    width: 330px;
+    overflow: hidden;
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.commentsSectionInner a{
+    color: rgb(82, 81, 81);
+}

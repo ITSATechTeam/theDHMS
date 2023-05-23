@@ -75,12 +75,12 @@
                 <p>Settings</p>
             </div>
         </a>
-        <a href={% url 'AllInstalledSoftwares' %}>
+        {% comment %} <a href={% url 'AllInstalledSoftwares' %}>
             <div class='sidebar software'>
                 <img src={% static 'general/img/apps.png' %} />
                 <p>Installed Apps</p>
             </div>
-        </a>
+        </a> {% endcomment %}
         
         
         <a href={% url 'Logout' %}>

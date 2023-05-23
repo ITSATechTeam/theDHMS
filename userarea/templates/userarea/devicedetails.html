@@ -1,0 +1,90 @@
+{% comment %} viewdetailsdetails {% endcomment %}
+
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'devicedetails/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'maintenance/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Device Details | ITSA Inventory System</title>
+	</head>
+
+	<div class='shadow2'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+                <div class='introsection'>
+                    <h4><a href={% url 'Dashboard' %}>Dashboard</a> > <a href={% url 'DeviceInventory' %}>Device Inventory</a> > <span>{{name}} Details</span></h4><br/>
+					<h1>Device Details</h1>
+					<h5>Get a detailed information about your device and make request for maintenance</h5>
+				</div>
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+                <div class='requestmaintainbtn'>
+                    <button>
+                        <img src={% static 'inventory/img/requestmaintain.png' %} />
+                        Request Maintenance
+                    </button>
+                </div>
+            </div>
+            <div class='devicedetailstoptab1'>
+                <div class='devicedetailstoptab'>
+                    <h4 class='activetab'>Device Information</h4>
+                    <h4>Maintenance History</h4>
+                </div>
+                <hr/><br/>
+                <div class='devicedetailstoptab1Inner'>
+                    {% comment %} {% if currentDeviceList.devicebrand == name %} {% endcomment %}
+                    <h5>Device Name: <strong> {{ currentDeviceList.devicename }}</strong></h5><br/>
+                    <h5>Device ID: <strong> {{ currentDeviceList.deviceid }}</strong></h5><br/>
+                    <h5>Device MAC Address: <strong> {{ currentDeviceList.devicemacaddress }}</strong></h5><br/>
+                    <h5>Device Type: <strong> {{ currentDeviceList.devicetype }}</strong></h5><br/>
+                    <h5>Device OS: <strong> {{ currentDeviceList.deviceos }}</strong></h5><br/>
+                    <h5>Device Brand Name: <strong> {{ currentDeviceList.deviceid }}</strong></h5><br/>
+                    <h5>Device Location: <strong> {{ currentDeviceList.devicelocation }}</strong></h5><br/>
+                    <h5>Device Health Status: <strong> {{ currentDeviceList.devicestatus }}</strong></h5><br/>
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+            </div>
+			{% comment %} FILE MAINTENANCE REQUEST FORM SECTION STARTS HERE {% endcomment %}
+			<div class='maintenancereq'>
+				<div class='maintenancereqtop'>
+					<h2>Request For Maintenance</h2>
+					<img title='cancel request' src={% static 'devicedetails/img/close2.png' %} />
+				</div><br/><br/>
+				<div>
+					<label>Change Maintenance Status</label><br/>
+					<select name='MaintainStatus'>
+						<option value='Ongoing'>Ongoing</option>
+						<option value='Completed'>Completed</option>
+						<option value='Canceled'>Canceled</option>
+					</select><br/><br/>
+					<label>Maintenance Decription</label><br/>
+					<textarea name='MaintainRequestDescription'></textarea><br/><br/>
+					<button>Submit Request</button>
+					{% comment %} <input type= /> {% endcomment %}
+				</div>
+			</div>
+			{% comment %} FILE MAINTENANCE REQUEST FORM SECTION ENDS HERE {% endcomment %}
+		<script src={% static 'devicedetails/js/main.js' %}></script>
+	<body>
+{% endblock content %}
+

@@ -1,0 +1,91 @@
+.introsection span{
+    color: #2A66B0;
+}
+
+.requestmaintainbtn button{
+    width: 220px;
+}
+
+.introsection a{
+    color: grey;
+}
+
+.devicedetailstoptab{
+    display: flex;
+    justify-content: space-around;
+    /* padding: 5px; */
+}
+
+.activetab {
+    border-bottom: 3px solid #2A66B0;
+}
+
+.devicedetailstoptab h4{
+    cursor: pointer;
+}
+.devicedetailstoptab h4:hover {
+    border-bottom: 3px solid #2A66B0;
+}
+
+.devicedetailstoptab1 hr{
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin-top: -8px;
+}
+
+.devicedetailstoptab1Inner {
+    /* background-color: blue; */
+    width: 400px;
+    position: relative;
+}
+
+.devicedetailstoptab1Inner strong{
+    position: absolute;
+    right: 60px;
+}
+
+/* margin-left: 40px; */
+
+/* maintenancereq FORM STARTS HERE */
+.maintenancereqtop{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* font-size: 1.8rem; */
+}
+
+.maintenancereq{
+    /* background-color: red; */
+    width: 400px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    z-index: 10;
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    display: none;
+}
+
+.maintenancereq select, textarea{
+    width: 80%;
+    height: 40px;
+    font-size: 1.2rem;
+}
+
+.maintenancereq textarea{
+    height: 70px;
+    padding: 5px;
+    font-size: 1.4rem;
+}
+
+.maintenancereq button{
+    background-color: #2A66B0;
+    color: white;
+    padding: 10px;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}

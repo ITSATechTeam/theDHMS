@@ -9,6 +9,7 @@
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'maintenance/css/style.css' %} /> {% endcomment %}
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
@@ -41,12 +42,14 @@
 							<p>Add New Device</p>
 						</button>
 					</div>
-					<div class='scannetworkbtn2'>
-						<button>
-							<img src={% static 'dashboard/img/scannetwork.png' %} />
-							<p>Export CSV</p>
-						</button>
-					</div>
+					<a href = {% url 'ExportDevice' %} >
+						<div class='scannetworkbtn2'>
+							<button>
+								<img src={% static 'dashboard/img/scannetwork.png' %} />
+								<p>Export CSV</p>
+							</button>
+						</div>
+					</a>
 				</div>
 			</div>
 			{% comment %} SUBTOP SECTION STARTS HERE {% endcomment %}
@@ -55,7 +58,7 @@
 					<div>
 						<img src={% static 'inventory/img/devices.png' %} />
 					</div>
-					<div>
+					<div class='numberofdevices'>
 						<h3>{{ allUploadedDevicesCount }}</h3>
 						<p>Registered Devices</p>
 					</div>
@@ -177,7 +180,7 @@
 				<table  id="paginated-list" >
 					<tr>
 					  <th class='topCheckBox'>
-						<input type='checkbox' />
+						<input type='radio' />
 					  </th>
 					  <th>ID</th>
 					  <th>Name</th>
@@ -186,7 +189,7 @@
 					  <th>User</th>
 					  <th>Status</th>
 					  <th>Location</th>
-					  {% comment %} <th>Date Uploaded</th> {% endcomment %}
+					  <th>Date Uploaded</th>
 					  <th>Action</th>
 					  <th>More Info</th>
 					</tr>
@@ -194,34 +197,24 @@
 					<div class='item'>
 						<tr class='item'>
 							<td class='sectionCheckBox'>
-								<input type='checkbox' />
+								<input class='sectionCheckBoxinput' type='radio' value={{ allUploadedDevices.devicebrand }} />
 							</td>
 							<td>{{ allUploadedDevices.deviceid }}</td>
-								<td>{{ allUploadedDevices.devicebrand }}</td>
-								<td>{{ allUploadedDevices.devicemacaddress }}</td>
-								<td>{{ allUploadedDevices.devicetype }}</td>
-								<td><a href=''>{{ allUploadedDevices.deviceuser }}</a></td>
-								<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-								<td>{{ allUploadedDevices.devicelocation }}</td>
-								{% comment %} <td>{{ allUploadedDevices.devicelocation }}, id: {{ allUploadedDevices.id }}</td> {% endcomment %}
-								{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
+							<td class='devicebrandName'>
+								<p>{{ allUploadedDevices.devicebrand }}</p>
+							</td>
+							<td>{{ allUploadedDevices.devicemacaddress }}</td>
+							<td>{{ allUploadedDevices.devicetype }}</td>
+							<td><a href=''>{{ allUploadedDevices.deviceuser }}</a></td>
+							<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+							<td>{{ allUploadedDevices.devicelocation }}</td>
+							<td>{{ allUploadedDevices.created_at }}</td>
 							<td>
 								<div class='actionbtns'>
 									<div class='testbox'></div>
 									<button class='editDeviceData'><a href=/member/editdevice/{{ allUploadedDevices.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
 										<input hidden name='IdRequest' value={{ allUploadedDevices.id }} />
-										<button ><a href= /member/deletedevice/{{ allUploadedDevices.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>
-										{% comment %} <button class='delIn' onclick=loadDelPopUp() ><img src={% static 'dashboard/img/delete.png' %} /></button> {% endcomment %}
-									
-									{% comment %} DELETE DEVICE PROMPT STARTS HERE {% endcomment %}
-									{% comment %} <div class='predelete'>
-										<h3>Are you sure you want to delete this device?</h3><br/>
-										<div class='predeletebtns'>
-											<a href={% url 'DeviceInventory' %}><button>Return</button></a>
-											<a href= /member/deletedevice/{{ allUploadedDevices.id }}/  /><button>Delete This Device</button></a>
-										</div>
-									</div> {% endcomment %}
-									{% comment %} DELETE DEVICE PROMPT ENDS HERE {% endcomment %}
+										<button ><a href= /member/deletedevice/{{ allUploadedDevices.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>									
 								</div>
 							</td>
 							<td class='moredetailsbtn'>
@@ -276,15 +269,6 @@
 					</div>
 
 					<div class='pages'>
-						{% comment %} <div>
-							<select>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-							</select>
-						</div> {% endcomment %}
-						
 						<div id="pagination-numbers"></div>
 						<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
 						<div class='navigation'>
@@ -293,6 +277,98 @@
 						</div>
 					</div>
 				</div>
+				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY STARTS HERE {% endcomment %}
+				<div class='detailsTabOut'>
+					<div class='detailsTab'>
+						<div class='detailsTabCount'>
+							{% comment %} <img class='detailsTabInner' src={% static 'maintenance/img/close.png' %} /> {% endcomment %}
+							<div class='detailsTabCountInnner'>
+								<strong>  </strong>Request(s) Selected
+							</div>
+						</div>
+						<div class='detailsTabOtherOptions'>
+							{% comment %} <a href = /member/maintenancedetails/{{}} > {% endcomment %}
+							<form method='GET'>
+								{% csrf_token %}
+								<div class='idforedit'>
+									<input name='idforeditmain' hidden />
+								</div>
+								<div class='detailsTabInner detailsTabInnerEdit'>
+									<button type='submit'>
+										<img src={% static 'maintenance/img/edit.png' %} />
+										Edit
+									</button>
+								</div>
+							</form>
+							<div class='notSelectionDelete'>
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='deviceToDelete'>
+										<input name='deviceToDelete' hidden />
+									</div>
+									<div class='detailsTabInner'>
+										<button>
+											<img src={% static 'maintenance/img/delete.png' %} />
+											Delete
+										</button>
+									</div>
+								</form>
+							</div>
+
+							{% comment %} GENERAL SELECTION DELETE BUTTON STARTS HERE {% endcomment %}
+							<div class='detailsTabInner generalSelectionDelete'>
+								<a href = /member/allmaintenancereqdelete/ >
+									<button>
+										<img src={% static 'maintenance/img/delete.png' %} />
+										Delete
+									</button>
+								</a>
+							</div>
+							{% comment %} GENERAL SELECTION DELETE BUTTON ENDS HERE {% endcomment %}
+							<form method = 'GET'>
+								{% csrf_token %}
+								<div class='viewdetailsdetails'>
+									<input hidden name='viewdetailsdetails' />
+								</div>
+								<div class='detailsTabInner detailsTabInnerViewDetails'>
+									<button type='submit'>
+										<img src={% static 'maintenance/img/details.png' %} />
+										View Details
+									</button>
+								</div>
+							</form>
+							<div class='notSelectionExport'>
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='ExportDataHere'>
+										<input name='dataToExport' hidden />
+									</div>
+										<div class='detailsTabInner'>
+											<img src={% static 'maintenance/img/export2.png' %} />
+											<button type='submit'>Export</button>
+										</div>
+								</form>
+							</div>
+
+							{% comment %} GENRAL SELCTION EXPORT BUTTON STARTS HERE {% endcomment %}
+							<div class='detailsTabInner generalSelectionExport'>
+								<a href = /member/exportdevices/  >
+									<img src={% static 'maintenance/img/export2.png' %} />
+									<button type='submit'>Export</button>
+								</a>
+							</div>
+							{% comment %} GENERAL SELECTION EXPORT BUTTON ENDS HERE {% endcomment %}
+
+							{% comment %} <a href= /member/exportmaintenance/ >
+								<div class='detailsTabInner'>
+									<img src={% static 'maintenance/img/export2.png' %} />
+									Export
+								</div>
+							</a> {% endcomment %}
+						</div>
+					</div>
+				</div>
+				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
 			</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
 		<div class='registerDevice'>
