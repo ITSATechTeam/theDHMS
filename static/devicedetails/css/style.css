@@ -57,7 +57,7 @@
 .maintenancereq{
     /* background-color: red; */
     width: 400px;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -68,12 +68,23 @@
     display: none;
 }
 
-.maintenancereq select, textarea{
+.maintenancereqtop img{
+    cursor: pointer;
+}
+
+.maintenancereq select, textarea, input{
     width: 80%;
     height: 40px;
     font-size: 1.2rem;
+    border-radius: 5px;
 }
 
+.maintenancereq input{
+    /* height: 70px; */
+    padding: 5px;
+    border: 1px solid grey;
+    font-size: 1.4rem;
+}
 .maintenancereq textarea{
     height: 70px;
     padding: 5px;
@@ -88,4 +99,20 @@
     border: none;
     border-radius: 10px;
     cursor: pointer;
+}
+
+.shadow2{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+.devicebrand{
+    display: none;
 }

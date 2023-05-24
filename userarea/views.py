@@ -287,7 +287,7 @@ def DeviceInventory(request):
                     today = date.today()
 
                     dateForWeekNumber = datetime.today()
-                    randomNumber = random.randint(1000, 9999)
+                    randomNumber = random.randint(100, 9999)
                     weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
                     # ('Samsung·', 3501)
@@ -468,9 +468,41 @@ def DeviceInventory(request):
 
 # VIEW DEVICE DETAILS PAGE
 def ViewDeviceDetails(request, name):
-    print(type(name))
+    randomNumber = random.randint(10, 9999)
+    if request.method == 'POST' and 'MaintainStatus' in request.POST:
+        MaintainStatus = request.POST['MaintainStatus']
+        MaintainType = request.POST['MaintainType']
+        MaintainRequestDescription = request.POST['MaintainRequestDescription']
+        MaintainDeviceName = request.POST['MaintainDeviceName']
+        MaintainDeviceID = request.POST['MaintainDeviceID']
+        MaintainDeviceIP = request.POST['MaintainDeviceIP']
+        MaintainDeviceMAC = request.POST['MaintainDeviceMAC']
+        MaintainDeviceCategory = request.POST['MaintainDeviceCategory']
+        MaintainDeviceLocation = request.POST['MaintainDeviceLocation']
+        MaintainDeviceUser = request.POST['MaintainDeviceUser']
+        MaintainRequester = request.POST['MaintainRequester']
+        MaintainRequestID = 'maintain' + '·' + str(randomNumber)
+
+        if not request.POST['MaintainStatus']:
+            messages.error(request, 'Kindly provide a maintenance status.')
+            return redirect('ViewDeviceDetails', name=name)
+        
+        if not request.POST['MaintainType']:
+            messages.success(request, 'Kindly provide a maintenance type.')
+            return redirect('ViewDeviceDetails', name=name)
+        
+        if not request.POST['MaintainRequestDescription']:
+            messages.success(request, 'Kindly provide a maintenance description.')
+            return redirect('ViewDeviceDetails', name=name)
+
+        form = MaintenanceRequest.objects.create(user = request.user, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
+        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUser = MaintainDeviceUser,
+        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
+        MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
+
+        form.save()
+        return redirect('Maintainance')
     currentDeviceList = DeviceRegisterUpload.objects.get(Q(devicebrand = name)  & Q(user = request.user))
-    print(type(currentDeviceList))
     context = {'name':name, 'currentDeviceList':currentDeviceList}
     return render(request, 'userarea/devicedetails.html', context)
 

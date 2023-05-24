@@ -58,7 +58,9 @@
                     <h5>Device MAC Address: <strong> {{ currentDeviceList.devicemacaddress }}</strong></h5><br/>
                     <h5>Device Type: <strong> {{ currentDeviceList.devicetype }}</strong></h5><br/>
                     <h5>Device OS: <strong> {{ currentDeviceList.deviceos }}</strong></h5><br/>
-                    <h5>Device Brand Name: <strong> {{ currentDeviceList.deviceid }}</strong></h5><br/>
+                    <h5>Device Brand Name: <strong class='devicebrand2'> {{ currentDeviceList.devicebrand }}</strong> <br/>
+						<strong class='devicebrand'> {{ currentDeviceList.devicebrand }}</strong></h5><br/>
+                    {% comment %} <h5>Device Brand Name: <strong class='devicebrand2'> {{ currentDeviceList.devicebrand }}</strong></h5><br/> {% endcomment %}
                     <h5>Device Location: <strong> {{ currentDeviceList.devicelocation }}</strong></h5><br/>
                     <h5>Device Health Status: <strong> {{ currentDeviceList.devicestatus }}</strong></h5><br/>
                     {% comment %} {% endif %} {% endcomment %}
@@ -70,18 +72,32 @@
 					<h2>Request For Maintenance</h2>
 					<img title='cancel request' src={% static 'devicedetails/img/close2.png' %} />
 				</div><br/><br/>
-				<div>
-					<label>Change Maintenance Status</label><br/>
-					<select name='MaintainStatus'>
-						<option value='Ongoing'>Ongoing</option>
-						<option value='Completed'>Completed</option>
-						<option value='Canceled'>Canceled</option>
-					</select><br/><br/>
-					<label>Maintenance Decription</label><br/>
-					<textarea name='MaintainRequestDescription'></textarea><br/><br/>
-					<button>Submit Request</button>
-					{% comment %} <input type= /> {% endcomment %}
-				</div>
+				<form method='POST'>
+					{% csrf_token %}
+					<div>
+						<label>Change Maintenance Status</label><br/>
+						<select name='MaintainStatus'>
+							<option value='Ongoing'>Ongoing</option>
+							<option value='Completed'>Completed</option>
+							<option value='Canceled'>Canceled</option>
+						</select><br/><br/>
+						<label>What kind of maintenance does this device require?</label>
+						<input name='MaintainType' type='text' placeholder = 'Eg: Screen change or OS Update' /><br/><br/>
+						<label>Maintenance Decription</label><br/>
+						<textarea placeholder='Describe what maintenance this device requires in details' name='MaintainRequestDescription'></textarea><br/><br/>
+						<input type = 'text' hidden name='MaintainDeviceName' placeholder='Device Name' value = {{ currentDeviceList.devicebrand }} />
+						<input type = 'text' hidden name='MaintainDeviceID' placeholder='device ID' value = {{ currentDeviceList.deviceid }} />
+						<input type = 'text' hidden name='MaintainDeviceIP' placeholder='device IP' value = {{ currentDeviceList.deviceip }} />
+						<input type = 'text' hidden name='MaintainDeviceMAC' placeholder='device MAC ID' value = {{ currentDeviceList.devicemacaddress }} />
+						<input type = 'text' hidden name='MaintainDeviceCategory' placeholder='device category' value = {{ currentDeviceList.devicetype }} />
+						<input type = 'text' hidden name='MaintainDeviceLocation' placeholder='device location' value = {{ currentDeviceList.devicelocation }} />
+						<input type = 'text' hidden name='MaintainDeviceUser' placeholder='device user' value = {{ currentDeviceList.deviceuserfirstname }}  {{ currentDeviceList.deviceuserlastname }} />
+						<input type = 'text' hidden name='MaintainRequester' placeholder='device maintenance requester' value = {{request.user}} />
+						{% comment %} <input type = 'text' name='MaintainDeviceLocation' placeholder='device' value = /> {% endcomment %}
+						
+						<button>Submit Request</button>
+					</div>
+				</form>
 			</div>
 			{% comment %} FILE MAINTENANCE REQUEST FORM SECTION ENDS HERE {% endcomment %}
 		<script src={% static 'devicedetails/js/main.js' %}></script>
