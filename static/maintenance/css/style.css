@@ -292,3 +292,16 @@ body{
     margin-left: 10px;
 
 }
+
+/* viewdetails ON STAFF PAGE STARTS HERE */
+.viewdetails{
+    background-color: #59A2EA;
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+
+/* viewdetails ON STAFF PAGE ENDS HERE */

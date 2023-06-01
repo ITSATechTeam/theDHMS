@@ -1,0 +1,200 @@
+<!-- @format -->
+{% include 'staffgeneral.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'staffdashboard/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Staff Dashboard | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+				<div class='maintopinner'>
+					<div>
+						<h1>Welcome back,</h1>
+						<h5>Get a detailed overview of your devices health and status.</h5>
+					</div>
+				
+					<div id="flash">
+						{% if messages %} {% for message in messages %}
+						<div class="alert alert-{{ message.tags}} m-0" role="alert">
+							<strong style="color: red">{{ message }}</strong>
+						</div>
+						{% endfor %} {% endif %}
+					</div>
+					
+					<a href = {% url 'StaffMaintainance' %} >
+						<div class='maintainReqBtn'>
+							<img src={% static 'staffgeneral/img/add.png' %} />
+							New Maintenance Request
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class='midBodysection'>
+				{% comment %} DEVICE MINIMAL INFO STARTS HERE {% endcomment %}
+				<div>
+					<div class='requestdataset'>
+						<div class='blue'>
+							<img src={% static 'staffdashboard/img/devices.png' %} />
+							<h3>{{ RegisteredDevicesCount }}</h3>
+							<p>Assigned Device(s)</p>
+						</div>
+						<div class='red'>
+							<img src={% static 'staffdashboard/img/request.png' %} />
+							<h3>{{ MaintenanceRequestsCount }}</h3>
+							<p>Maintenance Reqeust(s)</p>
+						</div>
+						<div class='yellow'>
+							<img src={% static 'staffdashboard/img/pending.png' %} />
+							<h3>{{ MaintenanceRequestsPendingCount }}</h3>
+							<p>Ongoing Maintenance(s)</p>
+							
+						</div>
+					</div>
+					<div class='monthlymaintenance'>
+						<div class='monthlymaintenanceinner'>
+							<h3>Monthly Maintenance</h3>
+							{% comment %} {{request.user.username}} {% endcomment %}
+							{% comment %} {{MayMaintainReqs}} {% endcomment %}
+							<div class='monthlymaintenancedate'>
+								<img src={% static 'staffdashboard/img/calendar.png' %} />
+								<select>
+									<option>
+										2023
+									</option>
+								</select>
+							</div>
+						</div>
+						<div>
+							<div class='deviceschartout'>
+								<div class='deviceschartimgmain' style=" height:40%; width:100%" >
+									<div id="container">
+										<canvas id="pie-chart"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% comment %} DEVICE MINIMAL INFO ENDS HERE {% endcomment %}
+				{% comment %} ACTIVITY SECTION STARTS HERE {% endcomment %}
+				<div class='recenttab'>
+					<h3>Recent Activity</h3><br/><br/>
+					{% for MaintenanceRequests in MaintenanceRequests %}	
+					<div>
+						<h4> You created a maintenance request with maintenance ID:<a href ="/staff/staffmaintenancdetail/{{MaintenanceRequests.MaintainRequestID}}/" ><strong> {{MaintenanceRequests.MaintainRequestID}}.</strong></a></h4>
+						<p>{{ MaintenanceRequests.created_at }}</p>
+					</div>
+					{% endfor %}
+					<hr/><br/>
+					{% for RegisteredDevices in RegisteredDevices %}
+					<div>
+						<h4>A new device with <strong>Device ID: {{ RegisteredDevices.deviceid }}</strong> was assigned to you</h4>
+						<p>{{ RegisteredDevices.created_at }}</p>
+					</div>
+					<hr/><br/>
+					{% endfor %}
+				</div>
+				{% comment %} ACTIVITY SECTION ENDS HERE {% endcomment %}
+			</div>{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+			<div>
+				<table>
+					<h2>Assigned Devices</h2>
+					<tr>
+					  <th>ID</th>
+					  <th>Name</th>
+					  <th>Brand</th>
+					  <th>MAC ID</th>
+					  <th>Category</th>
+					  {% comment %} <th>User</th> {% endcomment %}
+					  <th>Status</th>
+					  {% comment %} <th>Location</th> {% endcomment %}
+					  <th>Date Uploaded</th>
+					  {% comment %} <th>Action</th> {% endcomment %}
+					</tr>
+					{% for RegisteredDevices in RegisteredDevices %}
+					{% if request.user.username == RegisteredDevices.deviceuseremail %}
+					<tr>
+					  <td>{{ RegisteredDevices.deviceid }}</td>
+					  <td>{{ RegisteredDevices.devicename }}</td>
+					  <td>{{ RegisteredDevices.devicebrand }}</td>
+					  <td>{{ RegisteredDevices.devicemacaddress }}</td>
+					  <td>{{ RegisteredDevices.devicetype }}</td>
+					  {% comment %} <td><a href=''>{{ RegisteredDevices.deviceuserfirstname }} {{ RegisteredDevices.deviceuserlastname }}</a></td> {% endcomment %}
+					  <td class={{ RegisteredDevices.devicestatus }}>{{ RegisteredDevices.devicestatus }}</td>
+					  {% comment %} <td>{{ RegisteredDevices.devicelocation }}</td> {% endcomment %}
+					  <td>{{ RegisteredDevices.created_at }}</td>
+					  {% comment %} <td>
+						<div class='actionbtns'>
+							<img src={% static 'dashboard/img/edit.png' %} />
+							<img src={% static 'dashboard/img/delete.png' %} />
+						</div>
+					  </td> {% endcomment %}
+					</tr>
+					{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+			{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
+		</div>
+		
+
+
+		<script></script>
+		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+		<script>
+			var config = {
+				type: 'line',
+				data: {
+				  datasets: [{
+					data: {{ data|safe }}, 
+					{% comment %} backgroundColor: ['#59A2EA', '#F98888', '#FFCC91'], {% endcomment %}
+					
+					fill: false,
+					lineTension: 0,
+					backgroundColor: "rgba(0,0,255,1.0)",
+					borderColor: "rgba(0,0,255,0.1)",
+
+					label: 'Number of maintenance requests'
+				  }],
+				  labels: {{ labels|safe }}
+				},
+				options: {
+				  responsive: true,
+				  legend: {
+					display: false
+				}
+
+				}
+			  };
+			
+			  window.onload = function() {
+				var ctx = document.getElementById('pie-chart').getContext('2d');
+				window.myPie = new Chart(ctx, config);
+			  };
+			  config.height = 50;
+			</script>
+
+
+
+		{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
+    </body>
+</html>
+{% endblock content %}
+
+

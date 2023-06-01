@@ -62,32 +62,33 @@
 				<hr/>
 				{% comment %} DEVICE DETAILS LIST STARTS HERE {% endcomment %}
 				<div class='devicedetailssection'>
-					{% for AllDevice in AllDevice %}
-					{% if AllDevice.MaintainDeviceName == currentDevice %}
+					{% comment %} {{currentDevice}} {% endcomment %}
+					{% for AllMaintainDevice in AllMaintainDevice %}
+					{% if AllMaintainDevice.MaintainRequestID == currentDevice %}
 					<div>
 						<br/><h3>Device Details</h3><br/>
-						<h4>Device Name: <strong>{{ currentDevice }}</strong></h4>
-						<h4>Device ID: <strong>{{ AllDevice.MaintainDeviceID }}</strong></h4>
-						<h4>Device Type: <strong>{{ AllDevice.MaintainType }}</strong></h4>
-						<h4>Device Location: <strong>{{ AllDevice.MaintainDeviceLocation }}</strong></h4>
-						<h4>Device is assigned to: <strong>{{ AllDevice.MaintainDeviceUser }}</strong></h4>
+						<h4>Device Name: <strong>{{ AllMaintainDevice.MaintainDeviceName }}</strong></h4>
+						<h4>Device ID: <strong>{{ AllMaintainDevice.MaintainDeviceID }}</strong></h4>
+						<h4>Device Type: <strong>{{ AllMaintainDevice.MaintainDeviceType }}</strong></h4>
+						<h4>Device Unit: <strong>{{ AllMaintainDevice.MaintainDeviceUserDepartment }}</strong></h4>
+						<h4>Device is assigned to: <strong>{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }} </strong></h4>
 					</div>
 					<div>
 						<br/><h3>Maintenance Request Details</h3><br/>
-						<h4>Maintenance Request ID: <strong>{{ AllDevice.MaintainRequestID }}</strong></h4>
-						<h4>Maintenance Type: <strong>{{ AllDevice.MaintainType }}</strong></h4>
-						<h4>Date Requested: <strong>{{ AllDevice.created_at }}</strong></h4>
-						<h4>Requested By: <strong>{{ AllDevice.MaintainRequester }}</strong></h4>
+						<h4>Maintenance Request ID: <strong>{{ AllMaintainDevice.MaintainRequestID }}</strong></h4>
+						<h4>Maintenance Type: <strong>{{ AllMaintainDevice.MaintainType }}</strong></h4>
+						<h4>Date Requested: <strong>{{ AllMaintainDevice.created_at }}</strong></h4>
+						<h4>Requested By: <strong>{{ AllMaintainDevice.MaintainRequester }}</strong></h4>
 						<h4>Maintenance Request Description:<br/>
 							<div class='requestDescriptionSection'>
-								<strong>{{ AllDevice.MaintainRequestDescription }}</strong>
+								<strong>{{ AllMaintainDevice.MaintainRequestDescription }}</strong>
 							</div>
 						</h4>
 						<div class='maintainstatic'>
 							<div><h4>Maintenance Status:</div>
-							<div class={{ AllDevice.MaintainStatus }} >
+							<div class={{ AllMaintainDevice.MaintainStatus }} >
 								<strong>
-									{{ AllDevice.MaintainStatus }}
+									{{ AllMaintainDevice.MaintainStatus }}
 									{% comment %} <img src={% static 'maintenance/img/downarrow.png' %} /> {% endcomment %}
 								</strong>
 							</div>
@@ -98,11 +99,11 @@
 							<form method = 'POST'>
 								{% csrf_token %}
 								<h4>Add Your Comment Below:</h4>
-								<input name='commenter' value = {{request.user.username}} hidden  />
-								<input name='CommentedMaintainDeviceName' value = {{AllDevice.MaintainDeviceName}} hidden  />
-								<input name='CommentedMaintainDeviceUser' value = {{ AllDevice.MaintainDeviceUser }} hidden />
-								<input name='CommentedMaintainRequester' value = {{ AllDevice.MaintainRequester }} hidden />
-								<input name='CommentedMaintainRequestID' value = {{ AllDevice.MaintainRequestID }} hidden />
+								<input name='commenter' value = {{request.user.username}}  hidden />
+								<input name='CommentedMaintainDeviceName' value = {{AllMaintainDevice.MaintainDeviceName}}  hidden />
+								<input name='CommentedMaintainDeviceUser' value = "{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }}" hidden />
+								<input name='CommentedMaintainRequester' value = {{ AllMaintainDevice.MaintainRequester }} hidden />
+								<input name='CommentedMaintainRequestID' value = {{ AllMaintainDevice.MaintainRequestID }} hidden />
 								<textarea name='addedComment'></textarea><br/>
 								<div class='addcommentproperbtns'>
 									<h5 class='addcommentcancel'>Cancel</h5>
@@ -113,15 +114,15 @@
 						{% comment %} ADD COMMENT SECTION ENDS HERE {% endcomment %}
 						<div class='addcommentbtn'>
 							<button class='addcommenttriggerbtn'>Add Comment</button>
-							{% if request.user.username == AllDevice.MaintainRequester %}
-							<a href = /member/editmaintenancerequest/{{AllDevice.MaintainDeviceName}}/ ><button>Edit Maintenance Request</button></a>
+							{% if request.user.username == AllMaintainDevice.MaintainRequesterEmailAddress %}
+							<a href = /member/editmaintenancerequest/{{AllMaintainDevice.MaintainRequestID}}/ ><button>Edit Maintenance Request</button></a>
 							{% endif %}
 						</div>
 						<br/>
 						<hr/>
 						{% comment %} DISPLAY ALL ADDEDD COMMENTS AND COMMENTERS HERE {% endcomment %}
 						{% for AllCommments in AllCommments %}
-						{% if AllCommments.CommentedMaintainRequestID == AllDevice.MaintainRequestID %}
+						{% if AllCommments.CommentedMaintainRequestID == AllMaintainDevice.MaintainRequestID %}
 						<div class='commentsSectionout'>
 							<div class='commentsSection'>
 								<h4>{{ AllCommments.commenter }}'s comment:</h4>
@@ -130,7 +131,7 @@
 										<img src={% static 'maintenance/img/edit.png' %} />
 										<h4>Edit</h4>
 									</div> {% endcomment %}
-									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllDevice.MaintainDeviceName}}/  >
+									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllMaintainDevice.MaintainRequestID}}/  >
 										<div class='editcomment'>
 											<img src={% static 'maintenance/img/delete.png' %} />
 											<h4>Delete</h4>

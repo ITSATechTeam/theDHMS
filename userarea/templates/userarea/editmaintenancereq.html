@@ -26,7 +26,7 @@
 		<div class='main'>
 			<h4><a href = {% url 'Maintainance' %} >Maintenance</a> > Maintenance Request Details</h4><br/>
             <div>
-                <h3>Edit your maintenence request for {{selectedRequest.MaintainDeviceName}} device</h3><br/>
+                <h3>Edit your maintenence request ID: {{selectedRequest.MaintainRequestID}}</h3><br/>
 				<hr/><br/>
                 <div id="flash">
                     {% if messages %} {% for message in messages %}

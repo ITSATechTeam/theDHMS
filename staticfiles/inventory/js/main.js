@@ -175,6 +175,7 @@ const filterbox1 = document.querySelector('.filterbox1')
 const filterbox2 = document.querySelector('.filterbox2')
 const closefilter = document.querySelector('.closefilter')
 const closefilter2 = document.querySelector('.closefilter2')
+let filter2 = document.querySelector('.filter2')
 const body = document.querySelector('.body')
 
 
@@ -192,12 +193,77 @@ closefilter.addEventListener('click', () =>{
 
 })
 
+
+filter2.addEventListener('click', () =>{
+  console.log('filter2')
+  shadow.style.display = 'block';
+  filterbox2.style.display = 'block';
+})
+
+
+closefilter2.addEventListener('click', () =>{
+  shadow.style.display = 'none';
+  filterbox2.style.display = 'none';
+
+})
 // FILTER BY CATEGORY ENDS HERE
 
 
-// TABLE STARTS HERE
+// TABLE GENERAL SELECTION SETUP STARTS HERE
 const topCheckBox = document.querySelector('.topCheckBox input')
 const sectionCheckBox = document.querySelectorAll('.sectionCheckBox input')
+const sectionCheckBoxEach = document.querySelectorAll('.sectionCheckBoxinput')
+const numberofdevices = parseInt(document.querySelector('.numberofdevices h3').innerHTML)
+console.log(numberofdevices)
+
+
+let detailsTabCountInnner = document.querySelector('.detailsTabCountInnner strong')
+let detailsTabOut = document.querySelector('.detailsTabOut')
+let detailsTabInnerEdit = document.querySelector('.detailsTabInnerEdit')
+let detailsTabInnerViewDetails = document.querySelector('.detailsTabInnerViewDetails')
+let selectedRequest = document.querySelector('.sectionCheckBox p')
+let maintainName = document.querySelectorAll('.devicebrandName p')
+let maintainNameID = document.getElementById('devicebrandName')
+let maintainNameIDMain = document.querySelectorAll('.devicebrandName p')
+let maintainNameIDMain2= document.querySelectorAll('.maintainName i')
+let ExportDataHere = document.querySelector('.ExportDataHere input')
+let requesttoviewdetails = document.querySelector('.viewdetailsdetails input')
+
+// DELETED AND EXPORT BUTTON FOR GENERAL AND NOT GENERAL SELECTIONS
+let notSelectionDelete = document.querySelector('.notSelectionDelete')
+let notSelectionExport = document.querySelector('.notSelectionExport')
+// GENERALS BELOW
+let generalSelectionDelete = document.querySelector('.generalSelectionDelete')
+let generalSelectionExport = document.querySelector('.generalSelectionExport')
+
+
+// ID SENDING SECTION STARTS HERE
+let devicesID = document.querySelectorAll('.maintainName strong')
+let sectionCheckID = document.querySelector('.sectionCheckID')
+// console.log(devicesID)
+let idforedit = document.querySelector('.idforedit input')
+let deviceToDelete = document.querySelector('.deviceToDelete input')
+
+// SELECT WHICH DELETE AND EXPORT BUTTONS TO DISPLAY DEPENDING ON THE NUMBER OF DEVICES SELECTED
+topCheckBox.addEventListener('change', () => {
+  if (topCheckBox.checked === true){
+      console.log('topCheckBox is checked true now')
+      notSelectionDelete.style.display = 'none'
+      notSelectionExport.style.display = 'none'
+      // 
+      generalSelectionDelete.style.display = 'block';
+      generalSelectionExport.style.display = 'block';
+  }else{
+      console.log('topCheckBox is NOT checked true now')
+      notSelectionDelete.style.display = 'block'
+      notSelectionExport.style.display = 'block'
+      // 
+      generalSelectionDelete.style.display = 'none';
+      generalSelectionExport.style.display = 'none';
+  }
+})
+
+
 if (topCheckBox.checked === true){
     sectionCheckBox.forEach(e => e.checked = true)
 }else{
@@ -206,61 +272,119 @@ if (topCheckBox.checked === true){
 
 
 topCheckBox.addEventListener('change', () => {
-    if (topCheckBox.checked === true){        sectionCheckBox.forEach(e => e.checked = true)
+    if (topCheckBox.checked === true){sectionCheckBox.forEach(e => e.checked = true)
     }else{
         sectionCheckBox.forEach(e => e.checked = false)
     }
 })
-// TABLE ENDS HERE
-
-// PREDELETE POP UP STARTS HERE
-
-let allNodes = []
-const testbox = document.querySelectorAll('.testbox')
-testbox.text = 'Testing'
-console.log(typeof(JSON.stringify(testbox)))
-const testboxStr = JSON.stringify(testbox)
-allNodes.push(testbox)
-console.log(testbox)
-console.log(allNodes)
-console.log(testboxStr)
-
-// allNodes.forEach(element => {
-//   element.innerHTML = 'Testing'
-// });
+// TABLE GENERAL SELECTION SETUP ENDS HERE
 
 
-// for (var i in testbox) {
-//   testbox[i].innerHTML = "Testing";
-// }
-
-
-const predelete = document.querySelector('.predelete')
-const editDeviceData = document.querySelectorAll('.deleteDeviceData2')
-
-for (var i in editDeviceData) {
-  // editDeviceData[i].addEventListener('onmouseover', console.log('over it now'))
-  editDeviceData[i].addEventListener('click', ('click', (e) => {
-    e.preventDefault()
-    predelete.style.display = 'block'
-    shadow.style.display = 'block'
-  }))
+// CHECK BOX COUNTS SECTION STARTS HERE
+let trueBoxes = 0;
+let DataArray = []
+let IDArray = []
+function checkBoxFunctions(each){
+    each.addEventListener('change', () => {
+        maintainNameIDMain.forEach((e) => {
+            let eValue = e.innerHTML
+            if(eValue.includes(each.value)){
+                DataArray.push(eValue);
+                console.log(DataArray)
+                return DataArray, 
+                ExportDataHere.value = DataArray, 
+                idforedit.value = DataArray, 
+                deviceToDelete.value = DataArray,
+                requesttoviewdetails.value = DataArray
+            }
+        })
+        if (each.checked === true){
+            trueBoxes += 1;
+        }else{
+            trueBoxes -= 1
+        }
+        detailsTabCountInnner.innerHTML = ` ${trueBoxes} `
+        if (trueBoxes <= 0){
+            trueBoxes = 0;
+            detailsTabOut.style.display = 'none'
+        }else{
+            detailsTabOut.style.display = 'block'
+        }
+        if (trueBoxes > 1){
+            detailsTabInnerEdit.style.display = 'none'
+            detailsTabInnerViewDetails.style.display = 'none'
+        }else if(trueBoxes <= 1){
+            detailsTabInnerEdit.style.display = 'block'
+            detailsTabInnerViewDetails.style.display = 'block'
+        }
+        
+        if(trueBoxes < numberofdevices){
+            topCheckBox.checked = false;
+            console.log("all boxes are NOT checked 'true' now");
+            generalSelectionDelete.style.display = 'none';
+            generalSelectionExport.style.display = 'none';
+        } else if (trueBoxes = numberofdevices){
+            topCheckBox.checked = true;
+            console.log("all boxes are checked 'true' now");
+            notSelectionDelete.style.display = 'none'
+            notSelectionExport.style.display = 'none'
+            // 
+            generalSelectionDelete.style.display = 'block';
+            generalSelectionExport.style.display = 'block';
+        }
+    })
 }
 
+// EACH CHECKBOX SELECTION SETTINGS STARTS HERE
+sectionCheckBox.forEach(each => {
+    checkBoxFunctions(each)
+})
+// EACH CHECKBOX SELECTION SETTINGS ENDS HERE
 
-function loadDelPopUp (){
-  editDeviceData.addEventListener('click', (e) => {
-    e.preventDefault()
-    predelete.style.display = 'block'
-    shadow.style.display = 'block'
-  })
-}
+// GENERAL SECTION EFFECT STARTS HERE
+topCheckBox.addEventListener('change', () => {
+  if (topCheckBox.checked === true){
+          sectionCheckBox.forEach(e => {
+              e.checked = true
+              detailsTabCountInnner.innerHTML = `${numberofdevices} `
+              trueBoxes = numberofdevices
 
-// editDeviceData.addEventListener('click', () => {
-//   predelete.style.display = 'block'
-//   shadow.style.display = 'block'
-// })
+              if (trueBoxes <= 0){
+                  trueBoxes = 0;
+                  detailsTabOut.style.display = 'none'
+              }else{
+                  detailsTabOut.style.display = 'block'
+              }
+              if (trueBoxes > 1){
+                  detailsTabInnerEdit.style.display = 'none'
+                  detailsTabInnerViewDetails.style.display = 'none'
+              }else if(trueBoxes <= 1){
+                  detailsTabInnerEdit.style.display = 'block'
+                  detailsTabInnerViewDetails.style.display = 'block'
+              }
 
-
-// PREDELETE POP UP ENDS HERE
-
+          })
+      
+  }else{
+      sectionCheckBox.forEach(e => {
+          e.checked = false
+          
+          detailsTabCountInnner.innerHTML = `0 `
+          trueBoxes = 0
+          if (trueBoxes <= 0){
+              trueBoxes = 0;
+              detailsTabOut.style.display = 'none'
+          }else{
+              detailsTabOut.style.display = 'block'
+          }
+          if (trueBoxes > 1){
+              detailsTabInnerEdit.style.display = 'none'
+              detailsTabInnerViewDetails.style.display = 'none'
+          }else if(trueBoxes <= 1){
+              detailsTabInnerEdit.style.display = 'block'
+              detailsTabInnerViewDetails.style.display = 'block'
+          }
+      })
+  }
+})
+// GENERAL SECTION EFFECT ENDS HERE

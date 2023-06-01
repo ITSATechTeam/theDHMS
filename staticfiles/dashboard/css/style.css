@@ -613,6 +613,8 @@ tr:nth-child(1) {
     background-color: white;
     padding: 25px;
     position: fixed;
+    height: 95vh;
+    overflow-y: scroll;
     top: 2%;
     left: 40%;
     z-index: 7;
@@ -744,6 +746,12 @@ tr:nth-child(1) {
     border-radius: 100px;
     object-fit: cover;
 } */
+
+.scannetworkintroleft{
+    align-items: left;
+    text-align: left;
+    justify-content: space-between;
+}
 
 .uploaddevicepopup form button{
     display: flex;

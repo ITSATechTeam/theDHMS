@@ -168,6 +168,7 @@
 						<th class='topCheckBox'>
 							<input type='radio' />
 						</th>
+						<th>Maintenance ID</th>
 						<th>Device Name</th>
 						<th>Device ID</th>
 						<th>Device Category</th>
@@ -181,13 +182,14 @@
 					<div class='item'>
 						<tr class='item'>
 							<td class='sectionCheckBox' id= "{{ allMaintains.MaintainDeviceName }}">
-								<input class='sectionCheckBoxinput' type='radio' value={{ allMaintains.MaintainDeviceName }} />
+								<input class='sectionCheckBoxinput' type='radio' value={{ allMaintains.MaintainRequestID }} />
 								{% comment %} <input class='sectionCheckID'  value={{ allMaintains.id }} /> {% endcomment %}
 							</td>
 							<td class='maintainName'>
-								<p>{{ allMaintains.MaintainDeviceName }}</p>
+								<p>{{ allMaintains.MaintainRequestID }}</p>
 								<strong>{{ allMaintains.id }}</strong>
 							</td>
+							<td>{{ allMaintains.MaintainDeviceName }}</td>
 							<td>{{ allMaintains.MaintainDeviceID }}</td>
 							<td>{{ allMaintains.MaintainDeviceCategory }}</td>
 							<td>{{ allMaintains.MaintainDeviceMAC_ID }}</td>

@@ -87,15 +87,6 @@ main{
 }
 
 
-nav{
-    background-color: white;
-    padding: 5px;
-    width: 100%;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
-    z-index: 2;
-}
-
-
 nav img{
     width: 200px;
     background-color: white;
@@ -153,17 +144,13 @@ main{
 /* MAIN BODY EDITS ENDS HERE */
 
 /* FORM SECTION STARTS HERE*/
-.nav{
-    /* position: fixed; */
-    width: 50%;
-    height: 100px;
-}
+
 
 .nav{
     background-color: white;
     padding: 5px;
     width: 60%;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2)   ; */
     z-index: 1;
     position: absolute;
     right: 0px;
@@ -182,10 +169,24 @@ main{
     width: 20px;
 }
 
+.registerform img{
+    margin-left: -5px;
+}
+
+.registerformimg{
+    width: 100;
+    padding: 0px;
+    margin-bottom: 30px;
+    /* background-color: red; */
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2)  */
+}
+
 
 .registerform{
-    padding: 20px;
+    /* background-color: red; */
+    padding: 10px;
     margin: auto;
+    /* margin-top: 70px; */
     /* margin-left: 60px; */
 }
 

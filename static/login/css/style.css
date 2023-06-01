@@ -286,9 +286,13 @@ button{
 }
 
 .logininstead{
-    margin: auto;
+    /* background-color: red; */
+    width: 100%;
+    text-align: center;
+    padding-left: 0px;
+    /* margin: auto; */
     margin-top: 30px;
-    margin-left: 140px;
+    /* margin-left: 140px; */
 }
 
 input:focus{

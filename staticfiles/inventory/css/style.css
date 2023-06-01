@@ -87,7 +87,7 @@ body{
 .filter{
     border: none;
     padding: 15px;
-    width: 70px;
+    width: 155px;
     /* display: flex; */
     align-items: center;
     border-radius: 10px;
@@ -108,10 +108,20 @@ body{
 }
 
 
+
 .filter p{
     margin-top: 10px;
     margin-left: 3px;
     font-size: 1.2rem;
+}
+
+.filteroutter{
+    display: flex;
+    align-items: center;
+}
+
+.filter2{
+    width: 180px;
 }
 
 
@@ -380,6 +390,10 @@ background: #0085b6;
     display: none;
 }
 
+.filterbox2{
+    width: 250px;
+}
+
 /* FILTER BY CATEGORY ENDS HERE */
 
 /* DELETE POP UP SECTION STARTS HERE */
@@ -411,7 +425,81 @@ background: #0085b6;
     font-size: 1.3rem;
 
 }
-
-
-
 /* DELETE POP UP SECTION ENDS HERE */
+
+/* detailsTab STARTS HERE */
+
+.detailsTab{
+    background-color: #E1E7FC;
+    padding: 20px 10px;
+    /* height: 50px; */
+    border-top: 2px solid #2A66B0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 1.2rem;
+    position: fixed;
+    bottom: 0px;
+    width: 78%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detailsTabOut{
+    display: none;
+}
+
+.detailsTabCount img{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-right: 50px;
+}
+
+.detailsTabCount{
+    display: flex;
+    align-items: center;
+}
+
+.detailsTabOtherOptions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.sectionCheckBox p{
+    display: none;
+}
+
+.maintainName strong{
+    display: none;
+}
+
+.detailsTabCountInnner{
+    font-size: 1.3rem;
+}
+
+.detailsTabInner{
+    background-color: transparent;
+    padding: 3px;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.3rem;
+}
+
+.detailsTabInner button{
+    border: none;
+    background-color: transparent;
+}
+
+.detailsTabInner img{
+    margin-bottom: 2px;
+}
+
+.detailsTabInner:hover{
+    background-color: white;
+}
+
+
+/* detailsTab ENDS HERE */

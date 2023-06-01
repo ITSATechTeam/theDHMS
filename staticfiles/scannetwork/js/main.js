@@ -1,3 +1,4 @@
+console.log('working now')
 const step1 = document.querySelector('.step1');
 const step2 = document.querySelector('.step2');
 const step3 = document.querySelector('.step3');
@@ -366,3 +367,24 @@ previous.addEventListener('click', () => {
 
 
 // NEXT AND PREVIOUS BUTTONS FUNCTIONALITY ENDS HERE
+
+
+// UPLOAD CSV FILE STARTS POPUP HERE
+let uploaddevicepopupintroclose = document.querySelector('.uploaddevicepopupintroclose')
+let uploaddevicepopup = document.querySelector('.uploaddevicepopup')
+let showdeviceuploadpopup = document.querySelector('.showdeviceuploadpopup')
+const shadow = document.querySelector('.shadow')
+
+
+
+showdeviceuploadpopup.addEventListener('click', () => {
+    console.log('showdeviceuploadpopup clicked')
+    uploaddevicepopup.style.display = 'block'
+    shadow.style.display = 'block';
+})
+
+
+uploaddevicepopupintroclose.addEventListener('click', () => {
+    uploaddevicepopup.style.display = 'none'
+    shadow.style.display = 'none';
+})

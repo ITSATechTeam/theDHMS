@@ -1,0 +1,131 @@
+{% comment %} viewdetailsdetails {% endcomment %}
+
+<!-- @format -->
+{% include 'staffgeneral.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'devicedetails/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'maintenance/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Device Details | ITSA Inventory System</title>
+	</head>
+
+	<div class='shadow2'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+                <div class='introsection'>
+                    <h4><a href={% url 'StaffDashboard' %}>Dashboard</a> > <a href={% url 'StaffDeviceInventory' %}>Device Inventory</a> > <span>{{name}} Details {{AllMaintenanceRequest.MaintainDeviceName}}</span></h4><br/>
+					<h1>Device Details</h1>
+					<h5>Get a detailed information about your device and make request for maintenance</h5>
+				</div>
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+                <div class='requestmaintainbtn'>
+                    <button>
+                        <img src={% static 'inventory/img/requestmaintain.png' %} />
+                        Request Maintenance
+                    </button>
+                </div>
+            </div>
+            <div class='devicedetailstoptab1'>
+                <div class='devicedetailstoptab'>
+                    <h4 class='deviceinfotab'>Device Information</h4>
+                    <h4 class='maintainhistorytab'>Maintenance History</h4>
+                </div>
+                <hr/><br/>
+                <div class='devicedetailstoptab1Inner'>
+                    {% comment %} {% if currentDeviceList.devicebrand == name %} {% endcomment %}
+                    <h5>Device Name: <strong> {{ currentDeviceList.devicename }}</strong></h5><br/>
+                    <h5>Device ID: <strong> {{ currentDeviceList.deviceid }}</strong></h5><br/>
+                    <h5>Device MAC Address: <strong> {{ currentDeviceList.devicemacaddress }}</strong></h5><br/>
+                    <h5>Device Type: <strong> {{ currentDeviceList.devicetype }}</strong></h5><br/>
+                    <h5>Device OS: <strong> {{ currentDeviceList.deviceos }}</strong></h5><br/>
+                    <h5>Device Brand Name: <strong class='devicebrand2'> {{ currentDeviceList.devicebrand }}</strong> <br/>
+						<strong class='devicebrand'> {{ currentDeviceList.devicebrand }}</strong></h5><br/>
+                    {% comment %} <h5>Device Brand Name: <strong class='devicebrand2'> {{ currentDeviceList.devicebrand }}</strong></h5><br/> {% endcomment %}
+                    <h5>Device Unit: <strong> {{ currentDeviceList.deviceusedepartment }}</strong></h5><br/>
+                    <h5>Device Location: <strong> {{ currentDeviceList.devicelocation }}</strong></h5><br/>
+                    <h5>Device Health Status: <strong> {{ currentDeviceList.devicestatus }}</strong></h5><br/>
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+            </div>
+			{% comment %} LIST ALL MAINTENANCE REQUESTS FOR THIS DEVICE SECTION STARTS HERE {% endcomment %}
+			<div class='AllmaintenanceRequests'>
+				<h3>This device has undergone {{AllMaintenanceRequestCount}} maintenances - See details below:</h3><br/>
+				{% comment %} {% if AllMaintenanceRequest.MaintainDeviceName == name %} {% endcomment %}
+				
+				{% for AllMaintenanceRequest in AllMaintenanceRequest %}
+					<div>
+						<h4> Maintenance ID: <a title='Click to see maintenance details' href = /staff/staffmaintenancdetail/{{ AllMaintenanceRequest.MaintainRequestID }}/ ><strong>{{ AllMaintenanceRequest.MaintainRequestID }}</strong></a></h4>
+						<h4> Date Requested: <strong>{{ AllMaintenanceRequest.created_at }}</strong></h4>
+						<h4> Maintenance Type: <strong>{{ AllMaintenanceRequest.MaintainType }}</strong></h4>
+						<h4> Maintenance Description: <strong>{{ AllMaintenanceRequest.MaintainRequestDescription }}</strong></h4>
+						<h4> Maintenance Status: <strong>{{ AllMaintenanceRequest.MaintainStatus }}</strong></h4>			
+						<hr/><br/>
+					</div>
+				{% endfor %}
+				{% comment %} {% endif %} {% endcomment %}
+			</div>
+			{% comment %} LIST ALL MAINTENANCE REQUESTS FOR THIS DEVICE SECTION ENDS HERE {% endcomment %}
+
+			{% comment %} FILE MAINTENANCE REQUEST FORM SECTION STARTS HERE {% endcomment %}
+			<div class='maintenancereq'>
+				<div class='maintenancereqtop'>
+					<h2>Request For Maintenance</h2>
+					<img title='cancel request' src={% static 'devicedetails/img/close2.png' %} />
+				</div><br/><br/>
+				<form method='POST'>
+					{% csrf_token %}
+					<div>
+						<label>Change Maintenance Status</label><br/>
+						<select name='MaintainStatus'>
+							<option value='Ongoing'>Ongoing</option>
+							<option value='Completed'>Completed</option>
+							<option value='Canceled'>Canceled</option>
+						</select><br/><br/>
+						<label>What kind of maintenance does this device require?</label>
+						<input name='MaintainType' type='text' placeholder = 'Eg: Screen change or OS Update' /><br/><br/>
+						<label>Maintenance Decription</label><br/>
+						<textarea placeholder='Describe what maintenance this device requires in details' name='MaintainRequestDescription'></textarea><br/><br/>
+						<input type = 'text' hidden name='MaintainDeviceName' placeholder='Device Name' value = {{ currentDeviceList.devicebrand }} />
+						<input type = 'text' hidden name='MaintainDeviceID' placeholder='device ID' value = {{ currentDeviceList.deviceid }} />
+						<input type = 'text' hidden name='MaintainDeviceIP' placeholder='device IP' value = {{ currentDeviceList.deviceip }} />
+						<input type = 'text' hidden name='MaintainDeviceMAC' placeholder='device MAC ID' value = {{ currentDeviceList.devicemacaddress }} />
+						<input type = 'text' hidden name='MaintainDeviceCategory' placeholder='device category' value = {{ currentDeviceList.devicetype }} />
+						<input type = 'text' hidden name='MaintainDeviceLocation' placeholder='device location' value = {{ currentDeviceList.devicelocation }} />
+						<input type = 'text' hidden name='MaintainDeviceUserFirstname' placeholder='device user' value = {{ currentDeviceList.deviceuserfirstname }} />
+						<input type = 'text' hidden name='MaintainDeviceUserLastname' placeholder='device user' value = {{ currentDeviceList.deviceuserlastname }} />
+						<input type = 'text' hidden name='MaintainDeviceType' placeholder='device user' value = {{ currentDeviceList.devicetype }} />
+						<input type = 'text' hidden name='MaintainDeviceUserDepartment' placeholder='device user' value = {{ currentDeviceList.deviceusedepartment }} />
+						<input type = 'text' hidden name='MaintainRequesterEmailAddress' placeholder='device user' value = {{request.user.username}} />
+						<input type = 'text' hidden name='MaintainRequester' placeholder='device maintenance requester' value = {{request.user.last_name}} />
+						<div class='currentMonth'><input hidden type = 'text' name='currentMonthName'  /></div>
+						{% comment %} <input type = 'text' name='MaintainDeviceLocation' placeholder='device' value = /> {% endcomment %}
+						
+						<button type='submit'>Submit Request</button>
+					</div>
+				</form>
+			</div>
+			{% comment %} FILE MAINTENANCE REQUEST FORM SECTION ENDS HERE {% endcomment %}
+		<script src={% static 'devicedetails/js/main.js' %}></script>
+	<body>
+{% endblock content %}
+

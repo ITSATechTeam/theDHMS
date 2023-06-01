@@ -1,0 +1,383 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 270px;
+}
+
+.main h5{
+    color: rgb(175, 175, 175);
+}
+
+.maintop{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20px;
+    margin-bottom: 50px;
+}
+
+.maintop button p{
+    margin-top: 9px;
+}
+
+.maintop button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 160px;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    /* justify-content: space-around; */
+}
+
+.maintop button img{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+/* PROFILE BOX STARTS HERE */
+.profileBox {
+    overflow: hidden;
+}
+
+.profileBoxintro{
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+
+.profileBox ul li{
+    list-style: none;
+}
+
+.profileBox ul li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    width: 120%;
+    padding-left: 20px;
+    margin-left: -20px;
+}
+
+.profileBox ul li:hover{
+    background-color: #2A66B0;
+    cursor: pointer;
+    color: white;
+}
+
+.profileBox ul{
+    width: 100%;
+    margin-left: 0px;
+}
+
+
+.profileBox ul li p{
+    margin-top: 10px;
+}
+
+.profileBox ul li img{
+    width: 22px;
+    margin-right: 3px;
+}
+
+.profileBox hr{
+    width: 120%;
+    margin-left: -30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.profileBox p{
+    font-size: 1.5rem;
+    /* margin-top: 20px; */
+}
+
+
+.profileBox{
+    background-color: white;
+    /* padding: 10px; */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 300px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    z-index: 6;
+    display: none;
+}
+
+
+/* PROFILE BOX ENDS HERE */
+.maintainReqBtn{
+    background-color: #2A66B0;
+    color: white;
+    padding: 10px;
+    font-size: 1.3rem;
+    width: 220px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.maintainReqBtn img{
+    margin-right: 5px;
+    margin-bottom: 2px;
+}
+
+.maintopinner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+}
+
+/* midBodysection starts here */
+.midBodysection{
+    width: 98%;
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
+
+/* requestdataset starts here */
+.requestdataset{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.blue{
+    background-color: #DFEBF8;
+    padding: 10px 10px;
+    border-radius: 10px;
+    width: 230px;
+    font-size: 1.3rem;
+}
+
+.red{
+    background-color: #F9DCDC;
+    padding: 5px 10px;
+    border-radius: 10px;
+    width: 230px;
+    font-size: 1.3rem;
+}
+
+.yellow{
+    background-color: #F2C94C4D;
+    padding: 5px 10px;
+    border-radius: 10px;
+    width: 230px;
+    font-size: 1.3rem;
+}
+
+.requestdataset h3{
+    font-size: 2.1rem;
+}
+
+
+.requestdataset img{
+    margin-bottom: 10px;
+}
+
+
+
+/* requestdataset ends here */
+
+
+/* monthlymaintenanceinner starts here */
+.monthlymaintenance{
+    margin-top: 30px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 50px;
+}
+
+
+.monthlymaintenanceinner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.monthlymaintenancedate select{
+    border: none;
+    background-color: transparent;
+}
+
+.monthlymaintenancedate{
+    background-color: #F5F5F5;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+}
+
+.monthlymaintenancedate img{
+    margin-bottom: 2px;
+}
+
+/* monthlymaintenanceinner ends here */
+
+/* deviceschartout starts here */
+/* #pie-chart{
+    background-color: red;
+    height: 150px;
+} */
+
+
+/* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); */
+
+/* deviceschartout ends here */
+
+/* recenttab starts here */
+.recenttab{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    margin-left: 10px;
+    height: 555px;
+    overflow-y: scroll;
+}
+
+
+/* recenttab ends here */
+
+
+/* midBodysection ends here */
+
+
+/* TABLE STARTS HERE */
+
+.Working{
+    background-color: #b7f2bc;
+    height: 1px;
+    width: 60px;
+    padding-left: 2px;
+    font-weight: bold;
+}
+
+
+.Faulty{
+    background-color: #EED0D0;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;
+}
+
+
+.Critical{
+    background-color: #eeedd0;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;
+}
+
+
+table td a{
+    color: black
+}
+.devicesinvintro{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20px;
+    align-items: center;
+}
+
+
+table {
+    margin-top: 30px;
+    border: 1px solid white;
+    width: 100%;
+    font-size: 1.2rem;
+    /* margin: auto; */
+    margin-bottom: 60px;
+    overflow: scroll;
+}
+
+td,
+th {
+    border: 1px solid #EEF3F9;
+    text-align: left;
+    padding: 8px;
+}
+th{
+    border: 1px solid #EEF3F9;
+    text-align: left;
+    padding: 8px;
+    color: black;
+}
+
+/* tr:nth-child(even) {} */
+
+tr:nth-child(1) {
+    color: #4F4F4F;
+    background-color: #EEF3F9;
+    /* background-color: #19193a3d; */
+}
+
+/* table button{
+    border: none;
+    background-color: white;
+    color: #2464b4;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 15px;
+} */
+
+.seealldevices{
+    border: none;
+    background-color: white;
+    color: #EEF3F9;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 15px;
+    /* position: absolute;
+    right: 0px; */
+}
+
+.actionbtns img{
+    padding: 5px;
+    border: solid 1px #EEF3F9;
+    border-radius: 50%;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+.actionbtns img:hover{
+    border: solid 1px black;
+}
+/* TABLE ENDS HERE */
+
+
+.shadow{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}

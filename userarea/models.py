@@ -104,7 +104,7 @@ class uploadedDeviceData(models.Model):
 
 class DeviceCountPerPage(models.Model):    
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    count = models.CharField(max_length= 3, null=True, blank = True)
+    count = models.CharField(max_length= 3, default = 4, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
@@ -137,6 +137,8 @@ class DeletedDevices(models.Model):
 class MaintenanceRequest(models.Model):    
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     MaintainDeviceName = models.CharField(max_length= 300, null=True, blank = True)
+    MaintainDeviceType = models.CharField(max_length= 300, null=True, blank = True)
+    MaintainDeviceUserDepartment = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceID = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceIP = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceMAC_ID = models.CharField(max_length= 300, null=True, blank = True)
@@ -144,10 +146,13 @@ class MaintenanceRequest(models.Model):
     MaintainDeviceCategory = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceLocation = models.CharField(max_length= 300, null=True, blank = True)
     MaintainStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_STATUS_CHOICE, default = 'Ongoing', null=True, blank = True)
-    MaintainDeviceUser = models.CharField(max_length= 300, null=True, blank = True)
+    MaintainDeviceUserFirstname = models.CharField(max_length= 300, null=True, blank = True)
+    MaintainDeviceUserLastname = models.CharField(max_length= 300, null=True, blank = True)
+    MaintainRequesterEmailAddress = models.EmailField(max_length= 300, null=True, blank = True)
     MaintainRequester = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequestID = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequestDescription = models.CharField(max_length= 30000, null=True, blank = True)
+    currentMonth = models.CharField(max_length= 3000, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

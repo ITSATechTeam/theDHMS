@@ -104,12 +104,12 @@ if (window.location.href.includes('dashboard')){
     dashboard.classList.add('active')
 }
 
-if (window.location.href.includes('devicesinventory')){
+if (window.location.href.includes('devicesinventory') || window.location.href.includes('editdevice') || window.location.href.includes('viewdevicedetails') ){
     dashboard.classList.remove('active')
     deviceinventory.classList.add('active')
 }
 
-if (window.location.href.includes('staffmembers')){
+if (window.location.href.includes('staffmembers') || window.location.href.includes('staffdetails')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.add('active')
@@ -131,7 +131,7 @@ if (window.location.href.includes('support')){
     support.classList.add('active')
 }
 
-if (window.location.href.includes('maintain')){
+if (window.location.href.includes('maintain') || window.location.href.includes('maintenancedetails') || window.location.href.includes('editmaintenancerequest')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.remove('active')

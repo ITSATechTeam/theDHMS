@@ -15,7 +15,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<title>Dashboard | ITSA Inventory System</title>
+		<title>Admin Dashboard | ITSA Inventory System</title>
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
 	</head>
 	<div class='shadow'></div>
@@ -192,9 +192,9 @@
 									<div class='selecthealth'>
 										<select name='q'>
 											<option>All</option>
-											<option value='Desktop'>Healthy</option>
-											<option value='Laptop'>Critical</option>
-											<option value='Printer'>Faulty</option>
+											<option value='Working'>Working</option>
+											<option value='Critical'>Critical</option>
+											<option value='Faulty'>Faulty</option>
 										</select>
 									</div>
 									{% comment %} <br/> {% endcomment %}
@@ -329,8 +329,16 @@
 						<input name='devicemacaddress' type='text'placeholder='Use the format: XX:XX:XX:XX:XX' />
 					</div>
 					<div class='adddevicedashboard'>
-						<p>Device User' Name</p>
-						<input name='deviceuser' type='text'placeholder='Enter Device User Name' />
+						<p>Device User's First Name</p>
+						<input name='deviceuserfirstname' type='text' placeholder="Enter Device User's First Name" />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device User's Last Name</p>
+						<input name='deviceuserlastname' type='text'placeholder="Enter Device User's Last Name" />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device OS</p>
+						<input name='deviceos' type='text'placeholder='Enter Device Operating System' />
 					</div>
 					<div class='adddevicedashboard'>
 						<p>Device IP Address</p>
@@ -345,8 +353,13 @@
 						</select>
 					</div>
 					<div class='adddevicedashboard'>
-						<p>Device Location/Department</p>
+						<p>Device Location</p>
 						<input name='devicelocation' type='text'placeholder='Enter Device Location/Department' />
+						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Department</p>
+						<input name='deviceusedepartment' type='text'placeholder='Enter Device Department' />
 						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
 					</div>
 				</div>

@@ -1,0 +1,4 @@
+Device Name,Device ID,Device IP Address,Device MAC ID,Device Type,Device Category,Device Location,Maintenance Status,Device User,Maintenance Requester,Maintenance Request ID,Maintenance Request Description,Date For Request
+Samsung·1012,Device-7APDN,40.32.1.27,20-10-7A-4E-9F-46,Routine Check,Desktop,Lagos,Ongoing,Jenny,CTV,maintain·6207,Routine Check Routine Check Routine Check Routine Check Routine Check,2023-05-25 06:23:43.359821+00:00
+Samsung·1012,Device-7APDN,40.32.1.27,20-10-7A-4E-9F-46,Virus fix,Desktop,Lagos,Canceled,Jenny,CTV,maintain·3900,Virus fixVirus fixVirus fixVirus fix,2023-05-25 06:37:02.715082+00:00
+Samsung·4994,Device-kyZMo,40.32.1.27,20-10-7A-4E-9F-46,Screen Replacement,Desktop,Lagos,Ongoing,Jenny,CTV,maintain·2582,Screen Replacement description,2023-05-24 07:15:26.803924+00:00

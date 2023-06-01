@@ -12,11 +12,11 @@ import csv
 from django.db.models import Q
 from useronboard.models import SignupForm, UserProfileImage
 from datetime import datetime
+from datetime import date
 from django.utils.crypto import get_random_string
 import json
 from django.contrib.auth.models import User
-from datetime import date
-import winapps
+# import winapps
 import random
 
 # import datetime; 
@@ -60,7 +60,7 @@ def Maintainance(request):
         [dataToExportNewNoDuplicate.append(i) for i in dataToExportNew if i not in dataToExportNewNoDuplicate]
         # get latest array entry ID for edit and delete features
         maintainElementID = dataToExportNewNoDuplicate[-1]
-        maintainElementIDMain = MaintenanceRequest.objects.get(MaintainDeviceName = maintainElementID).pk
+        maintainElementIDMain = MaintenanceRequest.objects.get(MaintainRequestID = maintainElementID).pk
         # print(maintainElementIDMain)
         for i in dataToExportNew:
             if dataToExportNew.count(i) == 2:
@@ -76,7 +76,7 @@ def Maintainance(request):
             # for data in dataToExportNewNoDuplicate:
             for data in dataToExportNew:
                 if data is not None:
-                    for maintenanceDevice in MaintenanceRequest.objects.filter(MaintainDeviceName = data).values_list('MaintainDeviceName', 
+                    for maintenanceDevice in MaintenanceRequest.objects.filter(MaintainRequestID = data).values_list('MaintainDeviceName', 
                     'MaintainDeviceID', 'MaintainDeviceIP', 'MaintainDeviceMAC_ID', 'MaintainType', 'MaintainDeviceCategory', 
                     'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUser', 'MaintainRequester', 'MaintainRequestID', 
                     'MaintainRequestDescription', 'created_at'):
@@ -99,7 +99,7 @@ def Maintainance(request):
         print(len(deviceToDeleteArr))
         for i in deviceToDeleteArr:
             if len(deviceToDeleteArr) == 1:
-                currentDevice = MaintenanceRequest.objects.get(MaintainDeviceName = i)
+                currentDevice = MaintenanceRequest.objects.get(MaintainRequestID = i)
                 messages.error(request, 'Maintenance Request(s) deleted succesfully.')
                 currentDevice.delete()
                 # return redirect('Maintainance')
@@ -114,15 +114,16 @@ def Maintainance(request):
     # REDIRECT TO VIEW DETAILS PAGE FOR SELECTED MAINTENANCE REQUEST
     if request.method == 'GET' and 'requesttoviewdetails' in request.GET:
         requesttoviewdetailsMain = request.GET['requesttoviewdetails']
+        print(' see requesttoviewdetailsMain below:')
         print(requesttoviewdetailsMain)
-        currentDevice = MaintenanceRequest.objects.filter(MaintainDeviceName = requesttoviewdetailsMain)
+        currentDevice = MaintenanceRequest.objects.filter(MaintainRequestID = requesttoviewdetailsMain)
         return redirect('MaintainanceDetails', name = requesttoviewdetailsMain )
         # return redirect('ProfilePage', pk=currentUser.id)
 
     # REDIRECT TO EDIT MAINTENANCE REQUEST BELOW
     if request.method == 'GET' and 'idforeditmain' in request.GET:
         idforedit = request.GET['idforeditmain']
-        currentDevice = MaintenanceRequest.objects.get(MaintainDeviceName = idforedit).MaintainDeviceName
+        currentDevice = MaintenanceRequest.objects.get(MaintainRequestID = idforedit).MaintainRequestID
         return redirect('EditMaintenenceRequest', name = currentDevice )
 
 
@@ -165,10 +166,10 @@ def MaintainanceDetails(request, name):
         )
         form.save()
 
-    currentDevice = str(MaintenanceRequest.objects.get(MaintainDeviceName = name))
+    currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
     AllCommments = AddedMaintenanceComments.objects.all()
-    AllDevice = MaintenanceRequest.objects.filter( user = request.user )
-    context = {'AllCommments':AllCommments, 'AllDevice':AllDevice, 'currentDevice':currentDevice}
+    AllMaintainDevice = MaintenanceRequest.objects.filter(user = request.user)
+    context = {'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
     return render(request, 'userarea/maintainrequestdetails.html', context)
 
 
@@ -181,7 +182,8 @@ def DeleteAddedComment(request, pk, name):
 
 
 def EditMaintenenceRequest(request, name):
-    selectedRequest = MaintenanceRequest.objects.get(MaintainDeviceName = name)
+    selectedRequest = MaintenanceRequest.objects.get(MaintainRequestID = name)
+    # selectedRequest = MaintenanceRequest.objects.get(MaintainDeviceName = name)
     form = EditMaintenanceRequest(request.POST or None, instance = selectedRequest)
     if request.POST and form.is_valid():
         print('data validated!')
@@ -315,6 +317,17 @@ def DeviceInventory(request):
                         depreciateRateReal = 'Nil'
                         # messages.success(request, 'Upload Failed: Please confirm that you are using the correct file import procedure or sontact support for assistance.')
                         # return redirect('Dashboard')
+
+                    # checkUniqueUser = User.objects.filter(username = row[17])
+                    # print(checkUniqueUser)
+                    # if checkUniqueUser is None:
+                    #     print('------------------------')
+                    #     print(checkUniqueUser)
+                    #     messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                    #     return redirect('DeviceInventory')
+                    #     messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+
+
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
                         deviceip = row[0],
@@ -356,6 +369,15 @@ def DeviceInventory(request):
                         staffDeviceName = row[1],
                         staffDeviceStatus = row[6]
                     )
+                    try:
+                        # checkUniqueUser = User.objects.filter(username = row[17])
+                        checkUniqueUser =  User.objects.create_user(
+                        username = row[17], email = 'Staff Member', password =  row[18], first_name = request.user.username, last_name = row[4] +' '+row[5]
+                        )
+                    except:
+                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                         return redirect('DeviceInventory')
+                    checkUniqueUser.save()
                 else:
                     messages.error(request, 'Device List Updated Unsuccessfully')
                     return redirect('DeviceInventory')
@@ -446,11 +468,10 @@ def DeviceInventory(request):
         return redirect('EditDevice', deviceid = currentDevice )
 
 
-
+    # REDIRECT TO VIEW DETAILS VIEW
     if request.method == 'GET' and 'viewdetailsdetails' in request.GET:
         viewdetailsdetailsMain = request.GET['viewdetailsdetails']
-        print(viewdetailsdetailsMain)
-        # currentDevice = DeviceRegisterUpload.objects.filter(devicename = viewdetailsdetailsMain)
+        print('see viewdetailsdetailsMain below')
         return redirect('ViewDeviceDetails', name = viewdetailsdetailsMain )
 
     allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
@@ -479,9 +500,17 @@ def ViewDeviceDetails(request, name):
         MaintainDeviceMAC = request.POST['MaintainDeviceMAC']
         MaintainDeviceCategory = request.POST['MaintainDeviceCategory']
         MaintainDeviceLocation = request.POST['MaintainDeviceLocation']
-        MaintainDeviceUser = request.POST['MaintainDeviceUser']
+        MaintainDeviceUserFirstname = request.POST['MaintainDeviceUserFirstname']
+        MaintainDeviceUserLastname = request.POST['MaintainDeviceUserLastname']
+        MaintainRequesterEmailAddress = request.POST['MaintainRequesterEmailAddress']
         MaintainRequester = request.POST['MaintainRequester']
-        MaintainRequestID = 'maintain' + '·' + str(randomNumber)
+        # currentMonth = request.POST['currentMonthName']
+        MaintainRequestID = 'maintain' + '_' + str(randomNumber)
+
+        dateNow = datetime.now()
+        month1 = dateNow.strftime("%b")
+        print("Current Month Full Name:", month1)
+        print("dateNow", dateNow)
 
         if not request.POST['MaintainStatus']:
             messages.error(request, 'Kindly provide a maintenance status.')
@@ -494,11 +523,15 @@ def ViewDeviceDetails(request, name):
         if not request.POST['MaintainRequestDescription']:
             messages.success(request, 'Kindly provide a maintenance description.')
             return redirect('ViewDeviceDetails', name=name)
+        
 
-        form = MaintenanceRequest.objects.create(user = request.user, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
-        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUser = MaintainDeviceUser,
-        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
-        MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
+        # check if any request is already filed for this device
+        
+
+        form = MaintenanceRequest.objects.create(user = request.user, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
+        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUserFirstname = MaintainDeviceUserFirstname,
+        MaintainDeviceUserLastname = MaintainDeviceUserLastname, MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
+        currentMonth = month1, MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
 
         form.save()
         return redirect('Maintainance')
@@ -664,6 +697,7 @@ def Dashboard(request):
         form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
         form.save()
         obj = uploadedDeviceData.objects.all().first()
+        randomNumber = random.randint(100, 9999)
 
         with open(obj.mainfile.path, 'r') as f:
             reader = csv.reader(f)
@@ -680,7 +714,8 @@ def Dashboard(request):
                     dateForWeekNumber = datetime.today()
                     weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
-                    DeviceNameProper = row[14] + '·' + str(randomNumber)
+                    DeviceNameProper = row[14]+'_'+str(randomNumber)
+                    # DeviceNameProper = row[14] + '·' + str(randomNumber)
                     if row[21]:
                         depreciateRate = 2023 - int(row[21])                        
                     else:
@@ -698,6 +733,7 @@ def Dashboard(request):
                         depreciateRateReal = '0%'
                     else:                        
                         depreciateRateReal = 'Nil'
+                        
 
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
@@ -742,6 +778,17 @@ def Dashboard(request):
                         staffDeviceStatus = row[6]
                         # deviceuserdateofresumption = row[17]
                     )
+                    
+                    try:
+                        # checkUniqueUser = User.objects.filter(username = row[17])
+                        checkUniqueUser =  User.objects.create_user(
+                        username = row[17], email = 'Staff Member', password =  row[18], first_name = request.user.username, last_name = row[4] +' '+row[5]
+                        )
+                    except:
+                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                         return redirect('Dashboard')
+                    checkUniqueUser.save()
+
                 else:
                     messages.error(request, 'Device List Updated Unsuccessfully')
                     return redirect('Dashboard')
@@ -757,23 +804,31 @@ def Dashboard(request):
         devicetype = request.POST['devicetype']
         devicebrand = request.POST['devicename']
         devicemacaddress = request.POST['devicemacaddress']
-        deviceuser = request.POST['deviceuser']
+        deviceuserfirstname = request.POST['deviceuserfirstname']
+        deviceuserlastname = request.POST['deviceuserlastname']
         deviceip = request.POST['deviceip']
         devicestatus = request.POST['devicestatus']
         savetimedata = request.POST['savetimedata']
         devicelocation = request.POST['devicelocation']
+        deviceusedepartment = request.POST['deviceusedepartment']
+        deviceos = request.POST['deviceos']
         deviceid = 'Device-' + get_random_string(length=5)
 
         if not request.POST['devicename']:
             messages.error(request, 'Please give this device a name.')
             return redirect('Dashboard')
         
+        if not request.POST['deviceusedepartment']:
+            messages.error(request, "Please enter the device's department.")
+            messages.error(request, "Please enter the device's department.")
+            return redirect('Dashboard')
+        
         if not request.POST['devicetype']:
             messages.error(request, 'You did not select a device type.')
             return redirect('Dashboard')
 
-        form = DeviceRegisterUpload(user=request.user, devicebrand=devicebrand, devicetype=devicetype, deviceip=deviceip, devicestatus=devicestatus,
-        devicemacaddress=devicemacaddress, savetimedata=savetimedata, deviceuser=deviceuser, devicelocation=devicelocation, deviceid=deviceid)
+        form = DeviceRegisterUpload(deviceusedepartment=deviceusedepartment, deviceos= deviceos, user=request.user, devicebrand=devicebrand, devicetype=devicetype, deviceip=deviceip, devicestatus=devicestatus,
+        devicemacaddress=devicemacaddress, savetimedata=savetimedata, deviceuserfirstname = deviceuserfirstname, deviceuserlastname=deviceuserlastname, devicelocation=devicelocation, deviceid=deviceid)
 
         form.save()
         redirect('Dashboard')
@@ -944,6 +999,123 @@ def Searchresult(request):
 
 
 def ScanNetwork(request):
+    if request.method == "POST" and 'csv_file' in request.FILES:
+        username = request.POST['username']
+        savetimedata = request.POST['savetimedata']
+        filedata = request.FILES.get('csv_file', False)
+        
+        print(str(username))
+        print(str(filedata))
+        if 'csv' not in str(filedata):
+            messages.success(request, 'Wrong File Format. Please Use The Recommended CSV File.')
+            return redirect('ScanNetwork')
+
+        if request.FILES.get('csv_file') is None:
+            messages.success(request, 'Device List Updated Failed! Please Select A File.')
+            return redirect('ScanNetwork')
+        
+        if not request.POST['username']:
+            messages.success(request, 'Device List Updated Failed! User Name Missing Login Again.')
+            return redirect('ScanNetwork')
+
+        form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
+        form.save()
+        obj = uploadedDeviceData.objects.all().first()
+        randomNumber = random.randint(100, 9999)
+
+        with open(obj.mainfile.path, 'r') as f:
+            reader = csv.reader(f)
+            for i, row in enumerate(reader):
+                if i == 0:
+                    pass
+                elif len(row) < 22:
+                    messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
+                    return redirect('ScanNetwork')
+                elif len(row) > 9:
+                    # print(len(row))
+                    today = date.today()
+                                        
+                    dateForWeekNumber = datetime.today()
+                    weekNumber = dateForWeekNumber.isocalendar().week
+                    uniqueId = 'Device-' + get_random_string(length=5)
+                    DeviceNameProper = row[14]+'_'+str(randomNumber)
+                    if row[21]:
+                        depreciateRate = 2023 - int(row[21])                        
+                    else:
+                        depreciateRate = 2020
+                    # calc depreciateRateReal from depreciateRate below:
+                    if depreciateRate <= 0:
+                        depreciateRateReal = '100%'
+                    elif depreciateRate == 1:
+                        depreciateRateReal = '75%'
+                    elif depreciateRate == 2:
+                        depreciateRateReal = '50%'
+                    elif depreciateRate == 3:
+                        depreciateRateReal = '25%'
+                    elif depreciateRate >= 4:
+                        depreciateRateReal = '0%'
+                    else:                        
+                        depreciateRateReal = 'Nil'
+                        
+                    DeviceRegisterUpload.objects.create(
+                        user = request.user,
+                        deviceip = row[0],
+                        devicename = row[1],
+                        devicemacaddress = row[2],
+                        devicenetworkadaptercompany = row[3],
+                        deviceuserfirstname = row[4],
+                        deviceuserlastname = row[5],
+                        devicestatus = row[6],
+                        deviceworkgroup = row[7],
+                        deviceusedepartment = row[8],
+                        deviceportnumber = row[9],
+                        devicemultiplepacket = row[10],
+                        index = row[11],
+                        devicetype = row[12],
+                        devicelocation = row[13],
+                        devicebrand = DeviceNameProper,
+                        deviceos = row[15],
+                        devicecostofpurchase = row[16],
+                        deviceuseremail = row[17],
+                        deviceuserphonenumber = row[18],
+                        deviceuserdateofresumption = row[19],
+                        deviceworkingcondition = row[20],
+                        deviceyearofpurchase = row[21],
+                        devicedepreciationrate = depreciateRateReal,
+                        deviceid = uniqueId,
+                        savetimedata = today.strftime("%B %d, %Y"),
+                        # savetimedata = today.strftime("%b-%d-%Y")
+                        weekNumberSaved = weekNumber
+                    ),
+                    StaffDataSet.objects.create(
+                        user = request.user,
+                        deviceuserfirstname = row[4],
+                        deviceuserlastname = row[5],
+                        deviceuserphonenumber = row[18],
+                        devicelocation = row[13],
+                        deviceuseremail = row[17],
+                        staffDevice = uniqueId,
+                        staffrole = row[8],
+                        staffDeviceName = row[1],
+                        staffDeviceStatus = row[6]
+                        # deviceuserdateofresumption = row[17]
+                    )
+                    try:
+                        checkUniqueUser =  User.objects.create_user(
+                        username = row[17], email = 'Staff Member', password =  row[18], first_name = request.user.username, last_name = row[4] +' '+row[5]
+                        )
+                    except:
+                         checkUniqueUserMain = User.objects.filter(username = row[17])
+                         print(checkUniqueUserMain)
+                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                         return redirect('ScanNetwork')
+                    checkUniqueUser.save()
+                else:
+                    messages.error(request, 'Device List Updated Unsuccessfully')
+                    return redirect('ScanNetwork')
+            obj.save()
+        messages.success(request, 'Device List Updated Successfully')
+        return redirect('DeviceInventory')
     return render(request, 'userarea/scannetwork.html')
 
 

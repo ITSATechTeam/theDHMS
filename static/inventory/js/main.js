@@ -175,6 +175,7 @@ const filterbox1 = document.querySelector('.filterbox1')
 const filterbox2 = document.querySelector('.filterbox2')
 const closefilter = document.querySelector('.closefilter')
 const closefilter2 = document.querySelector('.closefilter2')
+let filter2 = document.querySelector('.filter2')
 const body = document.querySelector('.body')
 
 
@@ -192,6 +193,19 @@ closefilter.addEventListener('click', () =>{
 
 })
 
+
+filter2.addEventListener('click', () =>{
+  console.log('filter2')
+  shadow.style.display = 'block';
+  filterbox2.style.display = 'block';
+})
+
+
+closefilter2.addEventListener('click', () =>{
+  shadow.style.display = 'none';
+  filterbox2.style.display = 'none';
+
+})
 // FILTER BY CATEGORY ENDS HERE
 
 

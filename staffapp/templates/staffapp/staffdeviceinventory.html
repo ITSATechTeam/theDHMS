@@ -1,0 +1,456 @@
+<!-- @format -->
+{% include 'staffgeneral.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'maintenance/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Staff Device(s) Inventory | ITSA Inventory System</title>
+	</head>
+
+	<div class='shadow2'></div>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+				<div>
+					<h1>Device Inventory</h1>
+					<h5>Get a detailed overview of your devices assigned to you.</h5>
+				</div>
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+
+				<div class='maintopbtns'>
+					{% comment %} <div class='addnewdevicebtn'>
+						<button>
+							<img src={% static 'dashboard/img/add.png' %} />
+							<p>Add New Device</p>
+						</button>
+					</div>
+					<a href = {% url 'ExportDevice' %} >
+						<div class='scannetworkbtn2'>
+							<button>
+								<img src={% static 'dashboard/img/scannetwork.png' %} />
+								<p>Export CSV</p>
+							</button>
+						</div>
+					</a> {% endcomment %}
+				</div>
+			</div>
+			{% comment %} SUBTOP SECTION STARTS HERE {% endcomment %}
+			<div class='sectionintro'>
+				<div class='introbox'>
+					<div>
+						<img src={% static 'inventory/img/devices.png' %} />
+					</div>
+					<div class='numberofdevices'>
+						<h3>{{ RegisteredDevicesCount }}</h3>
+						<p>Assigned Devices</p>
+					</div>
+				</div>
+				<div class='introbox'>
+					<div>
+						<img src={% static 'inventory/img/uptrendBlue.png' %} />
+					</div>
+					<div>
+						
+						{% if workingSystems %}
+						<h3>{{ workingSystems }}</h3>
+						{% else %}
+						<h3>{{RegisteredDevicesWorking}}</h3>
+						{% endif %}
+						<p>Healthy Devices</p>
+					</div>
+				</div>
+				<div class='introbox'>
+					<div>
+						<img src={% static 'inventory/img/uptrendRed.png' %} />
+					</div>
+					<div>
+						{% comment %} {% for allUploadedDevices in allUploadedDevices %} {% endcomment %}
+						{% if badSystems %}
+						<h3>{{ badSystems }}</h3>
+						{% else %}
+						<h3>{{RegisteredDevicesFaulty}}</h3>
+						{% endif %}
+						{% comment %} {% endfor %} {% endcomment %}
+						<p>Devices at risk</p>
+					</div>
+				</div>
+				<div class='introbox'>
+					<div>
+						<img src={% static 'inventory/img/tools.png' %} />
+					</div>
+					<div>
+						<h3>{{MaintenanceRequests}}</h3>
+						<p>Under maintainance</p>
+					</div>
+				</div>
+			</div>
+			{% comment %} SUBTOP SECTION ENDS HERE {% endcomment %}
+			{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
+			<div class='deviceinventorymaintop'>
+				<div class='searchdashboardsection'>
+					<div class='searchdashboard'>
+						<form method='GET' action="{% url 'StaffSearchresult' %}">
+							<input type='text' name='q' placeholder='Search Devices' />
+						</form>
+						<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+					</div>
+					<div class='filteroutter'>
+						<div class='filter filtercategory'>
+							<img src={% static 'inventory/img/filter.png' %} />
+							<p>Filter by Category</p>
+						</div>
+						<div class='filter filtercategory filter2'>
+							<img src={% static 'inventory/img/filter.png' %} />
+							<p>Filter by Device Status</p>
+						</div>
+					</div>
+					
+						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+						<div class='filterbox filterbox1'>
+							<h2>Filter by</h2>
+							<div class='closefilter'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'StaffSearchresult' %}>
+									
+									<p>Device Category</p>
+									<select name='q'>
+										<option value = 'AllCategory'>All</option>
+										<option value='Desktop'>Desktop</option>
+										<option value='Laptop'>Laptop</option>
+										<option value='Printer'>Printer</option>
+										<option value='Scanner'>Scanner</option>
+										<option value='OtherDevices'>Other Devices</option>
+									</select>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+						{% comment %} FILTER BY DEVICE STATUS {% endcomment %}
+						<div class='filterbox filterbox2'>
+							<h2>Filter by</h2>
+							<div class='closefilter2'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'StaffSearchresult' %}>
+									<div class='selecthealth'>
+										<p>Device Health</p>
+											<select name='q'>
+												<option value = 'AllStatus' >All</option>
+												<option value='Working'>Working</option>
+												<option value='Critical'>Critical</option>
+												<option value='Faulty'>Faulty</option>
+											</select>
+									</div>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+				</div>
+			</div>
+			{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
+			{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+			<div>
+				<table  id="paginated-list" >
+					<tr>
+					  {% comment %} <th class='topCheckBox'>
+						<input type='radio' />
+					  </th> {% endcomment %}
+					  <th>ID</th>
+					  <th>Brand</th>
+					  <th>MAC ID</th>
+					  <th>Category</th>
+					  <th>User</th>
+					  <th>Status</th>
+					  <th>Location</th>
+					  <th>Date Uploaded</th>
+					  {% comment %} <th>Action</th> {% endcomment %}
+					  <th>More Info</th>
+					</tr>
+					{% for RegisteredDevices in RegisteredDevices %}
+					<div class='item'>
+						<tr class='item'>
+							{% comment %} <td class='sectionCheckBox'>
+								<input class='sectionCheckBoxinput' type='radio' value={{ RegisteredDevices.devicebrand }} />
+							</td> {% endcomment %}
+							<td>{{ RegisteredDevices.deviceid }}</td>
+							<td class='devicebrandName'>
+								<p>{{ RegisteredDevices.devicebrand }}</p>
+							</td>
+							<td>{{ RegisteredDevices.devicemacaddress }}</td>
+							<td>{{ RegisteredDevices.devicetype }}</td>
+							<td><a href=''>{{ RegisteredDevices.deviceuser }}</a></td>
+							<td class={{ RegisteredDevices.devicestatus }}>{{ RegisteredDevices.devicestatus }}</td>
+							<td>{{ RegisteredDevices.devicelocation }}</td>
+							<td>{{ RegisteredDevices.created_at }}</td>
+							{% comment %} <td>
+								<div class='actionbtns'>
+									<div class='testbox'></div>
+									<button class='editDeviceData'><a href=/member/editdevice/{{ RegisteredDevices.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
+										<input hidden name='IdRequest' value={{ RegisteredDevices.id }} />
+										<button ><a href= /member/deletedevice/{{ RegisteredDevices.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>									
+								</div>
+							</td> {% endcomment %}
+							<td class='moredetailsbtn'>
+								<a href = /staff/staffviewdevicedetails/{{ RegisteredDevices.devicebrand }}/ >
+									<button>More Details</button>
+								</a>
+							</td>
+						</tr>
+					</div>
+					{% endfor %}
+				</table>
+				<div class='pagesdetailsseection'>
+					<div class='perpagecount'>
+						<div>
+							<div class='selectedNumber'>
+								<p>{{ numberOfDevicesPerPage }}</p>
+								<img src={% static 'inventory/img/selectnav.png' %} />
+							</div>
+							<div class='selectPerPageCountBox'>
+								<div class='selectPerPageCountBoxintro'>
+									<h4>Select number of items to display per page</h4>
+									<img src={% static 'inventory/img/close.png' %} />
+								</div>
+								<hr/>
+								<form method='POST'>
+									{% csrf_token %}
+									<div class='numofitemsperpageout'>
+											<select class='numofitemsperpage' name='numofitemsperpage'>
+												<option value='1'>1</option>
+												<option value='2'>2</option>
+												<option value='3'>3</option>
+												<option value='4'>4</option>
+												<option value='5'>5</option>
+												<option value='6'>6</option>
+												<option value='7'>7</option>
+												<option value='8'>8</option>
+												<option value='9'>9</option>
+												<option value='10'>10</option>
+											</select>
+										<button type='submit'>Activate</button>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div>
+							<p>items per page</p>
+						</div>
+					</div>
+					<div class='perpagecount2'>
+						1-<span>{{ numberOfDevicesPerPage }}</span> items of <i>{{ allUploadedDevicesCount }}</i>
+					</div>
+					<div id="pagination-numbers">
+      
+					</div>
+
+					<div class='pages'>
+						<div id="pagination-numbers"></div>
+						<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
+						<div class='navigation'>
+							<img class='navLeft' id='prev-button' src={% static 'inventory/img/left.png' %} />
+							<img id="next-button" src={% static 'inventory/img/right.png' %} />
+						</div>
+					</div>
+				</div>
+				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY STARTS HERE {% endcomment %}
+				<div class='detailsTabOut'>
+					<div class='detailsTab'>
+						<div class='detailsTabCount'>
+							{% comment %} <img class='detailsTabInner' src={% static 'maintenance/img/close.png' %} /> {% endcomment %}
+							<div class='detailsTabCountInnner'>
+								<strong>  </strong>Request(s) Selected
+							</div>
+						</div>
+						<div class='detailsTabOtherOptions'>
+							{% comment %} <a href = /member/maintenancedetails/{{}} > {% endcomment %}
+							<form method='GET'>
+								{% csrf_token %}
+								<div class='idforedit'>
+									<input name='idforeditmain' hidden />
+								</div>
+								<div class='detailsTabInner detailsTabInnerEdit'>
+									<button type='submit'>
+										<img src={% static 'maintenance/img/edit.png' %} />
+										Edit
+									</button>
+								</div>
+							</form>
+							<div class='notSelectionDelete'>
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='deviceToDelete'>
+										<input name='deviceToDelete' hidden />
+									</div>
+									<div class='detailsTabInner'>
+										<button>
+											<img src={% static 'maintenance/img/delete.png' %} />
+											Delete
+										</button>
+									</div>
+								</form>
+							</div>
+
+							{% comment %} GENERAL SELECTION DELETE BUTTON STARTS HERE {% endcomment %}
+							<div class='detailsTabInner generalSelectionDelete'>
+								<a href = /member/allmaintenancereqdelete/ >
+									<button>
+										<img src={% static 'maintenance/img/delete.png' %} />
+										Delete
+									</button>
+								</a>
+							</div>
+							{% comment %} GENERAL SELECTION DELETE BUTTON ENDS HERE {% endcomment %}
+							<form method = 'GET'>
+								{% csrf_token %}
+								<div class='viewdetailsdetails'>
+									<input hidden name='viewdetailsdetails' />
+								</div>
+								<div class='detailsTabInner detailsTabInnerViewDetails'>
+									<button type='submit'>
+										<img src={% static 'maintenance/img/details.png' %} />
+										View Details
+									</button>
+								</div>
+							</form>
+							<div class='notSelectionExport'>
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='ExportDataHere'>
+										<input name='dataToExport' hidden />
+									</div>
+										<div class='detailsTabInner'>
+											<img src={% static 'maintenance/img/export2.png' %} />
+											<button type='submit'>Export</button>
+										</div>
+								</form>
+							</div>
+
+							{% comment %} GENRAL SELCTION EXPORT BUTTON STARTS HERE {% endcomment %}
+							<div class='detailsTabInner generalSelectionExport'>
+								<a href = /member/exportdevices/  >
+									<img src={% static 'maintenance/img/export2.png' %} />
+									<button type='submit'>Export</button>
+								</a>
+							</div>
+							{% comment %} GENERAL SELECTION EXPORT BUTTON ENDS HERE {% endcomment %}
+
+							{% comment %} <a href= /member/exportmaintenance/ >
+								<div class='detailsTabInner'>
+									<img src={% static 'maintenance/img/export2.png' %} />
+									Export
+								</div>
+							</a> {% endcomment %}
+						</div>
+					</div>
+				</div>
+				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
+			</div>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
+		<div class='registerDevice'>
+			<form method = 'POST'>
+				{% csrf_token %}
+				<div class='registerDeviceIntro'>
+					<div>
+						<h1>Add New Device</h1>
+					</div>
+					<div class='closeaddnewdeviceopoup'>
+						<img src={% static 'dashboard/img/close2.png' %} />
+					</div>
+				</div>
+				<div>
+					<div class='adddevicedashboard'>
+						<p>Select device type</p>
+						<select name='devicetype'>
+							<option value='Laptop'>Laptop</option>
+							<option value='Desktop'>Desktop</option>
+							<option value='Printer'>Printer</option>
+							<option value='Scanner'>Scanner</option>
+						</select>
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Name</p>
+						<input name='devicename' type='text'placeholder='Enter Device Name' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device MAC ID</p>
+						<input name='devicemacaddress' type='text'placeholder='Use the format: XX:XX:XX:XX:XX' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device User' Name</p>
+						<input name='deviceuser' type='text'placeholder='Enter Device User Name' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device IP Address</p>
+						<input name='deviceip' type='text'placeholder='Enter Device IP Address' />
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Working Condition</p>
+						<select name='devicestatus'>
+							<option value='Working'>Working</option>
+							<option value='Faulty'>Faulty</option>
+							<option value='Critical'>Critical</option>
+						</select>
+					</div>
+					<div class='adddevicedashboard'>
+						<p>Device Location/Department</p>
+						<input name='devicelocation' type='text'placeholder='Enter Device Location/Department' />
+						<input type='text' name='savedevicefromform' value={{request.user}} hidden placeholder='Enter Device Location/Department' />
+					</div>
+				</div>
+				<button type='sum'>Add Device</button>
+			</form>
+		</div>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+					{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+					<div class='uploaddevicepopup'>
+						<div class='uploaddevicepopupintro'>
+							<h1>Upload A CSV File</h1>
+							<div class='uploaddevicepopupintroclose'>
+								<img src={% static 'dashboard/img/close2.png' %} />
+							</div>
+						</div>
+						<ul>
+							<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
+							<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
+						</ul><br/>
+						<form method = 'POST' enctype="multipart/form-data" >
+							{% csrf_token %}
+							<div>
+								<label for="images" class="drop-container">
+									<img src={% static 'dashboard/img/csv.png' %} />
+									<input type='text' hidden name='username' value = {{request.user}}  />
+									<span class="drop-title">Drag n Drop</span>
+									or
+									<input  name='csv_file' type="file" id="images" accept="csv" required>
+								  </label>
+							</div>
+							<button type='submit'>Upload</button>
+						</form>
+					</div>
+		</div>
+		<script src={% static 'staffdashboard/js/main.js' %}></script>
+		<script src={% static 'staffinventory/js/main.js' %}></script>
+	<body>
+{% endblock content %}
+

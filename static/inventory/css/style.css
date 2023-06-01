@@ -87,7 +87,7 @@ body{
 .filter{
     border: none;
     padding: 15px;
-    width: 70px;
+    width: 155px;
     /* display: flex; */
     align-items: center;
     border-radius: 10px;
@@ -108,10 +108,20 @@ body{
 }
 
 
+
 .filter p{
     margin-top: 10px;
     margin-left: 3px;
     font-size: 1.2rem;
+}
+
+.filteroutter{
+    display: flex;
+    align-items: center;
+}
+
+.filter2{
+    width: 180px;
 }
 
 
@@ -378,6 +388,10 @@ background: #0085b6;
     z-index: 7;
     text-align: left;
     display: none;
+}
+
+.filterbox2{
+    width: 250px;
 }
 
 /* FILTER BY CATEGORY ENDS HERE */

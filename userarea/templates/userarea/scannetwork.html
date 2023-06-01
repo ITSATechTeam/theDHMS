@@ -22,10 +22,22 @@
 	<body class='body'>
 		<div class='main'>
             <div class='mainintro'>
-                <h1>Scan your network</h1>
-                <p>
-                    Kindly follow the outlined steps to quickly discover connected devices
-                </p>
+                <div class='scannetworkintro'>
+                    <div class='scannetworkintroleft'>
+                        <h1>Scan your network</h1>
+                        <p>
+                            Kindly follow the outlined steps to quickly discover connected devices
+                        </p>
+                    </div>
+                    <div id="flash">
+                        {% if messages %} {% for message in messages %}
+                        <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                            <strong style="color: red">{{ message }}</strong>
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+                </div>
+
             </div>
             {% comment %} ALL STAGES FOR NETWORK SCAN STARTS HERE {% endcomment %}
             <div class='allStages'>
@@ -103,13 +115,44 @@
                 {% comment %} <h5 class='previous'>Previous</h5> {% endcomment %}
                 <button class='previous'>Previous</button>
                 <button class='next'>Next</button>
-                <div class='upload'>
+                <div class='upload showdeviceuploadpopup'>
                     <img src={% static 'scannetwork/img/upload.PNG' %} />
                     <button>Upload CSV File</button>
                 </div>
             </div>
         </footer>
+
+        {% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+					<div class='uploaddevicepopup'>
+						<div class='uploaddevicepopupintro'>
+							<h1>Upload A CSV File</h1>
+							<div class='uploaddevicepopupintroclose'>
+								<img src={% static 'dashboard/img/close2.png' %} />
+							</div>
+						</div>
+						<ul>
+							<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
+							<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
+						</ul><br/>
+						<form method = 'POST' enctype="multipart/form-data" >
+							{% csrf_token %}
+							<div>
+								<label for="images" class="drop-container">
+									<img src={% static 'dashboard/img/csv.png' %} />
+									<input type='text' hidden name='username' value = {{request.user}}  />
+									<input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
+									<span class="drop-title">Click To Select File</span>
+									{% comment %} or {% endcomment %}
+									<input  name='csv_file' type="file" id="images" required>
+								  </label>
+							</div>
+							<button type='submit'>Upload</button>
+						</form>
+					</div>
+					{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
+
 		<script src={% static 'scannetwork/js/main.js' %}></script>
+        {% comment %} <script src={% static 'dashboard/js/main.js' %}></script> {% endcomment %}
     </body>
 </html>
 {% endblock content %}

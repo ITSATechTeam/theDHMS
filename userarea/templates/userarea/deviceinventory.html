@@ -112,52 +112,70 @@
 						</form>
 						<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
 					</div>
-					<div class='filter filtercategory'>
-						<img src={% static 'inventory/img/filter.png' %} />
-						<p>Filter</p>
+					
+					<div class='filteroutter'>
+						<div class='filter filtercategory'>
+							<img src={% static 'inventory/img/filter.png' %} />
+							<p>Filter by Category</p>
+						</div>
+						<div class='filter filtercategory filter2'>
+							<img src={% static 'inventory/img/filter.png' %} />
+							<p>Filter by Device Status</p>
+						</div>
 					</div>
 					
-						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
-						<div class='filterbox filterbox1'>
-							<h2>Filter by</h2>
-							<div class='closefilter'>
-								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
-							</div>
-							<div>
-								<form method='GET' action={% url 'Searchresult' %}>
-									<div class='selecthealth'>
+					{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+					<div class='filterbox filterbox1'>
+						<h2>Filter by</h2>
+						<div class='closefilter'>
+							<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+						</div>
+						<div>
+							<form method='GET' action={% url 'Searchresult' %}>
+								
+								<p>Device Category</p>
+								<select name='q'>
+									<option value = 'AllCategory'>All</option>
+									<option value='Desktop'>Desktop</option>
+									<option value='Laptop'>Laptop</option>
+									<option value='Printer'>Printer</option>
+									<option value='Scanner'>Scanner</option>
+									<option value='OtherDevices'>Other Devices</option>
+								</select>
+								<button type='submit'>Filter</button>
+							</form>
+						</div>
+					</div>
+					{% comment %} FILTER BY DEVICE STATUS {% endcomment %}
+					<div class='filterbox filterbox2'>
+						<h2>Filter by</h2>
+						<div class='closefilter2'>
+							<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+						</div>
+						<div>
+							<form method='GET' action={% url 'Searchresult' %}>
+								<div class='selecthealth'>
 									<p>Device Health</p>
 										<select name='q'>
-											<option>All</option>
-											<option value='Desktop'>Healthy</option>
-											<option value='Laptop'>Critical</option>
-											<option value='Printer'>Faulty</option>
+											<option value = 'AllStatus' >All</option>
+											<option value='Working'>Working</option>
+											<option value='Critical'>Critical</option>
+											<option value='Faulty'>Faulty</option>
 										</select>
-									</div>
-									{% comment %} <br/> {% endcomment %}
-									
-									<p>Device Category</p>
-									<select name='q'>
-										<option>All</option>
-										<option value='Desktop'>Desktop</option>
-										<option value='Laptop'>Laptop</option>
-										<option value='Printer'>Printer</option>
-										<option value='Scanner'>Scanner</option>
-										<option value='OtherDevices'>Other Devices</option>
-									</select>
-									<button type='submit'>Filter</button>
-								</form>
-							</div>
+								</div>
+								<button type='submit'>Filter</button>
+							</form>
 						</div>
-						{% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
-					<div class='filter filtercategory'>
+					</div>
+					{% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
+					{% comment %} <div class='filter filtercategory'>
 						<img src={% static 'inventory/img/list.png' %} />
 						<p>List</p>
 					</div>
 					<div class='filter filtercalendar'>
 						<img src={% static 'inventory/img/table.png' %} />
 						<p>Table</p>
-					</div>
+					</div> {% endcomment %}
 				</div>
 				<div class='searchsidebtns'>
 					<div class='uploaddevicecsv showdeviceuploadpopup'>
@@ -183,7 +201,7 @@
 						<input type='radio' />
 					  </th>
 					  <th>ID</th>
-					  <th>Name</th>
+					  <th>Brand</th>
 					  <th>MAC ID</th>
 					  <th>Category</th>
 					  <th>User</th>

@@ -126,6 +126,38 @@ footer{
 }
 
 
+.shadow{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+
+.uploaddevicepopup form button{
+    text-align: center;
+    /* background-color: black; */
+    background-color: #2A66B0;
+    padding-left: 45%;
+    border: none;
+    color: white;
+    width: 100%;
+    font-size: 1.4rem;
+    margin: auto;
+    margin-top: 20px;
+    height: 40px;
+    /* padding: 6px 5px 5px 5px; */
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+
 .upload{
     position: relative;
     cursor: pointer;
@@ -141,4 +173,10 @@ footer{
     top: 10px;
     left: 27px;
     /* background-color: red; */
+}
+
+.scannetworkintro{
+    display: flex;
+    text-align: center;
+    align-items: center;
 }

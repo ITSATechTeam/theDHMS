@@ -65,3 +65,243 @@ body{
 .MaintenanceSelectSectionInner2 {
     margin-top: 5px;
 }
+
+.maintainReqMain{
+    display: flex;
+    background-color: white;
+    border-radius: 10px;
+    width: 270px;
+    /* padding: 2px; */
+    padding-top: 10px;
+    transition: .3s ease-in-out;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.maintainReqMain img{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.maintainReqMainOut{
+    display: flex;
+    width: 97%;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+/* deviceinventorymaintop starts here */
+.deviceinventorymaintop{
+    width: 97%;
+}
+
+.showdeviceuploadpopup button{
+    background-color: #E1E7FC;
+    color: #2A66B0;
+    width: 100px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+.scannetworkbtn button{
+    background-color: #2A66B0;
+    color: white;
+    width: 100%;
+    height: 50px;
+}
+
+.scannetworkbtn img{
+    margin-right: 10px;
+}
+
+.maintainReqMain:hover{
+    transform: scale(1.06);
+}
+
+/* Maintenance request starts edits starts here */
+.Ongoing{
+    background-color: #f2c84c38;
+    color: #F2C94C;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;    
+}
+.Completed{
+    background-color: #21965446;
+    color: #219653;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;    
+}
+.Canceled{
+    background-color: #eb575738;
+    color: #EB5757;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;    
+}
+
+
+/* Maintenance request starts edits ends here */
+/* deviceinventorymaintop ends here */
+
+/* pagesdetailsseection starts here */
+.pagesdetailsseection{
+    margin-bottom: 5px;
+}
+
+.downarrow{
+    text-align: center;
+}
+
+/* detailsTab STARTS HERE */
+
+.detailsTab{
+    background-color: #E1E7FC;
+    padding: 20px 10px;
+    /* height: 50px; */
+    border-top: 2px solid #2A66B0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-size: 1.2rem;
+    position: fixed;
+    bottom: 0px;
+    width: 78%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detailsTabOut{
+    display: none;
+}
+
+.detailsTabCount img{
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    margin-right: 50px;
+}
+
+.detailsTabCount{
+    display: flex;
+    align-items: center;
+}
+
+.detailsTabOtherOptions{
+    display: flex;
+    justify-content: space-between;
+}
+
+.sectionCheckBox p{
+    display: none;
+}
+
+.maintainName strong{
+    display: none;
+}
+
+.detailsTabCountInnner{
+    font-size: 1.3rem;
+}
+
+.detailsTabInner{
+    background-color: transparent;
+    padding: 3px;
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.3rem;
+}
+
+.detailsTabInner button{
+    border: none;
+    background-color: transparent;
+}
+
+.detailsTabInner img{
+    margin-bottom: 2px;
+}
+
+.detailsTabInner:hover{
+    background-color: white;
+}
+
+
+/* detailsTab ENDS HERE */
+
+
+/* pagesdetailsseection ends here */
+
+/* generalSelectionDelete starts here */
+.generalSelectionDelete{
+    display: none;
+}
+
+/* .generalSelectionDelete a{
+    color: grey;
+}
+.generalSelectionExport a{
+    color: grey;
+} */
+
+.generalSelectionExport{
+    display: none;
+
+}
+
+
+/* EDIT MAINTENANCE REQUEST SETTINGS STARTS HERE */
+.editmaintainregform form input{
+    width: 400px;
+    height: 50px;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+    padding: 10px;
+    word-wrap: break-word;
+
+}
+
+.editdevicebtnssect{
+    display: flex;
+    align-items: center;
+}
+
+.editmaintainregform form select{
+    width: 400px;
+    height: 50px;
+    font-size: 1.3rem;
+    padding: 10px;
+    margin-bottom: 10px;
+
+}
+
+.editmaintainregform form button{
+    background-color: #2A66B0;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    width: 100px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+
+}
+
+/* viewdetails ON STAFF PAGE STARTS HERE */
+.viewdetails{
+    background-color: #59A2EA;
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+
+/* viewdetails ON STAFF PAGE ENDS HERE */
