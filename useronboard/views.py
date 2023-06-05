@@ -36,13 +36,10 @@ def SignUpPage(request):
         companyname = request.POST['companyname']
         email = request.POST['companymail']
         phonenumber = request.POST['phonenumber']
+        companyUniqueID = companyname + '-' + email 
         # address = request.POST['address']
         password = request.POST['password']
         rtpassword = request.POST['rtpassword']
-        # address = request.POST['address']
-        # numberofdevices = request.POST['numofdevices']
-        # website = request.POST['website']
-        # Profilepicture = request.FILES.get('profilepic', False)
         
         
         if not request.POST['companyname']:
@@ -78,7 +75,7 @@ def SignUpPage(request):
             form = SignupForm(companyname=companyname, email=email, phone=phonenumber, password=password, repassword=rtpassword)
 
             user = User.objects.create_user(
-                username=companyname, email=email, password=password, first_name=phonenumber, last_name=phonenumber)
+                username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
 
             UserProfileImgDetailsUpdate = UserProfileImage.objects.create(userReg = companyname)
         
@@ -111,7 +108,7 @@ def Login(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Login Successfull')
+            # messages.success(request, 'Login Successfull')
             return redirect('Dashboard')
 
         else:

@@ -212,7 +212,6 @@ closefilter2.addEventListener('click', () =>{
 // TABLE GENERAL SELECTION SETUP STARTS HERE
 const topCheckBox = document.querySelector('.topCheckBox input')
 const sectionCheckBox = document.querySelectorAll('.sectionCheckBox input')
-const sectionCheckBoxEach = document.querySelectorAll('.sectionCheckBoxinput')
 const numberofdevices = parseInt(document.querySelector('.numberofdevices h3').innerHTML)
 console.log(numberofdevices)
 
@@ -222,9 +221,12 @@ let detailsTabOut = document.querySelector('.detailsTabOut')
 let detailsTabInnerEdit = document.querySelector('.detailsTabInnerEdit')
 let detailsTabInnerViewDetails = document.querySelector('.detailsTabInnerViewDetails')
 let selectedRequest = document.querySelector('.sectionCheckBox p')
-let maintainName = document.querySelectorAll('.devicebrandName p')
+let maintainName = document.querySelectorAll('.deviceID p')
 let maintainNameID = document.getElementById('devicebrandName')
 let maintainNameIDMain = document.querySelectorAll('.devicebrandName p')
+maintainNameIDMain.forEach( (e)=>{
+  console.log(e.innerHTML)
+} )
 let maintainNameIDMain2= document.querySelectorAll('.maintainName i')
 let ExportDataHere = document.querySelector('.ExportDataHere input')
 let requesttoviewdetails = document.querySelector('.viewdetailsdetails input')
@@ -286,13 +288,14 @@ let DataArray = []
 let IDArray = []
 function checkBoxFunctions(each){
     each.addEventListener('change', () => {
+      console.log(each)
         maintainNameIDMain.forEach((e) => {
             let eValue = e.innerHTML
             if(eValue.includes(each.value)){
                 DataArray.push(eValue);
                 console.log(DataArray)
                 return DataArray, 
-                ExportDataHere.value = DataArray, 
+                ExportDataHere.value = DataArray,
                 idforedit.value = DataArray, 
                 deviceToDelete.value = DataArray,
                 requesttoviewdetails.value = DataArray

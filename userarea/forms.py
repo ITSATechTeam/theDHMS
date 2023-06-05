@@ -15,13 +15,21 @@ class UpdateUserForm(ModelForm):
 class staffForm(ModelForm):
     class Meta:
         model = StaffDataSet
-        fields = '__all__'
+        fields = ['staff_firstname', 'staff_lastname', 'staff_phonenumber',
+        'staff_email', 'staff_role', 'staff_location'
+        ]
 
 
 class DeviceRegisterForm(ModelForm):
     class Meta:
         model = DeviceRegisterUpload
         fields = '__all__'
+
+
+class UpdateDeviceUser(ModelForm):
+    class Meta:
+        model = DeviceRegisterUpload
+        fields = ['staffUserID']
 
 
 class ProfileImageUpload(ModelForm):

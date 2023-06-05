@@ -56,12 +56,14 @@
                           <td>{{ deviceSearch.created_at }}</td>
                           <td>
 							<div class='actionbtns'>
-								<img src={% static 'dashboard/img/edit.png' %} />
-								<img src={% static 'dashboard/img/delete.png' %} />
+								<a href=/member/editdevice/{{ deviceSearch.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a>
+								<a href= /member/deletedevice/{{ deviceSearch.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a>
 							</div>
 						  </td>
 						  <td class='moredetailsbtn'>
-							<button>More Details</button>
+							<a href = /member/viewdevicedetails/{{ deviceSearch.devicebrand }}/ >
+								<button>More Details</button>
+							</a>
 						  </td>
 					</tr>
 						{% endfor %}

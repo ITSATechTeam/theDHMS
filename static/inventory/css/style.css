@@ -503,3 +503,19 @@ background: #0085b6;
 
 
 /* detailsTab ENDS HERE */
+
+/* registerDevice starts here */
+.registerDevice form{
+    font-size: 1.4rem;
+}
+
+
+/* registerDevice ends here */
+
+.hidethis{
+    display: none;
+}
+
+.hidethis td{
+    display: none;
+}

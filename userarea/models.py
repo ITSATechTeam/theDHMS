@@ -21,15 +21,14 @@ DEVICE_WORKING_CONDITION = (
 
 class StaffDataSet(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    deviceuserfirstname = models.CharField(max_length= 200, null=True, blank = True)
-    deviceuserlastname = models.CharField(max_length= 200, null=True, blank = True)
-    deviceuserphonenumber = models.CharField(max_length= 200, null=True, blank = True)
-    deviceuseremail = models.CharField(max_length= 200, null=True, blank = True)
-    staffDevice = models.CharField(max_length= 200, null=True, blank = True)
-    staffDeviceName = models.CharField(max_length= 200, null=True, blank = True)
-    staffDeviceStatus = models.CharField(max_length= 200, null=True, blank = True)
-    staffrole = models.CharField(max_length= 200, null=True, blank = True)
-    devicelocation = models.CharField(max_length= 200, null=True, blank = True)
+    StaffID = models.CharField(max_length= 200, null=True, blank = True)
+    staff_firstname = models.CharField(max_length= 200, null=True, blank = True)
+    staff_lastname = models.CharField(max_length= 200, null=True, blank = True)
+    staff_phonenumber = models.CharField(max_length= 200, null=True, blank = True)
+    staff_email = models.CharField(max_length= 200, null=True, blank = True)
+    staff_role = models.CharField(max_length= 200, null=True, blank = True)
+    staff_location = models.CharField(max_length= 200, null=True, blank = True)
+    CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
@@ -37,24 +36,22 @@ class StaffDataSet(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.deviceuserfirstname} {self.deviceuserphonenumber}'
+        return f'{self.staff_firstname} {self.staff_lastname}'
 
 
 
 
 class DeviceRegisterUpload(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    # staffUser = models.ForeignKey(StaffDataSet, null=True, on_delete=models.SET_NULL)
     # staffUser = models.ForeignKey(StaffDataSet, null=True, on_delete=models.CASCADE)
     deviceip = models.CharField(max_length = 1500, null=True, blank = True)
     devicename= models.CharField(max_length = 1500, blank = True, null=True)
     devicemacaddress = models.CharField(max_length = 1500, null=True, blank = True)
     devicenetworkadaptercompany = models.CharField(max_length = 1500, null=True, blank = True)
-    deviceuserfirstname = models.CharField(max_length= 200, null=True, blank = True)
-    deviceuserlastname = models.CharField(max_length= 200, null=True, blank = True)
     devicestatus = models.CharField(max_length= 300,choices = DEVICE_HEALTH_STATUS, default = 'Working', null=True, blank = True)
     # devicestatus = models.CharField(max_length = 1500, null=True, blank = True)
     deviceworkgroup = models.CharField(max_length = 1500, null=True, blank = True)
-    deviceusedepartment = models.CharField(max_length = 1500, null=True, blank = True)
     deviceportnumber = models.CharField(max_length = 1500, null=True, blank = True)
     devicemultiplepacket = models.CharField(max_length = 1500, null=True, blank = True)
     index= models.CharField(max_length = 1500, blank = True, null=True)
@@ -63,9 +60,15 @@ class DeviceRegisterUpload(models.Model):
     devicebrand= models.CharField(max_length = 1500, null=True, blank = True)
     deviceos = models.CharField(max_length = 1500, null=True, blank = True)
     devicecostofpurchase = models.CharField(max_length = 1500, null=True, blank = True)
+    deviceusedepartment = models.CharField(max_length = 1500, null=True, blank = True)
+
+    staffUserID = models.CharField(max_length = 1500, default='None')
     deviceuseremail = models.CharField(max_length= 200, null=True, blank = True)
+    deviceuserfirstname = models.CharField(max_length= 200, null=True, blank = True)
+    deviceuserlastname = models.CharField(max_length= 200, null=True, blank = True)
     deviceuserphonenumber = models.CharField(max_length= 200, null=True, blank = True)
     deviceuserdateofresumption = models.CharField(max_length= 200, null=True, blank = True)
+    
     deviceworkingcondition = models.CharField(max_length= 300,choices = DEVICE_WORKING_CONDITION, default = 'Good', null=True, blank = True)
     # deviceworkingcondition = models.CharField(max_length = 1500, null=True, blank = True)
     deviceyearofpurchase = models.CharField(max_length = 1500, null=True, blank = True)
@@ -73,6 +76,7 @@ class DeviceRegisterUpload(models.Model):
     deviceid = models.CharField(max_length = 1500, null=True, blank = True)
     savetimedata = models.CharField(max_length = 1500, null=True, blank = True)
     weekNumberSaved = models.CharField(max_length = 1500, null=True, blank = True)
+    CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
     #
     # date = models.DateField(auto_now=False)
     #
@@ -83,7 +87,7 @@ class DeviceRegisterUpload(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.deviceip} {self.devicename} {self.deviceuserfirstname} {self.devicebrand}'
+        return f'{self.deviceip} {self.devicename} {self.deviceuserfirstname} {self.staffUserID}'
         # return f'{self.firstname} {self.lastname} {self.amountInvested} {self.plan} {self.created_at}'
 
 
@@ -104,7 +108,7 @@ class uploadedDeviceData(models.Model):
 
 class DeviceCountPerPage(models.Model):    
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    count = models.CharField(max_length= 3, default = 4, null=True, blank = True)
+    count = models.CharField(max_length= 10, default = '10')
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
@@ -149,6 +153,7 @@ class MaintenanceRequest(models.Model):
     MaintainDeviceUserFirstname = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceUserLastname = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequesterEmailAddress = models.EmailField(max_length= 300, null=True, blank = True)
+    CompanyUniqueCode = models.EmailField(max_length= 300, null=True, blank = True)
     MaintainRequester = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequestID = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequestDescription = models.CharField(max_length= 30000, null=True, blank = True)
@@ -166,6 +171,7 @@ class MaintenanceRequest(models.Model):
 
 
 class AddedMaintenanceComments(models.Model):
+    commenterEmailAddress = models.EmailField(max_length=300, null=True, blank=True)
     commenter = models.CharField(max_length= 300, null=True, blank = True)
     commentProper = models.CharField(max_length= 300, null=True, blank = True)
     CommentedMaintainDeviceName = models.CharField(max_length= 300, null=True, blank = True)

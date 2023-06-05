@@ -28,6 +28,7 @@ def StaffDashboard(request):
     AprilMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'April')).count()
     MayMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'May')).count()
     JuneMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'June')).count()
+    JuneMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'Jun')).count()
     JulyMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'July')).count()
     AugMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'August')).count()
     SeptMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'September')).count()
@@ -66,13 +67,13 @@ def StaffLogin(request):
 
         if user is not None:
             login(request, user)
-            messages.success(request, 'Login Successfull')
+            # messages.success(request, 'Login Successfull')
             return redirect('StaffDashboard')
 
         else:
             # print(error)
             messages.error(request, 'Login Failed: Please Try Again or Contact Your IT Admin.')
-            return render(request, 'useronboard/stafflogin.html')
+            return redirect('StaffLogin')
 
     return render(request, 'staffapp/stafflogin.html')
 
@@ -116,6 +117,7 @@ def StaffViewDeviceDetails(request, name):
         MaintainRequester = request.POST['MaintainRequester']
         MaintainDeviceUserDepartment = request.POST['MaintainDeviceUserDepartment']
         MaintainDeviceType = request.POST['MaintainDeviceType']
+        CompanyUniqueCode = request.POST['CompanyUniqueCode']
         # currentMonth = request.POST['currentMonthName']
         MaintainRequestID = 'maintain' + '_' + str(randomNumber)
 
@@ -140,7 +142,7 @@ def StaffViewDeviceDetails(request, name):
         # check if any request is already filed for this device
         
 
-        form = MaintenanceRequest.objects.create(user = request.user, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
+        form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = CompanyUniqueCode, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
         MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUserFirstname = MaintainDeviceUserFirstname, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment,
         MaintainDeviceUserLastname = MaintainDeviceUserLastname, MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
         currentMonth = month1, MaintainDeviceType = MaintainDeviceType, MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
@@ -253,16 +255,18 @@ def StaffMaintainanceDetails(request, name):
         CommentedMaintainDeviceUser = request.POST['CommentedMaintainDeviceUser']
         CommentedMaintainRequester = request.POST['CommentedMaintainRequester']
         CommentedMaintainRequestID = request.POST['CommentedMaintainRequestID']
+        commenterEmailAddress = request.POST['commenterEmailAddress']
         form = AddedMaintenanceComments.objects.create(
             commenter = commenter,
             commentProper = addedComentMain,
             CommentedMaintainDeviceName = CommentedMaintainDeviceName,
             CommentedMaintainDeviceUser = CommentedMaintainDeviceUser, 
             CommentedMaintainRequester = CommentedMaintainRequester,
-            CommentedMaintainRequestID = CommentedMaintainRequestID
+            CommentedMaintainRequestID = CommentedMaintainRequestID,
+            commenterEmailAddress = commenterEmailAddress
         )
         form.save()
-
+# AllMaintainDevice
     currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
     AllCommments = AddedMaintenanceComments.objects.all()
     AllMaintainDevice = MaintenanceRequest.objects.get(MaintainRequestID = name)
@@ -279,3 +283,13 @@ def EditStaffMaintainanceDetails(request, name):
         return redirect('StaffMaintainanceDetails', name = name)
     context = {'form':form, 'selectedRequest':selectedRequest}
     return render(request, 'staffapp/staffeditmaintenancereq.html', context)
+
+
+def StaffSolution(request):
+    return render(request, 'staffapp/staffsolution.html')
+
+
+def StaffSetting(request):
+    return render(request, 'staffapp/staffsetting.html')
+
+

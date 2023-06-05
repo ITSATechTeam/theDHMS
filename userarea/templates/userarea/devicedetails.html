@@ -93,9 +93,10 @@
 						<input type = 'text' hidden name='MaintainDeviceLocation' placeholder='device location' value = {{ currentDeviceList.devicelocation }} />
 						<input type = 'text' hidden name='MaintainDeviceUserFirstname' placeholder='device user' value = {{ currentDeviceList.deviceuserfirstname }} />
 						<input type = 'text' hidden name='MaintainDeviceUserLastname' placeholder='device user' value = {{ currentDeviceList.deviceuserlastname }} />
-						<input type = 'text' hidden name='MaintainDeviceType' placeholder='device user' value = {{ currentDeviceList.devicetype }} />
-						<input type = 'text' hidden name='MaintainDeviceUserDepartment' placeholder='device user' value = {{ currentDeviceList.deviceusedepartment }} />
-						<input type = 'text' hidden name='MaintainRequesterEmailAddress' placeholder='device user' value = {{request.user.email}} />
+						<input type = 'text' hidden name='MaintainDeviceType' placeholder='device type' value = {{ currentDeviceList.devicetype }} />
+						<input type = 'text' hidden name='MaintainDeviceUserDepartment' placeholder='device dept' value = {{ currentDeviceList.deviceusedepartment }} />
+						<input type = 'text' hidden name='MaintainRequesterEmailAddress' placeholder='device requester email' value = {{request.user.email}} />
+						<input type = 'text' hidden name='CompanyUniqueCode' placeholder='device company unique code' value = {{request.user.last_name}} />
 						<input type = 'text' hidden name='MaintainRequester' placeholder='device maintenance requester' value = {{request.user}} />
 						<div class='currentMonth'><input hidden type = 'text' name='currentMonthName'  /></div>
 						{% comment %} <input type = 'text' name='MaintainDeviceLocation' placeholder='device' value = /> {% endcomment %}
@@ -105,6 +106,13 @@
 				</form>
 			</div>
 			{% comment %} FILE MAINTENANCE REQUEST FORM SECTION ENDS HERE {% endcomment %}
+			{% comment %} DEVICE MAINTENANCE HISTORY SECTION STARTS HERE {% endcomment %}
+
+			<div>
+				
+			</div>
+
+			{% comment %} DEVICE MAINTENANCE HISTORY SECTION ENDS HERE {% endcomment %}
 		<script src={% static 'devicedetails/js/main.js' %}></script>
 	<body>
 {% endblock content %}

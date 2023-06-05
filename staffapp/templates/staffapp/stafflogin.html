@@ -29,9 +29,9 @@
                 </div>
                     <div class='registerform'>
                         <h4>Welcome To Staff Login Access</h4>
-                            <h6>Please enter your registered email address and phone number to access your account. <br/></h6>
+                            <h6>Please enter your registered email address and StaffID to access your account. <br/></h6>
                         <p>
-                            If you do not know your registered account yet, please your company IT Admin to assign one.
+                            If you do not know your registered details yet, please your company IT Admin to assign one.
                         </p>
 				
                         <div id="flash">
@@ -50,6 +50,7 @@
                             </div>
                             <div class='formsection passwordinput'>
                                 <p>Password</p>
+                                {% comment %} <input name='staffphonenumber' class='password' type='password' placeholder='********' /> {% endcomment %}
                                 <input name='staffphonenumber' class='password' type='password' placeholder='********' />
                                 <div class='pwdlock'>
                                     <img src={% static 'login/img/lock.png' %} />

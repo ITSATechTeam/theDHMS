@@ -104,6 +104,7 @@
 								<input name='CommentedMaintainDeviceUser' value = "{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }}" hidden />
 								<input name='CommentedMaintainRequester' value = {{ AllMaintainDevice.MaintainRequester }} hidden />
 								<input name='CommentedMaintainRequestID' value = {{ AllMaintainDevice.MaintainRequestID }} hidden />
+								<input name='commenterEmailAddress' value = {{ request.user.username }} hidden />
 								<textarea name='addedComment'></textarea><br/>
 								<div class='addcommentproperbtns'>
 									<h5 class='addcommentcancel'>Cancel</h5>
@@ -131,12 +132,14 @@
 										<img src={% static 'maintenance/img/edit.png' %} />
 										<h4>Edit</h4>
 									</div> {% endcomment %}
+									{% if request.user.username == AllCommments.commenterEmailAddress %}
 									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllMaintainDevice.MaintainRequestID}}/  >
 										<div class='editcomment'>
 											<img src={% static 'maintenance/img/delete.png' %} />
 											<h4>Delete</h4>
 										</div>
 									</a>
+									{% endif %}
 								</div>
 							</div>
 							<div class='maincommentproper'>

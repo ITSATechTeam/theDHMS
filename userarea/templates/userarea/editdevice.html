@@ -84,10 +84,16 @@
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
-                                    <h4>Device Working Condition:</h4>
+                                    <h4>Device Staff User:</h4>
                                 </label>
                                 <br/>
-                                {{ form.deviceworkingcondition }}
+                                <select name='staffUserID' class="player-dropdown">
+                                    <option value="None">Select A New Device User</option>
+                                <option value="None">None [Remove Exisiting User]</option>
+                                    {% for AllStaffMembers in AllStaffMembers %}
+                                    <option value={{AllStaffMembers.StaffID}}>{{AllStaffMembers.staff_firstname}} {{AllStaffMembers.staff_lastname}}[{{AllStaffMembers.StaffID}}]</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
@@ -135,7 +141,7 @@
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
-                                    <h4>Device Cost Of Purchase:</h4>
+                                    <h4>Device Cost Of Purchase[₦]:</h4>
                                 </label>
                                 <br/>
                                 {{ form.devicecostofpurchase }}
@@ -150,35 +156,8 @@
                         </div>
                     </div>
                     <br/>
+                    <input type='text' hidden name='CompanyUniqueCode' value={{request.user.last_name}} />
                     <button type="submit">Save</button>
-                    {% comment %} <div class='editDeviceUser'>
-                        <hr/>
-                        <br/>
-                        <h1>This device's user details can be changed below:</h1>
-                        <br/>
-                        <div class="fieldWrapper">
-                            <label for="id_email">
-                                <h4>Device's User Name:</h4>
-                            </label>
-                            <br/>
-                            {{ form.deviceuser }}
-                        </div>
-                        <div class="fieldWrapper">
-                            <label for="id_email">
-                                <h4>Device's User Email Address:</h4>
-                            </label>
-                            <br/>
-                            {{ form.deviceuseremail }}
-                        </div>
-                        <div class="fieldWrapper">
-                            <label for="id_email">
-                                <h4>Device's User Phone Number:</h4>
-                            </label>
-                            <br/>
-                            {{ form.deviceuserphonenumber }}
-                        </div>
-                    </div> {% endcomment %}
-                    {% comment %} <button type="submit">Save</button> {% endcomment %}
                 </form>
             </div>
 

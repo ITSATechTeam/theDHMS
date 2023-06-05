@@ -23,10 +23,10 @@
 		<div class='main'>
 			<div class='maintop'>
                 <div>
-                    <h5><a href={% url 'DeviceInventory' %}>Devices Inventory </a> > {{ MainDeviceData.deviceid }} </h5>
+                    <h5><a href={% url 'StaffMembers' %}>View All Staff Members </a> > {{ MainDeviceData.deviceid }} </h5>
                     <br/>
 					<h1>Edit Device Data</h1>
-					<h5>You can make changes to <span>{{ currentStaff.deviceuserfirstname }} {{ currentStaff.deviceuserlastname }}'s details</span>:</h5>
+					<h5>You can make changes to <span>{{ currentStaff.staff_firstname }} {{ currentStaff.staff_lastname }}'s details</span>:</h5>
 				</div>
 				
 				<div id="flash">
@@ -55,36 +55,38 @@
                                     <h4>Staff's First Name: </h4>
                                 </label>
                                 <br/>
-                                {{ form.deviceuserfirstname }}
+                                {{ form.staff_firstname }}
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_lastname">
                                     <h4>Staff's Last Name: </h4>
                                 </label>
                                 <br/>
-                                {{ form.deviceuserlastname }}
+                                {{ form.staff_lastname }}
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
                                     <h4>Staff's Phone Number:</h4>
                                 </label>
                                 <br/>
-                                {{ form.deviceuserphonenumber }}
+
+                                {{ form.staff_phonenumber }}
                             </div>
-                            <div class="fieldWrapper">
+                            {% comment %} <div class="fieldWrapper">
                                 <label for="id_email">
                                     <h4>Staff's Device Name:</h4>
                                 </label>
                                 <br/>
-                                {{ form.staffDeviceName }}
-                            </div>
-                            <div class="fieldWrapper">
+                                <input value = {{form.StaffID}} />
+                                {{ form.StaffID }}
+                            </div> {% endcomment %}
+                            {% comment %} <div class="fieldWrapper">
                                 <label for="id_email">
                                     <h4>Staff's Device ID:</h4>
                                 </label>
                                 <br/>
                                 {{ form.staffDevice }}
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                         <div class='formSectionTwo'>
                             <div class="fieldWrapper">
@@ -92,32 +94,35 @@
                                     <h4>Staff's Email Address:</h4>
                                 </label>
                                 <br/>
-                                {{ form.deviceuseremail }}
+                                {{ form.staff_email }}
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
-                                    <h4>Staff's Role:</h4>
+                                    <h4>Staff's Department:</h4>
                                 </label>
                                 <br/>
-                                {{ form.staffrole }}
+                                {{ form.staff_role }}
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
                                     <h4>Staff's Location:</h4>
                                 </label>
                                 <br/>
-                                {{ form.devicelocation }}
+                                {{ form.staff_location }}
                             </div>
-                            <div class="fieldWrapper">
+                            {% comment %} <div class="fieldWrapper">
                                 <label for="id_email">
                                     <h4>Staff's Device Status[Faulty or Working]:</h4>
                                 </label>
                                 <br/>
                                 {{ form.staffDeviceStatus }}
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                     </div>
                     <br/>
+                    <input type='text' name='form.staff_phonenumber' value={{ currentStaff.staff_phonenumber }} />
+                    <input type='text' name='form.staff_email' value={{ currentStaff.staff_email }} />
+                    <input type='text' hidden name='CompanyUniqueCode' value={{request.user.last_name}} />
                     <button type="submit">Save</button>
                 </form>
             </div>

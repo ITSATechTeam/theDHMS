@@ -117,6 +117,7 @@
 						<input type = 'text' hidden name='MaintainDeviceUserDepartment' placeholder='device user' value = {{ currentDeviceList.deviceusedepartment }} />
 						<input type = 'text' hidden name='MaintainRequesterEmailAddress' placeholder='device user' value = {{request.user.username}} />
 						<input type = 'text' hidden name='MaintainRequester' placeholder='device maintenance requester' value = {{request.user.last_name}} />
+						<input type = 'text' hidden name='CompanyUniqueCode' placeholder='device maintenance requester' value = {{request.user.first_name}} />
 						<div class='currentMonth'><input hidden type = 'text' name='currentMonthName'  /></div>
 						{% comment %} <input type = 'text' name='MaintainDeviceLocation' placeholder='device' value = /> {% endcomment %}
 						

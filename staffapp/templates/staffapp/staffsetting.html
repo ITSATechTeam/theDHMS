@@ -1,0 +1,59 @@
+<!-- @format -->
+{% include 'staffgeneral.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}>
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'maintenance/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'maintenance/css/maintainrequestdetailscss.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Staff Settings | ITSA Inventory System</title>
+	</head>
+	<div class='shadow'></div>
+	<body class='body'>
+		{% comment %} MAIN STARTS HERE {% endcomment %}
+		<div class='main'>
+			<h4> <a href = {% url 'Maintainance' %} >Dashboard</a> > Settings</h4><br/>
+			<div class='subIntroSection'>
+				<div class='subIntroSectioninner'>
+					<div>
+						<h1>Settings</h1>
+						<h5>
+							Make or request changes on your account.
+						</h5>
+					</div>
+					
+				
+					<div id="flash">
+						{% if messages %} {% for message in messages %}
+						<div class="alert alert-{{ message.tags}} m-0" role="alert">
+							<strong style="color: red">{{ message }}</strong>
+						</div>
+						{% endfor %} {% endif %}
+					</div>
+					
+					<div class='scannetworkbtn'>
+						{% comment %} <button>
+							<img src={% static 'maintenance/img/support.png' %} />
+							<p>Contact ITSA Support</p>
+						</button> {% endcomment %}
+					</div>
+				</div>
+			</div><br/><br/>
+			<hr/>
+		<script src={% static 'maintenance/js/maintainrequestdetails.js' %}></script>
+    </body>
+</html>
+{% endblock content %}

@@ -60,36 +60,45 @@
 				<table>
 					<tr>
 					  <th>
-              <input type='checkbox' />
+              <input type='radio' />
             </th>
 					  <th>Staff's Name</th>
 					  <th>Contact Number</th>
 					  <th>Email Address</th>
-					  <th>Assigned Device</th>
-					  <th>Device ID</th>
-					  <th>Device Status</th>
+					  <th>Staff Unique ID</th>
+					  <th>Staff Unit</th>
+					  <th>Device Device(s) ID</th>
+					  {% comment %} <th>Device Status</th> {% endcomment %}
 					  <th>Action</th>
 					  <th>More Info</th>
 					</tr>
           {% for staffMembers in staffMembers %}
           {% comment %} {% for allUploadedDevices in allUploadedDevices %} {% endcomment %}
-          {% if staffMembers.user == request.user %}
+          {% comment %} {% if staffMembers.user == request.user %} {% endcomment %}
           {% comment %} {% if allUploadedDevices.deviceid == staffMembers.staffDevice %} {% endcomment %}
 					<tr>
 					  <td>
-						<input type='checkbox' />
+						<input type='radio' />
 					  </td>
-					  <td>
-              <a href = /member/staffdetails/{{ staffMembers.id }}/ >
-                {{ staffMembers.deviceuserfirstname }} {{ staffMembers.deviceuserlastname }}
-              </a>
+					  <td class='staffassigneddevice'>
+              <strong><a href = /member/staffdetails/{{ staffMembers.id }}/ >
+                {{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }}
+              </a></strong>
             </td>
-					  <td>{{ staffMembers.deviceuserphonenumber }}</td>
-					  <td>{{ staffMembers.deviceuseremail }}</td>
+					  <td>{{ staffMembers.staff_phonenumber }}</td>
+					  <td>{{ staffMembers.staff_email }}</td>
 					  {% comment %} <td><a href="mailto={{ staffMembers.deviceuseremail }}">{{ staffMembers.deviceuseremail }}</a></td> {% endcomment %}
-					  <td><p>{{ staffMembers.staffDeviceName }}</p></td>
-					  <td><a href=''>{{ staffMembers.staffDevice }}</a></td>
-					  <td class={{ staffMembers.staffDeviceStatus }} >{{ staffMembers.staffDeviceStatus }}</td>
+					  <td><p>{{ staffMembers.StaffID }}</p></td>
+					  <td><p>{{ staffMembers.staff_role }}</p></td>
+					  <td class='staffassigneddevice'>
+              {% comment %} <a href=''>{{ staffMembers.staffDevice }}</a> {% endcomment %}
+              {% for allDevices in allDevices %}
+              {% if allDevices.staffUserID == staffMembers.StaffID %}
+              <strong> <a href = /member/viewdevicedetails/{{ allDevices.deviceid }}/ >>{{ allDevices.deviceid }}</a></strong><br/>
+              {% endif %}
+              {% endfor %}
+            </td>
+					  {% comment %} <td class={{ staffMembers.staff_DeviceStatus }} >{{ staffMembers.staff_DeviceStatus }}</td> {% endcomment %}
 					  <td>
               <div class='actionbtns'>
                 <button><a href= /member/editstaffdetails/{{ staffMembers.id }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
@@ -97,10 +106,12 @@
               </div>
 					  </td>
 					  <td class='moredetailsbtn'>
-						<button>More Details</button>
+						<a href = /member/staffdetails/{{ staffMembers.id }}/ >
+              <button>More Details</button>
+            </a>
 					  </td>
 					</tr>
-          {% endif %}
+          {% comment %} {% endif %} {% endcomment %}
           {% comment %} {% endfor %} {% endcomment %}
           {% endfor %}
 				</table>
@@ -147,15 +158,18 @@
                     <img src={% static 'dashboard/img/close.png' %} />
                 </div>
             </div>
-            <p>User Information</p>
-            <form>
+            <p>Staff Information</p>
+            <form method='POST'>
+              {% csrf_token %}
                 <div>
-                    <input type='text' placeholder='Staff Name' /><br/>
-                    <input type='email' placeholder='Staff Email' />
-                    <input type='staffrole' placeholder='Staff Role' />
+                    <input name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/>
+                    <input name='staff_firstname' type='text' placeholder='Staff First Name' /><br/>
+                    <input name='staff_lastname' type='text' placeholder='Staff Last Name' /><br/>
+                    <input name='staff_email' type='email' placeholder='Staff Official Email Address' />
+                    <input name='staff_role' type='text' placeholder='Staff Role/Department' />
                 </div>
                 <div class='phonenumbersection'>
-                    <div>
+                    {% comment %} <div>
                         <select name="countryCode" id="">
                             <option data-countryCode="GB" value="44" Selected>Norway (+47)</option>
                             <option data-countryCode="US" value="1">UK (+44)</option>
@@ -379,8 +393,9 @@
                                 <option data-countryCode="ZW" value="263">Zimbabwe (+263)</option>
                             </optgroup>
                         </select>
-                    </div>
-                    <input type='tel' placeholder="123456"/>
+                    </div> {% endcomment %}
+                    <input name='staff_phonenumber' type='tel' placeholder="Staff Official Phone Number"/>
+                    <input name='staff_location' type='text' placeholder="Staff Location"/>
                 </div>
                 <button type='submit'>Register Staff</button>
             </form>

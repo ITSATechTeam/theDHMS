@@ -194,3 +194,100 @@ select{
 
 
 /* staffimgsection ends here */
+
+.ctaction strong a{
+    color: #2A66B0;
+}
+
+
+.shadow{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+/* UPLOAD/REGISTER A DEVICE POP UP STARTS HERE */
+.registerDeviceIntro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.registerDeviceIntro img{
+    cursor: pointer;
+}
+
+
+.registerDevice{
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 25px;
+    position: fixed;
+    height: 95vh;
+    overflow-y: scroll;
+    top: 2%;
+    left: 40%;
+    z-index: 7;
+    display: none;
+}
+
+.registerDevice form{
+    font-size: 1.4rem;
+}
+
+.registerDevice input{
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: rgb(226, 226, 226) solid .8px;
+    padding: 5px;
+    font-family: 1.1rem;
+}
+
+.registerDevice select{
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: rgb(226, 226, 226) solid .8px;
+    padding: 5px;
+    font-family: 1.1rem;
+}
+
+
+.registerDevice button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.adddevicedashboard{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+.orline{
+    /* display: flex; */
+    text-align: center;
+    /* background-color: red; */
+    margin: auto;
+}
+
+/* UPLOAD/REGISTER A DEVICE POP UP ENDS HERE */

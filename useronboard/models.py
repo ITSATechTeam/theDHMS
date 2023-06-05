@@ -23,6 +23,7 @@ class UserProfileImage(models.Model):
 class SignupForm(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     companyname = models.CharField(max_length=200, null=True, blank=True)
+    companyUniqueID = models.CharField(max_length=200, null=True, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
     phone = models.CharField(max_length=200, null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)

@@ -7,6 +7,7 @@
 
 body{
     overflow-x: hidden;
+    /* font-size: 3.3rem; */
 }
 
 .main{
@@ -79,7 +80,9 @@ body{
 /* REGISTER USER SECTION STARTS HERE */
 .regsiteruser{
     position: absolute;
-    top: 20%;
+    top: 10%;
+    height: 85%;
+    overflow-y: scroll;
     margin-left: 45%;
     background-color: white;
     padding: 17px;
@@ -156,11 +159,12 @@ body{
 /* REGISTER USER SECTION ENDS HERE */
 
 .shadow1{
-    position: absolute;
+    position: fixed;
     margin-left: 220px;
-    height: 100vh;
-    width: 100%;
-    /* background-color: red; */
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
     background-color: rgba(0, 0, 0, 0.233);
     z-index: 6;
     transition: 0.5s ease-in-out;
@@ -184,9 +188,20 @@ form select{
 }
 
 
+table{
+    font-size: 1.3rem;
+}
 
 table a{
     color: #2A66B0;
     cursor: pointer;
     font-weight: bold;
 }
+
+/* staffassigneddevice starts here */
+.staffassigneddevice strong a{
+    color: #2A66B0;
+}
+
+
+/* staffassigneddevice ends here */

@@ -30,7 +30,8 @@
 				<div id="flash">
 					{% if messages %} {% for message in messages %}
 					<div class="alert alert-{{ message.tags}} m-0" role="alert">
-						<strong style="color: red">{{ message }}</strong>
+						<strong style="color: red"><h4>{{ message }}</h4></strong>
+						{% comment %} <strong style="color: #2A66B0"><h4>{{ message }}</h4></strong> {% endcomment %}
 					</div>
 					{% endfor %} {% endif %}
 				</div>
@@ -201,12 +202,21 @@
 						<input type='radio' />
 					  </th>
 					  <th>ID</th>
-					  <th>Brand</th>
-					  <th>MAC ID</th>
+					  {% comment %} <th>Brand</th> {% endcomment %}
+					  {% comment %} <th>MAC ID</th> {% endcomment %}
 					  <th>Category</th>
-					  <th>User</th>
+					  
+					  {% comment %} {% for AllStaffMembers in AllStaffMembers %}
+					  {% for allUploadedDevices in allUploadedDevices %} {% endcomment %}
+					  {% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+					  {% comment %} <th>Staff User ID</th> {% endcomment %}
+					  <th>Staff User Name</th>
+					  {% endif %}
+					  {% comment %} {% endfor %}
+					  {% endfor %} {% endcomment %}
 					  <th>Status</th>
-					  <th>Location</th>
+					  <th>Department/<br/>Unit</th>
+					  <th>Device <br/>Depreciation<br/> Rate</th>
 					  <th>Date Uploaded</th>
 					  <th>Action</th>
 					  <th>More Info</th>
@@ -215,17 +225,29 @@
 					<div class='item'>
 						<tr class='item'>
 							<td class='sectionCheckBox'>
-								<input class='sectionCheckBoxinput' type='radio' value={{ allUploadedDevices.devicebrand }} />
+								<input class='sectionCheckBoxinput' type='radio' value={{ allUploadedDevices.deviceid }} />
 							</td>
-							<td>{{ allUploadedDevices.deviceid }}</td>
-							<td class='devicebrandName'>
-								<p>{{ allUploadedDevices.devicebrand }}</p>
-							</td>
-							<td>{{ allUploadedDevices.devicemacaddress }}</td>
+							<td class='devicebrandName'><p>{{ allUploadedDevices.deviceid }}</p></td>
+							<div class='hidethis deviceID'>
+								{% comment %} <td class='devicebrandName'><p>{{ allUploadedDevices.devicebrand }}</p></td> {% endcomment %}
+								<p>{{ allUploadedDevices.deviceid }}</p>
+							</div>
+							{% comment %} <td>{{ allUploadedDevices.devicemacaddress }}</td> {% endcomment %}
 							<td>{{ allUploadedDevices.devicetype }}</td>
-							<td><a href=''>{{ allUploadedDevices.deviceuser }}</a></td>
+
+							
+							<td class='link enterStaffUser'>
+								{% for AllStaffMembers in AllStaffMembers %}
+								{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+								<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+								{% endif %}
+								{% endfor %}
+						  	</td>
+
+							{% comment %} <td><a href=''>{{ AllStaffMembers.StaffID }}</a></td> {% endcomment %}
 							<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-							<td>{{ allUploadedDevices.devicelocation }}</td>
+							<td>{{ allUploadedDevices.deviceusedepartment }}</td>
+							<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
 							<td>{{ allUploadedDevices.created_at }}</td>
 							<td>
 								<div class='actionbtns'>
@@ -236,7 +258,7 @@
 								</div>
 							</td>
 							<td class='moredetailsbtn'>
-								<a href = /member/viewdevicedetails/{{ allUploadedDevices.devicebrand }}/ >
+								<a href = /member/viewdevicedetails/{{ allUploadedDevices.deviceid }}/ >
 									<button>More Details</button>
 								</a>
 							</td>
@@ -337,7 +359,7 @@
 
 							{% comment %} GENERAL SELECTION DELETE BUTTON STARTS HERE {% endcomment %}
 							<div class='detailsTabInner generalSelectionDelete'>
-								<a href = /member/allmaintenancereqdelete/ >
+								<a href = /member/alldevicedelete/ >
 									<button>
 										<img src={% static 'maintenance/img/delete.png' %} />
 										Delete
@@ -397,81 +419,102 @@
 				<div class='registerDeviceIntro'>
 					<div>
 						<h1>Add New Device</h1>
-					</div>
+					</div><br/><br/><br/><br/>
 					<div class='closeaddnewdeviceopoup'>
 						<img src={% static 'dashboard/img/close2.png' %} />
 					</div>
 				</div>
 				<div>
 					<div class='adddevicedashboard'>
-						<p>Select device type</p>
+						{% comment %} <p>Select device type</p> {% endcomment %}
 						<select name='devicetype'>
+							<option>Select Device Kind</option>
 							<option value='Laptop'>Laptop</option>
 							<option value='Desktop'>Desktop</option>
 							<option value='Printer'>Printer</option>
 							<option value='Scanner'>Scanner</option>
 						</select>
-					</div>
+					</div><br/>
+					<input name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
+
+					<input name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
+
+					<input name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
+
+					<input name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
+
+					<input name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
+
+					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/>
+
 					<div class='adddevicedashboard'>
-						<p>Device Name</p>
+						{% comment %} <p>Device Name</p> {% endcomment %}
 						<input name='devicename' type='text'placeholder='Enter Device Name' />
-					</div>
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device MAC ID</p>
-						<input name='devicemacaddress' type='text'placeholder='Use the format: XX:XX:XX:XX:XX' />
-					</div>
+						{% comment %} <p>Device MAC ID</p> {% endcomment %}
+						<input name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device User' Name</p>
-						<input name='deviceuser' type='text'placeholder='Enter Device User Name' />
-					</div>
-					<div class='adddevicedashboard'>
-						<p>Device IP Address</p>
+						{% comment %} <p>Device IP Address</p> {% endcomment %}
 						<input name='deviceip' type='text'placeholder='Enter Device IP Address' />
-					</div>
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device Working Condition</p>
+						{% comment %} <p>Device Working Condition</p> {% endcomment %}
 						<select name='devicestatus'>
+							<option>Select Device Working Condition</option>
 							<option value='Working'>Working</option>
 							<option value='Faulty'>Faulty</option>
 							<option value='Critical'>Critical</option>
 						</select>
-					</div>
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device Location/Department</p>
-						<input name='devicelocation' type='text'placeholder='Enter Device Location/Department' />
-						<input type='text' name='savedevicefromform' value={{request.user}} hidden placeholder='Enter Device Location/Department' />
+						{% comment %} <p>Device Location</p> {% endcomment %}
+						<input name='devicelocation' type='text'placeholder='Enter Device Location' />
+						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
 					</div>
-				</div>
-				<button type='sum'>Add Device</button>
+				</div><br/>
+				<hr/><br/>
+				<h4>Assign Device An Existing Staff Member To This Device(Optional)</h4><br/>
+
+				<select name="staffUserID" class="player-dropdown">
+					<option value='None'>Select A Staff Member</option>
+					{% for AllStaffMembers in AllStaffMembers %}
+						<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
+					{% endfor %}
+				</select><br/><br/>
+
+				<button type='submit'>Add Device</button>
 			</form>
 		</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
-					{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
-					<div class='uploaddevicepopup'>
-						<div class='uploaddevicepopupintro'>
-							<h1>Upload A CSV File</h1>
-							<div class='uploaddevicepopupintroclose'>
-								<img src={% static 'dashboard/img/close2.png' %} />
-							</div>
-						</div>
-						<ul>
-							<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
-							<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
-						</ul><br/>
-						<form method = 'POST' enctype="multipart/form-data" >
-							{% csrf_token %}
-							<div>
-								<label for="images" class="drop-container">
-									<img src={% static 'dashboard/img/csv.png' %} />
-									<input type='text' hidden name='username' value = {{request.user}}  />
-									<span class="drop-title">Drag n Drop</span>
-									or
-									<input  name='csv_file' type="file" id="images" accept="csv" required>
-								  </label>
-							</div>
-							<button type='submit'>Upload</button>
-						</form>
-					</div>
+		{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+		<div class='uploaddevicepopup'>
+			<div class='uploaddevicepopupintro'>
+				<h1>Upload A CSV File</h1>
+				<div class='uploaddevicepopupintroclose'>
+					<img src={% static 'dashboard/img/close2.png' %} />
+				</div>
+			</div>
+			<ul>
+				<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
+				<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
+			</ul><br/>
+			<form method = 'POST' enctype="multipart/form-data" >
+				{% csrf_token %}
+				<div>
+					<label for="images" class="drop-container">
+						<img src={% static 'dashboard/img/csv.png' %} />
+						<input type='text' hidden name='username' value = {{request.user}}  />
+						<span class="drop-title">Drag n Drop</span>
+						or
+						<input  name='csv_file' type="file" id="images" accept="csv" required>
+						</label>
+				</div>
+				<button type='submit'>Upload</button>
+			</form>
+		</div>
+		{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
 		</div>
 		<script src={% static 'inventory/js/main.js' %}>
 			

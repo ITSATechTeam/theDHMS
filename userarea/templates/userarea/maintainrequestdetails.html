@@ -25,7 +25,7 @@
 	<body class='body'>
 		{% comment %} MAIN STARTS HERE {% endcomment %}
 		<div class='main'>
-			<p> <a href = {% url 'Maintainance' %} >Maintenance</a> > Maintenance Request Details</p><br/>
+			<h4> <a href = {% url 'Maintainance' %} >Maintenance</a> > Maintenance Request Details</h4><br/>
 			<div class='subIntroSection'>
 				<div class='subIntroSectioninner'>
 					<div>
@@ -51,14 +51,13 @@
 						</button>
 					</div>
 				</div>
-			</div>
+			</div><br/><br/>
 			{% comment %} MAIN BODY SECTION STARTS HERE {% endcomment %}
 			<div class='bodytopbar'>
-				<div class='bodytopbarinner'>
+				{% comment %} <div class='bodytopbarinner'>
 					<h4 class='maintainreq activebar'>Maintenance Request Details</h4>
 					<h4 class='maintainhistory'>Device Maintenance History</h4>
-					{% comment %} <h4>Add New Maintenance Request</h4> {% endcomment %}
-				</div>
+				</div> {% endcomment %}
 				<hr/>
 				{% comment %} DEVICE DETAILS LIST STARTS HERE {% endcomment %}
 				<div class='devicedetailssection'>
@@ -104,6 +103,7 @@
 								<input name='CommentedMaintainDeviceUser' value = "{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }}" hidden />
 								<input name='CommentedMaintainRequester' value = {{ AllMaintainDevice.MaintainRequester }} hidden />
 								<input name='CommentedMaintainRequestID' value = {{ AllMaintainDevice.MaintainRequestID }} hidden />
+								<input name='commenterEmailAddress' value = {{ request.user.email }} hidden />
 								<textarea name='addedComment'></textarea><br/>
 								<div class='addcommentproperbtns'>
 									<h5 class='addcommentcancel'>Cancel</h5>
@@ -114,7 +114,7 @@
 						{% comment %} ADD COMMENT SECTION ENDS HERE {% endcomment %}
 						<div class='addcommentbtn'>
 							<button class='addcommenttriggerbtn'>Add Comment</button>
-							{% if request.user.username == AllMaintainDevice.MaintainRequesterEmailAddress %}
+							{% if request.user.email == AllMaintainDevice.MaintainRequesterEmailAddress %}
 							<a href = /member/editmaintenancerequest/{{AllMaintainDevice.MaintainRequestID}}/ ><button>Edit Maintenance Request</button></a>
 							{% endif %}
 						</div>
@@ -131,12 +131,14 @@
 										<img src={% static 'maintenance/img/edit.png' %} />
 										<h4>Edit</h4>
 									</div> {% endcomment %}
+									{% if request.user.email == AllCommments.commenterEmailAddress %}
 									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllMaintainDevice.MaintainRequestID}}/  >
 										<div class='editcomment'>
 											<img src={% static 'maintenance/img/delete.png' %} />
 											<h4>Delete</h4>
 										</div>
 									</a>
+									{% endif %}
 								</div>
 							</div>
 							<div class='maincommentproper'>

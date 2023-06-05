@@ -172,9 +172,13 @@
 							</form>
 							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
 						</div>
-						<div class='filter filtercategory'>
+						<div class='filter2 filtercategory'>
 							<img src={% static 'dashboard/img/filter.png' %} />
-							<p>Filter</p>
+							<p>By Health</p>
+						</div>
+						<div class='filter2 filtercategory2'>
+							<img src={% static 'dashboard/img/filter.png' %} />
+							<p>By Category</p>
 						</div>
 						<div class='filter filtercalendar'>
 							<img src={% static 'dashboard/img/Calendar.png' %} />
@@ -197,7 +201,19 @@
 											<option value='Faulty'>Faulty</option>
 										</select>
 									</div>
-									{% comment %} <br/> {% endcomment %}
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+						{% comment %} FILTER BOX 2: FILTER BY CATEGORY STARTS HERE {% endcomment %}
+
+						<div class='filterbox filterbox1A'>
+							<h2>Filter by</h2>
+							<div class='closefilter closefilterA'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
 									<p>Device Category</p>
 									<select name='q'>
 										<option>All</option>
@@ -211,6 +227,9 @@
 								</form>
 							</div>
 						</div>
+						
+						{% comment %} FILTER BOX 2: FILTER BY CATEGORY ENDS HERE {% endcomment %}
+
 						{% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
 						<div class='filterbox filterbox2'>
 							<h2>By Date</h2>
@@ -260,43 +279,46 @@
 				</div>
 				{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
 				<div>
+					{% comment %} {% for AllStaffMembers in AllStaffMembers %}
+					DFFF
+					{{AllStaffMembers.StaffID}}
+					{% endfor %} {% endcomment %}
 					<table>
                         <tr>
                           <th>ID</th>
-                          <th>Name</th>
-                          <th>MAC ID</th>
+                          {% comment %} <th>Brand</th> {% endcomment %}
                           <th>Category</th>
+                          <th>MAC ID</th>
                           <th>User</th>
+                          <th title='Device Depreciation Rate'>DDR</th>
                           <th>Status</th>
-                          <th>Location</th>
+                          <th>Department/Unit</th>
                           <th>Date Uploaded</th>
-                          {% comment %} <th>Action</th> {% endcomment %}
                         </tr>
 						{% for allUploadedDevices in allUploadedDevices %}
-						{% if request.user == allUploadedDevices.user %}
                         <tr>
-                          <td>{{ allUploadedDevices.deviceid }}</td>
-                          <td>{{ allUploadedDevices.devicebrand }}</td>
-                          <td>{{ allUploadedDevices.devicemacaddress }}</td>
+                          <td class='link'><strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong></td>
+                          {% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
                           <td>{{ allUploadedDevices.devicetype }}</td>
-                          <td><a href=''>{{ allUploadedDevices.deviceuserfirstname }} {{ allUploadedDevices.deviceuserlastname }}</a></td>
+                          <td>{{ allUploadedDevices.devicemacaddress }}</td>
+						  <td class='link enterStaffUser'>
+								{% for AllStaffMembers in AllStaffMembers %}
+								{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+								<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+								{% endif %}
+								{% endfor %}
+						  </td>
+                          <td>{{ allUploadedDevices.devicedepreciationrate }}</td>
                           <td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-                          <td>{{ allUploadedDevices.devicelocation }}</td>
+                          <td>{{ allUploadedDevices.deviceusedepartment }}</td>
                           <td>{{ allUploadedDevices.created_at }}</td>
-                          {% comment %} <td>
-							<div class='actionbtns'>
-								<img src={% static 'dashboard/img/edit.png' %} />
-								<img src={% static 'dashboard/img/delete.png' %} />
-							</div>
-						  </td> {% endcomment %}
                         </tr>
-						{% endif %}
 						{% endfor %}
                     </table>
 				</div>
 				{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
 			</div>
-		</div>
+		</div>		
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
 		<div class='registerDevice'>
 			<form method = 'POST'>
@@ -304,66 +326,72 @@
 				<div class='registerDeviceIntro'>
 					<div>
 						<h1>Add New Device</h1>
-					</div>
+					</div><br/><br/><br/><br/>
 					<div class='closeaddnewdeviceopoup'>
 						<img src={% static 'dashboard/img/close2.png' %} />
 					</div>
 				</div>
-				<input hidden name='savetimedata' class='sendsavetimedata' />
 				<div>
 					<div class='adddevicedashboard'>
-						<p>Select device type</p>
+						{% comment %} <p>Select device type</p> {% endcomment %}
 						<select name='devicetype'>
+							<option>Select Device Kind</option>
 							<option value='Laptop'>Laptop</option>
 							<option value='Desktop'>Desktop</option>
 							<option value='Printer'>Printer</option>
 							<option value='Scanner'>Scanner</option>
 						</select>
-					</div>
+					</div><br/>
+					<input name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
+
+					<input name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
+
+					<input name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
+
+					<input name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
+
+					<input name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
+
+					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/>
+
 					<div class='adddevicedashboard'>
-						<p>Device Name</p>
+						{% comment %} <p>Device Name</p> {% endcomment %}
 						<input name='devicename' type='text'placeholder='Enter Device Name' />
-					</div>
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device MAC ID</p>
-						<input name='devicemacaddress' type='text'placeholder='Use the format: XX:XX:XX:XX:XX' />
-					</div>
+						{% comment %} <p>Device MAC ID</p> {% endcomment %}
+						<input name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device User's First Name</p>
-						<input name='deviceuserfirstname' type='text' placeholder="Enter Device User's First Name" />
-					</div>
-					<div class='adddevicedashboard'>
-						<p>Device User's Last Name</p>
-						<input name='deviceuserlastname' type='text'placeholder="Enter Device User's Last Name" />
-					</div>
-					<div class='adddevicedashboard'>
-						<p>Device OS</p>
-						<input name='deviceos' type='text'placeholder='Enter Device Operating System' />
-					</div>
-					<div class='adddevicedashboard'>
-						<p>Device IP Address</p>
+						{% comment %} <p>Device IP Address</p> {% endcomment %}
 						<input name='deviceip' type='text'placeholder='Enter Device IP Address' />
-					</div>
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device Working Condition</p>
+						{% comment %} <p>Device Working Condition</p> {% endcomment %}
 						<select name='devicestatus'>
+							<option>Select Device Working Condition</option>
 							<option value='Working'>Working</option>
 							<option value='Faulty'>Faulty</option>
 							<option value='Critical'>Critical</option>
 						</select>
-					</div>
+					</div><br/>
 					<div class='adddevicedashboard'>
-						<p>Device Location</p>
-						<input name='devicelocation' type='text'placeholder='Enter Device Location/Department' />
+						{% comment %} <p>Device Location</p> {% endcomment %}
+						<input name='devicelocation' type='text'placeholder='Enter Device Location' />
 						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
 					</div>
-					<div class='adddevicedashboard'>
-						<p>Device Department</p>
-						<input name='deviceusedepartment' type='text'placeholder='Enter Device Department' />
-						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
-					</div>
-				</div>
-				<button type='sum'>Add Device</button>
+				</div><br/>
+				<hr/><br/>
+				<h4>Assign Device An Existing Staff Member To This Device(Optional)</h4><br/>
+
+				<select name="staffUserID" class="player-dropdown">
+					<option value='None'>Select A Staff Member</option>
+					{% for AllStaffMembers in AllStaffMembers %}
+						<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
+					{% endfor %}
+				</select><br/><br/>
+
+				<button type='submit'>Add Device</button>
 			</form>
 		</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}

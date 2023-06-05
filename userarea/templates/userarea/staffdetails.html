@@ -7,7 +7,6 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
-		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'editprofile/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'staffdetails/css/style.css' %} />
@@ -17,7 +16,7 @@
     <link rel="stylesheet" href="build/css/intlTelInput.css">
 		<title>Staff Member's Details | ITSA Inventory System</title>
 	</head>
-	<div class='shadow1'></div>
+	<div class='shadow'></div>
 	<body class='body'>
 		<div class='main'>
 			<div class='maintop'>
@@ -38,15 +37,15 @@
                             {% comment %} <img src={% static 'staffdetails/img/user.png' %} /> {% endcomment %}
                             <div class='staffimgsection'>
                                 <h1></h1>
-                                <p class='staffFirstName'>{{ allStaff.deviceuserfirstname }} </p>
-                                <p class='staffLastName'>{{ allStaff.deviceuserlastname }} </p>
+                                <p class='staffFirstName'>{{ allStaff.staff_firstname }} </p>
+                                <p class='staffLastName'>{{ allStaff.staff_lastname }} </p>
                             </div>
                             <div>
-                                <div class='datatext'><span>Name: </span>{{ allStaff.deviceuserfirstname }} {{ allStaff.deviceuserlastname }}<br/></div>
-                                <div class='datatext'><span>Role: </span>{{ allStaff.staffrole }}<br/></div>
-                                <div class='datatext'><span>Location: </span>{{ allStaff.devicelocation }}<br/></div>
-                                <div class='datatext'><span>Email: </span>{{ allStaff.deviceuseremail }}<br/></div>
-                                <div class='datatext'><span>Contact Number: </span>{{ allStaff.deviceuserphonenumber }}<br/></div>
+                                <div class='datatext'><span>Name: </span>{{ allStaff.staff_firstname }} {{ allStaff.staff_lastname }}<br/></div>
+                                <div class='datatext'><span>Role: </span>{{ allStaff.staff_role }}<br/></div>
+                                <div class='datatext'><span>Location: </span>{{ allStaff.staff_location }}<br/></div>
+                                <div class='datatext'><span>Email: </span>{{ allStaff.staff_email }}<br/></div>
+                                <div class='datatext'><span>Contact Number: </span>{{ allStaff.staff_phonenumber }}<br/></div>
                             </div>
                         </div>
                         <div  class='staffdetailsbtnout' >
@@ -97,29 +96,29 @@
                         <table>
                             <tr>
                               <th>
-                                <input type='checkbox' />
+                                <input type='radio' />
                               </th>
                               <th>Device Name</th>
                               <th>Category</th>
                               <th>Device ID</th>
                               <th>Assigned</th>
-                              <th>Device Status</th>
-                              <th>Unassign Device</th>
-                              <th>Device Info</th>
+                              {% comment %} <th>Device Status</th> {% endcomment %}
+                              <th>Action</th>
+                              <th>More Info</th>
                             </tr>
                             {% for allUploadedDevices in allUploadedDevices %}
-                            {% if allUploadedDevices.deviceuser == allStaff.deviceuser %}
+                            {% if allUploadedDevices.staffUserID == allStaff.StaffID %}
                             <tr>
                               <td>
-                                <input type='checkbox' />
+                                <input type='radio' />
                               </td>
-                              <td>{{ allUploadedDevices.devicename }}</td>
+                              <td><strong>{{ allUploadedDevices.devicename }}</strong></td>
                               <td>{{ allUploadedDevices.devicetype }}</td>
-                              <td><a href='#'>{{ allUploadedDevices.deviceid }}</a></td>
+                              <td class='ctaction'><strong><a href= /member/viewdevicedetails/{{ allUploadedDevices.deviceid }}/ >{{ allUploadedDevices.deviceid }}</a></strong></td>
                               <td>{{ allUploadedDevices.created_at  | timesince }} ago</td>
-                              <td class={{ allUploadedDevices.devicestatus }}>
+                              {% comment %} <td class={{ allUploadedDevices.devicestatus }}>
                                 {{ allUploadedDevices.devicestatus }}
-                              </td>
+                              </td> {% endcomment %}
                               <td>
                                 <div class='actionbtns'>
                                     <button><a href=/member/editdevice/{{ allUploadedDevices.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
@@ -127,7 +126,9 @@
                                 </div>
                               </td>
                               <td class='moredetailsbtn'>
-                                <button>More Details</button>
+                                <a href= /member/viewdevicedetails/{{ allUploadedDevices.deviceid }}/>
+                                    <button>More Details</button>
+                                </a>
                               </td>
                             </tr>
                             {% endif %}
@@ -200,7 +201,91 @@
                 </div>
             </div>
         </div>
-		<script src={% static 'inventory/js/main.js' %}></script>
+        {% comment %} ASSIGN DEVICE TO THIS USER POPUP STARTS HERE {% endcomment %}        
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
+		<div class='registerDevice'>
+			<form method = 'POST'>
+				{% csrf_token %}
+				<div class='registerDeviceIntro'>
+					<div>
+						<h1>Assign Device</h1>
+					</div><br/><br/><br/><br/>
+					<div class='closeaddnewdeviceopoup'>
+						<img src={% static 'dashboard/img/close2.png' %} />
+					</div>
+				</div>
+				{% comment %} <div>
+					<hr/><br/>
+					<h4>Assign an existing device to this staff member</h4><br/>
+
+					<select name="deviceToAssign" class="player-dropdown">
+						<option>Select A Device</option>
+						{% for allUploadedDevicesNotAssigned in allUploadedDevicesNotAssigned %}
+							<option value="{{ allUploadedDevicesNotAssigned.deviceid}}">{{ allUploadedDevicesNotAssigned.deviceid }} [{{ allUploadedDevicesNotAssigned.devicename}}]</option>
+						{% endfor %}
+					</select><br/><br/>
+					<div class='orline'>
+						<div><h4>Or</h4></div>
+					</div><br/>
+				</div>  {% endcomment %}
+                <h4>Upload a new device for this staff member</h4><br/>
+				<div>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Select device type</p> {% endcomment %}
+						<select name='devicetype'>
+							<option>Select Device Kind</option>
+							<option value='Laptop'>Laptop</option>
+							<option value='Desktop'>Desktop</option>
+							<option value='Printer'>Printer</option>
+							<option value='Scanner'>Scanner</option>
+						</select>
+					</div><br/>
+					<input name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
+
+					<input name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
+
+					<input name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
+
+					<input name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
+
+					<input name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
+
+					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/>
+
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device Name</p> {% endcomment %}
+						<input name='devicename' type='text'placeholder='Enter Device Name' />
+					</div><br/>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device MAC ID</p> {% endcomment %}
+						<input name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
+					</div><br/>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device IP Address</p> {% endcomment %}
+						<input name='deviceip' type='text'placeholder='Enter Device IP Address' />
+					</div><br/>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device Working Condition</p> {% endcomment %}
+						<select name='devicestatus'>
+							<option>Select Device Working Condition</option>
+							<option value='Working'>Working</option>
+							<option value='Faulty'>Faulty</option>
+							<option value='Critical'>Critical</option>
+						</select>
+					</div><br/>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device Location</p> {% endcomment %}
+						<input name='devicelocation' type='text'placeholder='Enter Device Location' />
+						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
+					</div>
+				</div><br/>
+
+				<button type='submit'>Add Device</button>
+			</form>
+		</div>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+        {% comment %} ASSIGN DEVICE TO THIS USER POPUP ENDS HERE {% endcomment %}
+		{% comment %} <script src={% static 'inventory/js/main.js' %}></script> {% endcomment %}
         <script src={% static 'staffdetails/js/main.js' %}></script>
     </body>
 {% endblock %}
