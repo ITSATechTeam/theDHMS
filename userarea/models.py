@@ -108,7 +108,8 @@ class uploadedDeviceData(models.Model):
 
 class DeviceCountPerPage(models.Model):    
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    count = models.CharField(max_length= 10, default = '10')
+    count = models.IntegerField(default = 10)
+    # count = models.CharField(max_length= 10, default = 10)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
