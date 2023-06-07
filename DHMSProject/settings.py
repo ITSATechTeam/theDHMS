@@ -33,7 +33,24 @@ INSTALLED_APPS = [
     'useronboard.apps.UseronboardConfig',
     'django_countries',
     'staffapp.apps.StaffappConfig',
+    # 
+    
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
+
+# ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW STARTS HERE
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',   
+]
+SITE_ID=1
+
+# ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW ENDS HERE
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -147,12 +164,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # SENDING EMAILS WITH GMAIL
 # SENDING EMAILS WITH GMAIL
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = str(os.getenv('EMAIL_HOST'))
 EMAIL_HOST_PORT = 587
 # EMAIL_HOST_PORT = 25
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'dhmsinventoryapp@gmail.com'
-EMAIL_HOST_PASSWORD = 'vkxvjodeeuingrvo'
+EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
+EMAIL_HOST_PASSWORD =  str(os.getenv('EMAIL_HOST_PASSWORD'))
 
 
 
