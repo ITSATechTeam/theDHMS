@@ -62,8 +62,14 @@ const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 const span = document.querySelector("span");
 const numofitemsperpage = document.querySelector(".numofitemsperpage").value
-const selectedCount = document.querySelector(".selectedNumber p").innerHTML;
+let selectedCount = document.querySelector(".selectedNumber p").innerHTML;
 const pageNumberCount = document.querySelector(".pageNumberCount")
+// 
+
+if (selectedCount === 'None'){
+  selectedCount = '10'
+}
+// 
 const paginationLimit = selectedCount;
 
 
@@ -391,3 +397,12 @@ topCheckBox.addEventListener('change', () => {
   }
 })
 // GENERAL SECTION EFFECT ENDS HERE
+
+// SET DEFAULT VALUE FOR DEVICES DISPLAY COUNT PER PAGE FUNCTIONALITY STARTS HERE
+// let countperpage = document.querySelector('.selectedNumber p').innerHTML
+// if (countperpage === 'None'){
+//   countperpage = '10'
+// }
+// console.log(countperpage)
+
+// SET DEFAULT VALUE FOR DEVICES DISPLAY COUNT PER PAGE FUNCTIONALITY ENDS HERE

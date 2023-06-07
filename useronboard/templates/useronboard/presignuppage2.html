@@ -39,10 +39,24 @@
 						We are thrilled to welcome you to our Device Health Management System! We understand the importance of having a reliable and efficient system to manage the health and performance of your devices, and we are confident that our system will provide you with the tools you need to optimize your operations
 					</p>
 				</div>
-				<a href={% url 'SignUpPage' %}><button>
-					<p>Continue To Signup</p>
-					<img src={% static 'signup/img/arrowright.png' %} />
-				</button></a>
+				<div class='accessButtons'>
+					<div class='accessButtons1'>
+						<a href={% url 'Login' %}>
+							<button>
+								<p>Login</p>
+							</button>
+						</a>
+					</div>
+					
+					<a href={% url 'SignUpPage' %}>
+						<div class='accessButtons2'>
+							<button>
+								<p>Continue To Signup</p>
+								<img src={% static 'signup/img/arrowright.png' %} />
+							</button>
+						</div>
+					</a>
+				</div>
 			</div> 
 		</main>
 	</body>

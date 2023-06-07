@@ -171,6 +171,7 @@ class MaintenanceRequest(models.Model):
 
 
 
+# class AddedMaintenanceComment(models.Model):
 class AddedMaintenanceComments(models.Model):
     commenterEmailAddress = models.EmailField(max_length=300, null=True, blank=True)
     commenter = models.CharField(max_length= 300, null=True, blank = True)

@@ -144,3 +144,29 @@ nav img{
     bottom: 0px;
     width: 100%;
 }
+
+/* accessButtons starts here */
+.accessButtons{
+    display: flex;
+    justify-content: space-around;
+}
+
+.accessButtons button{
+    height: 50px;
+}
+
+.accessButtons2 button{
+    align-items: center;
+}
+
+.accessButtons2 img{
+    margin-bottom: 5px;
+}
+
+.accessButtons1 button{
+    background-color: #E1E7FC;
+    width: 150px;
+    color: #2A65AE;
+}
+
+/* accessButtons ends here */

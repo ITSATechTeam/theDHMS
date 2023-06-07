@@ -18,3 +18,19 @@ for (let i = 0; i < staffLastName.length; i++) {
 staffimgsection.innerHTML = `${firstAlphabetFN}${firstAlphabetLN}`
 
 // PICK STAFF NAME ALPHABETS FOR DP ENDS HERE
+// registerDevice FORM POPUP STARTS HERE
+let registerDevice = document.querySelector('.registerDevice')
+let Shadow = document.querySelector('.shadow')
+let closeaddnewdeviceopoup = document.querySelector('.closeaddnewdeviceopoup')
+let staffdetailsaddtn = document.querySelector('.staffdetailsaddtn button')
+staffdetailsaddtn.addEventListener('click', () => {
+    registerDevice.style.display = 'Block'
+    Shadow.style.display = 'block'
+})
+
+closeaddnewdeviceopoup.addEventListener('click', () => {
+    registerDevice.style.display = 'none'
+    Shadow.style.display = 'none'
+})
+
+// registerDevice FORM POPUP ENDS HERE

@@ -6,7 +6,24 @@ const filterbox2 = document.querySelector('.filterbox2')
 const closefilter = document.querySelector('.closefilter')
 const closefilter2 = document.querySelector('.closefilter2')
 const body = document.querySelector('.body')
+// FILTER BY CATEGORY SECTION STARTS HERE
+const filterbox1A = document.querySelector('.filterbox1A')
+const filtercategory2 = document.querySelector('.filtercategory2')
+const closefilterA = document.querySelector('.closefilterA')
 
+filtercategory2.addEventListener('click', () => {
+    console.log('close filter')
+    shadow.style.display = 'block';
+    filterbox1A.style.display = 'block'
+})
+
+
+closefilterA.addEventListener('click', () => {
+    shadow.style.display = 'none';
+    filterbox1A.style.display = 'none'
+})
+
+// FILTER BY CATEGORY SECTION ENDS HERE
 
 
 
@@ -59,7 +76,7 @@ let showdeviceuploadpopup = document.querySelector('.showdeviceuploadpopup')
 
 
 showdeviceuploadpopup.addEventListener('click', () => {
-    console.log('showdeviceuploadpopup clicked')
+    // console.log('showdeviceuploadpopup clicked')
     uploaddevicepopup.style.display = 'block'
     shadow.style.display = 'block';
 })
@@ -98,8 +115,8 @@ var days = Math.floor((currentDate - startDate) /
 var weekNumber = Math.ceil(days / 7);
 
 // Display the calculated result      
-console.log("Week number of " + currentDate +
-    " is :   " + weekNumber);
+// console.log("Week number of " + currentDate +
+//     " is :   " + weekNumber);
 
 // send in current and previous week number
 thisweek.value = `${weekNumber}`;
@@ -107,16 +124,34 @@ lastweek.value = `${weekNumber- 1}` ;
 
 // current yeah
 let date =  new Date().getFullYear();
-console.log(date);
+// console.log(date);
 
 
 // send main savetimedata pack to db
 const savetimedata = document.querySelector('.sendsavetimedata');
 savetimedata.value = 'currentWeek is week '+ weekNumber +' and this month is ' + currentMonth +' and this year is year '+ date 
-console.log(weekNumber)
+// console.log(weekNumber)
 
 // console.log('currentWeek is   ' + weekNumber +' and this month is  '+ currentMonth +' and this year is ' +date );
 
+// enterStaffUser DEFAULT DATA ALLOCATION FUNCTIONALITY STARTS HERE
+// let enterStaffUser = Array.from(document.querySelectorAll('.enterStaffUser'));
+// let enterStaffUserArr = []
+// console.log(typeof(enterStaffUser))
+// enterStaffUser.forEach(e => {
+//     enterStaffUserArr.push(e)
+//     if(e === ' '){
+//         enterStaffUser = 'None'
+//     }    
+// });
 
+// enterStaffUserArr.forEach(element => {
+//     console.log(element.innerHTML)
+//     if(element.innerHTML === "" ){
+//         element.innerHTML = 'None'
+//     }    
+// });
 
+// console.log(enterStaffUserArr)
 
+// enterStaffUser DEFAULT DATA ALLOCATION FUNCTIONALITY ENDS HERE

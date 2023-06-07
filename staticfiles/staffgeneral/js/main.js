@@ -38,7 +38,7 @@ if (window.location.href.includes('reports')){
 }
 
 
-if (window.location.href.includes('support')){
+if (window.location.href.includes('staffsolution')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     // staffmembers.classList.remove('active')
@@ -55,7 +55,7 @@ if (window.location.href.includes('staffmaintenancerequests') || window.location
     maintain.classList.add('active')
 }
 
-if (window.location.href.includes('setting')){
+if (window.location.href.includes('staffsettings')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     // staffmembers.classList.remove('active')

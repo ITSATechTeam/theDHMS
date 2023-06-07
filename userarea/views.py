@@ -367,7 +367,7 @@ def DeviceInventory(request):
                     uniqueId = 'Device-' + get_random_string(length=5)
                     # DeviceBrandProper = row[14] + '_' + str(randomNumber)
                     # DeviceBrandProper = str(row[14] '·' get_random_string(length=5))
-                    print(DeviceBrandProper)
+                    # print(DeviceBrandProper)
                     # print(len(row))
                     # if row[21] is not None and row[21] != '':
                     if row[21]:
@@ -761,37 +761,54 @@ def StaffMembers(request):
             messages.error(request, 'Staff registration failed: Please provide an email address for this staff.')
             return redirect('StaffMembers')
 
-
-        CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
-        staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
-        staff_location=staff_location, CompanyUniqueCode=CompanyUniqueCode)
-        
-        # CREATE USER ACCOUNT FOR STAFF FUNCTIIONALITY STARTS HERE
-        
-    
-
-        try:
-            print(staff_email)
-            checkUniqueUserMain = User.objects.get(username = staff_email)
-            if checkUniqueUserMain is None:
-                print('checkUniqueUserMain')
-                checkUniqueUser =  User.objects.create_user(
-                username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5])
-                checkUniqueUser.save()
-                CreateStaff.save()
-        except:
+        checkUniqueUserMain = User.objects.filter(username = staff_email)
+        if checkUniqueUserMain:
+            print('checkUniqueUserMain')
             messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
             return redirect('StaffMembers')
-        # CREATE USER ACCOUNT FOR STAFF FUNCTIIONALITY ENDS HERE
+        else:
+            checkUniqueUser =  User.objects.create_user(
+            username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
+
+            CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
+            staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
+            staff_location=staff_location, CompanyUniqueCode=CompanyUniqueCode)
+
+            checkUniqueUser.save()
+            CreateStaff.save()
+            messages.success(request, 'Staff created successfully')
+            return redirect('StaffMembers')
+        
 
 
-        try:
-            # CreateStaff.save()
-            # messages.error(request, 'Staff created successfully')
-            return redirect('StaffMembers')
-        except:
-            messages.error(request, 'Staff was not created, try again')
-            return redirect('StaffMembers')
+        # CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
+        # staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
+        # staff_location=staff_location, CompanyUniqueCode=CompanyUniqueCode)
+        
+        # CREATE USER ACCOUNT FOR STAFF FUNCTIIONALITY STARTS HERE
+
+        # try:
+        #     print(staff_email)
+        #     checkUniqueUserMain = User.objects.get(username = staff_email)
+        #     if checkUniqueUserMain is None:
+        #         print('checkUniqueUserMain')
+        #         checkUniqueUser =  User.objects.create_user(
+        #         username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5])
+        #         checkUniqueUser.save()
+        #         CreateStaff.save()
+        # except:
+        #     messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+        #     return redirect('StaffMembers')
+        # # CREATE USER ACCOUNT FOR STAFF FUNCTIIONALITY ENDS HERE
+
+
+        # try:
+        #     # CreateStaff.save()
+        #     # messages.error(request, 'Staff created successfully')
+        #     return redirect('StaffMembers')
+        # except:
+        #     messages.error(request, 'Staff was not created, try again')
+        #     return redirect('StaffMembers')
 
     staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
     allDevices = DeviceRegisterUpload.objects.all()
