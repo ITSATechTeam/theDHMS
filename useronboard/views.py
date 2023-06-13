@@ -36,7 +36,7 @@ def SignUpPage(request):
         companyname = request.POST['companyname']
         email = request.POST['companymail']
         phonenumber = request.POST['phonenumber']
-        companyUniqueID = companyname + '-' + email 
+        companyUniqueID = companyname + '-' + email
         # address = request.POST['address']
         password = request.POST['password']
         rtpassword = request.POST['rtpassword']
@@ -80,14 +80,14 @@ def SignUpPage(request):
             UserProfileImgDetailsUpdate = UserProfileImage.objects.create(userReg = companyname)
         
             form.save()
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             form.save()
             user.save(False)
             # serProfileImgDetailsUpdate = UserProfileImage.objects.create(user = user.username, userReg = companyname)
             # user.save()
             UserProfileImgDetailsUpdate.save()
 
-            return redirect('Login')
+            return redirect('Dashboard')
     return render(request, 'useronboard/signup.html')
 
 

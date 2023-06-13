@@ -162,7 +162,8 @@
             <form method='POST'>
               {% csrf_token %}
                 <div>
-                    <input name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/>
+                    <input name='CompanyUniqueCode' hidden type='text' value = {{request.user.email}} /><br/>
+                    {% comment %} <input name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/> {% endcomment %}
                     <input name='staff_firstname' type='text' placeholder='Staff First Name' /><br/>
                     <input name='staff_lastname' type='text' placeholder='Staff Last Name' /><br/>
                     <input name='staff_email' type='email' placeholder='Staff Official Email Address' />

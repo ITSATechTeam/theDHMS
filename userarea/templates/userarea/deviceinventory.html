@@ -445,7 +445,8 @@
 
 					<input name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
 
-					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/>
+					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
+					{% comment %} <input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
 
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device Name</p> {% endcomment %}

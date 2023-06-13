@@ -36,21 +36,18 @@ class StaffDataSet(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.staff_firstname} {self.staff_lastname}'
+        return f'{self.staff_firstname} {self.staff_email}'
 
 
 
 
 class DeviceRegisterUpload(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    # staffUser = models.ForeignKey(StaffDataSet, null=True, on_delete=models.SET_NULL)
-    # staffUser = models.ForeignKey(StaffDataSet, null=True, on_delete=models.CASCADE)
     deviceip = models.CharField(max_length = 1500, null=True, blank = True)
     devicename= models.CharField(max_length = 1500, blank = True, null=True)
     devicemacaddress = models.CharField(max_length = 1500, null=True, blank = True)
     devicenetworkadaptercompany = models.CharField(max_length = 1500, null=True, blank = True)
     devicestatus = models.CharField(max_length= 300,choices = DEVICE_HEALTH_STATUS, default = 'Working', null=True, blank = True)
-    # devicestatus = models.CharField(max_length = 1500, null=True, blank = True)
     deviceworkgroup = models.CharField(max_length = 1500, null=True, blank = True)
     deviceportnumber = models.CharField(max_length = 1500, null=True, blank = True)
     devicemultiplepacket = models.CharField(max_length = 1500, null=True, blank = True)
@@ -70,16 +67,12 @@ class DeviceRegisterUpload(models.Model):
     deviceuserdateofresumption = models.CharField(max_length= 200, null=True, blank = True)
     
     deviceworkingcondition = models.CharField(max_length= 300,choices = DEVICE_WORKING_CONDITION, default = 'Good', null=True, blank = True)
-    # deviceworkingcondition = models.CharField(max_length = 1500, null=True, blank = True)
     deviceyearofpurchase = models.CharField(max_length = 1500, null=True, blank = True)
     devicedepreciationrate = models.CharField(max_length = 1500, null=True, blank = True)
     deviceid = models.CharField(max_length = 1500, null=True, blank = True)
     savetimedata = models.CharField(max_length = 1500, null=True, blank = True)
     weekNumberSaved = models.CharField(max_length = 1500, null=True, blank = True)
     CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
-    #
-    # date = models.DateField(auto_now=False)
-    #
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

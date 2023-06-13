@@ -75,14 +75,21 @@
                                 <button type='submit'>Sign in</button>
                             </div>
                         </form>
+                        {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
                         <div class='googlesignin'>
-                                <div class='googlesigninner'>
-                                    <img src={% static 'signup/img/google.png' %} />
-                                    <p>Sign Up With Google</p>
-                                </div>
+                            {% load socialaccount %}
+                            <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
+                                {% csrf_token %}
+                                <button type='submit' class='googlesigninner'>
+                                    <div class='buttoninner'>
+                                        <img src={% static 'signup/img/google.png' %} />
+                                        <p>Sign Up With Google</p>
+                                    </div>
+                                </button>
+                            </form>
                         </div>
                         <div class='logininstead'>
-                            <h8>Don't Have An Account Yet? <a href={% url 'PreSignUpPage' %}>Sign Up</a></h8>
+                            <h8>Don't Have An Account Yet? <a href={% url 'SignUpPage' %}>Sign Up</a></h8>
                         </div>
                     </div>
             </div>

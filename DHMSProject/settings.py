@@ -22,6 +22,11 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+
+# GOOGLE SITE ID
+SITE_ID=4
+
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,6 +40,7 @@ INSTALLED_APPS = [
     'staffapp.apps.StaffappConfig',
     # 
     
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -42,13 +48,17 @@ INSTALLED_APPS = [
 ]
 
 
-# ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW STARTS HERE
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',   
-]
-SITE_ID=1
+# IF I WAS TO USE DIFFERENT PROVIDES, I'LL LIST SIMILAR CODE BELOW FOR THAT PROVIDER.
+SOCIALACCOUNT_PROVIDERS = {
+    "google" : {
+        "SCOPE" : [
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS" : {"access_type" : "online"}
+    }
+}
 
 # ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW ENDS HERE
 
@@ -87,7 +97,9 @@ TEMPLATES = [
 # LOGIN REDIRECT
 LOGIN_REDIRECT_URL = '/useronboard/login/'
 LOGIN_URL='/useronboard/login/'
-# LOGIN_URL='/useronboard/'
+# 
+# LOGOUT_REDIRECT_URL = '/'
+# LOGIN_URL='/'
 
 WSGI_APPLICATION = 'DHMSProject.wsgi.application'
 
@@ -142,13 +154,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR / 'static')
 ]
 
-# STATIC_ROOT =os.path.join(BASE_DIR, 'static')
 STATIC_ROOT =os.path.join(BASE_DIR, 'staticfiles')
-# STATIC_ROOT = BASE_DIR / "staticfiles"
-
-
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = BASE_DIR.joinpath('media/')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -163,17 +169,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # SENDING EMAILS WITH GMAIL
-# SENDING EMAILS WITH GMAIL
 EMAIL_HOST = str(os.getenv('EMAIL_HOST'))
 EMAIL_HOST_PORT = 587
-# EMAIL_HOST_PORT = 25
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
 EMAIL_HOST_PASSWORD =  str(os.getenv('EMAIL_HOST_PASSWORD'))
 
 
+# AUTH GOOGLE SIGNUP INTEGRATION FUNCTIONALITY CODES BELOW STARTS HERE
 
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',   
+]
 

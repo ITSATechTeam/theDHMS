@@ -18,12 +18,22 @@
 		<title>Admin Dashboard | ITSA Inventory System</title>
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
 	</head>
-	<div class='shadow'></div>
+	<div class='shadow'></div>	
+	{% if allSignupsForUpdatePopup %}
+	{% else %}
+	<div class='shadowForPreReg'></div>
+	{% endif %}
 	<body class='body'>
 		<div class='main'>
 			<div class='maintop'>
 				<div>
+					{% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
+					{% if allSignUps %}
+					<h1>Welcome back  {{ allSignUps }},</h1>
+					{% else %}
 					<h1>Welcome back {{request.user}},</h1>
+					{% endif %}
+					{% comment %} {% endfor %} {% endcomment %}
 					<h5>Get a detailed overview of your devices health and statuses.</h5>
 				</div>
 				
@@ -125,6 +135,7 @@
 						</div>
 						<ul>
 							<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
+							{% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
 							<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
 						</ul><br/>
 						<form method = 'POST' enctype="multipart/form-data" >
@@ -318,7 +329,6 @@
 				</div>
 				{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
 			</div>
-		</div>		
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
 		<div class='registerDevice'>
 			<form method = 'POST'>
@@ -352,7 +362,8 @@
 
 					<input name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
 
-					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/>
+					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
+					{% comment %} <input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
 
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device Name</p> {% endcomment %}
@@ -395,6 +406,29 @@
 			</form>
 		</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+
+		{% comment %} USE COMPLETE PROFILE PROMPT STARTS HERE {% endcomment %}
+		
+	</div>
+	{% if allSignupsForUpdatePopup %}
+	{% else %}	
+	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
+	<div class='completeDetailsPopup'>
+		<div class='completeDetailsPopup2'>
+			<h3>Hello {{request.user.username}},</h3><br/>
+			<p>
+				You are yet to complete you account registration, please update your company details to optimize your experience using your DHMS.
+			</p>
+			<div class='completeDetailsPopup2btn'>
+				<a href = /member/updatedetails/{{request.user.email}}/{{request.user.username}}/ ><button>Update your profile</button></a>
+				<div class='closeCompleteProfilePrompt'><button>Remind me later</button></div>
+			</div>
+		</div>
+	</div>		
+	{% endif %}<br/>
+
+		{% comment %} USE COMPLETE PROFILE PROMPT ENDS HERE {% endcomment %}
+
         <script src={% static 'dashboard/js/main.js' %}></script>
 		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>

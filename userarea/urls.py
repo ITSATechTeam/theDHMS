@@ -4,7 +4,6 @@ from . import views
 
 urlpatterns = [
     path('nav/', views.NavBar, name="NavBar"),
-    # path('nav/', views.NavBar, name="NavBar"),
     path('dashboard/', views.Dashboard, name="Dashboard"),
     # path('uploaddevices/', views.UploadDevices, name="UploadDevices"),
     path('devicesinventory/', views.DeviceInventory, name="DeviceInventory"),
@@ -34,6 +33,7 @@ urlpatterns = [
     path('deletedevice/<str:pk>/', views.DeleteDevice, name='DeleteDevice'),
     path('deletestaff/<str:pk>/', views.DeleteStaff, name='DeleteStaff'),
     path('editcompanydetails/<str:id>/', views.EditUserSignupDetails, name="EditUserSignupDetails"),
+    path('updatedetails/<str:email>/<str:name>/', views.UpdateCompanyDetails, name="UpdateCompanyDetails"),
     path('profilepage/<str:pk>/', views.ProfilePage, name="ProfilePage"),
     path('uploadprofileimagepage/<str:pk>/', views.UploadProfileImg, name="UploadProfileImg"),
     # path('testpage/', views.TestPage, name="TestPage"),

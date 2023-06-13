@@ -20,18 +20,23 @@
 	<body>
 		<main>
             <div class='sideimagesection'>
-                <div class='bckgImg'></div>
-                <img src={% static 'signup/img/loginsideimg.png' %} />
+                {% comment %} <div class='bckgImg'></div> {% endcomment %}
+                {% comment %} <img src={% static 'signup/img/loginsideimg.png' %} /> {% endcomment %}
+                    <img src={% static 'login/img/staffloginimg.png' %} />
             </div>
             <div class='nav'>
                 <div class='navmain'>
                     <img src={% static 'generalonboard/img/itsalogopng.png' %} />
                 </div>
                     <div class='registerform'>
-                        <h4>Welcome To Staff Login Access</h4>
-                            <h6>Please enter your registered email address and StaffID to access your account. <br/></h6>
+                        <h4>Welcome to the Staff Login Portal!</h4><br/>
+                            <h6>
+                                Enter your registered email and StaffID to access your account. If you don't know your registered details, contact your company's IT Admin for assistance. 
+                                <br/><br/>
+                            </h6>
                         <p>
-                            If you do not know your registered details yet, please your company IT Admin to assign one.
+                            Important: Your StaffID should be used as your password.
+                            {% comment %} If you do not know your registered details yet, please your company IT Admin to assign one. {% endcomment %}
                         </p>
 				
                         <div id="flash">

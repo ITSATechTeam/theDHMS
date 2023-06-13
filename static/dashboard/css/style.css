@@ -353,6 +353,19 @@ body{
     display: none;
 }
 
+.shadowForPreReg{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    width: 90%;
+    /* background-color: red; */
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: block;
+}
+
 .filterbox{
     position: absolute;
     right: 10px;
@@ -849,3 +862,52 @@ tr:nth-child(1) {
 
 
 /* CHART EFFECTS ENDS HERE */
+
+/* completeDetailsPopup SETUP STARTS HERE */
+
+.completeDetailsPopup{
+    background-color: transparent;
+    z-index: 6;
+    width: 100%;
+    margin: auto;
+    position: fixed;
+    top: 30%;
+}
+
+.completeDetailsPopup2{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: auto;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.completeDetailsPopup h3{
+    font-size: 2rem;
+}
+
+.completeDetailsPopup p{
+    font-size: 1.7rem;
+}
+
+.completeDetailsPopup button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 160px;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+.completeDetailsPopup2btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+/* completeDetailsPopup SETUP ENDS HERE */

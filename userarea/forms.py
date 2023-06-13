@@ -12,6 +12,12 @@ class UpdateUserForm(ModelForm):
         fields = ['username', 'email', 'first_name', 'last_name']
 
 
+class UpdateUserFromUpdateForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['last_name']
+
+
 class staffForm(ModelForm):
     class Meta:
         model = StaffDataSet

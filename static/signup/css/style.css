@@ -269,6 +269,28 @@ button{
     margin-left: -16px;
 }
 
+
+.googlesignin button{
+    background-color: transparent;
+    width: 530px;
+    border-radius: 10px;
+    padding-bottom: 10px;
+}
+
+
+.buttoninner{
+    width: 200px;
+    display: flex;
+    margin-bottom: 10px;
+    margin: auto;
+    /* background-color: red; */
+    align-items: center;
+    height:45px;
+    font-weight: bold;
+}
+
+
+
 .logininstead{
     margin: auto;
     margin-top: 10px;

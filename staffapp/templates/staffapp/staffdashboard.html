@@ -24,7 +24,11 @@
 			<div class='maintop'>
 				<div class='maintopinner'>
 					<div>
-						<h1>Welcome back,</h1>
+						{% for AllStaffMembers in AllStaffMembers %}
+						{% if AllStaffMembers.staff_email == request.user.username %}
+						<h1>Welcome back {{AllStaffMembers.staff_firstname}},</h1>
+						{% endif %}
+						{% endfor %}
 						<h5>Get a detailed overview of your devices health and status.</h5>
 					</div>
 				

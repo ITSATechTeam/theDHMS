@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from userarea.forms import EditMaintenanceRequest
-from userarea.models import MaintenanceRequest, DeviceRegisterUpload, AddedMaintenanceComments
+from userarea.models import MaintenanceRequest, DeviceRegisterUpload, AddedMaintenanceComments, StaffDataSet
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -37,6 +37,7 @@ def StaffDashboard(request):
     DecMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'December')).count()
     
     MaintenanceRequests = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username)
+    AllStaffMembers = StaffDataSet.objects.all()
     MaintenanceRequestsCount = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username).count()
     MaintenanceRequestsPendingCount = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(MaintainStatus = 'Ongoing')).count()
     RegisteredDevices = DeviceRegisterUpload.objects.filter(deviceuseremail = request.user.username)
@@ -46,7 +47,7 @@ def StaffDashboard(request):
             AprilMaintainReqs, MayMaintainReqs, JuneMaintainReqs, 
             JulyMaintainReqs, AugMaintainReqs, SeptMaintainReqs,
             OctMaintainReqs, NovMaintainReqs, DecMaintainReqs]
-    context = {'MaintenanceRequestsPendingCount':MaintenanceRequestsPendingCount, 'MaintenanceRequestsCount':MaintenanceRequestsCount, 'RegisteredDevicesCount':RegisteredDevicesCount, 'RegisteredDevices':RegisteredDevices, 'labels':labels, 'data':data, 'MayMaintainReqs':MayMaintainReqs, 'MaintenanceRequests':MaintenanceRequests}
+    context = {'AllStaffMembers':AllStaffMembers, 'MaintenanceRequestsPendingCount':MaintenanceRequestsPendingCount, 'MaintenanceRequestsCount':MaintenanceRequestsCount, 'RegisteredDevicesCount':RegisteredDevicesCount, 'RegisteredDevices':RegisteredDevices, 'labels':labels, 'data':data, 'MayMaintainReqs':MayMaintainReqs, 'MaintenanceRequests':MaintenanceRequests}
     return render(request, 'staffapp/staffdashboard.html', context)
 
 

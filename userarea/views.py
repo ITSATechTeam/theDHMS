@@ -4,7 +4,7 @@ from django.contrib import messages
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
@@ -26,9 +26,9 @@ import random
 
 @login_required(login_url='Login')
 def NavBar(request):
-    allSignUps = SignupForm.objects.all()
-    allProfileImages = UserProfileImage.objects.all().first
-    context = {'allProfileImages':allProfileImages, 'allSignUps': allSignUps}
+    # allSignUps = SignupForm.objects.all()
+    allSignUps = SignupForm.objects.filter(user = request.user)
+    context = {'allSignUps': allSignUps}
     return render(request, 'general.html', context)
 
 
@@ -128,8 +128,8 @@ def Maintainance(request):
 
 
 
-    # allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.first_name) 
-    allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name) 
+    allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email) 
+    # allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name) 
     allMaintainsCount = allMaintains.count()
 
     # AllMaintainDevice = MaintenanceRequest.objects.get(MaintainRequestID = name)
@@ -175,7 +175,8 @@ def MaintainanceDetails(request, name):
 
     currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
     AllCommments = AddedMaintenanceComments.objects.all()
-    AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
+    AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    # AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
     return render(request, 'userarea/maintainrequestdetails.html', context)
 
@@ -263,6 +264,7 @@ def DeviceInventory(request):
         else:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Year Of Purchase.")
             return redirect('DeviceInventory')
+
             
         deviceusedepartment = request.POST['deviceusedepartment']
         devicetype = request.POST['devicetype']
@@ -277,6 +279,7 @@ def DeviceInventory(request):
         devicestatus = request.POST['devicestatus']
         staffUserID = request.POST['staffUserID']
         CompanyUniqueCode = request.POST['CompanyUniqueCode']
+        # CompanyUniqueCode = request.POST['CompanyUniqueCode']
         user = request.user
 
         if not request.POST['deviceusedepartment']:
@@ -351,11 +354,12 @@ def DeviceInventory(request):
             for i, row in enumerate(reader):
                 if i == 0:
                     pass
-                elif len(row) < 22:
-                # elif len(row) < 9:
+                elif len(row) < 21:
+                # elif row[21] < 0:
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
-                    return redirect('DeviceInventory')
-                elif len(row) > 9:
+                    return redirect('Dashboard')
+                # elif len(row) > 9:
+                elif len(row) > 21:
                     today = date.today()
 
                     dateForWeekNumber = datetime.today()
@@ -386,7 +390,14 @@ def DeviceInventory(request):
                     elif depreciateRate >= 4:
                         depreciateRateReal = '0%'
                     else:
-                        depreciateRateReal = 'Nil'
+                        depreciateRateReal = 'Nil'                     
+
+                    AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
+                    print(AllStaffCheck)
+                    if AllStaffCheck:
+                        print('email already exists')
+                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                        return redirect('Dashboard')
 
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
@@ -417,7 +428,7 @@ def DeviceInventory(request):
                         staffUserID = StaffUniqueId,
                         savetimedata = today.strftime("%B %d, %Y"),
                         weekNumberSaved = weekNumber,
-                        CompanyUniqueCode = request.user.last_name
+                        CompanyUniqueCode = request.user.email
                     ),
                     StaffDataSet.objects.create(
                         user = request.user,
@@ -428,12 +439,13 @@ def DeviceInventory(request):
                         staff_location = row[13],
                         staff_email = row[17],
                         staff_role = row[8],
-                        CompanyUniqueCode = request.user.last_name
+                        CompanyUniqueCode = request.user.email
+                        # CompanyUniqueCode = request.user.last_name
                     )
                     try:
                         # checkUniqueUser = User.objects.filter(username = row[17])
                         checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
+                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.email, last_name = row[4] +' '+row[5]
                         )
                     except:
                          messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
@@ -540,7 +552,8 @@ def DeviceInventory(request):
         return redirect('SaveDevice')
 
     allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
-    AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
+    AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
+    # AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
     workingSystems1 = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(user = request.user))
     workingSystems = workingSystems1.count()
     badSystems1 = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Faulty') & Q(user = request.user))
@@ -718,7 +731,7 @@ def EditDevice(request, deviceid):
             return redirect('DeviceInventory')
         else:
             messages.success(request, 'Error saving device data')
-    AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
+    AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
     context = {'AllStaffMembers':AllStaffMembers, 'form':form, 'id': id, 'MainDeviceData':MainDeviceData}
     return render(request, 'userarea/editdevice.html', context)
 
@@ -810,7 +823,7 @@ def StaffMembers(request):
         #     messages.error(request, 'Staff was not created, try again')
         #     return redirect('StaffMembers')
 
-    staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
+    staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
     allDevices = DeviceRegisterUpload.objects.all()
     allUploadedDevices = DeviceRegisterUpload.objects.all()
     staffCount = staffMembers.count()
@@ -926,8 +939,9 @@ def StaffDetails(request, id):
     #           messages.success(request, 'Error saving device data')
 
 
-    allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
-    allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
+    allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(staffUserID = 'None'))
+    # allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
     allSignUps = SignupForm.objects.all()
     context = {'allSignUps':allSignUps, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices, 'allUploadedDevicesNotAssigned':allUploadedDevicesNotAssigned}
     return render(request, 'userarea/staffdetails.html', context)
@@ -1008,13 +1022,15 @@ def Dashboard(request):
         with open(obj.mainfile.path, 'r') as f:
             reader = csv.reader(f)
             for i, row in enumerate(reader):
+                print(len(row))
                 if i == 0:
                     pass
-                elif len(row) < 22:
+                elif len(row) < 21:
+                # elif row[21] < 0:
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
                     return redirect('Dashboard')
-                elif len(row) > 9:
-                    # print(len(row))
+                # elif len(row) > 9:
+                elif len(row) > 21:
                     today = date.today()
                                         
                     dateForWeekNumber = datetime.today()
@@ -1041,6 +1057,22 @@ def Dashboard(request):
                         depreciateRateReal = '0%'
                     else:                        
                         depreciateRateReal = 'Nil'
+
+
+                    AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
+                    print(AllStaffCheck)
+                    if AllStaffCheck:
+                        print('email already exists')
+                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                        return redirect('Dashboard')
+                   
+
+                    AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
+                    print(AllStaffCheck)
+                    if AllStaffCheck:
+                        print('email already exists')
+                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                        return redirect('Dashboard')
                         
 
                     DeviceRegisterUpload.objects.create(
@@ -1072,7 +1104,7 @@ def Dashboard(request):
                         staffUserID = StaffUniqueId,
                         savetimedata = today.strftime("%B %d, %Y"),
                         weekNumberSaved = weekNumber,
-                        CompanyUniqueCode = request.user.last_name
+                        CompanyUniqueCode = request.user.email
                     ),
                     StaffDataSet.objects.create(
                         user = request.user,
@@ -1083,20 +1115,20 @@ def Dashboard(request):
                         staff_location = row[13],
                         staff_email = row[17],
                         staff_role = row[8],
-                        CompanyUniqueCode = request.user.last_name
+                        CompanyUniqueCode = request.user.email
                     )
                     
                     try:
                         checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
+                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.email, last_name = row[4] +' '+row[5]
                         )
                     except:
-                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
-                         return redirect('Dashboard')
+                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                        return redirect('Dashboard')
                     checkUniqueUser.save()
 
                 else:
-                    messages.error(request, 'Device List Updated Unsuccessfully')
+                    messages.error(request, 'Device List Updated Unsuccessfully: Please Fill CSV File And Upload Again')
                     return redirect('Dashboard')
             obj.save()
         messages.success(request, 'Device List Updated Successfully')
@@ -1188,9 +1220,11 @@ def Dashboard(request):
 
         
 
-    allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
+    allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
     allUploadedDevicesCount = allUploadedDevices.count()
-    AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
+    AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
+    # AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
     StaffCount = AllStaffMembers.count()
     DeviceRegister1 = DeviceRegisterUpload.objects.filter(user=request.user)
     badSystems1 = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Faulty') & Q(user = request.user))
@@ -1202,9 +1236,10 @@ def Dashboard(request):
     labels = ['Healthy Devices', 'Faulty Devices', 'Critical Devices']
     data = [workingSystems, badSystems, warningSystems]
     thisYear = datetime.today().year
-    allSignUps = SignupForm.objects.all()
+    allSignUps = SignupForm.objects.filter(Q(email = request.user.email) & Q(companyUniqueID = request.user.email)).first
     allUsers = User.objects.all()
-    context = {'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
+    allSignupsForUpdatePopup = SignupForm.objects.filter(email = request.user.email)
+    context = {'allSignupsForUpdatePopup':allSignupsForUpdatePopup, 'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
     return render(request, 'userarea/dashboard.html', context)
 
 
@@ -1390,10 +1425,12 @@ def ScanNetwork(request):
             for i, row in enumerate(reader):
                 if i == 0:
                     pass
-                elif len(row) < 22:
+                elif len(row) < 21:
+                # elif row[21] < 0:
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
-                    return redirect('ScanNetwork')
-                elif len(row) > 9:
+                    return redirect('Dashboard')
+                # elif len(row) > 9:
+                elif len(row) > 21:
                     # print(len(row))
                     today = date.today()
                                         
@@ -1420,6 +1457,15 @@ def ScanNetwork(request):
                         depreciateRateReal = '0%'
                     else:                        
                         depreciateRateReal = 'Nil'
+
+                    
+
+                    AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
+                    print(AllStaffCheck)
+                    if AllStaffCheck:
+                        print('email already exists')
+                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                        return redirect('Dashboard')
                         
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
@@ -1450,7 +1496,7 @@ def ScanNetwork(request):
                         staffUserID = StaffUniqueId,
                         savetimedata = today.strftime("%B %d, %Y"),
                         weekNumberSaved = weekNumber,
-                        CompanyUniqueCode = request.user.last_name
+                        CompanyUniqueCode = request.user.email
                     ),
                     StaffDataSet.objects.create(
                         user = request.user,
@@ -1461,12 +1507,13 @@ def ScanNetwork(request):
                         staff_location = row[13],
                         staff_email = row[17],
                         staff_role = row[8],
-                        staff_DeviceStatus = row[6],
-                        CompanyUniqueCode = request.user.last_name
+                        # staff_DeviceStatus = row[6],
+                        CompanyUniqueCode = request.user.email
+                        # CompanyUniqueCode = request.user.last_name
                     )
                     try:
                         checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
+                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.email, last_name = row[4] +' '+row[5]
                         )
                     except:
                          checkUniqueUserMain = User.objects.filter(username = row[17])
@@ -1489,14 +1536,14 @@ def downloadSampleFile(request):
     response['Content-Disposition'] = 'attachment; filename =  Device Upload Sample File.csv'
     writer = csv.writer(response)
     writer.writerow(['Device IP Address', 'Device Name', 'Device MAC Address', 'Device Network Adapter Company',
-     'Device User Full Name', 'Device Status', 'Company Name', 'Device Use Department', 
+     'Device User First Name', 'Device User Last Name', 'Device Status', 'Company Name', 'Device Use Department', 
      'Device Port Number', 'Device Multiple Packet', 'Device Index', 'Device Type',
      'Device Location', 'Device Brand', 'Device Operating System', 'Device Cost Of Purchase','Device User Email Address', 
-     'Device User Phone Number', 'Device User Job Resumption Date', 'Device Working Status', 'Device Year Of Purchase'
+     'Device User Phone Number', 'Device User Job Resumption Date', 'Device Condition', 'Device Year Of Purchase'
      ])
-    writer.writerow(['20.20.0.27', 'DESKTOP-7687TC8', '20-10-7A-4E-9F-46', 'Gemtek Technology Co., Ltd.', 'John Doe', 'on', 
-    'IT Service Desk Africa', 'IT Department', '433', 'Nil', '1', 'Laptop', 'Aba Abia State', 'Toshiba', 
-    'Windows 10 Pro', 'N100, 000', 'johndoe@itservicedeskafrica.com', '0701 156 7240', '2020', 'Good', '2023'])
+    writer.writerow(['20.20.0.27', 'DESKTOP-7687TC8', '20-10-7A-4E-9F-46', 'Gemtek Technology Co., Ltd.', 'John', 'Doe', 'Working', 
+    'IT Service Desk Africa', 'IT Department', '433', 'Nil', '1', 'Laptop', 'Lagos State', 'Toshiba', 
+    'Windows 10 Pro', '100,000', 'johndoe@itservicedeskafrica.com', '0701 156 7240', '2020', 'Good', '2023'])
     return response
 
 
@@ -1507,7 +1554,7 @@ def downloadSampleCSVHeaders(request):
     response['Content-Disposition'] = 'attachment; filename = CSV Sample File.csv'
     writer = csv.writer(response)
     writer.writerow(['Device IP Address', 'Device Name', 'Device MAC Address', 'Device Network Adapter Company',
-     'Device User Full Name', 'Device Status', 'Company Name', 'Device Use Department', 
+     'Device User First Name', 'Device User Last Name', 'Device Status', 'Company Name', 'Device Department', 
      'Device Port Number', 'Device Multiple Packet', 'Device Index', 'Device Type',
      'Device Location', 'Device Brand', 'Device Operating System', 'Device Cost Of Purchase','Device User Email Address', 
      'Device User Phone Number', 'Device User Job Resumption Date', 'Device Working Status', 'Device Year Of Purchase'
@@ -1596,3 +1643,87 @@ def AllInstalledSoftwares(request):
     context = {'item':item, 'allSignUps':allSignUps}
     return render(request, 'userarea/allinstalledapp.html', context)
 
+# Franklin-franklin.i@itservicedeskafrica.com
+def UpdateCompanyDetails(request, email, name):
+    WorkingUsers = User.objects.get(Q(email=email) & Q(username=name))
+    if request.method == 'POST' :
+        user = request.user
+        companyname = request.POST['companyname']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        city = request.POST['city']
+        country = request.POST['country']
+        address = request.POST['address']
+        password = request.POST['password']
+        repassword = request.POST['repassword']
+
+        companyUniqueID = request.POST['email']   
+
+        if not request.POST['companyname']:
+            messages.error(request, 'Account update failed!: Enter Your Company Name')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        if not request.POST['email']:
+            messages.error(request, 'Account update failed!: Enter Your Company Email Address')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        if not request.POST['phone']:
+            messages.error(request, 'Account update failed!: Enter Your Company City Location')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        if not request.POST['country']:
+            messages.error(request, 'Account update failed!: Enter Your Company Country Location')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        if not request.POST['address']:
+            messages.error(request, 'Account update failed!: Enter Your Company Address')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        if not request.POST['password']:
+            messages.error(request, 'Account update failed!: Enter Your Password')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+        
+        if not request.POST['repassword']:
+            messages.error(request, 'Account update failed!: Enter the retype password box to validate your password.')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        if (password != repassword):
+            messages.error(request, 'Passwords Do Not Match!')
+            # return redirect('UpdateCompanyDetails')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+
+        data = SignupForm.objects.filter(companyname=companyname)
+        # UserData = User.objects.filter(username=companyname)
+        if data:
+            messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+        else:
+            messages.success(request, 'Account updated successful')
+            createUpdatdUser = SignupForm.objects.create(
+            user = request.user, companyname = companyname, email= email, phone = phone,
+            city = city, country = country, password = password, repassword = repassword,
+            address = address, companyUniqueID = companyUniqueID)
+            createUpdatdUser.save()            
+            return redirect('Dashboard')
+
+
+    context = {'WorkingUsers':WorkingUsers}
+    return render(request, 'userarea/updatedetails.html', context)

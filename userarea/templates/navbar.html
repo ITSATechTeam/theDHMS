@@ -22,10 +22,22 @@
                 <img class='notifyactive' src={% static 'general/img/notify-active.png' %} />
             </div>
             <div class='notifysectioninner'>
-                <h4>{{ request.user }}</h4>
+                {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
+                {% if allSignUps.user == request.user %}
+                <h4>{{ allSignUps.companyname }}</h4>
+                {% else %}
+                {{request.user}}
+                {% comment %} {{allSignupsForUpdatePopup.companyname}} {% endcomment %}
+                {% endif %}
+                {% comment %} {% endfor %} {% endcomment %}
                 <div class='profileimgsectiontext'>
                     <h1></h1>
+                    
+                    {% if allSignUps.user == request.user %}
+                    <p class='requestUser'>{{ allSignUps.companyname }}</p>
+                    {% else %}
                     <p class='requestUser'>{{ request.user }}</p>
+                    {% endif %}
                 </div>
                 <img src={% static 'general/img/arrow-down.png' %} />
             </div>
@@ -87,7 +99,7 @@
             <div class='sidebar logout'>
                 <img src={% static 'general/img/logout.png' %} />
                 <p>Logout</p>
-                {{allSignUps.companyname}}
+                {% comment %} {{allSignUps.companyname}} {% endcomment %}
             </div>
         </a>
     </div>
@@ -99,7 +111,7 @@
 		<div class='profileBox'>
 			<div class='profileBoxintro'>
                 <div>
-                    <h2>{{ request.user }}</h2>
+                    <h2>{{ allSignUps.companyname }}</h2>
                     <p>Admin</p>
                 </div>
                 <div class='closereguser1'>
@@ -108,8 +120,8 @@
 			</div>
 			<hr/>
 			<ul>
-                {% for allSignUps in allSignUps %}
-                {% if request.user.username == allSignUps.companyname %}
+                {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
+                {% if request.user == allSignUps.user %}
                 <a href = /member/editcompanydetails/{{allSignUps.id}}/ >
 				<li>
 					<img src={% static 'dashboard/img/edit.png' %} />
@@ -117,11 +129,11 @@
 				</li>
                 </a>
                 {% endif %}
-                {% endfor %}
+                {% comment %} {% endfor %} {% endcomment %}
 
 
-                {% for allSignUps in allSignUps %}
-                {% if request.user.username == allSignUps.companyname %}
+                {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
+                {% if request.user == allSignUps.user %}
                 <a href= /member/profilepage/{{allSignUps.id}}/ >
                 <li>
                     <img src={% static 'dashboard/img/profile.png' %} />
@@ -129,7 +141,7 @@
                     </li>
                 </a>
                 {% endif %}
-                {% endfor %}
+                {% comment %} {% endfor %} {% endcomment %}
 				<a href ={% url 'password_reset' %} >
                 <li>
 					<img src={% static 'dashboard/img/lock.png' %} />

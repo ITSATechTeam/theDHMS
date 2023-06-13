@@ -155,3 +155,15 @@ savetimedata.value = 'currentWeek is week '+ weekNumber +' and this month is ' +
 // console.log(enterStaffUserArr)
 
 // enterStaffUser DEFAULT DATA ALLOCATION FUNCTIONALITY ENDS HERE
+// completeDetailsPopup SETUP STARTS HERE
+let closeCompleteProfilePrompt = document.querySelector('.closeCompleteProfilePrompt')
+let completeDetailsPopup = document.querySelector('.completeDetailsPopup')
+let shadowForPreReg = document.querySelector('.shadowForPreReg')
+
+closeCompleteProfilePrompt.addEventListener('click', () => {
+    completeDetailsPopup.style.display = 'none'
+    shadowForPreReg.style.display = 'none'
+})
+
+
+// completeDetailsPopup SETUP ENDS HERE

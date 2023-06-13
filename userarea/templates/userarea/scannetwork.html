@@ -84,11 +84,11 @@
                 <div class='stage5'>
                     <h4>Step Five</h4><br/>
                     <h4>
-                        Once you have pasted the device details, please remove the second line of the copied file, which contains the header.
+                        Once you have pasted the device details, select and delete the second line in the CSV file.
                     </h4><br/>
-                    <a href={% url 'downloadSampleCSV' %}><h4>
+                    {% comment %} <a href={% url 'downloadSampleCSV' %}><h4>
                         Click here to download a sample CSV file
-                    </h4></a>
+                    </h4></a> {% endcomment %}
                     <img src={% static 'scannetwork/img/csvusesample.PNG' %} />
                 </div>
                 <div class='stage6'>
