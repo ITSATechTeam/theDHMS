@@ -88,10 +88,14 @@
                                 </label>
                                 <br/>
                                 <select name='staffUserID' class="player-dropdown">
-                                    <option value="None">Select A New Device User</option>
-                                <option value="None">None [Remove Exisiting User]</option>
                                     {% for AllStaffMembers in AllStaffMembers %}
-                                    <option value={{AllStaffMembers.StaffID}}>{{AllStaffMembers.staff_firstname}} {{AllStaffMembers.staff_lastname}}[{{AllStaffMembers.StaffID}}]</option>
+                                    {% if MainDeviceData.staffUserID == AllStaffMembers.StaffID %}
+                                    <option default value={{AllStaffMembers.StaffID}}>{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}  {{AllStaffMembers.StaffID}}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <option value="None">Unassign This Device [Remove Exisiting User]</option>
+                                    {% for AllStaffMembers in AllStaffMembers %}
+						            <option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
                                     {% endfor %}
                                 </select>
                             </div>
