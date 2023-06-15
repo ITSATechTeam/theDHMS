@@ -17,48 +17,55 @@
 		<title>Register | ITSA Inventory System</title>
 	</head>
 	<body>
-		<nav>
-			<div class='nav'>
-				<img src={% static 'generalonboard/img/itsalogopng.png' %} />
-			</div>
-		</nav>
-		<main>
-			<div class='mainimg2'>
-				<img src={% static 'signup/img/bckg2.png' %} />
-			</div>
-			<div class='box'>
-				<img src={% static 'signup/img/recright.png' %} />
-			</div>
-			<div class='box2'>
-				<img src={% static 'signup/img/recleft.png' %} />
-			</div>
-			<div class='sidenote2'>
-				<h1>Welcome to our Device Health Management System</h1>
-				<div class='sidenote-p'>
-					<p>
-						We are thrilled to welcome you to our Device Health Management System! We understand the importance of having a reliable and efficient system to manage the health and performance of your devices, and we are confident that our system will provide you with the tools you need to optimize your operations
-					</p>
+		<div class='mainsection'>
+			<nav>
+				<div class='nav'>
+					<img src={% static 'generalonboard/img/itsalogopng.png' %} />
 				</div>
-				<div class='accessButtons'>
-					<div class='accessButtons1'>
-						<a href={% url 'Login' %}>
-							<button>
-								<p>Login</p>
-							</button>
+			</nav>
+			<main>
+				<div class='mainimg2'>
+					<img src={% static 'signup/img/bckg2.png' %} />
+				</div>
+				<div class='box'>
+					<img src={% static 'signup/img/recright.png' %} />
+				</div>
+				<div class='box2'>
+					<img src={% static 'signup/img/recleft.png' %} />
+				</div>
+				<div class='sidenote2'>
+					<h1>Welcome to our Device Health Management System</h1>
+					<div class='sidenote-p'>
+						<p>
+							We are thrilled to welcome you to our Device Health Management System! We understand the importance of having a reliable and efficient system to manage the health and performance of your devices, and we are confident that our system will provide you with the tools you need to optimize your operations
+						</p>
+					</div>
+					<div class='accessButtons'>
+						<div class='accessButtons1'>
+							<a href={% url 'Login' %}>
+								<button>
+									<p>Login</p>
+								</button>
+							</a>
+						</div>
+						
+						<a href={% url 'SignUpPage' %}>
+							<div class='accessButtons2'>
+								<button>
+									<p>Continue To Signup</p>
+									<img src={% static 'signup/img/arrowright.png' %} />
+								</button>
+							</div>
 						</a>
 					</div>
-					
-					<a href={% url 'SignUpPage' %}>
-						<div class='accessButtons2'>
-							<button>
-								<p>Continue To Signup</p>
-								<img src={% static 'signup/img/arrowright.png' %} />
-							</button>
-						</div>
-					</a>
-				</div>
-			</div> 
-		</main>
+				</div> 
+			</main>
+		</div>
+		{% comment %} MOBILE VIEW COMING SOON PAGE STARTS HERE {% endcomment %}
+		<div class='mobileSection'>
+			<h1>DHMS FOR MOBILE DEVICES IS STILL IN DEVELOPMENT, FOR NOW IT ONLY RUNS ON DESKTOPS VIEW, PLEASE USE YOUR LAPTOP DEVICE TO OPTIMIZE YOUR EXOERIENCE USING THE DHMS.</h1>
+		</div>
+		{% comment %} MOBILE VIEW COMING SOON PAGE ENDS HERE {% endcomment %}
 	</body>
 </html>
 {% endblock %}

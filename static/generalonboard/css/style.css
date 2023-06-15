@@ -170,3 +170,18 @@ nav img{
 }
 
 /* accessButtons ends here */
+
+
+@media only screen and (max-width: 1144px) {
+    .mainsection{
+        display: none;
+    }
+    .mobileSection{
+        display: block;
+        text-align: center;
+        width: 80%;
+        font-size: 5.3rem;
+        margin: auto;
+        margin-top: 100px;
+    }
+  }
