@@ -29,7 +29,10 @@ class staffForm(ModelForm):
 class DeviceRegisterForm(ModelForm):
     class Meta:
         model = DeviceRegisterUpload
-        fields = '__all__'
+        # fields = '__all__'
+        fields = ['deviceip', 'devicename', 'devicemacaddress', 'devicestatus', 'devicetype', 'deviceyearofpurchase',
+        'devicebrand', 'deviceos', 'devicecostofpurchase', 'devicelocation', 'staffUserID', 'deviceusedepartment'
+        ]
 
 
 class UpdateDeviceUser(ModelForm):

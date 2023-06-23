@@ -78,7 +78,7 @@ def Maintainance(request):
                 if data is not None:
                     for maintenanceDevice in MaintenanceRequest.objects.filter(MaintainRequestID = data).values_list('MaintainDeviceName', 
                     'MaintainDeviceID', 'MaintainDeviceIP', 'MaintainDeviceMAC_ID', 'MaintainType', 'MaintainDeviceCategory', 
-                    'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUser', 'MaintainRequester', 'MaintainRequestID', 
+                    'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUserFirstname', 'MaintainDeviceUserLastname', 'MaintainRequester', 'MaintainRequestID', 
                     'MaintainRequestDescription', 'created_at'):
                         writer.writerow(maintenanceDevice)
 
@@ -462,7 +462,7 @@ def DeviceInventory(request):
 
     # PAGINATION COUNT FORM STARTS HERE
     if request.method == 'POST'  and 'numofitemsperpage' in request.POST:
-        count = request.POST['numofitemsperpage']
+        count = str(request.POST['numofitemsperpage'])
         form = DeviceCountPerPage(user = request.user, count = count)
         form.save()
         messages.success(request, 'Device display per page count saved successfully')
@@ -503,8 +503,8 @@ def DeviceInventory(request):
         [dataToExportNewNoDuplicate.append(i) for i in dataToExportNew if i not in dataToExportNewNoDuplicate]
         # get latest array entry ID for edit and delete features
         maintainElementID = dataToExportNewNoDuplicate[-1]
-        maintainElementIDMain = DeviceRegisterUpload.objects.get(devicebrand = maintainElementID).pk
-        # print(maintainElementIDMain)
+        maintainElementIDMain = DeviceRegisterUpload.objects.get(deviceid = maintainElementID)
+        print(maintainElementIDMain)
         for i in dataToExportNew:
             if dataToExportNew.count(i) == 2:
                 dataToExportNew.remove(i)
@@ -519,7 +519,7 @@ def DeviceInventory(request):
             # for data in dataToExportNewNoDuplicate:
             for data in dataToExportNew:
                 if data is not None:
-                    for DeviceInfo in DeviceRegisterUpload.objects.filter(devicebrand = data).values_list('deviceip', 'devicename', 'devicemacaddress',
+                    for DeviceInfo in DeviceRegisterUpload.objects.filter(deviceid = data).values_list('deviceip', 'devicename', 'devicemacaddress',
                     'devicenetworkadaptercompany', 'deviceuserfirstname', 'deviceuserlastname', 'devicestatus', 'deviceworkgroup', 'deviceusedepartment', 'deviceportnumber', 'devicemultiplepacket', 'devicetype', 
                     'devicelocation', 'devicebrand', 'deviceos', 'devicecostofpurchase', 'deviceuseremail', 'deviceuserphonenumber', 'deviceuserdateofresumption', 'deviceworkingcondition', 'deviceyearofpurchase', 'devicedepreciationrate',
                     'deviceid'):
@@ -551,6 +551,7 @@ def DeviceInventory(request):
     if request.method == 'POST' and 'deviceyearofpurchase' in request.POST:
         return redirect('SaveDevice')
 
+    # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
     allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
     # AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
@@ -559,7 +560,7 @@ def DeviceInventory(request):
     badSystems1 = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Faulty') & Q(user = request.user))
     badSystems = badSystems1.count()
     allUploadedDevicesCount = allUploadedDevices.count()
-    numberOfDevicesPerPage = DeviceCountPerPage.objects.filter(user = request.user).first()
+    numberOfDevicesPerPage = str(DeviceCountPerPage.objects.filter(user = request.user).first())
     allProfileImages = UserProfileImage.objects.all().first
     allSignUps = SignupForm.objects.all()
     context = {'AllStaffMembers':AllStaffMembers, 'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
@@ -781,7 +782,8 @@ def StaffMembers(request):
             return redirect('StaffMembers')
         else:
             checkUniqueUser =  User.objects.create_user(
-            username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
+            username = staff_email, email = request.user.username, password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
+            # username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
 
             CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
             staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
@@ -939,7 +941,8 @@ def StaffDetails(request, id):
     #           messages.success(request, 'Error saving device data')
 
 
-    allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(staffUserID = 'None'))
     # allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
     allSignUps = SignupForm.objects.all()
@@ -1200,6 +1203,12 @@ def Dashboard(request):
         if not request.POST['devicestatus']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Working Condition.")
             return redirect('Dashboard')
+
+        if staffUserID:
+            AllStaffMembers = StaffDataSet.objects.get(StaffID = staffUserID).staff_email
+            print(AllStaffMembers)
+            deviceuseremail = AllStaffMembers
+
         
         SaveDeviceProper = DeviceRegisterUpload.objects.create(
             deviceusedepartment=deviceusedepartment, devicetype=devicetype, devicebrand=DeviceBrandProper, 
@@ -1207,7 +1216,7 @@ def Dashboard(request):
             devicemacaddress=devicemacaddress, devicelocation=devicelocation, deviceip=deviceip,
             devicestatus=devicestatus, staffUserID=staffUserID, CompanyUniqueCode=CompanyUniqueCode,
             deviceyearofpurchase=deviceyearofpurchase, user=user, devicedepreciationrate=depreciateRateReal,
-            deviceid=uniqueId
+            deviceid=uniqueId, deviceuseremail = deviceuseremail
         )
 
         try:
@@ -1220,7 +1229,8 @@ def Dashboard(request):
 
         
 
-    allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
     allUploadedDevicesCount = allUploadedDevices.count()
     AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
@@ -1242,15 +1252,6 @@ def Dashboard(request):
     context = {'allSignupsForUpdatePopup':allSignupsForUpdatePopup, 'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
     return render(request, 'userarea/dashboard.html', context)
 
-
-# @login_required(login_url='Login')
-# def EditDeviceData(request, deviceip):
-#     deviceData = DeviceRegisterUpload.objects.get(deviceip=deviceip)
-#     form = DeviceRegisterForm(request.POST or None, instance = deviceData)
-#     if request.POST and form.is_valid():
-#         form.save()
-#     context = {'form':form, 'id': id}
-#     return render(request, 'userarea/editdevice.html', context)
 
 
 # EDIT STAFF DETAILS STARTS BELOW

@@ -300,7 +300,7 @@ function checkBoxFunctions(each){
             if(eValue.includes(each.value)){
                 DataArray.push(eValue);
                 console.log(DataArray)
-                return DataArray, 
+                return DataArray,
                 ExportDataHere.value = DataArray,
                 idforedit.value = DataArray, 
                 deviceToDelete.value = DataArray,

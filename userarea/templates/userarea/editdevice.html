@@ -101,7 +101,8 @@
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
-                                    <h4>Device User's Department:</h4>
+                                    <h4>Device Use Department:</h4>
+                                    {% comment %} <h4>Device User's Department:</h4> {% endcomment %}
                                 </label>
                                 <br/>
                                 {{ form.deviceusedepartment }}
@@ -160,7 +161,7 @@
                         </div>
                     </div>
                     <br/>
-                    <input type='text' hidden name='CompanyUniqueCode' value={{request.user.last_name}} />
+                    {% comment %} <input type='text' name='CompanyUniqueCode' value={{request.user.last_name}} /> {% endcomment %}
                     <button type="submit">Save</button>
                 </form>
             </div>
