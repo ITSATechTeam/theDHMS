@@ -68,7 +68,7 @@
 					  <th>Staff Unique ID</th>
 					  <th>Staff Unit</th>
 					  <th>Device Device(s) ID</th>
-					  {% comment %} <th>Device Status</th> {% endcomment %}
+					  {% comment %} <th>Staff Online Status</th> {% endcomment %}
 					  <th>Action</th>
 					  <th>More Info</th>
 					</tr>
@@ -98,6 +98,20 @@
               {% endif %}
               {% endfor %}
             </td>
+            {% comment %} {% for AllUsers in AllUsers %}
+            {% if AllUsers.username == staffMembers.staff_email %}
+            {% if request.user.is_authenticated %}
+            <td>
+              {{ request.user }}
+              <p>Online</p>
+            </td>
+            {% else %}
+            <td>
+              <p>Offline</p>
+            </td>
+            {% endif %}
+            {% endif %}
+            {% endfor %} {% endcomment %}
 					  {% comment %} <td class={{ staffMembers.staff_DeviceStatus }} >{{ staffMembers.staff_DeviceStatus }}</td> {% endcomment %}
 					  <td>
               <div class='actionbtns'>

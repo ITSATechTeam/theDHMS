@@ -94,7 +94,9 @@
                                     <h4>Staff's Email Address:</h4>
                                 </label>
                                 <br/>
-                                {{ form.staff_email }}
+                                <p>To change this staff member's email address, <br/>please contact ITSA Support desk.</p><br/><br/>
+                                {% comment %} <input placeholder={{currentStaff.staff_email}} /> {% endcomment %}
+                                {% comment %} {{ form.staff_email }} {% endcomment %}
                             </div>
                             <div class="fieldWrapper">
                                 <label for="id_email">
@@ -120,8 +122,8 @@
                         </div>
                     </div>
                     <br/>
-                    <input type='text' name='form.staff_phonenumber' value={{ currentStaff.staff_phonenumber }} />
-                    <input type='text' name='form.staff_email' value={{ currentStaff.staff_email }} />
+                    <input type='text' hidden name='form.staff_phonenumber' value={{ currentStaff.staff_phonenumber }} />
+                    <input type='text' hidden name='form.staff_email' value={{ currentStaff.staff_email }} />
                     <input type='text' hidden name='CompanyUniqueCode' value={{request.user.last_name}} />
                     <button type="submit">Save</button>
                 </form>

@@ -390,7 +390,15 @@ def DeviceInventory(request):
                     elif depreciateRate >= 4:
                         depreciateRateReal = '0%'
                     else:
-                        depreciateRateReal = 'Nil'                     
+                        depreciateRateReal = 'Nil' 
+                    
+                    if row[17] == '':
+                        messages.error(request, 'Device email address is missing, please fill in the email address and try again.')
+                        return redirect('Dashboard')
+                    
+                    if row[4] == '' or row[5] == '':
+                        messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
+                        return redirect('Dashboard')                    
 
                     AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
                     print(AllStaffCheck)
@@ -480,13 +488,13 @@ def DeviceInventory(request):
         print(len(deviceToDeleteArr))
         for i in deviceToDeleteArr:
             if len(deviceToDeleteArr) == 1:
-                currentDevice = DeviceRegisterUpload.objects.get(devicebrand = i)
+                currentDevice = DeviceRegisterUpload.objects.get(deviceid = i)
                 messages.error(request, 'Device(s) deleted succesfully.')
                 currentDevice.delete()
                 # return redirect('DeviceInventory')
             else:
                 print(i)
-                currentDevice = DeviceRegisterUpload.objects.get(devicebrand = i)
+                currentDevice = DeviceRegisterUpload.objects.get(deviceid = i)
                 print(currentDevice)
                 currentDevice.delete()
                 messages.error(request, 'Device(s) deleted succesfully.')
@@ -830,7 +838,8 @@ def StaffMembers(request):
     allUploadedDevices = DeviceRegisterUpload.objects.all()
     staffCount = staffMembers.count()
     allSignUps = SignupForm.objects.all()
-    context = {'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
+    AllUsers = User.objects.all()
+    context = {'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
     return render(request, 'userarea/staffpage.html', context)
 
 
@@ -1061,8 +1070,18 @@ def Dashboard(request):
                     else:                        
                         depreciateRateReal = 'Nil'
 
+                    
+                    if row[17] == '':
+                        messages.error(request, 'Device email address is missing, please fill in the email address and try again.')
+                        return redirect('Dashboard')
+                    
+                    if row[4] == '' or row[5] == '':
+                        messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
+                        return redirect('Dashboard')
+
 
                     AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
+                    print('----------------------------------------------------------------')
                     print(AllStaffCheck)
                     if AllStaffCheck:
                         print('email already exists')
@@ -1070,12 +1089,12 @@ def Dashboard(request):
                         return redirect('Dashboard')
                    
 
-                    AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
-                    print(AllStaffCheck)
-                    if AllStaffCheck:
-                        print('email already exists')
-                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
-                        return redirect('Dashboard')
+                    # AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
+                    # print(AllStaffCheck)
+                    # if AllStaffCheck:
+                    #     print('email already exists')
+                    #     messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
+                    #     return redirect('Dashboard')
                         
 
                     DeviceRegisterUpload.objects.create(
@@ -1260,18 +1279,29 @@ def EditStaff(request, staffid):
     currentStaff = StaffDataSet.objects.get(id = staffid)
     form = staffForm(request.POST or None, instance = currentStaff)
     if request.POST and form.is_valid():
-        StaffReg = form.save(commit=False)
-        for data in User.objects.all():
-            if data.email == currentStaff.StaffID:
+        print('request is valid')
+        form.save()
+        return redirect('StaffMembers')
+        # form.save(commit=False)
+        # allUserNow = User.objects.all()
+        # for data in allUserNow:
+        #     print(data)
+        #     if data.username == currentStaff.staff_email:
+        #         print('currentStaff.staff_email')
+            # if data.email == currentStaff.StaffID:
                 # data = data.user
-                data.username = form.cleaned_data['staff_email']
-                data.password = form.cleaned_data['staff_phonenumber']
-                data.save()
-                if form.save():
-                    messages.success(request, 'Staff details edited successfully')
-                    return redirect('StaffMembers')
-                else:
-                    messages.success(request, 'Error saving staff details')
+                # data.username = form.cleaned_data['staff_email']
+                # data.save()
+                # StaffReg.save()
+                # if form.save():
+                #     messages.success(request, 'Staff details edited successfully')
+                #     return redirect('StaffMembers')
+                # else:
+                #     messages.success(request, 'Error saving staff details')            
+            # else:
+            #     messages.success(request, 'An error occured. Please try again')
+            #     return redirect('StaffMembers')
+
     allUsers = User.objects.all()
     context = {'allUsers':allUsers, 'form' : form, 'currentStaff' : currentStaff}
     return render(request, 'userarea/editStaffDetails.html', context)
@@ -1458,6 +1488,14 @@ def ScanNetwork(request):
                         depreciateRateReal = '0%'
                     else:                        
                         depreciateRateReal = 'Nil'
+                    
+                    if row[17] == '':
+                        messages.error(request, 'Device email address is missing, please fill in the email address and try again.')
+                        return redirect('Dashboard')
+                    
+                    if row[4] == '' or row[5] == '':
+                        messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
+                        return redirect('Dashboard')
 
                     
 

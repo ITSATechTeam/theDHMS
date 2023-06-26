@@ -17,5 +17,4 @@ urlpatterns = [
     path('staffeditmaintenancdetail/<str:name>/', views.EditStaffMaintainanceDetails, name="EditStaffMaintainanceDetails"),
     # path('staffdetails/<str:id>/', views.StaffDetails, name="StaffDetails"),
 ]
-    
 

@@ -21,9 +21,7 @@ class UpdateUserFromUpdateForm(ModelForm):
 class staffForm(ModelForm):
     class Meta:
         model = StaffDataSet
-        fields = ['staff_firstname', 'staff_lastname', 'staff_phonenumber',
-        'staff_email', 'staff_role', 'staff_location'
-        ]
+        fields = ['staff_firstname', 'staff_lastname', 'staff_phonenumber', 'staff_role', 'staff_location']
 
 
 class DeviceRegisterForm(ModelForm):

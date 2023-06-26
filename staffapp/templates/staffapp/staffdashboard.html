@@ -31,6 +31,13 @@
 						{% endfor %}
 						<h5>Get a detailed overview of your devices health and status.</h5>
 					</div>
+
+					{% comment %} {% if request.user.is_authenticated %}
+					{{ request.user }}
+					<p>Online</p>
+					{% else %}
+					<p>Offline</p>
+					{% endif %} {% endcomment %}
 				
 					<div id="flash">
 						{% if messages %} {% for message in messages %}
