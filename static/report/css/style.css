@@ -1,0 +1,103 @@
+.box{
+    background-color: #F9DCDC;
+    border-radius: 10px;
+    padding: 10px;
+    width: 23%;
+    height: 130px;
+}
+
+.box p{
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.mainsubtext{
+    color: #BDBDBD;
+}
+
+.main{
+    margin-right: 20px;
+}
+
+.boxoutter{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.box img{
+    width: 30px;
+    padding-bottom: 10px;
+}
+
+.mainsection{
+    margin-top: 30px;
+}
+
+.mainsectionhead{
+    padding-bottom: 10px;
+}
+
+.deviceCount{
+    background-color: #DFEBF8;
+}
+
+.deviceCount img{
+    margin-bottom: 10px;
+}
+
+.hardwareCount{
+    background-color: rgba(242, 201, 76, 0.3);
+    /* background-color: #F2C94C; */
+}
+
+.cost{
+    background-color: rgba(111, 207, 151, 0.3);
+    /* background-color: #6FCF97; */
+}
+
+
+/* sectionslabels start here */
+.sectionslabels{
+    margin-top: 30px;
+    /* margin-bottom: 30px; */
+}
+
+.sectionslabels h4{
+    margin-right: 30px;
+    color: rgba(130, 130, 130, 1);
+    padding-bottom: 10px;
+    border-bottom: 3px solid rgba(42, 102, 176, 1);
+}
+
+.sectionslabels hr{
+    margin-top: -7px;
+}
+
+.sectionslabelsheaders{
+    display: flex;
+
+}
+
+/* hardwarePurchaseSection starts here */
+.hardwarePurchaseSection{
+    margin-top: 50px;
+}
+
+.purchaseChoice{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.purchaseChoice select{
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+}
+
+/* hardwarePurchaseSection ends here */
+
+
+/* sectionslabels ends here */

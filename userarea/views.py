@@ -37,7 +37,16 @@ def Reports(request):
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    allDevices = DeviceRegisterUpload.objects.all()
+    allDevicesMonthMain = ''
+    allDevicesMonth = DeviceRegisterUpload.objects.values_list('savetimedata')
+    for i in allDevicesMonth:
+        # allDevicesMonthMain.join(i)
+        print(i)
+    # allDevicesMonthMain.join(allDevicesMonth)
+    print(allDevicesMonth)
+    print(type(allDevicesMonth))
+    context = {'allDevicesMonth':allDevicesMonth, 'allDevices':allDevices, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/reports.html', context)
 
 

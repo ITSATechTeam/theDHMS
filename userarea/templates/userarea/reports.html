@@ -8,6 +8,7 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'report/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +23,74 @@
 	<body class='body'>
 		<div class='main'>
             <h1>Reports Page</h1>
+			<h4 class='mainsubtext'>
+				Empower your decisions with insightful reports for optimized device performance and efficiency.
+			</h4>
+			<div class='mainsection'>
+				<h3 class='mainsectionhead'>Overview</h3>
+				<div class='boxoutter'>
+					<div class='box'>
+						<img src={% static 'report/img/maintenance.png' %} />
+						<div>
+							<h1>132</h1>
+							<p>Total Maintenance</p>
+						</div>
+					</div>
+					<div class='box deviceCount'>
+						<img src={% static 'report/img/count.png' %} />
+						<div>
+							<h1>101</h1>
+							<p>Total Devices</p>
+						</div>
+					</div>
+					<div class='box hardwareCount'>
+						<img src={% static 'report/img/maintenance.png' %} />
+						<div>
+							<h1>31</h1>
+							<p>Total number of hardware purchased</p>
+						</div>
+					</div>
+					<div class='box cost'>
+						<img src={% static 'report/img/cost.png' %} />
+						<div>
+							<h1>₦12, 000, 000</h1>
+							<p>Total amount spent on hardware purchase</p>
+						</div>
+					</div>
+				</div>
+				{% comment %} Maintenance Summary section area starts here {% endcomment %}
+				<div class='sectionslabels'>
+					<div class='sectionslabelsheaders'>
+						<h4>Maintenance Summary</h4>
+						<h4>Financial Report</h4>
+					</div>
+					<hr/>
+					{% comment %} Hardware purchase information STARTS HERE {% endcomment %}
+					<div class='hardwarePurchaseSection'>
+						<h3>Hardware purchase information</h3>
+						<div class='purchaseChoice'>
+							<div>
+								<select>
+									<option>Amount Spent on Hardware Purchase</option>
+									<option>Number of Hardware Purchased</option>
+								</select>
+							</div>
+							<div>
+								<select>
+									<option>2023</option>
+									<option>2022</option>
+								</select>
+							</div>
+						</div>
+						{% comment %} hardware purchase graph starts here {% endcomment %}
+						
+
+						{% comment %} hardware purchase graph ends here {% endcomment %}
+					</div>
+					{% comment %} Hardware purchase information ENDS HERE {% endcomment %}
+				</div>
+				{% comment %} Maintenance Summary section area ends here {% endcomment %}
+			</div>
         </div>
     </body>
 </html>
