@@ -71,6 +71,7 @@ class DeviceRegisterUpload(models.Model):
     devicedepreciationrate = models.CharField(max_length = 1500, null=True, blank = True)
     deviceid = models.CharField(max_length = 1500, null=True, blank = True)
     savetimedata = models.CharField(max_length = 1500, null=True, blank = True)
+    registeredMonth = models.CharField(max_length = 1500, null=True, blank = True)
     weekNumberSaved = models.CharField(max_length = 1500, null=True, blank = True)
     CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)

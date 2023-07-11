@@ -34,19 +34,46 @@ def NavBar(request):
 
 @login_required(login_url='Login')
 def Reports(request):
-    allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
     allDevices = DeviceRegisterUpload.objects.all()
-    allDevicesMonthMain = ''
-    allDevicesMonth = DeviceRegisterUpload.objects.values_list('savetimedata')
-    for i in allDevicesMonth:
-        # allDevicesMonthMain.join(i)
-        print(i)
-    # allDevicesMonthMain.join(allDevicesMonth)
-    print(allDevicesMonth)
-    print(type(allDevicesMonth))
-    context = {'allDevicesMonth':allDevicesMonth, 'allDevices':allDevices, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    allDevicesMonth = DeviceRegisterUpload.objects.values_list('registeredMonth')
+    JanDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Jan'))
+    JanDevices1 = JanDevices.count()
+    FebDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Feb'))
+    FebDevices1 = FebDevices.count()
+    MarDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Mar'))
+    MarDevices1 = MarDevices.count()
+    AprDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Apr'))
+    AprDevices1 = AprDevices.count()
+    MayDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'May'))
+    MayDevices1 = MayDevices.count()
+    JuneDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Jun'))
+    JuneDevices1 = JuneDevices.count()
+    JulyDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Jul'))
+    JulyDevices1 = JulyDevices.count()
+    AugDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Aug'))
+    AugDevices1 = AugDevices.count()
+    SeptDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Sep'))
+    SeptDevices1 = SeptDevices.count()
+    OctDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Oct'))
+    OctDevices1 = OctDevices.count()
+    NovDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Nov'))
+    NovDevices1 = NovDevices.count()
+    DecDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Dec'))
+    DecDevices1 = DecDevices.count()
+
+    Amounts = ['100,000', '200,000', '300,000', '400,000', '500,000']
+
+    data = [JanDevices1, FebDevices1, MarDevices1, AprDevices1, MayDevices1, JuneDevices1, JulyDevices1, AugDevices1, SeptDevices1, OctDevices1, NovDevices1, DecDevices1]
+    labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+    context = {'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 
+    'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
+    'AprDevices':AprDevices, 'MayDevices':MayDevices,'JuneDevices':JuneDevices, 'JulyDevices':JulyDevices, 
+    'labels':labels, 'data':data, 'allDevicesMonth':allDevicesMonth, 'allDevices':allDevices, 
+    'allSignUps':allSignUps, 'allUsers':allUsers}
+
     return render(request, 'userarea/reports.html', context)
 
 
@@ -64,17 +91,14 @@ def Maintainance(request):
     if request.method == 'GET' and 'dataToExport'  in request.GET:
         dataToExport = request.GET.get('dataToExport') if request.GET.get('dataToExport') != None else ''
         dataToExportNew = list(dataToExport.split(","))
-        # print(type(dataToExportNew))
         dataToExportNewNoDuplicate = []
         [dataToExportNewNoDuplicate.append(i) for i in dataToExportNew if i not in dataToExportNewNoDuplicate]
         # get latest array entry ID for edit and delete features
         maintainElementID = dataToExportNewNoDuplicate[-1]
         maintainElementIDMain = MaintenanceRequest.objects.get(MaintainRequestID = maintainElementID).pk
-        # print(maintainElementIDMain)
         for i in dataToExportNew:
             if dataToExportNew.count(i) == 2:
                 dataToExportNew.remove(i)
-            # print(dataToExportNewNoDuplicate.count(i))
 
             response = HttpResponse(content_type = 'text/csv')
             writer = csv.writer(response)
@@ -444,6 +468,7 @@ def DeviceInventory(request):
                         deviceid = uniqueId,
                         staffUserID = StaffUniqueId,
                         savetimedata = today.strftime("%B %d, %Y"),
+                        registeredMonth = today.strftime("%b"),
                         weekNumberSaved = weekNumber,
                         CompanyUniqueCode = request.user.email
                     ),
@@ -1134,6 +1159,7 @@ def Dashboard(request):
                         deviceid = uniqueId,
                         staffUserID = StaffUniqueId,
                         savetimedata = today.strftime("%B %d, %Y"),
+                        registeredMonth = today.strftime("%b"),
                         weekNumberSaved = weekNumber,
                         CompanyUniqueCode = request.user.email
                     ),
@@ -1543,6 +1569,7 @@ def ScanNetwork(request):
                         deviceid = uniqueId,
                         staffUserID = StaffUniqueId,
                         savetimedata = today.strftime("%B %d, %Y"),
+                        registeredMonth = today.strftime("%b"),
                         weekNumberSaved = weekNumber,
                         CompanyUniqueCode = request.user.email
                     ),

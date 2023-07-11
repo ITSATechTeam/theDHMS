@@ -76,12 +76,15 @@
 
 .sectionslabelsheaders{
     display: flex;
-
 }
 
 /* hardwarePurchaseSection starts here */
 .hardwarePurchaseSection{
     margin-top: 50px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    margin-bottom: 50px;
+    border-radius: 10px;
 }
 
 .purchaseChoice{
@@ -97,7 +100,56 @@
     font-size: 1.2rem;
 }
 
-/* hardwarePurchaseSection ends here */
+/* CHART EFFECTS STARTS HERE */
+.container{
+    margin-top: 50px;
+}
 
+#container{
+    width: 100%;
+    height: 100%;
+}
+
+/* CHART EFFECTS ENDS HERE */
+
+.devicesTableSection{
+    margin-bottom: 50px;
+}
+
+.devicesTableSection h5{
+    margin-top: 20px;
+    margin-bottom: -40px;
+}
+
+.scannetworkbtn button{
+    width: 90px;
+    border: none;
+    font-weight: bold;
+}
+
+/* PURCHASE TABLE STARTS HERE */
+
+table#team-list {
+    counter-reset: rowNumber;
+}
+
+table#team-list tr:nth-child(n+2) {
+    counter-increment: rowNumber;
+}
+
+table#team-list tr:nth-child(n+1) td:first-child::before {
+    content: counter(rowNumber);
+    min-width: 1em;
+    margin-right: 0.5em;
+}
+
+.monthlyAmount{
+    display: none;
+}
+
+
+/* PURCHASE TABLE ENDS HERE */
+
+/* hardwarePurchaseSection ends here */
 
 /* sectionslabels ends here */
