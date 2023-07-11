@@ -8,6 +8,9 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'maintenance/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'report/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'support/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +24,209 @@
 	<div class='shadow'></div>
 	<body class='body'>
 		<div class='main'>
-            <h1>Support Page</h1>
+			<div class='supportpageheader'>
+				<div>				
+					<h1>Help and Support</h1>
+					<h5>Find answers in our FAQs or contact our support for personalized assistance. </h5>
+				</div>			
+				<div class='scannetworkbtn'>
+					<button>
+						<img src={% static 'maintenance/img/support.png' %} />
+						<p>Contact ITSA Support</p>
+					</button>
+				</div>
+			</div>
+			<div class='searchdashboard'>
+				<form method='GET' action="{% url 'Searchresult' %}">
+					<input type='text' name='q' placeholder='Search Devices' />
+				</form>
+				<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+			</div>
+			<div class='sectionslabels'>
+				<div class='sectionslabelsheaders'>
+					{% comment %} <h4>Maintenance Summary</h4> {% endcomment %}
+					<h4>All</h4>
+					<h4>Device Upload</h4>
+					<h4>Maintenance</h4>
+					<h4>Device Inventory</h4>
+					<h4>Staff</h4>
+					<h4>Testimonians</h4>
+					{% comment %} <h4>Report</h4> {% endcomment %}
+				</div>
+				<hr/>
+			</div>
+			
+			{% comment %} FAQ STARTS HERE {% endcomment %}
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								Is there a centralized dashboard for managing all devices within the device health management system?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								How to invite staff members to join DHMS?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								How to upload devices using a CSV file?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								What kind of reporting and analytics are available for device management?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								Can I update device information after uploading?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								Do I get a referal bonus for refering a company to register with DHMS?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			<div class='faqSection'>
+				<div class='faqSectionOut'>
+					<div class='faqSectionInner'>
+						<div >
+							<h3>
+								Is there a centralized dashboard for managing all devices within the device health management system?
+							</h3>
+						</div>
+						<div>
+							<img src={% static 'support/img/showfaq.png' %} />
+						</div>
+					</div>
+					<div class='faqresponse'>
+						<h4>
+							<ul>
+								<li>Absolutely! our device health management service provides a centralized dashboard where administrators can view and manage all registered devices. The dashboard offers a comprehensive overview of device health, status, and key metrics.</li>
+							</ul>
+						</h4>
+					</div>
+					<hr/>
+				</div>				
+			</div>
+			{% comment %} FAQ ENDS HERE {% endcomment %}
+
+			<div class='viewmorefaq'>
+				<h4>View More FAQs</h4>
+				<img src={% static 'support/img/downarrow.png' %} />
+			</div>
+			<div class='noAnswerFound'>
+				<h3>Didn’t  find  an answers?</h3>
+				<h5>Our team is ready to answer your questions</h5>
+				<div class='scannetworkbtn'>
+					<button>
+						<img src={% static 'maintenance/img/support.png' %} />
+						<p>Contact ITSA Support</p>
+					</button>
+				</div>
+			</div>
         </div>
     </body>
 </html>

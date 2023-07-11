@@ -150,12 +150,14 @@ def StaffViewDeviceDetails(request, name):
 
         form.save()
         return redirect('StaffMaintainance')
+    # AllMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainDeviceID = name)
     AllMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainDeviceName = name)
     print(type(AllMaintenanceRequest))
     print(type(name))
+    # AllMaintenanceRequestCount = MaintenanceRequest.objects.filter(MaintainDeviceID = name).count()
     AllMaintenanceRequestCount = MaintenanceRequest.objects.filter(MaintainDeviceName = name).count()
     AllDevices = DeviceRegisterUpload.objects.all()
-    currentDeviceList = DeviceRegisterUpload.objects.get(devicebrand = name)
+    currentDeviceList = DeviceRegisterUpload.objects.get(deviceid = name)
     # currentDeviceList = DeviceRegisterUpload.objects.get(Q(devicebrand = name)  & Q(user = request.user))
     context = {'AllDevices':AllDevices, 'name':name, 'currentDeviceList':currentDeviceList, 'AllMaintenanceRequest' : AllMaintenanceRequest, 'AllMaintenanceRequestCount' : AllMaintenanceRequestCount}
     return render(request, 'staffapp/staffdevicedetails.html', context)

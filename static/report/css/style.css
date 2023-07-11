@@ -147,6 +147,9 @@ table#team-list tr:nth-child(n+1) td:first-child::before {
     display: none;
 }
 
+.hardwarePrices{
+    display: none;
+}
 
 /* PURCHASE TABLE ENDS HERE */
 

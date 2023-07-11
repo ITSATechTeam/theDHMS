@@ -33,28 +33,28 @@
 					<div class='box'>
 						<img src={% static 'report/img/maintenance.png' %} />
 						<div>
-							<h1>132</h1>
+							<h1>{{ AllMaintenances }}</h1>
 							<p>Total Maintenance</p>
 						</div>
 					</div>
 					<div class='box deviceCount'>
 						<img src={% static 'report/img/count.png' %} />
 						<div>
-							<h1>101</h1>
+							<h1>{{ allDevicesCount }}</h1>
 							<p>Total Devices</p>
 						</div>
 					</div>
 					<div class='box hardwareCount'>
 						<img src={% static 'report/img/maintenance.png' %} />
 						<div>
-							<h1>31</h1>
+							<h1>{{ allDevicesCount }}</h1>
 							<p>Total number of hardware purchased</p>
 						</div>
 					</div>
 					<div class='box cost'>
 						<img src={% static 'report/img/cost.png' %} />
 						<div>
-							<h1>₦12, 000, 000</h1>
+							<h1 class='amountspenttotal'>₦ <a> </a></h1>
 							<p>Total amount spent on hardware purchase</p>
 						</div>
 					</div>
@@ -62,7 +62,7 @@
 				{% comment %} Maintenance Summary section area starts here {% endcomment %}
 				<div class='sectionslabels'>
 					<div class='sectionslabelsheaders'>
-						<h4>Maintenance Summary</h4>
+						{% comment %} <h4>Maintenance Summary</h4> {% endcomment %}
 						<h4>Financial Report</h4>
 					</div>
 					<hr/>
@@ -71,9 +71,9 @@
 						<h3>Hardware purchase information</h3>
 						<div class='purchaseChoice'>
 							<div>
-								<select>
-									<option>Number of Devices Purchased</option>
-									<option>Amount Spent on Hardware Purchase</option>
+								<select id='select1'>
+									<option value='NumberOfDevices' class='NumberOfDevices'>Number of Devices Purchased</option>
+									<option value='AmountForDevices' class='AmountForDevices'>Amount Spent on Hardware Purchase</option>
 								</select>
 							</div>
 							<div>
@@ -84,7 +84,7 @@
 							</div>
 						</div>
 						{% comment %} hardware purchase graph starts here {% endcomment %}
-						<div class='container'>							
+						<div class='container hardwareNumber'>							
 							<div id="container">
 								<canvas id="layanan"></canvas>
 							</div>
@@ -92,7 +92,7 @@
 						{% comment %} hardware purchase graph ends here {% endcomment %}
 
 						{% comment %} hardware purchase amount graph starts here {% endcomment %}
-						<div class='container'>	 
+						<div class='container hardwarePrices'>
 							<div id="container">
 								<canvas id="layanan_subbagian"></canvas>
 							</div>
@@ -292,7 +292,7 @@
 			</div>
 			{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
         </div>
-		{% comment %} <script src={% static 'report/js/main.js' %}></script> {% endcomment %}
+		<script src={% static 'report/js/main.js' %}></script>
 		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
@@ -314,7 +314,6 @@
 				});
 				
 			});
-			console.log(janSum)
 			AllMonthArray.push(janSum);
 			// JANUARY CALCULATION ENDS HERE
 
@@ -334,7 +333,6 @@
 				});
 				
 			});
-			console.log(febSum)
 			AllMonthArray.push(febSum);
 			// FEBRUARY CALCULATION ENDS HERE
 
@@ -354,7 +352,6 @@
 				});
 				
 			});
-			console.log(marSum)
 			AllMonthArray.push(marSum);
 			// MARCH CALCULATION ENDS HERE
 
@@ -374,7 +371,6 @@
 				});
 				
 			});
-			console.log(aprSum)
 			AllMonthArray.push(aprSum);
 			// APRIL CALCULATION ENDS HERE
 
@@ -394,7 +390,6 @@
 				});
 				
 			});
-			console.log(maySum)
 			AllMonthArray.push(maySum);
 			// MAY CALCULATION ENDS HERE
 
@@ -415,7 +410,6 @@
 				});
 				
 			});
-			console.log(JuneSum)
 			AllMonthArray.push(JuneSum);
 			// JUNE CALCULATIONS ENDS HERE
 
@@ -435,7 +429,6 @@
 				});
 				
 			});
-			console.log(julySum)
 			AllMonthArray.push(julySum);
 			// JULY CALCULATIONS ENDS HERE
 
@@ -455,7 +448,6 @@
 				});
 				
 			});
-			console.log(augSum)
 			AllMonthArray.push(augSum);
 			// AUGUST CALCULATIONS ENDS HERE
 
@@ -475,7 +467,6 @@
 				});
 				
 			});
-			console.log(septSum)
 			AllMonthArray.push(septSum);
 			// SEPTEMBER CALCULATIONS ENDS HERE
 
@@ -495,7 +486,6 @@
 				});
 				
 			});
-			console.log(octtSum)
 			AllMonthArray.push(octtSum);
 			// OCTOBER CALCULATIONS ENDS HERE
 
@@ -515,7 +505,6 @@
 				});
 				
 			});
-			console.log(novtSum)
 			AllMonthArray.push(novtSum);
 			// NOVEMBER CALCULATIONS ENDS HERE
 
@@ -532,13 +521,14 @@
 				})
 				.reduce( function(a,b){ // sum all resulting numbers
 				return a+b
-				});
-				
+				});				
 			});
-			console.log(dectSum)
 			AllMonthArray.push(dectSum);
 			AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
-			console.log(result)
+
+			let resultSum = result.reduce((a, b) => a + b, 0)
+			let amountspenttotal = document.querySelector('.amountspenttotal a')
+			amountspenttotal.innerText = resultSum.toLocaleString("en-US")
 		</script>
 		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
 		{% comment %}  {% endcomment %}

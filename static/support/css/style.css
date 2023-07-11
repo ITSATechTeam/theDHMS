@@ -1,0 +1,124 @@
+.supportpageheader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.supportpageheader button{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    width: 210px;
+    font-size: 1.4rem;
+}
+
+.supportpageheader button p{
+    margin-top: 10px;
+}
+
+.searchdashboard{
+    margin-top: 30px;
+}
+
+
+
+
+/* faqSectionInner STARTS HERE */
+
+.faqSection{
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.main{
+    margin-bottom: 50px;
+}
+
+
+.faqSectionInner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    cursor: pointer;
+}
+
+.faqSectionOut{
+    height: 100%;
+    padding-left: 10px;
+}
+
+.faqresponse{
+    width: 800px;
+}
+
+.faqSectionOut:hover{
+    background-color: rgb(235, 235, 235);
+}
+.faqSectionInner:hover{
+    background-color: rgb(235, 235, 235);
+}
+
+.faqSectionInner img{
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.faqSectionInner img:hover{
+    transform: scale(1.1);
+}
+
+
+.faqSectionInner h3{
+    width: 800px;
+}
+
+
+.viewmorefaq{
+    color: #2A66B0;
+    display: flex;
+    align-items: center;
+    width: 160px;
+}
+
+.viewmorefaq img{
+    margin-left: 5px;
+}
+
+.viewmorefaq:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* faqSectionInner ENDS HERE */
+
+
+.noAnswerFound{
+    text-align: center;
+    margin-top: 50px;
+    /* background-color: red; */
+}
+
+.noAnswerFound button{
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    width: 210px;
+    font-size: 1.4rem;
+    display: flex;
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.noAnswerFound h5{
+    margin-top: 10px;
+}
+
+
+.noAnswerFound button p{
+    margin-top: 10px;
+}

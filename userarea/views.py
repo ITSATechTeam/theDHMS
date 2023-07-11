@@ -36,43 +36,47 @@ def NavBar(request):
 def Reports(request):
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    allDevices = DeviceRegisterUpload.objects.all()
-    allDevicesMonth = DeviceRegisterUpload.objects.values_list('registeredMonth')
-    JanDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Jan'))
+    allDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    allDevicesCount = allDevices.count()
+    allDevicesMonthPre = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
+    allDevicesMonth = allDevicesMonthPre.values_list('registeredMonth')
+    # allDevicesMonth = DeviceRegisterUpload.objects.values_list('registeredMonth')
+    JanDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Jan'))
     JanDevices1 = JanDevices.count()
-    FebDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Feb'))
+    FebDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Feb'))
     FebDevices1 = FebDevices.count()
-    MarDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Mar'))
+    MarDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Mar'))
     MarDevices1 = MarDevices.count()
-    AprDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Apr'))
+    AprDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Apr'))
     AprDevices1 = AprDevices.count()
-    MayDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'May'))
+    MayDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'May'))
     MayDevices1 = MayDevices.count()
-    JuneDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Jun'))
+    JuneDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Jun'))
     JuneDevices1 = JuneDevices.count()
-    JulyDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Jul'))
+    JulyDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Jul'))
     JulyDevices1 = JulyDevices.count()
-    AugDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Aug'))
+    AugDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Aug'))
     AugDevices1 = AugDevices.count()
-    SeptDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Sep'))
+    SeptDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Sep'))
     SeptDevices1 = SeptDevices.count()
-    OctDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Oct'))
+    OctDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Oct'))
     OctDevices1 = OctDevices.count()
-    NovDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Nov'))
+    NovDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Nov'))
     NovDevices1 = NovDevices.count()
-    DecDevices = DeviceRegisterUpload.objects.filter(Q(user = request.user) & Q(registeredMonth = 'Dec'))
+    DecDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Dec'))
     DecDevices1 = DecDevices.count()
 
     Amounts = ['100,000', '200,000', '300,000', '400,000', '500,000']
 
     data = [JanDevices1, FebDevices1, MarDevices1, AprDevices1, MayDevices1, JuneDevices1, JulyDevices1, AugDevices1, SeptDevices1, OctDevices1, NovDevices1, DecDevices1]
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    AllMaintenances = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email).count()
 
     context = {'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 
     'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
     'AprDevices':AprDevices, 'MayDevices':MayDevices,'JuneDevices':JuneDevices, 'JulyDevices':JulyDevices, 
     'labels':labels, 'data':data, 'allDevicesMonth':allDevicesMonth, 'allDevices':allDevices, 
-    'allSignUps':allSignUps, 'allUsers':allUsers}
+    'allSignUps':allSignUps, 'allUsers':allUsers, 'AllMaintenances':AllMaintenances, 'allDevicesCount':allDevicesCount}
 
     return render(request, 'userarea/reports.html', context)
 

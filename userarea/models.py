@@ -81,7 +81,7 @@ class DeviceRegisterUpload(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.deviceip} {self.devicename} {self.user} {self.staffUserID}'
+        return f'{self.CompanyUniqueCode} {self.devicename} {self.user} {self.staffUserID}'
 
 
 class uploadedDeviceData(models.Model):
