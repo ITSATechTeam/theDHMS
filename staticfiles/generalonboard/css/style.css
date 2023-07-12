@@ -22,6 +22,7 @@ main{
 
 .mainimg2 img{
     position: fixed;
+    top: 70px;
     height: 90vh;
     width: 100vw;
     background-position: bottom;
@@ -42,9 +43,12 @@ main{
     padding: 20px;
     border-radius: 10px;
     z-index: 2;
-    position: absolute;
+    margin: auto;
+    margin-top: 5%;
+    margin-right: 25%;
+    /* position: absolute;
     top: 25%;
-    left: 35%;
+    left: 35%; */
     color: white;
 }
 
@@ -170,3 +174,43 @@ nav img{
 }
 
 /* accessButtons ends here */
+
+.mobileSection{
+    display: none;
+}
+@media only screen and (max-width: 1144px) {
+    .sidenote-p, .accessButtons{
+        display: none;
+    }
+    .mobileSection{
+        display: block;
+        text-align: center;
+        width: 80%;
+        font-size: 5.3rem;
+        margin: auto;
+        margin-top: 100px;
+    }
+
+    .sidenote2{
+        width: 100%;
+        /*  */
+        /* From https://css.glass */
+        background: rgba(0, 0, 0, 0.568);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.459);
+        backdrop-filter: blur(0px);
+        -webkit-backdrop-filter: blur(0px);
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        /*  */
+        padding: 20px;
+        border-radius: 10px;
+        z-index: 2;
+        margin: auto;
+        margin-top: 5%;
+        margin-left:35%;
+        /* position: absolute;
+        top: 25%;
+        left: 35%; */
+        color: white;
+    }
+  }

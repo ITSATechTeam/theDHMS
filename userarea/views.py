@@ -32,6 +32,8 @@ def NavBar(request):
     return render(request, 'general.html', context)
 
 
+
+
 @login_required(login_url='Login')
 def Reports(request):
     allUsers = User.objects.all()

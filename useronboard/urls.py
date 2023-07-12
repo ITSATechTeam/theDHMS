@@ -6,9 +6,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('navbar/', views.NavBar, name="NavBar"),
-    path('', views.PreSignUpPage, name="PreSignUpPage"),
+    path('pre_signup/', views.PreSignUpPage, name="PreSignUpPage"),
     path('signup/', views.SignUpPage, name="SignUpPage"),
     path('login/', views.Login, name="Login"),
+    path('', views.Home, name="Home"),
 
     path("password_reset", views.password_reset_request, name="password_reset")
 

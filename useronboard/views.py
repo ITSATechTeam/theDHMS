@@ -29,6 +29,10 @@ def PreSignUpPage(request):
     return render(request, 'useronboard/presignuppage2.html')
 
 
+def Home(request):
+    return render(request, 'useronboard/home.html')
+
+
     
 def SignUpPage(request):
     if request.method == 'POST':

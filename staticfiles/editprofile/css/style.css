@@ -61,7 +61,7 @@ body{
 
 /* EDIT PROFILE DETAILS PROPER */
 
-.editBox input,select{
+.editBox input{
     width: 450px;
     height: 50px;
     border-radius: 10px;
@@ -210,6 +210,15 @@ body{
     margin-bottom: 50px;
 }
 
+.submitdata p{
+    padding: 10px;
+    font-size: 1.3rem;
+    background-color: #E1E7FC;
+    margin-right: 10px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
 
 /* uploadProfilePic starts here */
 .uploadProfilePic{
@@ -305,3 +314,61 @@ body{
 
 
 /* uploadProfilePic ends here */
+
+/* UPDATE COMPANY AND ACCOUNT DETAILS SETUP STARTS HERE */
+.editBoxCountry img{
+    margin-top: -10px;
+    /* background-color: red; */
+}
+
+.editBoxCountrymain{
+    position: absolute;
+    /* margin-top: 20px; */
+    /* background-color: red; */
+}
+
+.countryCode{
+    background-color: white;
+
+}
+
+
+
+
+.editBoxCountrymaininner{
+    width: 450px;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    background-color: rgba(128, 128, 128, 0.185);
+    font-size: 1.2rem;
+    padding-left: 35px;
+    position: relative;
+    margin-top: -35px;
+
+}
+.add img{
+    position: relative;
+    bottom: 28px;
+    /* left: -42px; */
+    right: 30px;
+}
+
+.countryselect select{
+    padding-left: -35px;
+    position: relative;
+    bottom: 29px;
+    width: 410px; 
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    padding-left: -30px;
+    font-size: 1.4rem;
+}
+
+input, select{
+    outline: none;
+}
+
+/* UPDATE COMPANY AND ACCOUNT DETAILS SETUP ENDS HERE */

@@ -36,6 +36,7 @@
     margin-bottom: 50px;
 }
 
+
 .faqSectionInner{
     display: flex;
     align-items: center;
@@ -43,13 +44,11 @@
     padding-top: 30px;
     padding-bottom: 30px;
     cursor: pointer;
-    transition: .4s ease-in-out;
 }
 
 .faqSectionOut{
     height: 100%;
     padding-left: 10px;
-    transition: .4s ease-in-out;
 }
 
 .faqresponse{
