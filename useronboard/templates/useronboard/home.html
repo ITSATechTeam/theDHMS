@@ -16,21 +16,24 @@
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<title>Welcome Back | ITSA Inventory System</title>
+		<title>DHMS - Device Health Management System | ITSA Inventory System</title>
 	</head>
 	<body>
 		<main class='js-scroll'>
+            <div>
+                <img src={% static 'Home/img/itsalogopng1.png' %} />
+            </div>
             <div class='heroSection scroll-element js-scroll fade-in-bottom'>
-                <div>
+                <div class='heroSectionPartOne'>
                     <h1>
-                        Welcome to the future of device management
+                        Welcome to the future of <span>device management</span>
                     </h1>
                     <h3>
                         Introducing Device Health Management Service (DHMS), a comprehensive solution for efficient device management. Take control of your devices, enhance performance, and optimize processes for increased productivity.
                     </h3>
                     <div class='ctaHero'>
-                        <div class='signup'><button>Sign Up</button></div>
-                        <div class='login'><button>Log In to DHMS</button></div>
+                        <div class='signup'><a href={% url 'SignUpPage' %}><button>Sign Up</button></a></div>
+                        <div class='login'><a href={% url 'Login' %}><button>Log In to DHMS</button></a></div>
                     </div>
                 </div>
                 <div>
@@ -53,8 +56,9 @@
                         <img src={% static 'Home/img/DHMS_dashboard.png' %} />
                     </div>
                 </div>
+
                 <div class='dashboardFeature'>
-                    <div class='scroll-element js-scroll slide-right'>
+                    <div class='DesktopResponsive scroll-element js-scroll slide-right'>
                         <img src={% static 'Home/img/DHMS_Inventory_page.png' %} />
                     </div>
                     <div class='scroll-element js-scroll slide-left'>
@@ -63,7 +67,11 @@
                             Simplify your device inventory management with our DHMS. Seamlessly organize and track your devices, assign them to staff members, and optimize collaboration. Our DHMS ensures smooth workflows, enhanced accountability, and streamlined operations, empowering your team to achieve more in less time.
                         </p>
                     </div>
+                    <div class='mobileResponsive scroll-element js-scroll slide-right'>
+                        <img src={% static 'Home/img/DHMS_Inventory_page.png' %} />
+                    </div>
                 </div>
+
                 <div class='dashboardFeature'>
                     <div class='scroll-element js-scroll slide-left'>
                         <h3>Data-Driven Decisions for Peak Performance</h3>
@@ -75,8 +83,9 @@
                         <img src={% static 'Home/img/DHMS_Inventory_page.png' %} />
                     </div>
                 </div>
+
                 <div class='dashboardFeature'>
-                    <div class='scroll-element js-scroll slide-right'>
+                    <div class=' DesktopResponsive scroll-element js-scroll slide-right'>
                         <img src={% static 'Home/img/DHMS_Reports_page.png' %} />
                     </div>
                     <div class='scroll-element js-scroll slide-left'>
@@ -84,6 +93,9 @@
                         <p>
                             Gain access to a detailed finanacial history of all purchases and expences made device acquisition for your company and keep track of the maintenance history of each device.
                         </p>
+                    </div>
+                    <div class=' mobileResponsive scroll-element js-scroll slide-right'>
+                        <img src={% static 'Home/img/DHMS_Reports_page.png' %} />
                     </div>
                 </div>
                 <div class='dashboardFeature'>
@@ -103,7 +115,7 @@
             <div class='midPageSection scroll-element js-scroll fade-in-bottom'>
                 <h3>Tailor-Made Subscription Plans to Suit Your Needs:</h3>
                 <p>
-                    Prevent disruptions and keep your devices running smoothly with our proactive maintenance features. Our DHMS empowers you to schedule  and request for maintenance, receive automated alerts, and stay ahead of potential issues. Minimize downtime, extend device lifespan, and optimize operational efficiency like never before.
+                    Discover the perfect subscription plan that fits your needs! At IT Service Desk Africa, we offer customized packages designed to meet your unique requirements.
                 </p>
             </div>
             {% comment %} MID PAGE SECTION ENDS HERE {% endcomment %}
@@ -165,59 +177,75 @@
                 <div class='testimonials'>
                     <div class='testimonial'>
                         <p>
-                            Kudos to IT Service Desk Africa for their exceptional device health management service! With their intuitive platform, I can effortlessly track the performance and well-being of my devices. The insightful reports and recommendations have helped me optimize efficiency and prevent any major breakdowns. 
+                            "So far my experience with ITSA has been really good, they initially contact when it was time for quarterly review of our devices, the necessary repairs on all devices were completed in less than a week. Its been really good so far...far exceeded my expectations.I would rate their service a 10 on a scale of 1 to 10 and I would recomment ITSA..."
                         </p>
                         <div class='userProfile'>
                             <div>
-                                <img src= {% static 'Home/img/user.png' %} />
+                                <img src= {% static 'Home/img/tobi.jpg' %} />
                             </div>
                             <div>
-                                <h5>Dr. Olamide James</h5>
-                                <p>CVJ Cooperations</p>
+                                <h5>Mr. Tobi Ojunlari</h5>
+                                <p>Admin/Manager Trewan Oil Limited</p>
                             </div>
                         </div>
                     </div>
                     <div class='testimonial'>
                         <p>
-                            Kudos to IT Service Desk Africa for their exceptional device health management service! With their intuitive platform, I can effortlessly track the performance and well-being of my devices. The insightful reports and recommendations have helped me optimize efficiency and prevent any major breakdowns. 
+                            "I think it is a wonderful idea, knowing that when I have a slight problem with my laptop I can get it fixed as far as I'm subscribed to DHMS, and I can get a loaner device to use during the meantime.I don't also have to stress myself to lookfor technicians to fix my laptop..."
                         </p>
                         <div class='userProfile'>
                             <div>
-                                <img src= {% static 'Home/img/user.png' %} />
+                                <img src= {% static 'Home/img/omotolani.jpg' %} />
                             </div>
                             <div>
-                                <h5>Dr. Olamide James</h5>
-                                <p>CVJ Cooperations</p>
+                                <h5>Omotolani Samuel</h5>
+                                <p>Convenant University, Civil Engr.</p>
                             </div>
                         </div>
                     </div>
                     <div class='testimonial'>
                         <p>
-                            Kudos to IT Service Desk Africa for their exceptional device health management service! With their intuitive platform, I can effortlessly track the performance and well-being of my devices. The insightful reports and recommendations have helped me optimize efficiency and prevent any major breakdowns. 
+                            "So far my experiend with the skillful and experiences team has been fantastic, they put in a lot of hardwork throughout the course of the year and it finally brought some fruit: we can actually see great strides, improvements and enhancements with the help of the expertise in our office and our plants and they helped us achieve our long awaited goal and fast...""
                         </p>
                         <div class='userProfile'>
                             <div>
-                                <img src= {% static 'Home/img/user.png' %} />
+                                <img src= {% static 'Home/img/ardargh.jpg' %} />
                             </div>
                             <div>
-                                <h5>Dr. Olamide James</h5>
-                                <p>CVJ Cooperations</p>
+                                <h5>Govind Preeyesh</h5>
+                                <p>IT Infrastructure Specialist Ardargh Glass Packaging(South Africa)</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% comment %} PRIVACY POLICY SECTION STARTS HERE {% endcomment %}
+        </main>
+        {% comment %} TESTIMONIAL SECTION ENDS HERE {% endcomment %}
+        {% comment %} SECOND CTA BOX STARTS HERE {% endcomment %}
+        <div class='secondCTA scroll-element js-scroll slide-right'>
+            <h1>
+                Welcome to the future of device management
+            </h1>
+            <p>
+                Introducing Device Health Management Service (DHMS), a comprehensive solution for efficient device management. Take control of your devices, enhance performance, and optimize processes for increased productivity.
+            </p>
+            <div class='secondCTABtns'>
+                <div class='secondCTASignup'><a href={% url 'SignUpPage' %}><button>Sign up</button></a></div>
+                <div class='secondCTALogin'><a href={% url 'Login' %}><button>Log in to DHMS</button></a></div>
+            </div>
+        </div>
+        {% comment %} SECOND CTA BOX ENDS HERE {% endcomment %}
+        {% comment %} PRIVACY POLICY SECTION STARTS HERE {% endcomment %}
+        <div class='privacy'>            
             <div class='privacypolicy scroll-element js-scroll fade-in-bottom'>
                 <h4>Privacy Policy</h4>
                 <p>
                     At IT Service Desk Africa, we value your privacy and are committed to protecting your personal information. Our privacy policy outlines how we collect, use, and safeguard the data you provide to us. By using our services, you agree to the terms and practices described in this policy. We encourage you to read the full privacy policy below to understand how we handle your information.
                 </p>
-                <button>View Privacy Policy</button>
+                <a href='https://itservicedeskafrica.com/wp-content/uploads/2023/07/ITSA-POLICIES-1.pdf' target='_blank'><button>View Privacy Policy</button></a>
             </div>
-            {% comment %} PRIVACY POLICY SECTION ENDS HERE {% endcomment %}
-        </main>
-        {% comment %} TESTIMONIAL SECTION ENDS HERE {% endcomment %}
+        </div>
+        {% comment %} PRIVACY POLICY SECTION ENDS HERE {% endcomment %}
         <script src={% static 'Home/js/main.js' %}></script>
     </body>
 </html>
