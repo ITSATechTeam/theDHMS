@@ -28,11 +28,11 @@
 			<div class='maintop'>
 				<div>
 					{% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
-					{% if allSignUps %}
+					{% comment %} {% if allSignUps %}
 					<h1>Welcome back  {{ allSignUps }},</h1>
-					{% else %}
+					{% else %} {% endcomment %}
 					<h1>Welcome back {{request.user}},</h1>
-					{% endif %}
+					{% comment %} {% endif %} {% endcomment %}
 					{% comment %} {% endfor %} {% endcomment %}
 					<h5>Get a detailed overview of your devices health and statuses.</h5>
 				</div>

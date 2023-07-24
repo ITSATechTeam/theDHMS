@@ -1,0 +1,554 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+.heroSection h1{
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+main{
+    width: 100vw;
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top: 20px;
+    margin-bottom: 100px;
+}
+
+.heroSection h3{
+    font-size: 1.2rem;
+    margin-top: 30px;
+}
+
+.heroSection img{
+    width: 100%;
+}
+
+.heroSection{
+    display: grid;
+    grid-template-columns: 40% 40%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ctaHero{
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.ctaHero .signup button{
+    background-color: #2A66B0;
+    padding: 10px;
+    font-size: 1.1rem;
+    color: white;
+    border-radius: 10px;
+    border: none;
+}
+
+.ctaHero .login button{
+    background-color: white;
+    padding: 10px;
+    font-size: 1.1rem;
+    color: #2A66B0;
+    border-radius: 10px;
+    border: 1px solid #2A66B0;
+}
+
+/* featuresHeader starts here */
+.featuresHeader{
+    color: #2A66B0;
+    margin-top: 90px;
+}
+
+.featuresHeader h2{
+    font-size: 1.7rem;
+}
+
+/* featuresHeader ends here */
+
+/* dashboardFeature */
+.dashboardFeature{
+    display: grid;
+    grid-template-columns: 40% 40%;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 100px;
+}
+
+.dashboardFeature img{
+    width: 100%;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* midPageSection STARTS HERE */
+.midPageSection{
+    margin: auto;
+    text-align: center;
+    margin-top: 100px;
+    width: 80%;
+}
+/* midPageSection ENDS HERE */
+
+/* offerSection STARTS HERE */
+.offerSection{
+    background-color: #2A66B0;
+    padding: 20px;
+    /* margin-bottom: 30px; */
+    position: relative;
+}
+
+.offerSectionOut{
+    display: flex;
+    margin: auto;
+    justify-content: space-around;
+    width: 60%;
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+
+
+.offerproper img{
+    width: 20px;
+    margin-right: 5px;
+}
+
+.offerproper{
+    display: flex;
+    align-items: center;
+}
+
+.offerproper p{
+    margin-top: 17px;
+}
+
+.offerSectionInner{
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    width: 320px;
+    transition: .7s ease-in-out;
+}
+
+.offerSectionInner:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.offerproperCost strong{
+    font-size: 1.5rem;
+    color: #2A66B0;
+}
+
+.ucurve{
+    position: absolute;
+    margin-left: -30px;
+    margin-top: -30px;
+}
+.ncurve{
+    position: absolute;
+    right: 0px;
+    bottom: -20px;
+}
+/* offerSection ENDS HERE */
+
+/* TESTIMONIAL SECTION STARTS HERE */
+.testimonials{
+    display: flex;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.testimonialsOut h2{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.testimonial p:nth-child(2){
+  font-size: .8rem;
+}
+
+
+.testimonial{
+    width: 380px;
+    height: 450px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+
+.userProfile{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 10px;
+}
+
+.userProfile h5{
+    margin-top: 15px;
+    margin-bottom: -5px;
+}
+
+.userProfile img{
+    margin-right: 10px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+
+
+
+/* TESTIMONIAL SECTION ENDS HERE */
+
+/* privacypolicy starts here */
+.privacypolicy{
+  margin-top: 100px;
+}
+
+.privacypolicy button{
+  background-color: #2A66B0;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  border: none;
+}
+
+.privacy{
+  margin-top: 20px;
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-top: 0px;
+  margin-bottom: 50px;
+}
+
+/* privacypolicy ends here */
+
+
+/* SECONDCTA SECTION STARTS HERE */
+.secondCTA{
+  background-color: #2A66B0;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+
+.secondCTA p{
+  width: 60%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  font-weight: 300;
+}
+
+
+.secondCTALogin button{
+  background-color: #2A66B0;
+  color: white;
+  border: 1px solid white;
+  padding: 8px 10px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  margin-left: 10px;
+
+}
+
+.secondCTABtns{
+  display: flex;
+  justify-content: space-around;
+  width: 280px;
+  margin: auto;
+}
+
+.secondCTASignup button{
+  background-color: white;
+  color: #2A66B0;
+  padding: 10px;
+  font-size: 1.1rem;
+  border-radius: 10px;
+  margin-right: 10px;
+  padding: 8px 10px;
+  border: none;
+}
+
+/* SECONDCTA SECTION ENDS HERE */
+
+
+/* ANIMATION CODE BELOW */
+/*General styling for structure*/
+@media screen and (max-width: 650px) {
+  .scroll-container,
+  .scroll-container:nth-of-type(even) {
+    flex-direction: column;
+    align-content: inherit;
+  }
+
+  .scroll-element {
+    height: 100%;
+  }
+
+  .scroll-element,
+  .scroll-caption {
+    width: 100%;
+  }
+}
+/**Styling scrollable elements*/
+
+.js-scroll {
+  opacity: 0;
+  transition: opacity 500ms;
+}
+
+.js-scroll.scrolled {
+  opacity: 1;
+}
+
+.scrolled.fade-in {
+  animation: fade-in 1s ease-in-out both;
+}
+
+.scrolled.fade-in-bottom {
+  animation: fade-in-bottom 1s ease-in-out both;
+}
+
+.scrolled.slide-left {
+  animation: slide-in-left 1s ease-in-out both;
+}
+
+.scrolled.slide-right {
+  animation: slide-in-right 1s ease-in-out both;
+}
+
+@keyframes slide-in-left {
+  0% {
+    -webkit-transform: translateX(-100px);
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    -webkit-transform: translateX(100px);
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-bottom {
+  0% {
+    -webkit-transform: translateY(50px);
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+/* ANIMATION CODE ABOVE */
+
+/* REPONSIVE IMAGES ACTIVATION AND DEACTIVATION STARTS HERE */
+.mobileResponsive img{
+  display: none;
+}
+
+.DesktopResponsive img{
+  display: block;
+}
+
+/* REPONSIVE IMAGES ACTIVATION AND DEACTIVATION ENDS HERE */
+
+/* MOBILE RESPONSIVENESS STARTS HERE */
+@media screen and (max-width: 1000px) {
+
+  /* DESKTOP RESPONSIVE IMAGES SETUP STARTS HERE */
+  .DesktopResponsive img{
+    display: none;
+  }
+
+  .mobileResponsive img{
+    display: block;
+  }
+  
+  /* DESKTOP RESPONSIVE IMAGES SETUP ENDS HERE */
+
+  main{
+    width: 100%;
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-right: 0px;
+    padding-top: 40px;
+    margin-bottom: 100px;
+    overflow: hidden;
+}
+
+  .heroSection{
+    display: inline;
+    width: 100%;
+  }
+
+  .heroSectionPartOne h1{
+    width: 80%;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    letter-spacing: -1.28px;
+  }
+
+  .heroSectionPartOne span{
+    color: #2A66B0;
+  }
+
+  .testimonials{
+    display: inline;
+    justify-content: space-between;
+    margin: auto;
+}
+
+.ctaHero{
+  display: flex;
+  width: 75%;
+  justify-content: space-between;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.heroSection h3{
+  font-size: 14px;
+  font-weight: 400;
+  margin-top: 30px;
+}
+
+.dashboardFeature{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  margin-bottom: 100px;
+
+}
+
+.offerSectionOut{
+  display: inline;
+  margin: auto;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 40px;
+  padding-top: 20px;
+}
+
+.offerSectionInner{
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  width: 320px;
+  transition: .7s ease-in-out;
+  margin-bottom: 30px;
+}
+
+.testimonialsOut h2{
+  text-align: left;
+  margin-bottom: 50px;
+}
+
+.userProfile{
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 30px;
+  bottom: 10px;
+}
+
+.testimonial{
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.secondCTA p{
+  width: 100%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  font-weight: 300;
+  font-size: 14px;
+}
+
+.secondCTABtns{
+  display: flex;
+  justify-content: space-around;
+  width: 280px;
+  margin: auto;
+}
+
+.secondCTA h1{
+  font-size: 32px;
+}
+
+.privacy{
+  margin-top: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 0px;
+  margin-bottom: 50px;
+}
+
+.midPageSection{
+  margin: auto;
+  text-align: left;
+  margin-top: 100px;
+  width: 100%;
+}
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/* MOBILE RESPONSIVENESS ENDS HERE */

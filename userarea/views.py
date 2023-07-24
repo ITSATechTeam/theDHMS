@@ -432,7 +432,7 @@ def DeviceInventory(request):
                         depreciateRateReal = 'Nil' 
                     
                     if row[17] == '':
-                        messages.error(request, 'Device email address is missing, please fill in the email address and try again.')
+                        messages.error(request, 'Device user email address is missing, please fill in the email address and try again.')
                         return redirect('Dashboard')
                     
                     if row[4] == '' or row[5] == '':
@@ -1112,7 +1112,7 @@ def Dashboard(request):
 
                     
                     if row[17] == '':
-                        messages.error(request, 'Device email address is missing, please fill in the email address and try again.')
+                        messages.error(request, 'Device user email address is missing, please fill in the email address and try again.')
                         return redirect('Dashboard')
                     
                     if row[4] == '' or row[5] == '':
@@ -1531,7 +1531,7 @@ def ScanNetwork(request):
                         depreciateRateReal = 'Nil'
                     
                     if row[17] == '':
-                        messages.error(request, 'Device email address is missing, please fill in the email address and try again.')
+                        messages.error(request, 'Device user email address is missing, please fill in the email address and try again.')
                         return redirect('Dashboard')
                     
                     if row[4] == '' or row[5] == '':
