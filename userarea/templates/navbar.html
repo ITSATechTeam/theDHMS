@@ -21,6 +21,53 @@
                 <img class='notify' src={% static 'general/img/notify.png' %} />
                 <img class='notifyactive' src={% static 'general/img/notify-active.png' %} />
             </div>
+            
+            {% comment %} NOTIFICATION TAB STARTS HERE {% endcomment %}
+            <div class='allNotificationTabElements'>
+            <div class='notifySectionPopupEdge'></div>
+                <div class='notifySectionPopuPOut'>
+                    <div class='notifySectionPopuP'>
+                        <div class='notifySectionPopuPInner'>
+                            <h3>Notification</h3>
+                            <div>
+                                <select>
+                                    <option>All</option>
+                                    <option>Unread</option>
+                                    <option>Read</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <img src={% static 'general/img/notification.png' %} />
+                        </div>
+                    </div>
+                    <div class='noticationSectionProper'>
+                    <div class='noticationSectionProperIn'>
+                            <h3>
+                                Device just collected
+                            </h3>
+                            <p>2 hours ago at 11:00 AM</p>
+                    </div>
+                    </div>
+                    <div class='noticationSectionProper'>
+                    <div class='noticationSectionProperIn'>
+                            <h3>
+                                Device just collected
+                            </h3>
+                            <p>2 hours ago at 11:00 AM</p>
+                    </div>
+                    </div>
+                    <div class='noticationSectionProper'>
+                    <div class='noticationSectionProperIn'>
+                            <h3>
+                                Device just collected
+                            </h3>
+                            <p>2 hours ago at 11:00 AM</p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} NOTIFICATION TAB ENDS HERE {% endcomment %}
             <div class='notifysectioninner'>
                 {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
                 {% if allSignUps.user == request.user %}
@@ -87,12 +134,6 @@
                 <p>Settings</p>
             </div>
         </a>
-        {% comment %} <a href={% url 'AllInstalledSoftwares' %}>
-            <div class='sidebar software'>
-                <img src={% static 'general/img/apps.png' %} />
-                <p>Installed Apps</p>
-            </div>
-        </a> {% endcomment %}
         
         
         <a href={% url 'Logout' %}>

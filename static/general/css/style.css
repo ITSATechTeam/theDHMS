@@ -146,11 +146,16 @@ nav button{
 
 .notifyout{
     position: relative;
+    cursor: pointer;
 }
 
 .notifyactive{
     position: absolute;
     right: -3px;
+}
+
+.allNotificationTabElements{
+    display: none;
 }
 
 /* NAV BAR ENDS HERE */
@@ -218,3 +223,70 @@ nav button{
     margin-right: 10px;
 }
 /* SIDE BAR ENDS HERE */
+
+/* NOTIFICATION POPUP STARTS HERE */
+
+.notifySectionPopuP{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.notifySectionPopuPOut{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    padding: 20px;
+    margin-left: -270px;
+    width: 400px;
+    margin-top: 60px;
+    z-index: 20;
+}
+
+.noticationSectionProper{
+    margin-top: 0px;
+}
+
+.noticationSectionProperIn{
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    font-size: 1.5rem;
+    /* border-right: 2px solid #2A66B0; */
+}
+
+.noticationSectionProperIn p{
+    font-size: 12px;
+}
+
+.noticationSectionProper:hover{
+    background-color: #E1E7FC;
+    cursor: pointer;
+}
+
+.notifySectionPopuPInner{
+    display: flex;
+    justify-content: space-between;
+}
+
+.notifySectionPopuP select{
+    width: 40px;
+    border: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.notifySectionPopupEdge{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    position: absolute;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    top: 80px;
+    right: 140px;
+    z-index: 10;
+}
+
+
+/* NOTIFICATION POPUP ENDS HERE */

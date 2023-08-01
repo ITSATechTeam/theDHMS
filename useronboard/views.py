@@ -151,7 +151,7 @@ def password_reset_request(request):
 					email_template_name = "password/password_reset_email.txt"
 					c = {
 					"email":user.email,
-					'domain':'127.0.0.1:8000',
+					'domain':'itservicedeskafrica.com',
 					'site_name': 'dhms@itservicedeskafrica.com',
 					# "uid": urlsafe_base64_encode(force_bytes(user.pk)).decode(),
 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
@@ -164,8 +164,15 @@ def password_reset_request(request):
 						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
+					except:
+						redirect("password/password_reset.html")
+						messages.error(request, 'An error occoured. Please contact ITSA Support.')
 					# return redirect ("password_reset_done")
 					return redirect ("password_reset/done/")
+			else:
+				redirect("password/password_reset.html")
+				messages.error(request, 'Email address is not registered as an admin. Please contact your company IT Support admin to provide your password.')
+
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
 

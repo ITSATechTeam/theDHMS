@@ -179,4 +179,18 @@ profileimgsectiontext.innerHTML = firstAlphabet
 
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE
 
+// DISPLAY AND HIDE NOTIFICATION TAB
+let notifyout = document.querySelector('.notifyout')
+let allNotificationTabElements = document.querySelector('.allNotificationTabElements')
 
+notifyout.addEventListener('mouseover', () => {
+    allNotificationTabElements.style.display = 'block'
+    console.log('onmouseover done')
+})
+
+
+document.addEventListener("click", (e) => {
+    if (allNotificationTabElements.style.display == 'block') {
+        allNotificationTabElements.style.display = 'none'
+    }
+  });
