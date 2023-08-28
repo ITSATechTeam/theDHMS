@@ -241,12 +241,23 @@ nav button{
     width: 400px;
     margin-top: 60px;
     z-index: 20;
+    height: 100%;
+    padding-bottom: 30px;
+    overflow-y: scroll;
 }
 
 .noticationSectionProper{
     margin-top: 0px;
 }
 
+.notifySectionPopuPOut a .noticationSectionProper h3{
+    color: black;
+}
+
+
+.noticationSectionProper h3 a{
+    color: #2A66B0;
+}
 .noticationSectionProperIn{
     height: 100%;
     width: 100%;
@@ -259,10 +270,19 @@ nav button{
     font-size: 12px;
 }
 
-.noticationSectionProper:hover{
-    background-color: #E1E7FC;
-    cursor: pointer;
+/* NewNotifyCount starts here */
+.NewNotifyCount{
+    background-color:#2A66B0;
+    text-align: center;
+    color: white;
+    border-radius: 100px;
+    font-weight: bold;
+    position: absolute;
+    width: 20px;
+    top: -9px;
+    right: 0px;
 }
+
 
 .notifySectionPopuPInner{
     display: flex;

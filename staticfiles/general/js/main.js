@@ -66,6 +66,16 @@
 // })
 
 
+
+//   NOTIFICATION DISPLAY SIGN
+let noticationSectionProper = document.querySelectorAll('.noticationSectionProper')
+let CurrentNotificationAmount = Array.from(noticationSectionProper).length
+let NewNotifyCount  = document.querySelector('.NewNotifyCount')
+NewNotifyCount.innerHTML = CurrentNotificationAmount
+
+// console.log(CurrentNotificationAmount)
+
+
 // PROFILE BOX DISPLAY SECTION STARTS HERE
 
 const profileBox = document.querySelector('.profileBox')
@@ -178,5 +188,20 @@ profileimgsectiontext.innerHTML = firstAlphabet
 
 
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE
+
+// DISPLAY AND HIDE NOTIFICATION TAB
+let notifyout = document.querySelector('.notifyout')
+let allNotificationTabElements = document.querySelector('.allNotificationTabElements')
+
+notifyout.addEventListener('mouseover', () => {
+    allNotificationTabElements.style.display = 'block'
+})
+
+
+document.addEventListener("click", (e) => {
+    if (allNotificationTabElements.style.display == 'block') {
+        allNotificationTabElements.style.display = 'none'
+    }
+  });
 
 

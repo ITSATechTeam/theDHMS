@@ -66,6 +66,16 @@
 // })
 
 
+
+//   NOTIFICATION DISPLAY SIGN
+let noticationSectionProper = document.querySelectorAll('.noticationSectionProper')
+let CurrentNotificationAmount = Array.from(noticationSectionProper).length
+let NewNotifyCount  = document.querySelector('.NewNotifyCount')
+NewNotifyCount.innerHTML = CurrentNotificationAmount
+
+// console.log(CurrentNotificationAmount)
+
+
 // PROFILE BOX DISPLAY SECTION STARTS HERE
 
 const profileBox = document.querySelector('.profileBox')
@@ -185,7 +195,6 @@ let allNotificationTabElements = document.querySelector('.allNotificationTabElem
 
 notifyout.addEventListener('mouseover', () => {
     allNotificationTabElements.style.display = 'block'
-    console.log('onmouseover done')
 })
 
 
@@ -194,3 +203,5 @@ document.addEventListener("click", (e) => {
         allNotificationTabElements.style.display = 'none'
     }
   });
+
+

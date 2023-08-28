@@ -18,6 +18,7 @@ import json
 from django.contrib.auth.models import User
 # import winapps
 import random
+import time
 
 # import datetime; 
 
@@ -26,9 +27,9 @@ import random
 
 @login_required(login_url='Login')
 def NavBar(request):
-    # allSignUps = SignupForm.objects.all()
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
     allSignUps = SignupForm.objects.filter(user = request.user)
-    context = {'allSignUps': allSignUps}
+    context = {'allSignUps': allSignUps, 'AllMaintenanceRequests':AllMaintenanceRequests}
     return render(request, 'general.html', context)
 
 
@@ -42,7 +43,6 @@ def Reports(request):
     allDevicesCount = allDevices.count()
     allDevicesMonthPre = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.email)
     allDevicesMonth = allDevicesMonthPre.values_list('registeredMonth')
-    # allDevicesMonth = DeviceRegisterUpload.objects.values_list('registeredMonth')
     JanDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Jan'))
     JanDevices1 = JanDevices.count()
     FebDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(registeredMonth = 'Feb'))
@@ -73,8 +73,9 @@ def Reports(request):
     data = [JanDevices1, FebDevices1, MarDevices1, AprDevices1, MayDevices1, JuneDevices1, JulyDevices1, AugDevices1, SeptDevices1, OctDevices1, NovDevices1, DecDevices1]
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     AllMaintenances = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email).count()
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
 
-    context = {'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 
     'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
     'AprDevices':AprDevices, 'MayDevices':MayDevices,'JuneDevices':JuneDevices, 'JulyDevices':JulyDevices, 
     'labels':labels, 'data':data, 'allDevicesMonth':allDevicesMonth, 'allDevices':allDevices, 
@@ -88,7 +89,8 @@ def Support(request):
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/support.html', context)
 
 
@@ -183,7 +185,8 @@ def Maintainance(request):
     allCanceledRequestsCount = allCanceledRequests.count()
     allOngoingRequests = MaintenanceRequest.objects.filter(Q(MaintainStatus = 'Ongoing') & Q(user = request.user))
     allOngoingRequestsCount = allOngoingRequests.count()
-    context = {'allOngoingRequestsCount':allOngoingRequestsCount, 'allCompletedRequestsCount':allCompletedRequestsCount, 'allCanceledRequestsCount':allCanceledRequestsCount, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allOngoingRequestsCount':allOngoingRequestsCount, 'allCompletedRequestsCount':allCompletedRequestsCount, 'allCanceledRequestsCount':allCanceledRequestsCount, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
     return render(request, 'userarea/maintainance.html', context)
 
 
@@ -215,8 +218,9 @@ def MaintainanceDetails(request, name):
     currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
     AllCommments = AddedMaintenanceComments.objects.all()
     AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
     # AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
-    context = {'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
     return render(request, 'userarea/maintainrequestdetails.html', context)
 
 
@@ -236,7 +240,8 @@ def EditMaintenenceRequest(request, name):
         print('data validated!')
         form.save()
         return redirect('MaintainanceDetails', name = name)
-    context = {'form':form, 'selectedRequest':selectedRequest}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'form':form, 'selectedRequest':selectedRequest}
     return render(request, 'userarea/editmaintenancereq.html', context)
 
 
@@ -270,7 +275,8 @@ def Settings(request):
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/settings.html', context)
 
 
@@ -611,14 +617,13 @@ def DeviceInventory(request):
     numberOfDevicesPerPage = str(DeviceCountPerPage.objects.filter(user = request.user).first())
     allProfileImages = UserProfileImage.objects.all().first
     allSignUps = SignupForm.objects.all()
-    context = {'AllStaffMembers':AllStaffMembers, 'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllStaffMembers':AllStaffMembers, 'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
     return render(request, 'userarea/deviceinventory.html', context)
 
 
 # SAVE DEVICE ONTO DATA BASE FROM FORM FUNTIONALITY STARTS HERE
 def SaveDevice(request):
-    # if request.method == 'POST' and 'deviceusedepartment' in request.POST:
-    # deviceusedepartment = request.POST['deviceusedepartment']
     deviceusedepartment = request.POST['deviceusedepartment']
     devicetype = request.POST['devicetype']
     devicebrand = request.POST['devicebrand']
@@ -730,7 +735,8 @@ def ViewDeviceDetails(request, name):
         form.save()
         return redirect('Maintainance')
     currentDeviceList = DeviceRegisterUpload.objects.get(Q(deviceid = name)  & Q(user = request.user))
-    context = {'name':name, 'currentDeviceList':currentDeviceList}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'name':name, 'currentDeviceList':currentDeviceList}
     return render(request, 'userarea/devicedetails.html', context)
 
 
@@ -879,7 +885,8 @@ def StaffMembers(request):
     staffCount = staffMembers.count()
     allSignUps = SignupForm.objects.all()
     AllUsers = User.objects.all()
-    context = {'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
     return render(request, 'userarea/staffpage.html', context)
 
 
@@ -995,7 +1002,8 @@ def StaffDetails(request, id):
     allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(staffUserID = 'None'))
     # allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
     allSignUps = SignupForm.objects.all()
-    context = {'allSignUps':allSignUps, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices, 'allUploadedDevicesNotAssigned':allUploadedDevicesNotAssigned}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices, 'allUploadedDevicesNotAssigned':allUploadedDevicesNotAssigned}
     return render(request, 'userarea/staffdetails.html', context)
 
 
@@ -1033,7 +1041,8 @@ def EditUserSignupDetails(request, id):
 
     allSignUps = SignupForm.objects.all()
     allProfileImages = UserProfileImage.objects.all().first
-    context = {'allProfileImages':allProfileImages, 'allSignUps':allSignUps, 'form' : form, 'currentUser' : currentUser}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allProfileImages':allProfileImages, 'allSignUps':allSignUps, 'form' : form, 'currentUser' : currentUser}
     return render(request, 'userarea/editprofile.html', context)
 
 
@@ -1041,7 +1050,8 @@ def ProfilePage(request, pk):
     requestUser = SignupForm.objects.get(id = pk)
     allSignUps = SignupForm.objects.all()
     allUsers = User.objects.all()
-    context = {'allSignUps':allSignUps, 'allUsers':allUsers, 'requestUser':requestUser}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'requestUser':requestUser}
     return render(request, 'userarea/profilepage.html', context)
 
 
@@ -1306,10 +1316,12 @@ def Dashboard(request):
     labels = ['Healthy Devices', 'Faulty Devices', 'Critical Devices']
     data = [workingSystems, badSystems, warningSystems]
     thisYear = datetime.today().year
-    allSignUps = SignupForm.objects.filter(Q(email = request.user.email) & Q(companyUniqueID = request.user.email)).first
+    # allSignUps = SignupForm.objects.filter(Q(email = request.user.email) & Q(companyUniqueID = request.user.email)).first
+    allSignUps = SignupForm.objects.filter(user = request.user)
     allUsers = User.objects.all()
     allSignupsForUpdatePopup = SignupForm.objects.filter(email = request.user.email)
-    context = {'allSignupsForUpdatePopup':allSignupsForUpdatePopup, 'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignupsForUpdatePopup':allSignupsForUpdatePopup, 'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
     return render(request, 'userarea/dashboard.html', context)
 
 
@@ -1352,6 +1364,7 @@ def Logout(request):
     logout(request)
     messages.success(request, 'Logout Successful')
     return redirect('Login')
+
 
 
 @login_required(login_url='Login')
@@ -1647,7 +1660,25 @@ def downloadSampleCSVHeaders(request):
 
 def DeleteDevice(request, pk):
     deviceToDelete = DeviceRegisterUpload.objects.get(id=pk)
-    deviceToDelete.delete()
+    deviceToDeleteName = deviceToDelete.devicename
+    deviceToDeleteMAC = deviceToDelete.devicemacaddress
+    deviceToDeleteID = deviceToDelete.deviceid
+    deviceToDeleteBrand = deviceToDelete.devicebrand
+    deviceToDeleteUniqueCode = deviceToDelete.CompanyUniqueCode
+    form = DeletedDevices(        
+        deletedDeviceName = deviceToDeleteName, deletedDeviceMAC_ID = deviceToDeleteMAC, 
+        deletedDeviceID = deviceToDeleteID, deletedDeviceBrand = deviceToDeleteBrand, 
+        deletedDeviceCompanyUniqueCode = deviceToDeleteUniqueCode, user = request.user,
+    )
+
+    form.save()
+    if form:
+        deviceToDelete.delete()
+
+    else:
+        messages.success(request, 'An error occured while deleting the device. Please try again or contact support for assistance')
+        return redirect('DeviceInventory')
+
     messages.success(request, 'Device Successfully Deleted!')
     return redirect('DeviceInventory')
     messages.success(request, 'Device Successfully Deleted!')

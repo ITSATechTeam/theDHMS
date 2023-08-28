@@ -19,7 +19,8 @@
         <div class='notifysection'>
             <div class='notifyout' >
                 <img class='notify' src={% static 'general/img/notify.png' %} />
-                <img class='notifyactive' src={% static 'general/img/notify-active.png' %} />
+                <div class='NewNotifyCount'></div>
+                {% comment %} <img class='notifyactive' src={% static 'general/img/notify-active.png' %} /> {% endcomment %}
             </div>
             
             {% comment %} NOTIFICATION TAB STARTS HERE {% endcomment %}
@@ -41,30 +42,18 @@
                             <img src={% static 'general/img/notification.png' %} />
                         </div>
                     </div>
-                    <div class='noticationSectionProper'>
-                    <div class='noticationSectionProperIn'>
-                            <h3>
-                                Device just collected
-                            </h3>
-                            <p>2 hours ago at 11:00 AM</p>
-                    </div>
-                    </div>
-                    <div class='noticationSectionProper'>
-                    <div class='noticationSectionProperIn'>
-                            <h3>
-                                Device just collected
-                            </h3>
-                            <p>2 hours ago at 11:00 AM</p>
-                    </div>
-                    </div>
-                    <div class='noticationSectionProper'>
-                    <div class='noticationSectionProperIn'>
-                            <h3>
-                                Device just collected
-                            </h3>
-                            <p>2 hours ago at 11:00 AM</p>
-                    </div>
-                    </div>
+                    {% for AllMaintenanceRequests in AllMaintenanceRequests %}
+                    <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ >
+                        <div class='noticationSectionProper'>                        
+                            <div class='noticationSectionProperIn'>
+                                <h3>
+                                    {{AllMaintenanceRequests.MaintainDeviceUserFirstname}} {{AllMaintenanceRequests.MaintainDeviceUserLastname}} Just made a maintenance request with ID <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ ><span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
+                                </h3>
+                                <p>{{AllMaintenanceRequests.created_at}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             {% comment %} NOTIFICATION TAB ENDS HERE {% endcomment %}
@@ -162,7 +151,8 @@
 			<hr/>
 			<ul>
                 {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
-                {% if request.user == allSignUps.user %}
+                {% for allSignUps in allSignUps %}
+                {% if request.user.username == allSignUps.user.username %}
                 <a href = /member/editcompanydetails/{{allSignUps.id}}/ >
 				<li>
 					<img src={% static 'dashboard/img/edit.png' %} />
@@ -170,7 +160,7 @@
 				</li>
                 </a>
                 {% endif %}
-                {% comment %} {% endfor %} {% endcomment %}
+                {% endfor %}
 
 
                 {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}

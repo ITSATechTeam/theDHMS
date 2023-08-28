@@ -5,6 +5,23 @@
     font-family: 'Poppins', sans-serif;
 }
 
+
+
+.pageerrortext{
+    text-align: center;
+    /* background-color: red; */
+}
+
+.pageerrortext button{
+    background-color: #2A66B0;
+    color: white;
+    padding: 10px;
+    border: none;
+    font-size: 1.2rem;
+    margin: 30px;
+    border-radius: 10px;
+}
+
 body{
     overflow-x: hidden;
     /* background-color: black; */
@@ -913,3 +930,9 @@ tr:nth-child(1) {
 }
 
 /* completeDetailsPopup SETUP ENDS HERE */
+
+
+
+
+
+

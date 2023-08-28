@@ -93,9 +93,6 @@ class uploadedDeviceData(models.Model):
 
     class Meta:
         ordering = ['-edited_at', '-created_at']
-        
-    # def __str__(self):
-    #     return self.user
 
 
 
@@ -116,11 +113,12 @@ class DeviceCountPerPage(models.Model):
 
 class DeletedDevices(models.Model):    
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    deletedDeviceName = models.CharField(max_length= 3, null=True, blank = True)
-    deletedDeviceMAC_ID = models.CharField(max_length= 3, null=True, blank = True)
-    deletedDeviceID = models.CharField(max_length= 3, null=True, blank = True)
+    deletedDeviceName = models.CharField(max_length= 1000, null=True, blank = True)
+    deletedDeviceMAC_ID = models.CharField(max_length= 1000, null=True, blank = True)
+    deletedDeviceID = models.CharField(max_length= 1000, null=True, blank = True)
+    deletedDeviceCompanyUniqueCode = models.CharField(max_length= 1000, null=True, blank = True)
+    deletedDeviceBrand = models.CharField(max_length= 1000, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
-    edited_at = models.DateTimeField(auto_now=True)
     edited_at = models.DateTimeField(auto_now=True)
 
 
@@ -128,7 +126,7 @@ class DeletedDevices(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return self.count
+        return f'{self.deletedDeviceCompanyUniqueCode} just deleted a device'
 
 
 
