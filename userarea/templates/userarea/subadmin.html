@@ -1,0 +1,277 @@
+<!-- @format -->
+{% include 'general.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'report/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'maintenance/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'staff/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'subadmin/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Subadmin Administration | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<div class='shadowSubAdmin'></div>
+    <body>        
+		<div class='main'>
+            <div>
+                <h1>Sub Admin  Management</h1>
+                <h4>Manage your sub-administrators with ease</h4>
+            </div><br/>
+            <div class='mainsection sectionslabels'>
+                <div class='sectionslabelsheaders '>
+                    <div class='active2'><h4>Sub Admins</h4></div>
+                    <div class='maintainRequestCount'>
+                        <p>10</p>
+                    </div>
+                    <div class=''><h4>Activity Log</h4></div>
+                </div>
+                <hr/> 
+            </div>            
+				
+				<div id="flash">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong class='errordisplay' style="color: red">{{ message }}</strong>
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+
+            <h5>Manage your sub Admins with ease.</h5>
+            {% comment %} PROMPT TO ADD SUB ADMIN ON FIRST INSTANCE STARTS HERE {% endcomment %}
+            <div class='addSubadminMain'>
+                <img class='addSubadminMainIMG' src={% static 'subadmin/img/subadmin.png' %} />
+                <h3>
+                    No sub Admins have been assigned. Click<br/> Add Sub Admin to assign a sub-Admin
+                </h3>
+                <div class='addSubadminMainBTN'>
+                    <img src={% static 'subadmin/img/add.png' %} />
+                    <p>Add Sub Admin</p>
+                </div>
+            </div>
+            {% comment %} PROMPT TO ADD SUB ADMIN ON FIRST INSTANCE ENDS HERE {% endcomment %}
+            {% comment %} MAIN ADDING SUB ADMIN SECTION STARTS HERE {% endcomment %}
+            <div class='midSearchSubadminSection'>
+                {% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
+                <div class='searchdashboardsection'>
+                    <div class='searchdashboard'>
+                        <form method='GET' action="{% url 'Searchresult' %}">
+                            <input type='text' name='q' placeholder='Search Staff' />
+                        </form>
+                        <img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+                    </div>
+                    <div class='filter filtercategory'>
+                        <img src={% static 'inventory/img/filter.png' %} />
+                        <p>Filter</p>
+                    </div>                    
+                    {% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+                    <div class='filterbox filterbox1'>
+                        <h2>Filter by</h2>
+                        <div class='closefilter'>
+                            <img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+                        </div>
+                        <div>
+                            <form method='GET' action={% url 'Searchresult' %}>
+                                <div class='selecthealth'>
+                                <p>Device Health</p>
+                                    <select name='q'>
+                                        <option>All</option>
+                                        <option value='Desktop'>Healthy</option>
+                                        <option value='Laptop'>Critical</option>
+                                        <option value='Printer'>Faulty</option>
+                                    </select>
+                                </div>
+                                {% comment %} <br/> {% endcomment %}
+                                
+                                <p>Device Category</p>
+                                <select name='q'>
+                                    <option>All</option>
+                                    <option value='Desktop'>Desktop</option>
+                                    <option value='Laptop'>Laptop</option>
+                                    <option value='Printer'>Printer</option>
+                                    <option value='Scanner'>Scanner</option>
+                                    <option value='OtherDevices'>Other Devices</option>
+                                </select>
+                                <button type='submit'>Filter</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
+                    <div class='filter filtercategory'>
+                        <img src={% static 'maintenance/img/sort.png' %} />
+                        <p>Sort</p>
+                    </div>
+                </div>
+                <div class='midSearchSubadminSection2'>
+                    <div>
+                        <a href = /member/exportmaintenance/ >
+                            <div class=' showdeviceuploadpopup'>
+                                <button>
+                                    <img src={% static 'maintenance/img/export.png' %} />
+                                    <p>Export</p>
+                                </button>
+                            </div>
+                        </a>
+                    </div>
+					<div class='scannetworkbtn'>
+                        <button class='scannetworkbtnBTNMain'>
+                            <img src={% static 'subadmin/img/add.png' %} />
+                            <p>Add Sub Admin</p>
+                        </button>
+					</div>
+                </div>
+                {% comment %} SEARCH SECTION ENDS BELOW HERE {% endcomment %}                
+            </div>
+            {% comment %} LIST OF STAFF SUBADMINS STARTS HERE {% endcomment %}
+            <div>
+                <div>
+                    <table>
+                      <tr>
+                        <th>
+                          <input type='radio' />
+                        </th>
+                        <th>Staff's Name</th>
+                        <th>Staff ID</th>
+                        <th>Staff Email Address</th>
+                        <th>Staff Unit/Dept</th>
+                        {% comment %} <th>Staff Online Status</th> {% endcomment %}
+                        <th>Action</th>
+                      </tr>
+                      {% for staffMembers in AllStaffMembers %}
+                      {% for AllSubAdminModel in AllSubAdminModel %}
+                      {% if staffMembers.StaffID == AllSubAdminModel.StaffID %}
+                      <tr>
+                        <td>
+                        <input type='radio' />
+                        </td>
+                        <td class='staffassigneddevice'>
+                          <strong><a href = /member/staffdetails/{{ staffMembers.id }}/ >
+                            {{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }}
+                          </a></strong>
+                        </td>
+                        <td>{{ staffMembers.StaffID }}</td>
+                        <td>{{ staffMembers.staff_email }}</td>
+                        {% comment %} <td><a href="mailto={{ staffMembers.deviceuseremail }}">{{ staffMembers.deviceuseremail }}</a></td> {% endcomment %}
+                        <td><p>{{ staffMembers.staff_role }}</p></td>
+                        {% comment %} <td class='staffassigneddevice'></td> {% endcomment %}
+                        <td class='subadminaction'>
+                            <button><a href=''><img src={% static 'dashboard/img/delete.png' %} /></a></button>                            
+                        </td>
+                      </tr>
+                      {% endif %}
+                      {% endfor %}
+                      {% endfor %}
+                    </table>
+                    {% comment %} <div class='pagesdetailsseection'>
+                      <div class='perpagecount'>
+                        <div>
+                          <select>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </select>
+                        </div>
+                        <div>
+                          <p>items per page</p>
+                        </div>
+                      </div>
+                      <div class='perpagecount2'>
+                        1-<span>8</span> items of <i>100</i>
+                      </div>
+                      <div class='pages'>
+                        <div>
+                          <select>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                          </select>
+                        </div>
+                        <div>of <span>10</span> pages</div>
+                        <div class='navigation'>
+                          <img class='navLeft' src={% static 'inventory/img/left.png' %} />
+                          <img src={% static 'inventory/img/right.png' %} />
+                        </div>
+                      </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            {% comment %} LIST OF STAFF SUBADMINS ENDS HERE {% endcomment %}
+            {% comment %} EMPTY SUB ADMINS SECTIONS POP UP STARTS HERE {% endcomment %}
+            <div class='addSubAdminPopUp'>
+                <div class='addSubAdminPopUpIntro'>
+                    <img src={% static 'subadmin/img/subadminIcon.png' %} />
+                    <img class='addSubAdminPopUpClose' src={% static 'subadmin/img/close.png' %} />
+                </div>
+                <div>
+                    <h3>Assign Sub Admin role</h3>
+                    <h5>Assign one or multiple staff members to the Sub Admin role</h5>
+                    <div class='searchdashboard'>
+                        <form method='GET' action="{% url 'Searchresult' %}">
+                            <input type='text' name='q' placeholder='Search Staff' />
+                        </form>
+                        <img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+                    </div>
+                    {% comment %} LIST OF ALL STAFF MEMBERS {% endcomment %}
+                    <div class='listOfStaff'>
+                        {% for AllStaffMembers in AllStaffMembers %}
+                        {% if AllStaffMembers.CompanyUniqueCode == request.user.email %}
+                        <div class='addSubAdminPopUpList '>
+                            <div>
+                                <h3>{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} </h3>
+                                <input  value="{{ AllStaffMembers.StaffID }}" hidden />
+                                <h5>{{ AllStaffMembers.staff_role }}</h5>
+                            </div>
+                            <input type='radio' value="{{ AllStaffMembers.StaffID }}"/>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class='listOfStaffBtn'>
+                        <div onclick= {window.location.reload()} class='listOfStaffBtnCancel'><h4>Cancel</h4></div>
+                        <form method='POST' class='allSubAdminArrForm'>
+                            {% csrf_token %}
+                            <input name='allSubAdminArr' hidden class='allSubAdmin' />
+                            <button type='submit' name='submit'><h4>Assign Role</h4></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% comment %} EMPTY SUB ADMINS SECTIONS POP UP ENDS HERE {% endcomment %}
+            
+            {% comment %} ERROR SECTION FOR DUPLICATE SUB ADMIN OR DEPARTMENT STARTS HERE {% endcomment %}
+            <div class='errorSubAdminTab'>
+                <img class='addErrorPopUpClose' src={% static 'subadmin/img/close.png' %} /><br/>
+                <div class='errorSubAdminTabInner'>
+                    <img src={% static 'subadmin/img/caution.png' %} />  </br></br> 
+                    <h2>
+                        You selected a staff member who is already a Sub-Admin.
+                        {% comment %} Your selected staff members from the same department {% endcomment %}
+                    </h2><br/>
+                    <h5>
+                        Sorry, you cannot assign a staff member as an admin more than ones. Please select another staff member.
+                    </h5><br/>
+                    <button onclick= {window.location.reload()} >Try again with a different staff</button>
+                </div>             
+            </div>
+            {% comment %} ERROR SECTION FOR DUPLICATE SUB ADMIN OR DEPARTMENT ENDS HERE {% endcomment %}
+
+            {% comment %} MAIN SUB ADMIN SECTION ENDS BELOW HERE {% endcomment %}
+        </div>
+        {% comment %} <script src={% static 'staff/js/main.js' %}></script> {% endcomment %}
+        <script src={% static 'subadmin/js/mainsubadmin.js' %}></script>
+    </body>
+</html>
+{% endblock content %}

@@ -99,6 +99,13 @@
                 <p>Staff Members</p>
             </div>
         </a>
+        <a href={% url 'SubAdmin' %}>
+            <div class='sidebar subadmin'>
+                {% comment %} <img src={% static 'general/img/subadmin.png' %} /> {% endcomment %}
+                <img src={% static 'general/img/userimg.png' %} />
+                <p>Sub Admins</p>
+            </div>
+        </a>
         <a href={% url 'Reports' %}>
             <div class='sidebar reports'>
                 <img src={% static 'general/img/reports.png' %} />

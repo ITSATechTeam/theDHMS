@@ -1,0 +1,253 @@
+/* sectionslabels start here */
+.sectionslabels{
+    margin-top: 30px;
+}
+
+.sectionslabels h4{
+    margin-right: 0px;
+    color: rgba(130, 130, 130, 1);
+    padding-bottom: 5px;
+    border-bottom: none;
+    width: 100px;
+    text-align: center;
+}
+
+.sectionslabels h4:hover{
+    color: rgba(42, 102, 176, 1);
+    cursor: pointer;
+}
+
+.maintainRequestCount{
+    margin-right: 30px;
+}
+
+.active2{
+    width: 100px;
+    text-align: center;
+    border-bottom: 3px solid rgba(42, 102, 176, 1);
+}
+
+.sectionslabels hr{
+    margin-top: -1px;
+}
+
+.sectionslabelsheaders{
+    display: flex;
+}
+
+.addSubadminMain{
+    text-align: center;
+    padding: 50px;
+    display: none;
+}
+
+.addSubadminMainIMG{
+    margin-bottom: 20px;
+}
+
+.addSubadminMainBTN p{
+    margin-top: 8px;
+    margin-right: 5px;
+}
+
+.addSubadminMain h3{
+    margin-bottom: 30px;
+}
+
+.addSubadminMainBTN{
+    background-color: rgba(42, 102, 176, 1);
+    display: flex;
+    width: 150px;
+    padding: 5px;
+    cursor: pointer;
+    align-items: center;
+    border-radius: 5px;
+    color: white;
+    margin: auto;
+    font-size: 1.4rem;
+    justify-content: space-around;
+}
+
+.midSearchSubadminSection{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.midSearchSubadminSection2{
+    display: flex;
+    align-items: center;
+}
+
+.midSearchSubadminSection2 button{
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    font-size: 1.5rem;
+    padding: 10px;
+    /* margin-left: 10px; */
+}
+
+.showdeviceuploadpopup{
+    margin-right: 20px;
+}
+
+.midSearchSubadminSection2 p{
+    margin-top: 10px;
+}
+
+
+.shadowSubAdmin{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+.addSubAdminPopUp{
+    width: 350px;
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    /* margin-bottom: 40px; */
+    height: 90vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: fixed;
+    top: 50px;
+    left: 40%;
+    z-index: 10;
+    display: none;
+}
+
+.addSubAdminPopUpIntro img{
+    cursor: pointer;
+}
+
+.addSubAdminPopUpIntro{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.subadminaction button{
+    border: none;
+    border-radius: 50px;
+    padding: 2px;
+}
+
+.addSubAdminPopUpList{
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.listOfStaff{
+    /* background-color: red; */
+    padding-top: 10px;
+    padding: 16px, 8px, 16px, 8px;
+    border-radius: 10px;
+    border: 1px solid #E0E0E0;
+    margin-top: 10px;
+}
+
+.addSubAdminPopUpList{
+    padding: 5px;
+    margin: 2px;
+    height: 72px;
+    cursor: pointer;
+    border: 1px solid #F2F2F2;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.addSubAdminPopUpList:hover{
+    background-color: #EAF0F7;
+}
+
+.changeBckgdColor{
+    background-color: #EAF0F7;;
+}
+
+.listOfStaffBtn{
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    justify-content: right;
+}
+
+.listOfStaffBtn h3{
+    cursor: pointer;
+}
+
+.listOfStaffBtn button{
+    margin-left: 20px;
+    background-color: #2A66B0;
+    color: white;
+    padding: 10px 15px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+}
+
+.errorSubAdminTab{
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    width: 400px;
+    /* height: 400px; */
+    text-align: right;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: fixed;
+    top: 20%;
+    left: 40%;
+    z-index: 10;
+    display: none;
+}
+
+.listOfStaffBtnCancel{
+    cursor: pointer;
+}
+
+.addErrorPopUpClose{
+    cursor: pointer;
+}
+
+.errorSubAdminTabInner{
+    text-align: center;
+}
+
+.errorSubAdminTabInner button{
+    background-color: #2A66B0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.3rem;
+}
+
+
+
+
+
+
+
+
+
+
+

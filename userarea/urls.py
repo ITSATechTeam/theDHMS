@@ -20,15 +20,12 @@ urlpatterns = [
     path('settings/', views.Settings, name="Settings"),
     path('staffdetails/<str:id>/', views.StaffDetails, name="StaffDetails"),
     path('registerStaff/<str:name>/', views.registerStaff, name="registerStaff"),
-    # path('editDeviceData/<str:deviceip>/', views.EditDeviceData, name="EditDeviceData"),
     path('editstaffdetails/<str:staffid>/', views.EditStaff, name="EditStaff"),
     path('editdevice/<str:deviceid>/', views.EditDevice, name="EditDevice"),
-    # path('editprofile/', views.EditProfile, name="EditProfile"),
     path('scannetwork/', views.ScanNetwork, name="ScanNetwork"),
     path('logout/', views.Logout, name='Logout'),
     path('download_Sample_file/', views.downloadSampleFile, name="downloadSampleFile"),
     path('downloadsamplecsvheaders/', views.downloadSampleCSVHeaders, name="downloadSampleCSVHeaders"),
-    # path('searchresult/', views.Searchresult, name='Searchresult'),
     path('downloadsamplecsv/', views.downloadSampleCSV, name="downloadSampleCSV"),
     path('deletedevice/<str:pk>/', views.DeleteDevice, name='DeleteDevice'),
     path('deletestaff/<str:pk>/', views.DeleteStaff, name='DeleteStaff'),
@@ -43,6 +40,7 @@ urlpatterns = [
     path('exportdevices/', views.ExportDevice, name="ExportDevice"),
     path('deletecomment/<str:pk>/<str:name>/', views.DeleteAddedComment, name="DeleteAddedComment"),
     path('viewdevicedetails/<str:name>/', views.ViewDeviceDetails, name="ViewDeviceDetails"),
+    path('subadmin/', views.SubAdmin, name="SubAdmin"),
 ]
 
 

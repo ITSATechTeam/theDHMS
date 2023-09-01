@@ -184,3 +184,16 @@ class AddedMaintenanceComments(models.Model):
 
 
 
+class SubAdminModel(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    StaffID = models.CharField(max_length= 300, null=True, blank = True)
+    CompanyUniqueCode = models.EmailField(max_length= 300, null=True, blank = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return self.StaffID

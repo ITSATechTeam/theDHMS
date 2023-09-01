@@ -104,6 +104,7 @@ let maintain = document.querySelector('.maintain')
 let settings = document.querySelector('.settings')
 let logout = document.querySelector('.logout')
 let software = document.querySelector('.software')
+let subadmin = document.querySelector('.subadmin')
 
 dashboard.addEventListener('click', () => {
     console.log('dashboard clicked')
@@ -112,6 +113,11 @@ dashboard.addEventListener('click', () => {
 
 if (window.location.href.includes('dashboard')){
     dashboard.classList.add('active')
+}
+
+
+if (window.location.href.includes('subadmin')){
+    subadmin.classList.add('active')
 }
 
 if (window.location.href.includes('devicesinventory') || window.location.href.includes('editdevice') || window.location.href.includes('viewdevicedetails') ){
@@ -205,3 +211,6 @@ document.addEventListener("click", (e) => {
   });
 
 
+// time for disappearing notifications
+let alert = document.querySelector('.alert')
+setTimeout(() => { clearInterval(alert); }, 5000); 

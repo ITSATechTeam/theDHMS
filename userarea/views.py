@@ -1704,7 +1704,7 @@ def DeleteStaff(request, pk):
 
 
 def EditProfileImg(request):
-    if request.method == 'POST' and profilepicture in request.POST:
+    if request.method == 'POST' and 'profilepicture' in request.POST:
         profilepicture = request.FILES['profilepicture']
         UserProfileImage.objects.create(user = request.user, userReg = request.user.username, profilepicture = Profilepicture)
     return render(request, 'userarea/updateimage.html')
@@ -1839,3 +1839,26 @@ def UpdateCompanyDetails(request, email, name):
 
     context = {'WorkingUsers':WorkingUsers}
     return render(request, 'userarea/updatedetails.html', context)
+
+
+
+@login_required(login_url='Login')
+def SubAdmin(request):
+    AllStaffMembers = StaffDataSet.objects.all()
+    AllSubAdminModel = SubAdminModel.objects.filter(CompanyUniqueCode = request.user.email)
+    if request.method == 'POST' and 'allSubAdminArr' in request.POST:
+        allSubAdminArr = request.POST['allSubAdminArr'].split(',')
+        print(allSubAdminArr)
+        for i in allSubAdminArr:
+            SubAdminModelExit = SubAdminModel.objects.filter(StaffID = i)
+            if SubAdminModelExit:
+                messages.error(request, 'A staff you selected already exists. Please select a non Sub-Admin to assign.')
+                return redirect('SubAdmin')
+            else:
+                SubAdminModel.objects.create(StaffID = i, user = request.user, CompanyUniqueCode = request.user.email)
+
+    context = {'AllStaffMembers':AllStaffMembers, 'AllSubAdminModel':AllSubAdminModel}
+    return render(request, 'userarea/subadmin.html', context)
+
+
+
