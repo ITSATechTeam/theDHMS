@@ -33,7 +33,7 @@
                 <div class='sectionslabelsheaders '>
                     <div class='active2'><h4>Sub Admins</h4></div>
                     <div class='maintainRequestCount'>
-                        <p>10</p>
+                        <p>{{AllSubAdminModelCount}}</p>
                     </div>
                     <div class=''><h4>Activity Log</h4></div>
                 </div>
@@ -115,7 +115,7 @@
                 </div>
                 <div class='midSearchSubadminSection2'>
                     <div>
-                        <a href = /member/exportmaintenance/ >
+                        <a href = >
                             <div class=' showdeviceuploadpopup'>
                                 <button>
                                     <img src={% static 'maintenance/img/export.png' %} />
@@ -134,7 +134,7 @@
                 {% comment %} SEARCH SECTION ENDS BELOW HERE {% endcomment %}                
             </div>
             {% comment %} LIST OF STAFF SUBADMINS STARTS HERE {% endcomment %}
-            <div>
+            <div class='table'>
                 <div>
                     <table>
                       <tr>
@@ -165,8 +165,12 @@
                         {% comment %} <td><a href="mailto={{ staffMembers.deviceuseremail }}">{{ staffMembers.deviceuseremail }}</a></td> {% endcomment %}
                         <td><p>{{ staffMembers.staff_role }}</p></td>
                         {% comment %} <td class='staffassigneddevice'></td> {% endcomment %}
-                        <td class='subadminaction'>
-                            <button><a href=''><img src={% static 'dashboard/img/delete.png' %} /></a></button>                            
+                            <td class='subadminaction'>
+                            <button title="Delete {{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }} from Sub-Admin role">
+                                <a href= /member/deletesubadmin/{{AllSubAdminModel.id}}/ >
+                                    <img src={% static 'dashboard/img/delete.png' %} />
+                                </a>
+                            </button>
                         </td>
                       </tr>
                       {% endif %}
@@ -217,7 +221,7 @@
                 </div>
                 <div>
                     <h3>Assign Sub Admin role</h3>
-                    <h5>Assign one or multiple staff members to the Sub Admin role</h5>
+                    <h5>Assign one or multiple staff members to the Sub Admin role. One Staff per department</h5>
                     <div class='searchdashboard'>
                         <form method='GET' action="{% url 'Searchresult' %}">
                             <input type='text' name='q' placeholder='Search Staff' />
@@ -244,14 +248,14 @@
                         <form method='POST' class='allSubAdminArrForm'>
                             {% csrf_token %}
                             <input name='allSubAdminArr' hidden class='allSubAdmin' />
-                            <button type='submit' name='submit'><h4>Assign Role</h4></button>
+                            <button type='submit' name='submit' onclick= {window.location.reload()} ><h4>Assign Role</h4></button>
                         </form>
                     </div>
                 </div>
             </div>
             {% comment %} EMPTY SUB ADMINS SECTIONS POP UP ENDS HERE {% endcomment %}
             
-            {% comment %} ERROR SECTION FOR DUPLICATE SUB ADMIN OR DEPARTMENT STARTS HERE {% endcomment %}
+            {% comment %} ERROR SECTION FOR DUPLICATE SUB ADMIN STARTS HERE {% endcomment %}
             <div class='errorSubAdminTab'>
                 <img class='addErrorPopUpClose' src={% static 'subadmin/img/close.png' %} /><br/>
                 <div class='errorSubAdminTabInner'>
@@ -266,7 +270,41 @@
                     <button onclick= {window.location.reload()} >Try again with a different staff</button>
                 </div>             
             </div>
-            {% comment %} ERROR SECTION FOR DUPLICATE SUB ADMIN OR DEPARTMENT ENDS HERE {% endcomment %}
+            {% comment %} ERROR SECTION FOR DUPLICATE SUB ADMIN ENDS HERE {% endcomment %}
+           
+            {% comment %} ERROR SECTION FOR DUPLICATE DEPARTMENT STARTS HERE {% endcomment %}
+            <div class='errorSubAdminTab2'>
+                {% comment %} <img class='addErrorPopUpClose' src={% static 'subadmin/img/close.png' %} /><br/> {% endcomment %}
+                <div class='errorSubAdminTabInner'>
+                    <img src={% static 'subadmin/img/caution.png' %} />  </br></br> 
+                    <h2>
+                        Your selected staff members are from the same department.
+                        {% comment %} Your selected staff members from the same department {% endcomment %}
+                    </h2><br/>
+                    <h5>
+                        Sorry, you cannot assign staff members from the same department to the Sub Admin role. Please select staff member per department for sub-admin.
+                    </h5><br/>
+                    <button onclick= {window.location.reload()} >Try again with a different staff</button>
+                </div>             
+            </div>
+            {% comment %} ERROR SECTION FOR DUPLICATE DEPARTMENT ENDS HERE {% endcomment %}
+           
+            {% comment %} ERROR SECTION FOR DUPLICATE DEPARTMENT AFTER SUBMISSION STARTS HERE {% endcomment %}
+            <div class='errorSubAdminTab3'>
+                {% comment %} <img class='addErrorPopUpClose' src={% static 'subadmin/img/close.png' %} /><br/> {% endcomment %}
+                <div class='errorSubAdminTabInner'>
+                    <img src={% static 'subadmin/img/caution.png' %} />  </br></br> 
+                    <h2>
+                        Your selected staff member from a department that already has a sub-admin.
+                        {% comment %} Your selected staff members from the same department {% endcomment %}
+                    </h2><br/>
+                    <h5>
+                        Sorry, you cannot assign staff members from the same department to the Sub Admin role. Please delete the existing Sub-Admin and reassign another staff.
+                    </h5><br/>
+                    <button onclick= {window.location.reload()} >Try again with a different staff</button>
+                </div>             
+            </div>
+            {% comment %} ERROR SECTION FOR DUPLICATE DEPARTMENT AFTER SUBMISSION ENDS HERE {% endcomment %}
 
             {% comment %} MAIN SUB ADMIN SECTION ENDS BELOW HERE {% endcomment %}
         </div>

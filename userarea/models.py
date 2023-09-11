@@ -17,6 +17,14 @@ DEVICE_WORKING_CONDITION = (
     ("Bad", "Bad"),
 )
 
+STAFF_DEPARTMENT = (
+    ("None", "None"),
+    ("IT", "IT"),
+    ("HR", "HR"),
+    ("Admin", "Admin"),
+    ("Technician", "Technician"),
+)
+
 # Create your models here.
 
 class StaffDataSet(models.Model):
@@ -26,7 +34,8 @@ class StaffDataSet(models.Model):
     staff_lastname = models.CharField(max_length= 200, null=True, blank = True)
     staff_phonenumber = models.CharField(max_length= 200, null=True, blank = True)
     staff_email = models.CharField(max_length= 200, null=True, blank = True)
-    staff_role = models.CharField(max_length= 200, null=True, blank = True)
+    staff_role =  models.CharField(max_length= 300,choices = STAFF_DEPARTMENT, default = 'None', null=True, blank = True)
+    # staff_role = models.CharField(max_length= 200, null=True, blank = True)
     staff_location = models.CharField(max_length= 200, null=True, blank = True)
     CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -36,7 +45,7 @@ class StaffDataSet(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.staff_firstname} {self.staff_email}'
+        return f'{self.staff_firstname} {self.StaffID}'
 
 
 
@@ -81,7 +90,7 @@ class DeviceRegisterUpload(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.CompanyUniqueCode} {self.devicename} {self.user} {self.staffUserID}'
+        return f'{self.CompanyUniqueCode} {self.devicename} {self.deviceid} {self.staffUserID}'
 
 
 class uploadedDeviceData(models.Model):
@@ -142,8 +151,8 @@ class MaintenanceRequest(models.Model):
     MaintainDeviceCategory = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceLocation = models.CharField(max_length= 300, null=True, blank = True)
     MaintainStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_STATUS_CHOICE, default = 'Ongoing', null=True, blank = True)
-    MaintainDeviceUserFirstname = models.CharField(max_length= 300, null=True, blank = True)
-    MaintainDeviceUserLastname = models.CharField(max_length= 300, null=True, blank = True)
+    MaintainDeviceUserID = models.CharField(max_length= 300, null=True, blank = True)
+    # MaintainDeviceUserFullName = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequesterEmailAddress = models.EmailField(max_length= 300, null=True, blank = True)
     CompanyUniqueCode = models.EmailField(max_length= 300, null=True, blank = True)
     MaintainRequester = models.CharField(max_length= 300, null=True, blank = True)
@@ -187,6 +196,7 @@ class AddedMaintenanceComments(models.Model):
 class SubAdminModel(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     StaffID = models.CharField(max_length= 300, null=True, blank = True)
+    subadmin_dept = models.CharField(max_length= 300, null=True, blank = True)
     CompanyUniqueCode = models.EmailField(max_length= 300, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)

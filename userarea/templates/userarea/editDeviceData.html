@@ -5,11 +5,11 @@
 		<link rel="stylesheet" href={% static 'editdevice/css/style.css' %} />
     </heead>
 </html>
-<form method='POST'>
+{% comment %} <form method='POST'>
     {% csrf_token %}
     {{form}}
     <button type='submit'>Submit</button>
-</form>
+</form> {% endcomment %}
 
 <h1>BETER FORMATTED FOR TEST STARTS HERE</h1>
 

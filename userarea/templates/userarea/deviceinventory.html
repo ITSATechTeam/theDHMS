@@ -437,30 +437,30 @@
 							<option value='Scanner'>Scanner</option>
 						</select>
 					</div><br/>
-					<input name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
+					<input required name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
 
-					<input name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
+					<input required name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
 
-					<input name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
+					<input required name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
 
-					<input name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
+					<input required name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
 
-					<input name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
+					<input required name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
 
-					<input name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
+					<input required name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
 					{% comment %} <input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
 
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device Name</p> {% endcomment %}
-						<input name='devicename' type='text'placeholder='Enter Device Name' />
+						<input required name='devicename' type='text'placeholder='Enter Device Name' />
 					</div><br/>
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device MAC ID</p> {% endcomment %}
-						<input name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
+						<input required name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
 					</div><br/>
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device IP Address</p> {% endcomment %}
-						<input name='deviceip' type='text'placeholder='Enter Device IP Address' />
+						<input required name='deviceip' type='text'placeholder='Enter Device IP Address' />
 					</div><br/>
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device Working Condition</p> {% endcomment %}
@@ -473,7 +473,7 @@
 					</div><br/>
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device Location</p> {% endcomment %}
-						<input name='devicelocation' type='text'placeholder='Enter Device Location' />
+						<input required name='devicelocation' type='text'placeholder='Enter Device Location' />
 						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
 					</div>
 				</div><br/>

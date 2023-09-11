@@ -103,7 +103,7 @@ def Login(request):
             user = User.objects.get(email=companymail)
             if user:
                 userEmail = user.email
-                print(user.email)
+                # print(user.email)
         except:
             messages.error(request, 'Login Failed: Please Try Again.')
             return redirect('Login')

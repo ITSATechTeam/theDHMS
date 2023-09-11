@@ -27,7 +27,7 @@ import time
 
 @login_required(login_url='Login')
 def NavBar(request):
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     allSignUps = SignupForm.objects.filter(user = request.user)
     context = {'allSignUps': allSignUps, 'AllMaintenanceRequests':AllMaintenanceRequests}
     return render(request, 'general.html', context)
@@ -73,7 +73,8 @@ def Reports(request):
     data = [JanDevices1, FebDevices1, MarDevices1, AprDevices1, MayDevices1, JuneDevices1, JulyDevices1, AugDevices1, SeptDevices1, OctDevices1, NovDevices1, DecDevices1]
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     AllMaintenances = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email).count()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    # AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
 
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 
     'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
@@ -89,7 +90,7 @@ def Support(request):
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/support.html', context)
 
@@ -119,7 +120,7 @@ def Maintainance(request):
                 if data is not None:
                     for maintenanceDevice in MaintenanceRequest.objects.filter(MaintainRequestID = data).values_list('MaintainDeviceName', 
                     'MaintainDeviceID', 'MaintainDeviceIP', 'MaintainDeviceMAC_ID', 'MaintainType', 'MaintainDeviceCategory', 
-                    'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUserFirstname', 'MaintainDeviceUserLastname', 'MaintainRequester', 'MaintainRequestID', 
+                    'MaintainDeviceLocation', 'MaintainStatus', 'MaintainDeviceUserFirstname', 'MaintainRequestID', 
                     'MaintainRequestDescription', 'created_at'):
                         writer.writerow(maintenanceDevice)
 
@@ -137,7 +138,6 @@ def Maintainance(request):
         deviceToDeleteArr = []
         deviceToDeleteArrNew = []
         deviceToDeleteArr = list(deviceToDelete.split(","))
-        print(len(deviceToDeleteArr))
         for i in deviceToDeleteArr:
             if len(deviceToDeleteArr) == 1:
                 currentDevice = MaintenanceRequest.objects.get(MaintainRequestID = i)
@@ -169,8 +169,7 @@ def Maintainance(request):
 
 
 
-    allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email) 
-    # allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name) 
+    allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name) 
     allMaintainsCount = allMaintains.count()
 
     # AllMaintainDevice = MaintenanceRequest.objects.get(MaintainRequestID = name)
@@ -185,12 +184,13 @@ def Maintainance(request):
     allCanceledRequestsCount = allCanceledRequests.count()
     allOngoingRequests = MaintenanceRequest.objects.filter(Q(MaintainStatus = 'Ongoing') & Q(user = request.user))
     allOngoingRequestsCount = allOngoingRequests.count()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allOngoingRequestsCount':allOngoingRequestsCount, 'allCompletedRequestsCount':allCompletedRequestsCount, 'allCanceledRequestsCount':allCanceledRequestsCount, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
     return render(request, 'userarea/maintainance.html', context)
 
 
 
+@login_required(login_url='Login')
 def MaintainanceDetails(request, name):
     if request.method == 'POST' and 'addedComment' in request.POST:
         addedComentMain = request.POST['addedComment']
@@ -217,11 +217,18 @@ def MaintainanceDetails(request, name):
 
     currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
     AllCommments = AddedMaintenanceComments.objects.all()
-    AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
-    # AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
-    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
+
+    currentDeviceMain = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainDeviceID)
+    print(currentDeviceMain)
+    currentDeviceDetails = DeviceRegisterUpload.objects.get(deviceid = currentDeviceMain).staffUserID
+    currentDeviceUser = StaffDataSet.objects.get(StaffID = currentDeviceDetails)
+    print(currentDeviceUser)
+    
+    AllMaintainDevice = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
+    context = {'currentDeviceDetails':currentDeviceDetails, 'currentDeviceUser':currentDeviceUser, 'AllMaintenanceRequests':AllMaintenanceRequests, 'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
     return render(request, 'userarea/maintainrequestdetails.html', context)
+
 
 
 def DeleteAddedComment(request, pk, name):
@@ -240,7 +247,7 @@ def EditMaintenenceRequest(request, name):
         print('data validated!')
         form.save()
         return redirect('MaintainanceDetails', name = name)
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'form':form, 'selectedRequest':selectedRequest}
     return render(request, 'userarea/editmaintenancereq.html', context)
 
@@ -275,7 +282,7 @@ def Settings(request):
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/settings.html', context)
 
@@ -499,7 +506,7 @@ def DeviceInventory(request):
                     try:
                         # checkUniqueUser = User.objects.filter(username = row[17])
                         checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.email, last_name = row[4] +' '+row[5]
+                        username = row[17], email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
                         )
                     except:
                          messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
@@ -617,7 +624,7 @@ def DeviceInventory(request):
     numberOfDevicesPerPage = str(DeviceCountPerPage.objects.filter(user = request.user).first())
     allProfileImages = UserProfileImage.objects.all().first
     allSignUps = SignupForm.objects.all()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllStaffMembers':AllStaffMembers, 'allSignUps':allSignUps, 'allProfileImages':allProfileImages, 'allUploadedDevices':allUploadedDevices, 'numberOfDevicesPerPage':numberOfDevicesPerPage, 'allUploadedDevicesCount':allUploadedDevicesCount, 'workingSystems':workingSystems, 'badSystems':badSystems}
     return render(request, 'userarea/deviceinventory.html', context)
 
@@ -697,8 +704,8 @@ def ViewDeviceDetails(request, name):
         MaintainDeviceMAC = request.POST['MaintainDeviceMAC']
         MaintainDeviceCategory = request.POST['MaintainDeviceCategory']
         MaintainDeviceLocation = request.POST['MaintainDeviceLocation']
-        MaintainDeviceUserFirstname = request.POST['MaintainDeviceUserFirstname']
-        MaintainDeviceUserLastname = request.POST['MaintainDeviceUserLastname']
+        MaintainDeviceUserID = request.POST['MaintainDeviceUserID']
+        # MaintainDeviceUserLastname = request.POST['MaintainDeviceUserLastname']
         MaintainRequesterEmailAddress = request.POST['MaintainRequesterEmailAddress']
         MaintainDeviceUserDepartment = request.POST['MaintainDeviceUserDepartment']
         MaintainRequester = request.POST['MaintainRequester']
@@ -728,14 +735,14 @@ def ViewDeviceDetails(request, name):
         
 
         form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = CompanyUniqueCode, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
-        MaintainDeviceIP = MaintainDeviceIP, MaintainType = MaintainType, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainDeviceType = MaintainDeviceType, MaintainDeviceUserFirstname = MaintainDeviceUserFirstname,
-        MaintainDeviceUserLastname = MaintainDeviceUserLastname, MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
+        MaintainDeviceIP = MaintainDeviceIP, MaintainType = MaintainType, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainDeviceType = MaintainDeviceType, MaintainDeviceUserID = MaintainDeviceUserID,
+        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
         currentMonth = month1, MaintainRequester = MaintainRequester, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
 
         form.save()
         return redirect('Maintainance')
     currentDeviceList = DeviceRegisterUpload.objects.get(Q(deviceid = name)  & Q(user = request.user))
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'name':name, 'currentDeviceList':currentDeviceList}
     return render(request, 'userarea/devicedetails.html', context)
 
@@ -776,8 +783,13 @@ def ExportDevice(request):
 
 
 # MAIN DEVICE EDIT DATA PAGE LINKED BELOW
+@login_required(login_url='Login')
 def EditDevice(request, deviceid):
     MainDeviceData = DeviceRegisterUpload.objects.get(deviceid=deviceid)
+    MainDeviceDataStaffUser = DeviceRegisterUpload.objects.filter(deviceid=deviceid).values_list('staffUserID', flat=True).first()
+    MainDeviceDataStaffUserFirstName = DeviceRegisterUpload.objects.filter(deviceid=deviceid).values_list('deviceuserfirstname', flat=True).first()
+    MainDeviceDataStaffUserLastName = DeviceRegisterUpload.objects.filter(deviceid=deviceid).values_list('deviceuserlastname', flat=True).first()
+    
     form = DeviceRegisterForm(request.POST or None, instance = MainDeviceData)
     if request.POST and form.is_valid():
         form.save()
@@ -787,7 +799,7 @@ def EditDevice(request, deviceid):
         else:
             messages.success(request, 'Error saving device data')
     AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
-    context = {'AllStaffMembers':AllStaffMembers, 'form':form, 'id': id, 'MainDeviceData':MainDeviceData}
+    context = {'MainDeviceDataStaffUserLastName':MainDeviceDataStaffUserLastName, 'MainDeviceDataStaffUserFirstName':MainDeviceDataStaffUserFirstName, 'MainDeviceDataStaffUser' : MainDeviceDataStaffUser, 'AllStaffMembers':AllStaffMembers, 'form':form, 'id': id, 'MainDeviceData':MainDeviceData}
     return render(request, 'userarea/editdevice.html', context)
 
 
@@ -836,8 +848,8 @@ def StaffMembers(request):
             return redirect('StaffMembers')
         else:
             checkUniqueUser =  User.objects.create_user(
-            username = staff_email, email = request.user.username, password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
-            # username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
+            username = staff_email, email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + ' ' + staff_lastname)
+            # username = staff_email, email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = staff_firstname + staff_lastname)
 
             CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
             staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
@@ -847,37 +859,6 @@ def StaffMembers(request):
             CreateStaff.save()
             messages.success(request, 'Staff created successfully')
             return redirect('StaffMembers')
-        
-
-
-        # CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
-        # staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
-        # staff_location=staff_location, CompanyUniqueCode=CompanyUniqueCode)
-        
-        # CREATE USER ACCOUNT FOR STAFF FUNCTIIONALITY STARTS HERE
-
-        # try:
-        #     print(staff_email)
-        #     checkUniqueUserMain = User.objects.get(username = staff_email)
-        #     if checkUniqueUserMain is None:
-        #         print('checkUniqueUserMain')
-        #         checkUniqueUser =  User.objects.create_user(
-        #         username = staff_email, email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5])
-        #         checkUniqueUser.save()
-        #         CreateStaff.save()
-        # except:
-        #     messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
-        #     return redirect('StaffMembers')
-        # # CREATE USER ACCOUNT FOR STAFF FUNCTIIONALITY ENDS HERE
-
-
-        # try:
-        #     # CreateStaff.save()
-        #     # messages.error(request, 'Staff created successfully')
-        #     return redirect('StaffMembers')
-        # except:
-        #     messages.error(request, 'Staff was not created, try again')
-        #     return redirect('StaffMembers')
 
     staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.email)
     allDevices = DeviceRegisterUpload.objects.all()
@@ -885,7 +866,7 @@ def StaffMembers(request):
     staffCount = staffMembers.count()
     allSignUps = SignupForm.objects.all()
     AllUsers = User.objects.all()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
     return render(request, 'userarea/staffpage.html', context)
 
@@ -1002,7 +983,7 @@ def StaffDetails(request, id):
     allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.email) & Q(staffUserID = 'None'))
     # allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
     allSignUps = SignupForm.objects.all()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices, 'allUploadedDevicesNotAssigned':allUploadedDevicesNotAssigned}
     return render(request, 'userarea/staffdetails.html', context)
 
@@ -1041,7 +1022,7 @@ def EditUserSignupDetails(request, id):
 
     allSignUps = SignupForm.objects.all()
     allProfileImages = UserProfileImage.objects.all().first
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allProfileImages':allProfileImages, 'allSignUps':allSignUps, 'form' : form, 'currentUser' : currentUser}
     return render(request, 'userarea/editprofile.html', context)
 
@@ -1050,7 +1031,7 @@ def ProfilePage(request, pk):
     requestUser = SignupForm.objects.get(id = pk)
     allSignUps = SignupForm.objects.all()
     allUsers = User.objects.all()
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'requestUser':requestUser}
     return render(request, 'userarea/profilepage.html', context)
 
@@ -1098,10 +1079,8 @@ def Dashboard(request):
                     dateForWeekNumber = datetime.today()
                     weekNumber = dateForWeekNumber.isocalendar().week
                     uniqueId = 'Device-' + get_random_string(length=5)
-                    # DeviceBrandProper = row[14]+'_'+str(randomNumber)
                     randomNumberForStaff = random.randint(1000, 99999)
                     StaffUniqueId = 'Staff-' + request.user.username + str(randomNumberForStaff)
-                    # DeviceBrandProper = row[14] + '·' + str(randomNumber)
                     if row[21]:
                         depreciateRate = 2023 - int(row[21])                        
                     else:
@@ -1131,20 +1110,10 @@ def Dashboard(request):
 
 
                     AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
-                    print('----------------------------------------------------------------')
-                    print(AllStaffCheck)
                     if AllStaffCheck:
                         print('email already exists')
                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
                         return redirect('Dashboard')
-                   
-
-                    # AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
-                    # print(AllStaffCheck)
-                    # if AllStaffCheck:
-                    #     print('email already exists')
-                    #     messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
-                    #     return redirect('Dashboard')
                         
 
                     DeviceRegisterUpload.objects.create(
@@ -1179,6 +1148,7 @@ def Dashboard(request):
                         weekNumberSaved = weekNumber,
                         CompanyUniqueCode = request.user.email
                     ),
+                    # print(registeredMonth)
                     StaffDataSet.objects.create(
                         user = request.user,
                         StaffID = StaffUniqueId,
@@ -1193,7 +1163,7 @@ def Dashboard(request):
                     
                     try:
                         checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.email, last_name = row[4] +' '+row[5]
+                        username = row[17], email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
                         )
                     except:
                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
@@ -1208,10 +1178,12 @@ def Dashboard(request):
         return redirect('Dashboard')
 
 
-
     
     if request.method == 'POST' and 'deviceusedepartment' in request.POST:
         uniqueId = 'Device-' + get_random_string(length=5)
+        today = date.today()
+        dateForWeekNumber = datetime.today()
+        weekNumber = dateForWeekNumber.isocalendar().week
         if request.POST['devicebrand']:
             randomNumber = random.randint(100, 9999)
             DeviceBrandProper = request.POST['devicebrand']+ '_' + str(randomNumber)
@@ -1274,10 +1246,10 @@ def Dashboard(request):
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Working Condition.")
             return redirect('Dashboard')
 
-        if staffUserID:
-            AllStaffMembers = StaffDataSet.objects.get(StaffID = staffUserID).staff_email
-            print(AllStaffMembers)
-            deviceuseremail = AllStaffMembers
+        # if staffUserID:
+        #     AllStaffMembers = StaffDataSet.objects.get(StaffID = staffUserID).staff_email
+        #     print(AllStaffMembers)
+        #     deviceuseremail = AllStaffMembers
 
         
         SaveDeviceProper = DeviceRegisterUpload.objects.create(
@@ -1286,7 +1258,7 @@ def Dashboard(request):
             devicemacaddress=devicemacaddress, devicelocation=devicelocation, deviceip=deviceip,
             devicestatus=devicestatus, staffUserID=staffUserID, CompanyUniqueCode=CompanyUniqueCode,
             deviceyearofpurchase=deviceyearofpurchase, user=user, devicedepreciationrate=depreciateRateReal,
-            deviceid=uniqueId, deviceuseremail = deviceuseremail
+            deviceid=uniqueId, savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber
         )
 
         try:
@@ -1320,7 +1292,7 @@ def Dashboard(request):
     allSignUps = SignupForm.objects.filter(user = request.user)
     allUsers = User.objects.all()
     allSignupsForUpdatePopup = SignupForm.objects.filter(email = request.user.email)
-    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email)
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignupsForUpdatePopup':allSignupsForUpdatePopup, 'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount}
     return render(request, 'userarea/dashboard.html', context)
 
@@ -1607,7 +1579,7 @@ def ScanNetwork(request):
                     )
                     try:
                         checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = 'Staff Member', password =  StaffUniqueId, first_name = request.user.email, last_name = row[4] +' '+row[5]
+                        username = row[17], email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
                         )
                     except:
                          checkUniqueUserMain = User.objects.filter(username = row[17])
@@ -1844,21 +1816,66 @@ def UpdateCompanyDetails(request, email, name):
 
 @login_required(login_url='Login')
 def SubAdmin(request):
+    AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
+    AllStaffIDArr = []
+    AllStaffIDArrNew = []
+    SubAdminDepts = list(SubAdminModel.objects.all().values_list('subadmin_dept', flat=True))
     AllStaffMembers = StaffDataSet.objects.all()
+    AllSubAdminModelCount = SubAdminModel.objects.filter(CompanyUniqueCode = request.user.email).count()
     AllSubAdminModel = SubAdminModel.objects.filter(CompanyUniqueCode = request.user.email)
+
     if request.method == 'POST' and 'allSubAdminArr' in request.POST:
         allSubAdminArr = request.POST['allSubAdminArr'].split(',')
         print(allSubAdminArr)
-        for i in allSubAdminArr:
-            SubAdminModelExit = SubAdminModel.objects.filter(StaffID = i)
-            if SubAdminModelExit:
-                messages.error(request, 'A staff you selected already exists. Please select a non Sub-Admin to assign.')
-                return redirect('SubAdmin')
-            else:
-                SubAdminModel.objects.create(StaffID = i, user = request.user, CompanyUniqueCode = request.user.email)
 
-    context = {'AllStaffMembers':AllStaffMembers, 'AllSubAdminModel':AllSubAdminModel}
+        if allSubAdminArr == ['']:
+            messages.error(request, 'An error occured, please try again.')
+            return redirect('SubAdmin')
+
+        for a in allSubAdminArr:
+            SubAdminModelExit = SubAdminModel.objects.filter(StaffID = a)
+            AllStaffID = list(StaffDataSet.objects.filter(StaffID = a).values_list('staff_role', flat=True))
+            AllStaffIDArrNew.append(AllStaffID)
+
+
+        for i in AllStaffIDArrNew:
+            AllStaffIDArrNewCount = AllStaffIDArrNew.count(i) > 1
+
+        if SubAdminModelExit:
+            messages.error(request, 'A staff you selected already exists as a sub-Admin. Please select a non Sub-Admin to assign.')
+            return redirect('SubAdmin')
+
+        for a in allSubAdminArr:
+            AllStaffID22 = list(StaffDataSet.objects.filter(StaffID = a).values_list('staff_role', flat=True))
+            for i in AllStaffID22:
+                for q in SubAdminDepts:
+                    if q == i:
+                        messages.error(request, 'You selected a staff whose department already has a subadmin, please delete existing subadmin before reassigning.')
+                        return redirect('SubAdmin')
+
+            
+        if AllStaffIDArrNewCount is True:
+            messages.error(request, 'You selected two staff members from the same department. Please select one staff member per department.')
+            return redirect('SubAdmin')
+    
+
+        if AllStaffIDArrNewCount is False:
+            for a in allSubAdminArr:
+                AllStaffID = StaffDataSet.objects.filter(StaffID = a).values_list('staff_role', flat=True)
+                SubAdminModel.objects.create(StaffID = a, subadmin_dept = AllStaffID, user = request.user, CompanyUniqueCode = request.user.email)
+                AllSubAdminModelCount = SubAdminModel.objects.filter(CompanyUniqueCode = request.user.email).count()
+                
+
+    context = {'AllSubAdminModelCount':AllSubAdminModelCount, 'AllMaintenanceRequests':AllMaintenanceRequests, 'AllStaffMembers':AllStaffMembers, 'AllSubAdminModel':AllSubAdminModel}
     return render(request, 'userarea/subadmin.html', context)
 
 
+
+
+
+def DeletSubAdmin(request, pk):
+    SubAdminToDelete = SubAdminModel.objects.get(id = pk)
+    SubAdminToDelete.delete()
+    messages.error(request, 'Sub-Admin has been deleted')
+    return redirect('SubAdmin')
 

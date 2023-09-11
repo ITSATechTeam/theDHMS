@@ -22,26 +22,26 @@ def StaffNavBar(request):
 
 @login_required(login_url='StaffLogin')
 def StaffDashboard(request):
-    JanMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'January')).count()
-    FebMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'February')).count()
-    MarchMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'March')).count()
-    AprilMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'April')).count()
-    MayMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'May')).count()
-    JuneMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'June')).count()
-    JuneMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'Jun')).count()
-    JulyMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'July')).count()
-    AugMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'August')).count()
-    SeptMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'September')).count()
-    OctMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'October')).count()
-    NovMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'November')).count()
-    DecMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(currentMonth = 'December')).count()
+    JanMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Jan')).count()
+    FebMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Feb')).count()
+    MarchMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Mar')).count()
+    AprilMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Apr')).count()
+    MayMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'May')).count()
+    JuneMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'June')).count()
+    JuneMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Jun')).count()
+    JulyMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Jul')).count()
+    AugMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'August')).count()
+    SeptMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Sep')).count()
+    OctMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Oct')).count()
+    NovMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Nov')).count()
+    DecMaintainReqs = MaintenanceRequest.objects.filter(Q(MaintainDeviceUserID = request.user.email) & Q(currentMonth = 'Dec')).count()
     
-    MaintenanceRequests = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username)
+    MaintenanceRequests = MaintenanceRequest.objects.filter(MaintainDeviceUserID = request.user.last_name)
     AllStaffMembers = StaffDataSet.objects.all()
     MaintenanceRequestsCount = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username).count()
     MaintenanceRequestsPendingCount = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(MaintainStatus = 'Ongoing')).count()
-    RegisteredDevices = DeviceRegisterUpload.objects.filter(deviceuseremail = request.user.username)
-    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(deviceuseremail = request.user.username).count()
+    RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email)
+    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email).count()
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     data = [JanMaintainReqs, FebMaintainReqs, MarchMaintainReqs,
             AprilMaintainReqs, MayMaintainReqs, JuneMaintainReqs, 
@@ -87,10 +87,10 @@ def StaffLogout(request):
 
 def StaffDeviceInventory(request):
     MaintenanceRequests = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username).count()
-    RegisteredDevices = DeviceRegisterUpload.objects.filter(deviceuseremail = request.user.username)
-    RegisteredDevicesFaulty = DeviceRegisterUpload.objects.filter(Q(deviceuseremail = request.user.username) & Q(devicestatus = 'Faulty')).count()
-    RegisteredDevicesWorking = DeviceRegisterUpload.objects.filter(Q(deviceuseremail = request.user.username) & Q(devicestatus = 'Working')).count()
-    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(deviceuseremail = request.user.username).count()
+    RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email)
+    RegisteredDevicesFaulty = DeviceRegisterUpload.objects.filter(Q(staffUserID = request.user.email) & Q(devicestatus = 'Faulty')).count()
+    RegisteredDevicesWorking = DeviceRegisterUpload.objects.filter(Q(staffUserID = request.user.email) & Q(devicestatus = 'Working')).count()
+    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email).count()
     context = {'RegisteredDevicesWorking':RegisteredDevicesWorking,'MaintenanceRequests':MaintenanceRequests, 'RegisteredDevicesFaulty':RegisteredDevicesFaulty, 'RegisteredDevices':RegisteredDevices, 'RegisteredDevicesCount':RegisteredDevicesCount}
     return render(request, 'staffapp/staffdeviceinventory.html', context)
 
@@ -112,8 +112,8 @@ def StaffViewDeviceDetails(request, name):
         MaintainDeviceMAC = request.POST['MaintainDeviceMAC']
         MaintainDeviceCategory = request.POST['MaintainDeviceCategory']
         MaintainDeviceLocation = request.POST['MaintainDeviceLocation']
-        MaintainDeviceUserFirstname = request.POST['MaintainDeviceUserFirstname']
-        MaintainDeviceUserLastname = request.POST['MaintainDeviceUserLastname']
+        MaintainDeviceUserID = request.POST['MaintainDeviceUserID']
+        # MaintainDeviceUserFullName = request.POST['MaintainDeviceUserFullName']
         MaintainRequesterEmailAddress = request.POST['MaintainRequesterEmailAddress']
         MaintainRequester = request.POST['MaintainRequester']
         MaintainDeviceUserDepartment = request.POST['MaintainDeviceUserDepartment']
@@ -144,8 +144,8 @@ def StaffViewDeviceDetails(request, name):
         
 
         form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = CompanyUniqueCode, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
-        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUserFirstname = MaintainDeviceUserFirstname, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment,
-        MaintainDeviceUserLastname = MaintainDeviceUserLastname, MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
+        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUserID = MaintainDeviceUserID, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment,
+        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
         currentMonth = month1, MaintainDeviceType = MaintainDeviceType, MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
 
         form.save()
@@ -271,9 +271,13 @@ def StaffMaintainanceDetails(request, name):
         form.save()
 # AllMaintainDevice
     currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
+    currentDeviceMain = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainDeviceID)
+    currentDeviceDetails = DeviceRegisterUpload.objects.get(deviceid = currentDeviceMain).staffUserID
+    currentDeviceUser = StaffDataSet.objects.get(StaffID = currentDeviceDetails)
+    print(currentDeviceUser)
     AllCommments = AddedMaintenanceComments.objects.all()
     AllMaintainDevice = MaintenanceRequest.objects.get(MaintainRequestID = name)
-    context = {'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
+    context = {'currentDeviceUser':currentDeviceUser, 'currentDeviceDetails':currentDeviceDetails, 'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
     return render(request, 'staffapp/staffmaintainrequestdetails.html', context)
 
 

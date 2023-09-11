@@ -41,6 +41,7 @@ urlpatterns = [
     path('deletecomment/<str:pk>/<str:name>/', views.DeleteAddedComment, name="DeleteAddedComment"),
     path('viewdevicedetails/<str:name>/', views.ViewDeviceDetails, name="ViewDeviceDetails"),
     path('subadmin/', views.SubAdmin, name="SubAdmin"),
+    path('deletesubadmin/<str:pk>/', views.DeletSubAdmin, name="DeletSubAdmin"),
 ]
 
 

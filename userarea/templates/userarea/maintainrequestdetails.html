@@ -61,7 +61,7 @@
 				<hr/>
 				{% comment %} DEVICE DETAILS LIST STARTS HERE {% endcomment %}
 				<div class='devicedetailssection'>
-					{% comment %} {{currentDevice}} {% endcomment %}
+					{{deviceuserfirstname}}
 					{% for AllMaintainDevice in AllMaintainDevice %}
 					{% if AllMaintainDevice.MaintainRequestID == currentDevice %}
 					<div>
@@ -70,7 +70,8 @@
 						<h4>Device ID: <strong>{{ AllMaintainDevice.MaintainDeviceID }}</strong></h4>
 						<h4>Device Type: <strong>{{ AllMaintainDevice.MaintainDeviceType }}</strong></h4>
 						<h4>Device Unit: <strong>{{ AllMaintainDevice.MaintainDeviceUserDepartment }}</strong></h4>
-						<h4>Device is assigned to: <strong>{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }} </strong></h4>
+						<h4>Device is assigned to: <strong>{{ currentDeviceUser.staff_firstname }} with ID '{{currentDeviceDetails}}'</strong></h4>
+						{% comment %} <h4>Device is assigned to: <strong>{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }} </strong></h4> {% endcomment %}
 					</div>
 					<div>
 						<br/><h3>Maintenance Request Details</h3><br/>

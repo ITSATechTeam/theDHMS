@@ -55,23 +55,16 @@
 			<hr/>
 			{% comment %} MAIN BODY SECTION STARTS HERE {% endcomment %}
 			<div class='bodytopbar'>
-				{% comment %} <div class='bodytopbarinner'>
-					<h4 class='maintainreq activebar'>Maintenance Request Details</h4>
-					<h4 class='maintainhistory'>Device Maintenance History</h4>
-				</div>
-				<hr/> {% endcomment %}
 				{% comment %} DEVICE DETAILS LIST STARTS HERE {% endcomment %}
 				<div class='devicedetailssection'>
-					{% comment %} {{currentDevice}} {% endcomment %}
-					{% comment %} {% for AllMaintainDevice in AllMaintainDevice %} {% endcomment %}
-					{% comment %} {% if AllMaintainDevice.MaintainRequestID == currentDevice %} {% endcomment %}
 					<div>
 						<br/><h3>Device Details</h3><br/>
 						<h4>Device Name: <strong>{{ AllMaintainDevice.MaintainDeviceName }}</strong></h4>
 						<h4>Device ID: <strong>{{ AllMaintainDevice.MaintainDeviceID }}</strong></h4>
 						<h4>Device Type: <strong>{{ AllMaintainDevice.MaintainDeviceType }}</strong></h4>
 						<h4>Device Unit: <strong>{{ AllMaintainDevice.MaintainDeviceUserDepartment }}</strong></h4>
-						<h4>Device is assigned to: <strong>{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }} </strong></h4>
+						<h4>Device is assigned to: <strong>{{ currentDeviceUser.staff_firstname }} with ID '{{currentDeviceDetails}}' </strong></h4>
+						{% comment %} <h4>Device is assigned to: <strong>{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }} </strong></h4> {% endcomment %}
 					</div>
 					<div>
 						<br/><h3>Maintenance Request Details</h3><br/>

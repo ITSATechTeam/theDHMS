@@ -174,12 +174,19 @@
         <form method='POST'>
           {% csrf_token %}
             <div>
-                <input name='CompanyUniqueCode' hidden type='text' value = {{request.user.email}} /><br/>
-                {% comment %} <input name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/> {% endcomment %}
-                <input name='staff_firstname' type='text' placeholder='Staff First Name' /><br/>
-                <input name='staff_lastname' type='text' placeholder='Staff Last Name' /><br/>
-                <input name='staff_email' type='email' placeholder='Staff Official Email Address' />
-                <input name='staff_role' type='text' placeholder='Staff Role/Department' />
+                <input required name='CompanyUniqueCode' hidden type='text' value = {{request.user.email}} /><br/>
+                {% comment %} <input required name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/> {% endcomment %}
+                <input required name='staff_firstname' type='text' placeholder='Staff First Name' /><br/>
+                <input required name='staff_lastname' type='text' placeholder='Staff Last Name' /><br/>
+                <input required name='staff_email' type='email' placeholder='Staff Official Email Address' />
+                {% comment %} <input required name='staff_role' type='text' placeholder='Staff Role/Department' /> {% endcomment %}
+                <select name='staff_role'>
+                  <option value ='none'>Select Staff's Department</option>
+                  <option value ='IT'>IT</option>
+                  <option value ='HR'>HR</option>
+                  <option value ='Admin'>Admin</option>
+                  <option value ='Technical'>Technical</option>
+                </select>
             </div>
             <div class='phonenumbersection'>
                 {% comment %} <div>
@@ -407,8 +414,8 @@
                         </optgroup>
                     </select>
                 </div> {% endcomment %}
-                <input name='staff_phonenumber' type='tel' placeholder="Staff Official Phone Number"/>
-                <input name='staff_location' type='text' placeholder="Staff Location"/>
+                <input required name='staff_phonenumber' type='tel' placeholder="Staff Official Phone Number"/>
+                <input required name='staff_location' type='text' placeholder="Staff Location"/>
             </div>
             <button type='submit'>Register Staff</button>
         </form>

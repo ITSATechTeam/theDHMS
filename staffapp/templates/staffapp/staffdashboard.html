@@ -138,7 +138,6 @@
 					  {% comment %} <th>Action</th> {% endcomment %}
 					</tr>
 					{% for RegisteredDevices in RegisteredDevices %}
-					{% if request.user.username == RegisteredDevices.deviceuseremail %}
 					<tr>
 					  <td>{{ RegisteredDevices.deviceid }}</td>
 					  <td>{{ RegisteredDevices.devicename }}</td>
@@ -156,7 +155,6 @@
 						</div>
 					  </td> {% endcomment %}
 					</tr>
-					{% endif %}
 					{% endfor %}
 				</table>
 			</div>

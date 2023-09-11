@@ -24,6 +24,7 @@
 			<div class='maintop'>
                 <div>
                     <h5><a href={% url 'DeviceInventory' %}>Devices Inventory </a> > {{ MainDeviceData.deviceid }} </h5>
+                    {{MainDeviceDataStaffUser}}
                     <br/>
 					<h1>Edit Device Data</h1>
 					<h5>You can make changes to device with ID: <span>{{ MainDeviceData.deviceid }}</span>.</h5>
@@ -88,12 +89,15 @@
                                 </label>
                                 <br/>
                                 <select name='staffUserID' class="player-dropdown">
+                                    {% if MainDeviceData.staffUserID == MainDeviceDataStaffUser %}
                                     {% for AllStaffMembers in AllStaffMembers %}
-                                    {% if MainDeviceData.staffUserID == AllStaffMembers.StaffID %}
-                                    <option default value={{AllStaffMembers.StaffID}}>{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}  {{AllStaffMembers.StaffID}}</option>
+                                    {% if AllStaffMembers.StaffID == MainDeviceDataStaffUser %}
+                                    <option value="{{MainDeviceDataStaffUser}}"> {{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} - {{MainDeviceDataStaffUser}}</option>
                                     {% endif %}
                                     {% endfor %}
+                                    {% else %}
                                     <option value="None">Unassign This Device [Remove Exisiting User]</option>
+                                    {% endif %}
                                     {% for AllStaffMembers in AllStaffMembers %}
 						            <option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
                                     {% endfor %}

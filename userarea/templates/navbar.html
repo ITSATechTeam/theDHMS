@@ -44,10 +44,10 @@
                     </div>
                     {% for AllMaintenanceRequests in AllMaintenanceRequests %}
                     <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ >
-                        <div class='noticationSectionProper'>                        
+                        <div class='noticationSectionProper'>
                             <div class='noticationSectionProperIn'>
                                 <h3>
-                                    {{AllMaintenanceRequests.MaintainDeviceUserFirstname}} {{AllMaintenanceRequests.MaintainDeviceUserLastname}} Just made a maintenance request with ID <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ ><span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
+                                    {{AllMaintenanceRequests.MaintainRequester}} Just made a maintenance request with maintenance ID <a href= "/member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/" > <span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
                                 </h3>
                                 <p>{{AllMaintenanceRequests.created_at}}</p>
                             </div>
