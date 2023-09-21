@@ -34,3 +34,15 @@ closeaddnewdeviceopoup.addEventListener('click', () => {
 })
 
 // registerDevice FORM POPUP ENDS HERE
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashStaffDetails = document.querySelector('.alert strong')
+if(flashStaffDetails){
+    console.log('flashStaffDetails around')
+    setTimeout(() => {
+        flashStaffDetails.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

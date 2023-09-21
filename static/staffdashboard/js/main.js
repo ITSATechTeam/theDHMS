@@ -32,3 +32,15 @@ closefilter2.addEventListener('click', () =>{
     filterbox2.style.display = 'none';
 
 })
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashStaffDash = document.querySelector('.alert strong')
+if(flashStaffDash){
+    console.log('flashStaffDash around')
+    setTimeout(() => {
+        flashStaffDash.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

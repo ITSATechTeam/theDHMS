@@ -2,6 +2,7 @@
 from django.urls import reverse
 from django.contrib import messages
 from .models import *
+from useronboard.models import LoginStatus
 from .forms import *
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -20,9 +21,35 @@ from django.contrib.auth.models import User
 import random
 import time
 
-# import datetime; 
+# FIND ALL INSTALLED APPS TRIAL STARTS HERE
+# importing the module
+import subprocess
 
+# traverse the software list
+# Data = subprocess.check_output(['wmic', 'product', 'get', 'name'])
+# a = str(Data)
+  
+# # try block
+# try:    
+#     # arrange the string
+#     for i in range(len(a)):
+#         RawListOfApp = a.split("\\r\\r\\n")[6:]
+#         RawListOfAppName = RawListOfApp[6:][i]
+#         RawListOfAppDetail = RawListOfApp[i]
+#         print(RawListOfAppName)
+  
+# except IndexError as e:
+#     print("All Done")
 # Create your views here.
+# FIND ALL INSTALLED APPS TRIAL ENDS HERE
+
+
+import platform
+# Get the operating system name
+os_name = platform.system()
+
+# Print the operating system name
+print("Operating System:", os_name)
 
 
 @login_required(login_url='Login')
@@ -854,7 +881,6 @@ def StaffMembers(request):
             CreateStaff = StaffDataSet(StaffID=StaffID, staff_firstname=staff_firstname, staff_lastname=staff_lastname, 
             staff_email=staff_email, staff_role=staff_role, staff_phonenumber=staff_phonenumber, user=user,
             staff_location=staff_location, CompanyUniqueCode=CompanyUniqueCode)
-
             checkUniqueUser.save()
             CreateStaff.save()
             messages.success(request, 'Staff created successfully')
@@ -866,8 +892,10 @@ def StaffMembers(request):
     staffCount = staffMembers.count()
     allSignUps = SignupForm.objects.all()
     AllUsers = User.objects.all()
+    AllLoginStatus = LoginStatus.objects.all()
+    # AllLoginStatus = list(LoginStatus.objects.all().values_list('email', flat=True))
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
-    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
+    context = {'AllLoginStatus':AllLoginStatus, 'AllMaintenanceRequests':AllMaintenanceRequests, 'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
     return render(request, 'userarea/staffpage.html', context)
 
 
@@ -1333,6 +1361,8 @@ def EditStaff(request, staffid):
 
 
 def Logout(request):
+    MainLoginStatus = LoginStatus.objects.filter(email = request.user.email)
+    MainLoginStatus.delete()
     logout(request)
     messages.success(request, 'Logout Successful')
     return redirect('Login')
@@ -1720,11 +1750,52 @@ def AllInstalledApp(request):
     return render(request, 'userarea/test.html', context)
 
 
+# ACCORDING TO CHAT GPT : FOR A LINUS MACHINE, RUN CODE BELOW:
+
+import subprocess
+
+# def get_installed_applications():
+#     try:
+#         # Check for Debian-based systems (e.g., Ubuntu)
+#         debian_cmd = "dpkg-query -l | grep '^ii' | awk '{print $2}'"
+#         debian_apps = subprocess.check_output(debian_cmd, shell=True, universal_newlines=True)
+
+#         # Check for Red Hat-based systems (e.g., CentOS)
+#         redhat_cmd = "rpm -qa"
+#         redhat_apps = subprocess.check_output(redhat_cmd, shell=True, universal_newlines=True)
+
+#         # Combine the lists and remove duplicates
+#         all_apps = set(debian_apps.splitlines() + redhat_apps.splitlines())
+
+#         return sorted(all_apps)
+#     except Exception as e:
+#         print(f"An error occurred: {e}")
+#         return []
+
+# if __name__ == "__main__":
+#     installed_apps = get_installed_applications()
+#     if installed_apps:
+#         print("Installed applications:")
+#         for app in installed_apps:
+#             print(app)
+#     else:
+#         print("No installed applications found.")
+
+
+# ACCORDING TO CHAT GPT : FOR A LINUS MACHINE, RUN CODE ABOVE:
+
 
 def AllInstalledSoftwares(request):
-    item = winapps.list_installed
+    # item = winapps.list_installed
     allSignUps = SignupForm.objects.all()
-    context = {'item':item, 'allSignUps':allSignUps}
+    
+    # Data = subprocess.check_output(args)
+    Data = subprocess.check_output(['wmic', 'product', 'get', 'name'])
+    a = str(Data)
+    for i in range(len(a)):
+        RawListOfApp = a.split("\\r\\r\\n")[6:]
+        RawListOfAppName = RawListOfApp[6:]
+    context = {'item':RawListOfAppName, 'allSignUps':allSignUps}
     return render(request, 'userarea/allinstalledapp.html', context)
 
 # Franklin-franklin.i@itservicedeskafrica.com

@@ -43,12 +43,12 @@
 					<table>
 						<tr>
 						<th>App Name</th>
-						<th>App Version</th>
-						<th>App Installation Date</th>
+						{% comment %} <th>App Version</th>
+						<th>App Installation Date</th> {% endcomment %}
 						</tr>
 						{% for item in item %}
 						<tr>
-						<td>{{item.name}}</td>
+						<td>{{item}}</td>
 						<td>{{item.version}}</td>
 						<td>{{item.install_date}}</td>
 						</tr>

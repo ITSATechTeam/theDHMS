@@ -10,6 +10,13 @@ body{
 }
 
 
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
+
 main{
     padding-top: 10px;
     display: flex;

@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-]
 
+]
 
 
 # # IF I WAS TO USE DIFFERENT PROVIDES, I'LL LIST SIMILAR CODE BELOW FOR THAT PROVIDER.
@@ -74,7 +74,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django_auto_logout.middleware.auto_logout',
 ]
-
+# SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 from datetime import timedelta
 AUTO_LOGOUT = {
@@ -125,6 +125,16 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'dhms',
+#         'USER': 'admin',
+#         'PASSWORD': 'password'
+#     }
+# }
 
 
 # Password validation

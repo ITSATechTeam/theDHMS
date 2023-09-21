@@ -141,6 +141,13 @@ body{
     background-color: #E1E7FC;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
 .scannetworkbtn2 button{
     background-color: white;
     border: #2A66B0 solid 1px;

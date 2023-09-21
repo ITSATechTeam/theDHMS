@@ -47,3 +47,15 @@ let formsubmitbtn = document.querySelector('.formsubmitbtn')
     console.log("profilepicture")
     formsubmitbtn.style.display = 'block'
  }
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashEditProfile = document.querySelector('.alert strong')
+if(flashEditProfile){
+    console.log('flashEditProfile around')
+    setTimeout(() => {
+        flashEditProfile.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

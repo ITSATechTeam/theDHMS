@@ -219,7 +219,7 @@ closefilter2.addEventListener('click', () =>{
 const topCheckBox = document.querySelector('.topCheckBox input')
 const sectionCheckBox = document.querySelectorAll('.sectionCheckBox input')
 const numberofdevices = parseInt(document.querySelector('.numberofdevices h3').innerHTML)
-console.log(numberofdevices)
+// console.log(numberofdevices)
 
 
 let detailsTabCountInnner = document.querySelector('.detailsTabCountInnner strong')
@@ -231,7 +231,7 @@ let maintainName = document.querySelectorAll('.deviceID p')
 let maintainNameID = document.getElementById('devicebrandName')
 let maintainNameIDMain = document.querySelectorAll('.devicebrandName p')
 maintainNameIDMain.forEach( (e)=>{
-  console.log(e.innerHTML)
+  // console.log(e.innerHTML)
 } )
 let maintainNameIDMain2= document.querySelectorAll('.maintainName i')
 let ExportDataHere = document.querySelector('.ExportDataHere input')
@@ -406,3 +406,14 @@ topCheckBox.addEventListener('change', () => {
 // console.log(countperpage)
 
 // SET DEFAULT VALUE FOR DEVICES DISPLAY COUNT PER PAGE FUNCTIONALITY ENDS HERE
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashInv = document.querySelector('.alert strong')
+if(flashInv){
+    console.log('flashInv around')
+    setTimeout(() => {
+        flashInv.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

@@ -11,6 +11,15 @@ const filterbox1A = document.querySelector('.filterbox1A')
 const filtercategory2 = document.querySelector('.filtercategory2')
 const closefilterA = document.querySelector('.closefilterA')
 
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashDash = document.querySelector('.alert strong')
+if(flashDash){
+    setTimeout(() => {
+        flashDash.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE
+
 filtercategory2.addEventListener('click', () => {
     console.log('close filter')
     shadow.style.display = 'block';

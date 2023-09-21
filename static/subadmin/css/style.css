@@ -220,9 +220,12 @@
     display: none;
 }
 
-.errorSubAdminTab3{
-    /* display: block; */
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
 }
+
 
 .listOfStaffBtnCancel{
     cursor: pointer;

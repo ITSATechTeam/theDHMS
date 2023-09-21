@@ -246,6 +246,13 @@ nav button{
     overflow-y: scroll;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
 .noticationSectionProper{
     margin-top: 0px;
 }

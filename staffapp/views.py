@@ -11,8 +11,19 @@ from django.db.models import Q
 import random
 from datetime import datetime
 from datetime import date
+from useronboard.models import LoginStatus
 
 # Create your views here.
+
+from datetime import datetime, timedelta
+delta = 1
+time_now = datetime.now()
+time_ago = time_now - timedelta(minutes=delta)
+# print(time_now.hour)
+# print(time_ago.hour)
+if time_now.hour == 24 :
+    allLoginStatusMain = LoginStatus.objects.all()
+    allLoginStatusMain.delete()
 
 
 # @login_required(login_url='Login')
@@ -65,21 +76,31 @@ def StaffLogin(request):
             return redirect('StaffLogin')
         
         user = authenticate(request, username=user, password=staffphonenumber)
+        LoginStatus.objects.create(user = user, email = staffemail, status = 'Online')
+        # countdown(request)        
+        # countdown(int(5000))
 
         if user is not None:
             login(request, user)
-            # messages.success(request, 'Login Successfull')
             return redirect('StaffDashboard')
 
         else:
             # print(error)
             messages.error(request, 'Login Failed: Please Try Again or Contact Your IT Admin.')
             return redirect('StaffLogin')
+        
 
     return render(request, 'staffapp/stafflogin.html')
 
 
+
+# from datetime import timedelta
+# AUTO_LOGOUT = {'SESSION_TIME': timedelta(minutes=1)}
+
+
 def StaffLogout(request):
+    MainLoginStatus = LoginStatus.objects.filter(email = request.user.username)
+    MainLoginStatus.delete()
     logout(request)
     messages.success(request, 'Logout Successful')
     return redirect('StaffLogin')
@@ -300,3 +321,11 @@ def StaffSetting(request):
     return render(request, 'staffapp/staffsetting.html')
 
 
+
+
+
+# input time in seconds
+# t = input("Enter the time in seconds: ")
+  
+# # function call
+# countdown(request)

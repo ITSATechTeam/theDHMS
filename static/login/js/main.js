@@ -18,3 +18,13 @@ eyeicon2.addEventListener("click", function(){
     eyeicon2.style.display = 'none'
 })
 
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashLogin = document.querySelector('.alert strong')
+if(flashLogin){
+    console.log('flashLogin around')
+    setTimeout(() => {
+        flashLogin.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

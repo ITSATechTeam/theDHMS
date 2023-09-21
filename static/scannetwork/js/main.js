@@ -388,3 +388,15 @@ uploaddevicepopupintroclose.addEventListener('click', () => {
     uploaddevicepopup.style.display = 'none'
     shadow.style.display = 'none';
 })
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashScan = document.querySelector('.alert strong')
+if(flashScan){
+    console.log('flashScan around')
+    setTimeout(() => {
+        flashScan.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

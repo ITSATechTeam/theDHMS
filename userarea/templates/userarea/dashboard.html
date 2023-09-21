@@ -40,7 +40,8 @@
 				<div id="flash">
 					{% if messages %} {% for message in messages %}
 					<div class="alert alert-{{ message.tags}} m-0" role="alert">
-						<strong style="color: red">{{ message }}</strong>
+						<strong>{{ message }}</strong>
+						{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
 					</div>
 					{% endfor %} {% endif %}
 				</div>
@@ -185,15 +186,15 @@
 						</div>
 						<div class='filter2 filtercategory'>
 							<img src={% static 'dashboard/img/filter.png' %} />
-							<p>By Health</p>
+							<p> Health</p>
 						</div>
 						<div class='filter2 filtercategory2'>
 							<img src={% static 'dashboard/img/filter.png' %} />
-							<p>By Category</p>
+							<p> Category</p>
 						</div>
 						<div class='filter filtercalendar'>
 							<img src={% static 'dashboard/img/Calendar.png' %} />
-							<p>Filter</p>
+							<p>Calendar</p>
 						</div>
 						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
 						<div class='filterbox filterbox1'>
@@ -206,7 +207,7 @@
 									<p>Device health</p>
 									<div class='selecthealth'>
 										<select name='q'>
-											<option>All</option>
+											<option>----</option>
 											<option value='Working'>Working</option>
 											<option value='Critical'>Critical</option>
 											<option value='Faulty'>Faulty</option>

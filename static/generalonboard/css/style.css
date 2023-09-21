@@ -29,6 +29,13 @@ main{
     object-position: center;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
 .sidenote2{
     width: 500px;
     /*  */

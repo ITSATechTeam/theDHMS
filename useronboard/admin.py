@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(SignupForm)
 admin.site.register(UserProfileImage)
+admin.site.register(LoginStatus)

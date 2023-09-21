@@ -62,6 +62,13 @@
     /* font-size: 1.8rem; */
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
 .maintenancereq{
     /* background-color: red; */
     width: 400px;

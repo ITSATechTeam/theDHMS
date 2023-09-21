@@ -67,7 +67,7 @@
             <th>Staff Unique ID</th>
             <th>Staff Unit</th>
             <th>Device Device(s) ID</th>
-            {% comment %} <th>Staff Online Status</th> {% endcomment %}
+            <th>Staff Availability</th>
             <th>Action</th>
             <th>More Info</th>
           </tr>
@@ -97,21 +97,19 @@
               {% endif %}
               {% endfor %}
             </td>
-            {% comment %} {% for AllUsers in AllUsers %}
-            {% if AllUsers.username == staffMembers.staff_email %}
-            {% if request.user.is_authenticated %}
+
+            {% comment %} {% for AllLoginStatus in AllLoginStatus %} {% endcomment %}
             <td>
-              {{ request.user }}
-              <p>Online</p>
+              {% for i in AllLoginStatus %}
+                {% if i.email == staffMembers.staff_email %}
+                  <p class='userisonline'>Online | {{ i.created_at | timesince }} ago</p>
+                  <p></p>
+                {% comment %} {% else %} {% endcomment %}            
+                {% endif %}
+              {% endfor %}
+              <p class='userisoffline'>Offline</p>
             </td>
-            {% else %}
-            <td>
-              <p>Offline</p>
-            </td>
-            {% endif %}
-            {% endif %}
-            {% endfor %} {% endcomment %}
-            {% comment %} <td class={{ staffMembers.staff_DeviceStatus }} >{{ staffMembers.staff_DeviceStatus }}</td> {% endcomment %}
+
             <td>
               <div class='actionbtns'>
                 <button><a href= /member/editstaffdetails/{{ staffMembers.id }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>

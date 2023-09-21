@@ -15,6 +15,14 @@ body{
     width: 98%;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
+
 .uploadpic{
     display: grid;
     grid-template-columns: 20% 80%;

@@ -56,6 +56,13 @@
     width: 800px;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
 .faqSectionOut:hover{
     background-color: rgb(235, 235, 235);
 }

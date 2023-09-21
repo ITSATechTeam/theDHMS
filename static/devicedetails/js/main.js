@@ -77,3 +77,14 @@ deviceinfotab.addEventListener('click', () => {
 
 
 // SELECT SECTION TO DISPLAY: DEVICE DETAILS OF MAINTENANCE HISTORY DETAILS SETUP ENDS HERE
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashDevDetails = document.querySelector('.alert strong')
+if(flashDevDetails){
+    console.log('flashDevDetails around')
+    setTimeout(() => {
+        flashDevDetails.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

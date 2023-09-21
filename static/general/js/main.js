@@ -214,3 +214,14 @@ document.addEventListener("click", (e) => {
 // time for disappearing notifications
 let alert = document.querySelector('.alert')
 setTimeout(() => { clearInterval(alert); }, 5000); 
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashGeneral = document.querySelector('.alert strong')
+if(flashGeneral){
+    console.log('flashGeneral around')
+    setTimeout(() => {
+        flashGeneral.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

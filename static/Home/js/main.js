@@ -44,3 +44,14 @@ window.addEventListener("scroll", () => {
 });
 
 // ANIMATION NODE ENDS HERE
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashHome = document.querySelector('.alert strong')
+if(flashHome){
+    console.log('flashHome around')
+    setTimeout(() => {
+        flashHome.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

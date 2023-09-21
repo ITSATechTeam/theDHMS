@@ -95,3 +95,15 @@ profileimgsectiontext.innerHTML = firstAlphabet
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE
 
 
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashStaffGeneral = document.querySelector('.alert strong')
+if(flashStaffGeneral){
+    console.log('flashStaffGeneral around')
+    setTimeout(() => {
+        flashStaffGeneral.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

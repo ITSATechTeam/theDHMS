@@ -176,3 +176,14 @@ let sectionToReplace = document.querySelector('.sectionToReplace')
 
 
 // EDIT AND DELETE BUTTON SELECTION FUNCTIONALITY ENDS HERE
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashMaintain = document.querySelector('.alert strong')
+if(flashMaintain){
+    console.log('flashMaintain around')
+    setTimeout(() => {
+        flashMaintain.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

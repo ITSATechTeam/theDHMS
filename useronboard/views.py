@@ -19,6 +19,10 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 # RESET PASSWORD IMPORTS ENDS HERE
 
+
+# from django_ratelimit.decorators import ratelimit
+# from django.utils.decorators import method_decorator
+
 # Create your views here.
 
 def NavBar(request):
@@ -34,6 +38,7 @@ def Home(request):
 
 
     
+# @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def SignUpPage(request):
     if request.method == 'POST':
     # if request.method == 'POST' and request.FILES:
@@ -95,6 +100,7 @@ def SignUpPage(request):
     return render(request, 'useronboard/signup.html')
 
 
+# @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def Login(request):
     if request.method == 'POST':
         companymail = request.POST['companymail']
@@ -109,10 +115,10 @@ def Login(request):
             return redirect('Login')
         
         user = authenticate(request, username=user, password=password)
+        LoginStatus.objects.create(user = user, email = companymail, status = 'Online')
 
         if user is not None:
             login(request, user)
-            # messages.success(request, 'Login Successfull')
             return redirect('Dashboard')
 
         else:
