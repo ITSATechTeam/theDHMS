@@ -35,7 +35,6 @@ class StaffDataSet(models.Model):
     staff_phonenumber = models.CharField(max_length= 200, null=True, blank = True)
     staff_email = models.CharField(max_length= 200, null=True, blank = True)
     staff_role =  models.CharField(max_length= 300,choices = STAFF_DEPARTMENT, default = 'None', null=True, blank = True)
-    # staff_role = models.CharField(max_length= 200, null=True, blank = True)
     staff_location = models.CharField(max_length= 200, null=True, blank = True)
     CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)

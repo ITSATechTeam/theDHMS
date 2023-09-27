@@ -3,9 +3,12 @@ from django.http import HttpResponse
 from .models import *
 # from useronboard.models import SignupForm
 from django.contrib import messages
+# from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .forms import *
+from .tokens import account_activation_token
 
 # RESET PASSWORD IMPORTS STARTS HERE
 from django.core.mail import send_mail, BadHeaderError
@@ -77,26 +80,19 @@ def SignUpPage(request):
         if data or UserData:
             messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
             return redirect('SignUpPage')
-            messages.error(request, 'Sorry, Company Name Is Already Taken')
-
         else:
-            messages.success(request, 'Registration Successful')
-            form = SignupForm(companyname=companyname, email=email, phone=phonenumber, password=password, repassword=rtpassword)
-
-            user = User.objects.create_user(
-                username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
-
-            UserProfileImgDetailsUpdate = UserProfileImage.objects.create(userReg = companyname)
-        
+            form = SignupForm(user=request.user, companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password, repassword=rtpassword)
+            user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
             form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            form.save()
             user.save(False)
-            # serProfileImgDetailsUpdate = UserProfileImage.objects.create(user = user.username, userReg = companyname)
-            # user.save()
-            UserProfileImgDetailsUpdate.save()
-
+            # try:
+            #     activateEmail(request, user, email)
+            # except:
+            #     print('Registration mail was not sent successfully')
             return redirect('Dashboard')
+
+            # return redirect('Login')
     return render(request, 'useronboard/signup.html')
 
 
@@ -118,29 +114,19 @@ def Login(request):
         LoginStatus.objects.create(user = user, email = companymail, status = 'Online')
 
         if user is not None:
-            login(request, user)
-            return redirect('Dashboard')
+            try:
+                # notifyLoginEmail(request, user, companymail)
+                login(request, user)
+                return redirect('Dashboard')
+            except:
+                messages.error(request, 'Login Failed: Please Try Again.')
+                return redirect('Login')
 
         else:
             # print(error)
             messages.error(request, 'Login Failed: Please Try Again!!')
             return render(request, 'useronboard/login.html')
     return render(request, 'useronboard/login.html')
-
-
-
-# # EDIT USER SIGNUP DETAILS STARTS BELOW
-# def EditUserSignupDetails(request, id):
-#     currentUser = SignupForm.objects.get(id = id)
-#     form = UserRegistrationForm(request.POST or None, instance = currentUser)
-#     if request.POST and form.is_valid() and request.FILES:
-#         form.save()
-#         if form.save():
-#             messages.success(request, 'Your Company details have been updated successfully')
-#         else:
-#             messages.success(request, 'Error saving company details')
-#     context = {'form' : form, 'currentUser' : currentUser}
-#     return render(request, 'userarea/editprofile.html', context)
 
 
 
@@ -159,21 +145,19 @@ def password_reset_request(request):
 					"email":user.email,
 					'domain':'itservicedeskafrica.com',
 					'site_name': 'dhms@itservicedeskafrica.com',
-					# "uid": urlsafe_base64_encode(force_bytes(user.pk)).decode(),
 					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
 					"user": user,
 					'token': default_token_generator.make_token(user),
-					'protocol': 'http',
+					'protocol': 'https' if request.is_secure() else 'http',
 					}
 					email = render_to_string(email_template_name, c)
 					try:
-						send_mail(subject, email, 'admin@example.com' , [user.email], fail_silently=False)
+						send_mail(subject, email, 'info@itservicedeskafrica.com' , [user.email], fail_silently=False)
 					except BadHeaderError:
 						return HttpResponse('Invalid header found.')
 					except:
 						redirect("password/password_reset.html")
 						messages.error(request, 'An error occoured. Please contact ITSA Support.')
-					# return redirect ("password_reset_done")
 					return redirect ("password_reset/done/")
 			else:
 				redirect("password/password_reset.html")
@@ -184,3 +168,43 @@ def password_reset_request(request):
 
 
 # RESET PASSWORD VIEW ENDS HERE
+
+
+# SEND EMAIL AFTER REGISTRATION
+def activateEmail(request, user, to_email):
+    mail_subject = "Your Company registered on the Device Health Management System[DHMS] Platform with ITSA."
+    recipient_list = [to_email, ]
+    message = render_to_string("mailouts/account_verification_email.html", {
+        'user': user.email,
+        'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        "protocol": 'https' if request.is_secure() else 'http'
+    })
+    email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
+    if email:
+        # messages.success(request, 'A confimation email was sent to your inb')
+        print('Sent a confirmation email')
+    else:
+        messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
+
+
+
+def notifyLoginEmail(request, user, to_email):
+    mail_subject = "Someone logged into your DHMS account."
+    recipient_list = [to_email, ]
+    message = render_to_string("mailouts/account_login_email.html", {
+        'user': user.email,
+        # 'domain': 'http://127.0.0.1:8000/',
+        'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': account_activation_token.make_token(user),
+        "protocol": 'https' if request.is_secure() else 'http'
+    })
+    email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
+    if email:
+        print('Email sent')
+    else:
+        messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
+
+

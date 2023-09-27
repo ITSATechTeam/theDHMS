@@ -196,8 +196,9 @@ def Maintainance(request):
 
 
 
-    allMaintains = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name) 
-    allMaintainsCount = allMaintains.count()
+    # allMaintainsByStaff = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.email or request.user.last_name)
+    allMaintainsByStaff = MaintenanceRequest.objects.filter(Q(CompanyUniqueCode = request.user.last_name) or Q(CompanyUniqueCode = request.user.email) )
+    allMaintainsCount = allMaintainsByStaff.count()
 
     # AllMaintainDevice = MaintenanceRequest.objects.get(MaintainRequestID = name)
 
@@ -212,7 +213,7 @@ def Maintainance(request):
     allOngoingRequests = MaintenanceRequest.objects.filter(Q(MaintainStatus = 'Ongoing') & Q(user = request.user))
     allOngoingRequestsCount = allOngoingRequests.count()
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
-    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allOngoingRequestsCount':allOngoingRequestsCount, 'allCompletedRequestsCount':allCompletedRequestsCount, 'allCanceledRequestsCount':allCanceledRequestsCount, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintains':allMaintains, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
+    context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allOngoingRequestsCount':allOngoingRequestsCount, 'allCompletedRequestsCount':allCompletedRequestsCount, 'allCanceledRequestsCount':allCanceledRequestsCount, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages, 'allMaintainsByStaff':allMaintainsByStaff, 'allMaintainsCount':allMaintainsCount, 'numberOfDevicesPerPage':numberOfDevicesPerPage}
     return render(request, 'userarea/maintainance.html', context)
 
 
@@ -1800,7 +1801,7 @@ def AllInstalledSoftwares(request):
 
 # Franklin-franklin.i@itservicedeskafrica.com
 def UpdateCompanyDetails(request, email, name):
-    WorkingUsers = User.objects.get(Q(email=email) & Q(username=name))
+    WorkingUsers = User.objects.get(email=email)
     if request.method == 'POST' :
         user = request.user
         companyname = request.POST['companyname']

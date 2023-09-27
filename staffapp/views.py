@@ -321,6 +321,14 @@ def StaffSetting(request):
     return render(request, 'staffapp/staffsetting.html')
 
 
+def StaffDeleteAddedComment(request, pk, name):
+    commentToDelete = AddedMaintenanceComments.objects.get(id = pk)
+    commentToDelete.delete()
+    messages.error(request, 'Comment has been deleted')
+    # return response
+    return redirect('StaffMaintainanceDetails', name = name)
+
+
 
 
 

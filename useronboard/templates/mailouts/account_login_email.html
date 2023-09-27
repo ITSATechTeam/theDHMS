@@ -1,0 +1,15 @@
+{% autoescape off %}
+Hi there{{ request.user.first_name }},
+
+This is to inform you that someone just logged into your account.
+
+If you think it's not you, please visit https://dhms.itservicedeskafrica.com/password_reset to change your password immediately.
+
+Or you can send a report mail to support@itservicedeskafrica.com.
+
+
+Sincerely,
+DHMS Support Team
+
+{% endautoescape %}
+

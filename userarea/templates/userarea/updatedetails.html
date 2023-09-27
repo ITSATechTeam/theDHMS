@@ -90,7 +90,7 @@
                                         <h4>Country</h4><br/><br/>
                                         <div class='editBoxCountrymaininner'>
                                             <div class='add'>
-                                                <img src={% static 'editprofile/img/add.png' %} />
+                                                {% comment %} <img src={% static 'editprofile/img/add.png' %} /> {% endcomment %}
                                             </div>
                                             <div class='countryselect'>
                                                 <!-- Country names and Country Name -->
@@ -353,7 +353,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class='profileedit'>
+                                {% comment %} <div class='profileedit'>
                                     <div class='editBox'>
                                         <h4>Password</h4>
                                         <div class='editBoxImg'>
@@ -370,7 +370,7 @@
                                             <input type='password' name='repassword' placeholder='***' />
                                         </div>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
                             </div>
                             <div class='submitdata'>
                                 <p><a href= {% url 'Dashboard' %}>Cancel</a></p>

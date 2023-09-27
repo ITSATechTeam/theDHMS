@@ -83,11 +83,14 @@ body{
 }
 
 .editBoxCountry img{
-    margin-bottom: 20px;
+    /* margin-left: 30px; */
+    margin-top: -10px;
+    /* padding-top: 20px; */
+    /* background-color: red; */
 }
 
 .editBoxCountry h4{
-    margin-bottom: -10px;
+    margin-bottom: 0px;
 }
 /* 
 .passwordsection{
@@ -324,10 +327,6 @@ body{
 /* uploadProfilePic ends here */
 
 /* UPDATE COMPANY AND ACCOUNT DETAILS SETUP STARTS HERE */
-.editBoxCountry img{
-    margin-top: -10px;
-    /* background-color: red; */
-}
 
 .editBoxCountrymain{
     position: absolute;

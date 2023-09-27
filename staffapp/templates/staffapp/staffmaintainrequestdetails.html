@@ -126,7 +126,7 @@
 										<h4>Edit</h4>
 									</div> {% endcomment %}
 									{% if request.user.username == AllCommments.commenterEmailAddress %}
-									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllMaintainDevice.MaintainRequestID}}/  >
+									<a href = /staff/staffdeletecomment/{{AllCommments.id}}/{{AllMaintainDevice.MaintainRequestID}}/  >
 										<div class='editcomment'>
 											<img src={% static 'maintenance/img/delete.png' %} />
 											<h4>Delete</h4>

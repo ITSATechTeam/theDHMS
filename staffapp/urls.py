@@ -16,5 +16,6 @@ urlpatterns = [
     path('staffmaintenancdetail/<str:name>/', views.StaffMaintainanceDetails, name="StaffMaintainanceDetails"),
     path('staffeditmaintenancdetail/<str:name>/', views.EditStaffMaintainanceDetails, name="EditStaffMaintainanceDetails"),
     # path('staffdetails/<str:id>/', views.StaffDetails, name="StaffDetails"),
+    path('staffdeletecomment/<str:pk>/<str:name>/', views.StaffDeleteAddedComment, name="StaffDeleteAddedComment"),
 ]
 
