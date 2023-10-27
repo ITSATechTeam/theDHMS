@@ -103,3 +103,13 @@ if (errordisplay === 'You selected a staff whose department already has a subadm
 
 
 
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashSubdomain = document.querySelector('.alert strong')
+if(flashSubdomain){
+    console.log('flashSubdomain around')
+    setTimeout(() => {
+        flashSubdomain.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

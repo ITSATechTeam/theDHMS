@@ -19,7 +19,7 @@ nav{
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
     position: fixed;
     width: 100vw;
-    z-index: 3;
+    z-index: 10;
 }
 
 /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); */
@@ -245,6 +245,13 @@ nav button{
     padding-bottom: 30px;
     overflow-y: scroll;
 }
+
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
 
 .noticationSectionProper{
     margin-top: 0px;

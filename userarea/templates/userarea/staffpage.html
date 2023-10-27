@@ -81,7 +81,11 @@
             </td>
             <td class='staffassigneddevice'>
               <strong><a href = /member/staffdetails/{{ staffMembers.id }}/ >
+                {% if staffMembers.staff_lastname %}
                 {{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }}
+                {% else %}
+                {{ staffMembers.staff_firstname }}
+                {% endif %}
               </a></strong>
             </td>
             <td>{{ staffMembers.staff_phonenumber }}</td>
@@ -100,13 +104,13 @@
 
             {% comment %} {% for AllLoginStatus in AllLoginStatus %} {% endcomment %}
             <td>
-              {% for i in AllLoginStatus %}
-                {% if i.email == staffMembers.staff_email %}
-                  <p class='userisonline'>Online | {{ i.created_at | timesince }} ago</p>
+              {% if AllLoginStatus %}
+                {% if AllLoginStatus.email == staffMembers.staff_email %}
+                  <p class='userisonline'>Online | {{ AllLoginStatus.created_at | timesince }} ago</p>
                   <p></p>
                 {% comment %} {% else %} {% endcomment %}            
                 {% endif %}
-              {% endfor %}
+              {% endif %}
               <p class='userisoffline'>Offline</p>
             </td>
 

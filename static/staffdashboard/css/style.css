@@ -223,6 +223,9 @@ body{
 
 .monthlymaintenancedate select{
     border: none;
+    width: 75%;
+    height: 30px;
+    padding: 0px;
     background-color: transparent;
 }
 
@@ -378,7 +381,7 @@ tr:nth-child(1) {
 
 .shadow{
     position: fixed;
-    margin-left: 220px;
+    /* margin-left: 220px; */
     height: 140%;
     padding: 20px;
     /* border-radius: 10px; */
@@ -388,3 +391,59 @@ tr:nth-child(1) {
     transition: 0.5s ease-in-out;
     display: none;
 }
+
+.completeprofileform{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px;
+    width: 400px;
+    z-index: 20;
+    position: fixed;
+    top: 50px;
+    left: 35%;
+    height: 600px;
+    overflow-y: scroll;
+}
+
+.completeprofileform form{
+    font-size: 1.3rem;
+}
+
+.completeprofileform form input, select{
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    background-color: rgb(238, 238, 238);
+}
+
+.completeprofileform form button{
+    padding: 10px;
+    background-color: #2A66B0;
+    color: white;
+    width: 100%;
+    border: none;
+    font-size: 1.3rem;
+    border-radius: 10px;
+}
+
+.hideThis{
+    display: none;
+}
+
+.shadowforazurepopup{
+    position: absolute;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    /* display: none; */
+}
+
+

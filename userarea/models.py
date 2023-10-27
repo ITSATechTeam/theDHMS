@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 
 MAINTAINANCE_STATUS_CHOICE = (
     ("Completed", "Completed"),
+    ("Cancelled", "Cancelled"),
     ("Ongoing", "Ongoing"),
-    ("Canceled", "Canceled"),
+    ("Pending", "Pending"),
 )
 DEVICE_HEALTH_STATUS = (
     ("Working", "Working"),
@@ -17,12 +18,36 @@ DEVICE_WORKING_CONDITION = (
     ("Bad", "Bad"),
 )
 
+
 STAFF_DEPARTMENT = (
     ("None", "None"),
-    ("IT", "IT"),
+    ("ICT", "ICT"),
     ("HR", "HR"),
-    ("Admin", "Admin"),
+    ("Administration", "Administration"),
     ("Technician", "Technician"),
+    ("Accounting", "Accounting"),
+    ("Marketing", "Marketing"),
+    ("Customer Service", "Customer Service"),
+)
+
+
+DEVICE_DEPARTMENT = (
+    ("None", "None"),
+    ("ICT", "ICT"),
+    ("HR", "HR"),
+    ("Administration", "Administration"),
+    ("Technician", "Technician"),
+    ("Accounting", "Accounting"),
+    ("Marketing", "Marketing"),
+    ("Customer Service", "Customer Service"),
+)
+
+
+DEVICE_TYPE = (
+    ("None", "None"),
+    ("Laptop", "Laptop"),
+    ("Desktop", "Desktop"),
+    ("Mobile Phone", "Mobile Phone")
 )
 
 # Create your models here.
@@ -48,7 +73,6 @@ class StaffDataSet(models.Model):
 
 
 
-
 class DeviceRegisterUpload(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     deviceip = models.CharField(max_length = 1500, null=True, blank = True)
@@ -60,12 +84,13 @@ class DeviceRegisterUpload(models.Model):
     deviceportnumber = models.CharField(max_length = 1500, null=True, blank = True)
     devicemultiplepacket = models.CharField(max_length = 1500, null=True, blank = True)
     index= models.CharField(max_length = 1500, blank = True, null=True)
-    devicetype= models.CharField(max_length = 1500, null=True, blank = True)
+    devicetype= models.CharField(max_length= 300,choices = DEVICE_TYPE, default = 'None', null=True, blank = True)
+    # devicetype= models.CharField(max_length = 1500, null=True, blank = True)
     devicelocation= models.CharField(max_length = 1500, null=True, blank = True)
     devicebrand= models.CharField(max_length = 1500, null=True, blank = True)
     deviceos = models.CharField(max_length = 1500, null=True, blank = True)
     devicecostofpurchase = models.CharField(max_length = 1500, null=True, blank = True)
-    deviceusedepartment = models.CharField(max_length = 1500, null=True, blank = True)
+    deviceusedepartment =  models.CharField(max_length= 300,choices = DEVICE_DEPARTMENT, default = 'None', null=True, blank = True)
 
     staffUserID = models.CharField(max_length = 1500, default='None')
     deviceuseremail = models.CharField(max_length= 200, null=True, blank = True)
@@ -149,7 +174,7 @@ class MaintenanceRequest(models.Model):
     MaintainType = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceCategory = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceLocation = models.CharField(max_length= 300, null=True, blank = True)
-    MaintainStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_STATUS_CHOICE, default = 'Ongoing', null=True, blank = True)
+    MaintainStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_STATUS_CHOICE, default = 'Pending', null=True, blank = True)
     MaintainDeviceUserID = models.CharField(max_length= 300, null=True, blank = True)
     # MaintainDeviceUserFullName = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequesterEmailAddress = models.EmailField(max_length= 300, null=True, blank = True)

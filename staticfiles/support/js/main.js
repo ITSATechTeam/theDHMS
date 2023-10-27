@@ -248,3 +248,15 @@ faqSeven.addEventListener('click', () => {
         hidefaq7.style.display = 'block';
     }
 })
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashSupport = document.querySelector('.alert strong')
+if(flashSupport){
+    console.log('flashSupport around')
+    setTimeout(() => {
+        flashSupport.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

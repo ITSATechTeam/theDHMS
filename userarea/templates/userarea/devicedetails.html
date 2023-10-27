@@ -75,16 +75,17 @@
 				<form method='POST'>
 					{% csrf_token %}
 					<div>
-						<label>Change Maintenance Status</label><br/>
-						<select name='MaintainStatus'>
+						{% comment %} <label>Change Maintenance Status</label><br/> {% endcomment %}
+						{% comment %} <select name='MaintainStatus'>
 							<option value='Ongoing'>Ongoing</option>
 							<option value='Completed'>Completed</option>
 							<option value='Canceled'>Canceled</option>
-						</select><br/><br/>
-						<label>What kind of maintenance does this device require?</label>
+						</select><br/><br/> {% endcomment %}
+						<label><h4>What kind of maintenance does this device require?</h4></label>
 						<input name='MaintainType' type='text' placeholder = 'Eg: Screen change or OS Update' /><br/><br/>
-						<label>Maintenance Decription</label><br/>
+						<label><h4>Maintenance Decription</h4></label><br/>
 						<textarea placeholder='Describe what maintenance this device requires in details' name='MaintainRequestDescription'></textarea><br/><br/>
+						<input type = 'text' hidden name='MaintainStatus' placeholder='Device Name' value ='Pending' />
 						<input type = 'text' hidden name='MaintainDeviceName' placeholder='Device Name' value = {{ currentDeviceList.devicebrand }} />
 						<input type = 'text' hidden name='MaintainDeviceID' placeholder='device ID' value = {{ currentDeviceList.deviceid }} />
 						<input type = 'text' hidden name='MaintainDeviceIP' placeholder='device IP' value = {{ currentDeviceList.deviceip }} />

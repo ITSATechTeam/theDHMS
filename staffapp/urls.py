@@ -17,5 +17,9 @@ urlpatterns = [
     path('staffeditmaintenancdetail/<str:name>/', views.EditStaffMaintainanceDetails, name="EditStaffMaintainanceDetails"),
     # path('staffdetails/<str:id>/', views.StaffDetails, name="StaffDetails"),
     path('staffdeletecomment/<str:pk>/<str:name>/', views.StaffDeleteAddedComment, name="StaffDeleteAddedComment"),
+    path('azuresignin/', views.AzureSignin, name="AzureSignin"),
+    path('redirect/', views.AuthRedirect, name="AuthRedirect"),
+    path('index/', views.index, name="index"),
+    path('secret/', views.secret_page, name="secret"),
 ]
 

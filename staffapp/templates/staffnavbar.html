@@ -22,10 +22,18 @@
                 <img class='notifyactive' src={% static 'general/img/notify-active.png' %} />
             </div>
             <div class='notifysectioninner'>
-                <h4>{{ request.user.last_name }}</h4>
+                {% if request.identity_context_data.authenticated %}
+                    <h4>{{ request.identity_context_data.username }}</h4>
+                {% else %}
+                    <h4>{{ request.user.last_name }}</h4>
+                {% endif %}
                 <div class='profileimgsectiontext'>
                     <h1></h1>
-                    <p class='requestUser'>{{ request.user.last_name }}</p>
+                    {% if request.identity_context_data.authenticated %}
+                    <p class='requestUser'>{{ request.identity_context_data.username }}</p>
+                    {% else %}
+                        <p class='requestUser'>{{ request.user.last_name }}</p>
+                    {% endif %}
                 </div>
                 {% comment %} <img src={% static 'general/img/arrow-down.png' %} /> {% endcomment %}
             </div>
@@ -81,7 +89,7 @@
 			<div class='profileBoxintro'>
                 <div>
                     <h2>{{ request.user }}</h2>
-                    <p>Admin</p>
+                    {% comment %} <p>Admin</p> {% endcomment %}
                 </div>
                 <div class='closereguser1'>
                     <img src={% static 'dashboard/img/close.png' %} />

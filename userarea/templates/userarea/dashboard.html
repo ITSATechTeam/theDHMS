@@ -27,17 +27,11 @@
 		<div class='main'>
 			<div class='maintop'>
 				<div>
-					{% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
-					{% comment %} {% if allSignUps %}
-					<h1>Welcome back  {{ allSignUps }},</h1>
-					{% else %} {% endcomment %}
 					<h1>Welcome back {{request.user}},</h1>
-					{% comment %} {% endif %} {% endcomment %}
-					{% comment %} {% endfor %} {% endcomment %}
-					<h5>Get a detailed overview of your devices health and statuses.</h5>
+					<h5>Get an overview of your devices health and status.</h5>
 				</div>
 				
-				<div id="flash">
+				<div id="flash flashmessage">
 					{% if messages %} {% for message in messages %}
 					<div class="alert alert-{{ message.tags}} m-0" role="alert">
 						<strong>{{ message }}</strong>
@@ -45,12 +39,20 @@
 					</div>
 					{% endfor %} {% endif %}
 				</div>
-
-				<div class='addnewdevicebtn'>
-					<button>
-						<img src={% static 'dashboard/img/add.png' %} />
-						<p>Add New Device</p>
-					</button>
+				
+				<div class='heroTopButtons'>
+					<div class='scannetworkbtn2 showdeviceuploadpopup'>
+						<button>
+							<img src={% static 'dashboard/img/scannetwork.png' %} />
+							<p>Upload CSV File</p>
+						</button>
+					</div>
+					<div class='addnewdevicebtn'>
+						<button>
+							<img src={% static 'dashboard/img/add.png' %} />
+							<p>Add New Device</p>
+						</button>
+					</div>
 				</div>
 			</div>
 			{% comment %} ALL DEVICES DETAILS LIST SECTION STARTS HERE {% endcomment %}
@@ -58,16 +60,7 @@
 				<div class='introdetailsbar alldevices'>
 					<img src={% static 'dashboard/img/alldevices.png' %} />
 					<h1>{{ allUploadedDevicesCount }}</h1>
-					<p>All Devices</p>
-				</div>
-				<div class='introdetailsbar deviceatrisk'>
-					<img src={% static 'dashboard/img/deviceatrisk.png' %} />
-					{% if badSystems %}
-						<h1>{{ badSystems }}</h1>
-					{% else %}
-						<h1>0</h1>
-					{% endif %}
-					<p>Devices at risk</p>
+					<p>Devices</p>
 				</div>
 				<div class='introdetailsbar allusers'>
 					<img src={% static 'dashboard/img/allusers.png' %} />
@@ -76,341 +69,256 @@
 					{% else %}
 					<h1>0</h1>
 					{% endif %}
-					<p>All Users/Staff</p>
+					<p>Staff Members</p>
 				</div>
-				<div class='devicesreport'>
-					<div class='deviceschartintro'>
-						<h3>Devices Report Summary</h3>
-						{% comment %} <p>
-							<select>
-								<option>This Week</option>
-								<option>Last Week</option>
-								<option>Two Weeks Ago</option>
-							</select>
-						</p> {% endcomment %}
-					</div>
-					<div class='deviceschartout'>
-						<div class='deviceschartimgmain'>
-							<div id="container">
-								<canvas id="pie-chart"></canvas>
-							</div>
-						</div>
-						<div class='deviceschart'>
-							<div class='devicestatus'>
-								<img src={% static 'dashboard/img/blue.png' %} />
-								<p>Healthy</p>
-							</div>
-							<div class='devicestatus'>
-								<img src={% static 'dashboard/img/yellow.png' %} />
-								<p>Critical</p>
-							</div>
-							<div class='devicestatus'>
-								<img src={% static 'dashboard/img/red.png' %} />
-								<p>Faulty</p>
-							</div>
-						</div>
-					</div>
+				<div class='introdetailsbar department'>
+					<img src={% static 'dashboard/img/department.png' %} />
+						{% comment %} <h1></h1> {% endcomment %}
+						<h1>7</h1>
+					<p>Departments</p>
+				</div>
+				<div class='introdetailsbar faultydevices'>
+					<img src={% static 'dashboard/img/faultydevices.png' %} />
+					{% if badSystems  %}
+					<h1>{{ badSystems }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Faulty Devices</p>
+				</div>
+				<div class='introdetailsbar healthydevices'>
+					<img src={% static 'dashboard/img/healthydevices.png' %} />
+					{% if StaffCount  %}
+					<h1>{{ StaffCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Healthy Devices</p>
+				</div>
+				<div class='introdetailsbar onmaintenance'>
+					<img src={% static 'dashboard/img/onmaintenance.png' %} />
+					{% if AllMaintenancesCount  %}
+					<h1>{{ AllMaintenancesCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>On Maintenance</p>
 				</div>
 			</div>
 			{% comment %} ALL DEVICES DETAILS LIST SECTION ENDS HERE {% endcomment %}
-			{% comment %} DEVICE ONBOARD CHOICE SECTION STARTS HERE {% endcomment %}
-			<div class='deviceonboardall'>
-				{% comment %} UPLOAD CSV {% endcomment %}
-				<div class='uploaddevicecsv'>
-					<div class='uploaddevicecsvtext'>
-						<p>Upload devices through a CSV file</p>
-					</div>
-					<div class='showdeviceuploadpopup'>					
-						<button>
-							<img src={% static 'dashboard/img/uploaddevice.png' %} />
-							<p>Upload</p>
-						</button>
-					</div>
-					{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
-					<div class='uploaddevicepopup'>
-						<div class='uploaddevicepopupintro'>
-							<h1>Upload A CSV File</h1>
-							<div class='uploaddevicepopupintroclose'>
-								<img src={% static 'dashboard/img/close2.png' %} />
-							</div>
-						</div>
-						<ul>
-							<li>To upload your list of devices, simply select or drag and drop your CSV file and click on the 'Upload' button below.</l1><br/><br/>
-							{% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
-							<li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1>
-						</ul><br/>
-						<form method = 'POST' enctype="multipart/form-data" >
-							{% csrf_token %}
-							<div>
-								<label for="images" class="drop-container">
-									<img src={% static 'dashboard/img/csv.png' %} />
-									<input type='text' hidden name='username' value = {{request.user}}  />
-									<input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
-									<span class="drop-title">Click To Select File</span>
-									{% comment %} or {% endcomment %}
-									<input  name='csv_file' type="file" id="images" required>
-								  </label>
-							</div>
-							<button type='submit'>Upload</button>
-						</form>
-					</div>
-					{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
-				</div>
-				{% comment %} name='csv_file' {% endcomment %}
-				{% comment %} SCAN NETWORK {% endcomment %}
-				<div class='uploaddevicecsv'>
-					<div class='uploaddevicecsvtext'>
-						<p>Scan your network for connected devices</p>
-					</div>
-					<div class='scannetworkbtn'>
-						<a href={% url 'ScanNetwork' %}><button>
-							<img src={% static 'dashboard/img/scannetwork.png' %} />
-							<p>Scan</p>
-						</button></a>
-					</div>
-				</div>
-			</div>
-			{% comment %} DEVICE ONBOARD CHOICE SECTION ENDS HERE {% endcomment %}
-			{% comment %} DEVICE INVENTORY LIST SECTION STARTS HERE {% endcomment %}
-			<div class='deviceinventorymain'>
-				<div class='deviceinventorymaintop'>
-					<div class='deviceinventorymaintitle'>
-						<h2>Device Inventory</h2>
-					</div>
-					<div class='searchdashboardsection'>
-						<div class='searchdashboard'>
-							<form method='GET' action="{% url 'Searchresult' %}">
-								<input type='text' name='q' placeholder='Search Devices' />
-							</form>
-							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
-						</div>
-						<div class='filter2 filtercategory'>
-							<img src={% static 'dashboard/img/filter.png' %} />
-							<p> Health</p>
-						</div>
-						<div class='filter2 filtercategory2'>
-							<img src={% static 'dashboard/img/filter.png' %} />
-							<p> Category</p>
-						</div>
-						<div class='filter filtercalendar'>
-							<img src={% static 'dashboard/img/Calendar.png' %} />
-							<p>Calendar</p>
-						</div>
-						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
-						<div class='filterbox filterbox1'>
-							<h2>Filter by</h2>
-							<div class='closefilter'>
-								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
-							</div>
-							<div>
-								<form method='GET' action={% url 'Searchresult' %}>
-									<p>Device health</p>
-									<div class='selecthealth'>
-										<select name='q'>
-											<option>----</option>
-											<option value='Working'>Working</option>
-											<option value='Critical'>Critical</option>
-											<option value='Faulty'>Faulty</option>
-										</select>
-									</div>
-									<button type='submit'>Filter</button>
-								</form>
-							</div>
-						</div>
-						{% comment %} FILTER BOX 2: FILTER BY CATEGORY STARTS HERE {% endcomment %}
+			
+			{% comment %} START OF GRAPH FOR FAULTY DEVICES BY THE MONTH {% endcomment %}
 
-						<div class='filterbox filterbox1A'>
-							<h2>Filter by</h2>
-							<div class='closefilter closefilterA'>
-								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
-							</div>
+			<div class='postherosection'>
+				<div>
+					<div class='graphintrotext'>
+						<div class='graphintrotextInner'>
 							<div>
-								<form method='GET' action={% url 'Searchresult' %}>
-									<p>Device Category</p>
-									<select name='q'>
-										<option>All</option>
-										<option value='Desktop'>Desktop</option>
-										<option value='Laptop'>Laptop</option>
-										<option value='Printer'>Printer</option>
-										<option value='Scanner'>Scanner</option>
-										<option value='OtherDevices'>Other Devices</option>
-									</select>
-									<button type='submit'>Filter</button>
-								</form>
+								<h2>Hardware Expenses Trends</h2>
+								<h5>Gain insights on expenses made on devices/hardwares over time</h5>
+							</div>
+	
+							<div class='graphdate'>
+								<img src={% static 'dashboard/img/Calendar2.png' %} />
+								<select>
+									<option>2023</option>
+								</select>
 							</div>
 						</div>
 						
-						{% comment %} FILTER BOX 2: FILTER BY CATEGORY ENDS HERE {% endcomment %}
+						{% comment %} hardware purchase amount graph starts here {% endcomment %}
+						<div id="container2">
+							<canvas id="layanan_subbagian"></canvas>
+						</div>
+						{% comment %} hardware purchase amount graph ends here {% endcomment %}
+						
+					</div>
+					<div class='deviceInvetorySection'>
+						<h2>Device Inventory</h2>
+						{% comment %} <h5>Gain insights on faulty devices over time</h5> {% endcomment %}
+						<div>
+							<table>
+								<tr>
+								{% comment %} <th>ID</th> {% endcomment %}
+								{% comment %} <th>Brand</th> {% endcomment %}
+								<th>Category</th>
+								<th>MAC ID</th>
+								<th>User</th>
+								<th title='Device Depreciation Rate'>DDR</th>
+								<th>Status</th>
+								<th>Department/Unit</th>
+								{% comment %} <th>Date Uploaded</th> {% endcomment %}
+								</tr>
+								{% for allUploadedDevices in allUploadedDevices %}
+								<tr>
+								{% comment %} <td class='link'>
+									<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong>
+								</td> {% endcomment %}
+								{% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
+								<td class='link'>
+									<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.devicetype }}</a></strong>
+								</td>
+								<td>{{ allUploadedDevices.devicemacaddress }}</td>
+								<td class='link enterStaffUser'>
+										{% for AllStaffMembers in AllStaffMembers %}
+										{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+										<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+										{% endif %}
+										{% endfor %}
+								</td>
+								<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
+								<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+								<td>{{ allUploadedDevices.deviceusedepartment }}</td>
+								{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
+								</tr>
+								{% endfor %}
+							</table>
+						</div>
 
-						{% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
-						<div class='filterbox filterbox2'>
-							<h2>By Date</h2>
-							<div class='closefilter2'>
-								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+					</div>
+				</div>
+				<div>
+					<div class='devicetypesummary'>
+						<h2>Device category</h2><br/>				
+						<div class='deviceschartout'>
+							<div class='deviceschartimgmain'>
+								<div id="container">
+									<canvas id="pie-chart"></canvas>
+								</div>
 							</div>
-							<div class='filterbydatemain'>
-								<form method='GET' action={% url 'Searchresult' %}>
-									<div>
-										<div class='filterdateselection'>
-											<input name='q' class='thisweek' type='checkbox' />
-											<p>This Week</p>
-										</div>
-										<div class='filterdateselection'>
-											<input name='q' class='thismonth' type='checkbox' />
-											<p>This Month</p>
-										</div>
-										<div class='filterdateselection'>
-											<input name='q' value={{thisYear}} type='checkbox' />
-											<p>This Year</p>
-										</div>
-									</div>
-									<div>
-										<div class='filterdateselection'>
-											<input name='q' class='lastweek' type='checkbox' />
-											<p>Last Week</p>
-										</div>
-										<div class='filterdateselection'>
-											<input name='q' class='lastMonth' type='checkbox' />
-											<p>Last Month</p>
-										</div>
-										<div class='filterdateselection'>
-											<input name='q' value='2022' type='checkbox' />
-											<p>Last Year</p>
-										</div>
+						</div>
+						<div class='minipiechartlabel'>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} />Laptop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />Desktop</div>
+						</div>
+					</div>
+					{% comment %} LATEST MAINTENANCE MINI LIST STARTS HERE {% endcomment %}
+					<div class='maintenanceRequestSection maintenanceRequestSectionMain'>
+						<div class='maintenanceRequestSectioninner'>
+							<h2>Maintenance Requests</h2>
+							<h4 class='link'><a href={% url 'Maintainance' %}>See All</a></h4>
+						</div><br/>
+						<div class='maintenanceRequestSectionmain'>
+							{% for FirstThreeMaintenanceRequest in FirstThreeMaintenanceRequest %}
+							{% comment %} <a href= "/member/maintenancedetails/{{FirstThreeMaintenanceRequest.MaintainRequestID}}/ "> {% endcomment %}
+								<div class='staffListSection'>
+									<div class='dashboardStaffDP'></div>
+									<div class='staffnamesectionOut'>
+										<h3 class='staffnamesection maintenanceType'>{{ FirstThreeMaintenanceRequest.MaintainType }}</h3>
+										<h5> By {{ FirstThreeMaintenanceRequest.MaintainRequester }}</a></h5><br/>									
+										<a href= "/member/maintenancedetails/{{FirstThreeMaintenanceRequest.MaintainRequestID}}/ "><h5 class='maintenanceStatus'><div class='maintainancedot'></div><p class='maintenanceStatusMain'>{{ FirstThreeMaintenanceRequest.MaintainStatus }}</p></h5><br/></a>
 									</div>
 								</div>
-								{% comment %} <hr/>
-								<div class='filterdateselection'>
-									<input type='checkbox' />
-									<p>Date Range</p>
-								</div> {% endcomment %}
-								<button>Filter</button>
-							</form>
+							{% comment %} </a> {% endcomment %}
+							{% endfor %}
+						</div>
+					</div>
+					{% comment %} LATEST STAFF MINI LIST STARTS HERE {% endcomment %}
+					<div class='maintenanceRequestSection'>
+						<div class='maintenanceRequestSectioninner'>
+							<h2>Staff Members</h2>
+							<h4 class='link'><a href={% url 'StaffMembers' %}>See all</a></h4>
+						</div><br/>
+						<div class='maintenanceRequestSectionmain'>
+							{% for FirstStaffMembers in FirstStaffMembers %}
+							<div class='staffListSection'>
+								<div class='dashboardStaffDP'></div>
+								<div class='staffnamesectionOut'>
+									{% if FirstStaffMembers.staff_lastname %}
+									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }} {{ FirstStaffMembers.staff_lastname }}</h3>
+									{% else %}
+									<h3>{{ FirstStaffMembers.staff_firstname }}</h3>
+									{% endif %}
+									<h5 >Staff ID: <a href= /member/staffdetails/{{ FirstStaffMembers.id }}/  >{{ FirstStaffMembers.StaffID }}</a></h5><br/>
+									<h5 class='staffIdSection hideThis'> {{ FirstStaffMembers.StaffID }}</h5><br/>
+								</div>
+							</div>
+							{% endfor %}
 						</div>
 					</div>
 				</div>
-				{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
-				<div>
-					{% comment %} {% for AllStaffMembers in AllStaffMembers %}
-					DFFF
-					{{AllStaffMembers.StaffID}}
-					{% endfor %} {% endcomment %}
-					<table>
-                        <tr>
-                          <th>ID</th>
-                          {% comment %} <th>Brand</th> {% endcomment %}
-                          <th>Category</th>
-                          <th>MAC ID</th>
-                          <th>User</th>
-                          <th title='Device Depreciation Rate'>DDR</th>
-                          <th>Status</th>
-                          <th>Department/Unit</th>
-                          <th>Date Uploaded</th>
-                        </tr>
-						{% for allUploadedDevices in allUploadedDevices %}
-                        <tr>
-                          <td class='link'><strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong></td>
-                          {% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
-                          <td>{{ allUploadedDevices.devicetype }}</td>
-                          <td>{{ allUploadedDevices.devicemacaddress }}</td>
-						  <td class='link enterStaffUser'>
-								{% for AllStaffMembers in AllStaffMembers %}
-								{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
-								<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
-								{% endif %}
-								{% endfor %}
-						  </td>
-                          <td>{{ allUploadedDevices.devicedepreciationrate }}</td>
-                          <td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-                          <td>{{ allUploadedDevices.deviceusedepartment }}</td>
-                          <td>{{ allUploadedDevices.created_at }}</td>
-                        </tr>
-						{% endfor %}
-                    </table>
-				</div>
-				{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
 			</div>
-		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
-		<div class='registerDevice'>
-			<form method = 'POST'>
-				{% csrf_token %}
-				<div class='registerDeviceIntro'>
-					<div>
-						<h1>Add New Device</h1>
-					</div><br/><br/><br/><br/>
-					<div class='closeaddnewdeviceopoup'>
-						<img src={% static 'dashboard/img/close2.png' %} />
-					</div>
-				</div>
-				<div>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Select device type</p> {% endcomment %}
-						<select required name='devicetype'>
-							<option>Select Device Kind</option>
-							<option value='Laptop'>Laptop</option>
-							<option value='Desktop'>Desktop</option>
-							<option value='Printer'>Printer</option>
-							<option value='Scanner'>Scanner</option>
-						</select>
-					</div><br/>
-					<input required name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
 
-					<input required name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
-
-					<input required name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
-
-					<input required name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
-
-					<input required name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
-
-					<input required name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
-					{% comment %} <input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
-
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device Name</p> {% endcomment %}
-						<input required name='devicename' type='text'placeholder='Enter Device Name' />
-					</div><br/>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device MAC ID</p> {% endcomment %}
-						<input required name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
-					</div><br/>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device IP Address</p> {% endcomment %}
-						<input required name='deviceip' type='text'placeholder='Enter Device IP Address' />
-					</div><br/>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device Working Condition</p> {% endcomment %}
-						<select name='devicestatus'>
-							<option>Select Device Working Condition</option>
-							<option value='Working'>Working</option>
-							<option value='Faulty'>Faulty</option>
-							<option value='Critical'>Critical</option>
-						</select>
-					</div><br/>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device Location</p> {% endcomment %}
-						<input required name='devicelocation' type='text'placeholder='Enter Device Location' />
-						<input type='text' name='savedevicefromform' value={{request.user}} hidden />
-					</div>
-				</div><br/>
-				<hr/><br/>
-				<h4>Assign Device An Existing Staff Member To This Device(Optional)</h4><br/>
-
-				<select name="staffUserID" class="player-dropdown">
-					<option value='None'>Select A Staff Member</option>
-					{% for AllStaffMembers in AllStaffMembers %}
-						<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
-					{% endfor %}
-				</select><br/><br/>
-
-				<button type='submit'>Add Device</button>
-			</form>
+			{% comment %} ENDS OF GRAPH FOR FAULTY DEVICES BY THE MONTH {% endcomment %}			
 		</div>
-		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+	{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
+	<div class='registerDevice'>
+		<form method = 'POST'>
+			{% csrf_token %}
+			<div class='registerDeviceIntro'>
+				<div>
+					<h1>Add New Device</h1>
+				</div><br/><br/><br/><br/>
+				<div class='closeaddnewdeviceopoup'>
+					<img src={% static 'dashboard/img/close2.png' %} />
+				</div>
+			</div>
+			<div>
+				<div class='adddevicedashboard'>
+					{% comment %} <p>Select device type</p> {% endcomment %}
+					<select required name='devicetype'>
+						<option>Select Device Kind</option>
+						<option value='Laptop'>Laptop</option>
+						<option value='Desktop'>Desktop</option>
+						<option value='Printer'>Printer</option>
+						<option value='Scanner'>Scanner</option>
+					</select>
+				</div><br/>
+				<input required name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
 
-		{% comment %} USE COMPLETE PROFILE PROMPT STARTS HERE {% endcomment %}
-		
+				<input required name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
+
+				<input required name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
+
+				<input required name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
+
+				<input required name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
+
+				<input required name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
+				{% comment %} <input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
+
+				<div class='adddevicedashboard'>
+					{% comment %} <p>Device Name</p> {% endcomment %}
+					<input required name='devicename' type='text'placeholder='Enter Device Name' />
+				</div><br/>
+				<div class='adddevicedashboard'>
+					{% comment %} <p>Device MAC ID</p> {% endcomment %}
+					<input required name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
+				</div><br/>
+				<div class='adddevicedashboard'>
+					{% comment %} <p>Device IP Address</p> {% endcomment %}
+					<input required name='deviceip' type='text'placeholder='Enter Device IP Address' />
+				</div><br/>
+				<div class='adddevicedashboard'>
+					{% comment %} <p>Device Working Condition</p> {% endcomment %}
+					<select name='devicestatus'>
+						<option>Select Device Working Condition</option>
+						<option value='Working'>Working</option>
+						<option value='Faulty'>Faulty</option>
+						<option value='Critical'>Critical</option>
+					</select>
+				</div><br/>
+				<div class='adddevicedashboard'>
+					{% comment %} <p>Device Location</p> {% endcomment %}
+					<input required name='devicelocation' type='text'placeholder='Enter Device Location' />
+					<input type='text' name='savedevicefromform' value={{request.user}} hidden />
+				</div>
+			</div><br/>
+			<hr/><br/>
+			<h4>Assign Device An Existing Staff Member To This Device(Optional)</h4><br/>
+
+			<select name="staffUserID" class="player-dropdown">
+				<option value='None'>Select A Staff Member</option>
+				{% for AllStaffMembers in AllStaffMembers %}
+					<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
+				{% endfor %}
+			</select><br/><br/>
+
+			<button type='submit'>Add Device</button>
+		</form>
 	</div>
+	{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+	{% comment %} USE COMPLETE PROFILE PROMPT STARTS HERE {% endcomment %}		
 	{% if allSignupsForUpdatePopup %}
 	{% else %}	
 	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
@@ -428,40 +336,437 @@
 	</div>
 	{% endif %}<br/>
 
-		{% comment %} USE COMPLETE PROFILE PROMPT ENDS HERE {% endcomment %}
+	{% comment %} USE COMPLETE PROFILE PROMPT ENDS HERE {% endcomment %}
+        {% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+        <div class='uploaddevicepopup'>
+            <div class='uploaddevicepopupintro'>
+                <h1>Upload A CSV File</h1>
+                <div class='uploaddevicepopupintroclose'>
+                    <img src={% static 'dashboard/img/close2.png' %} />
+                </div>
+            </div>
+            <ul class='uploadguides'>
+                <li><p>To upload your list of devices, simply select click on the 'Upload' box below to select a CSV file.</p></l1>
+                {% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
+                <li><p>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</p></l1>
+                <li><p>Please note that the important field in the sample CSV file above are asterisked</p></l1>
+            </ul><br/>
+            <form method = 'POST' enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div>
+                    <label for="images" class="drop-container">
+                        <img src={% static 'dashboard/img/csv.png' %} />
+                        <input type='text' hidden name='username' value = {{request.user}}  />
+                        <input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
+                        <span class="drop-title">Click To Select File</span>
+                        {% comment %} or {% endcomment %}
+                        <input  name='csv_file' type="file" id="images" required>
+                      </label>
+                </div>
+                <button type='submit'>Upload</button>
+            </form>
+        </div>
+        {% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
+		
+		{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS STARTS HERE {% endcomment %}
+		<div class='monthlyAmount'>
+			<div>
+				{% for JanDevices in JanDevices %}
+				<p class='JanDevices'>{{ JanDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for FebDevices in FebDevices %}
+				<p class='FebDevices'>{{ FebDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for MarDevices in MarDevices %}
+				<p class='MarDevices'>{{ MarDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for AprDevices in AprDevices %}
+				<p class='AprDevices'>{{ AprDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for MayDevices in MayDevices %}
+				<p class='MayDevices'>{{ MayDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for JuneDevices in JuneDevices %}
+				<p class='JuneDevices'>{{ JuneDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for JulyDevices in JulyDevices %}
+				<p class='JulyDevices'>{{ JulyDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for AugDevices in AugDevices %}
+				<p class='AugDevices'>{{ AugDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for SeptDevices in SeptDevices %}
+				<p class='SeptDevices'>{{ SeptDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for OctDevices in OctDevices %}
+				<p class='OctDevices'>{{ OctDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for NovDevices in NovDevices %}
+				<p class='NovDevices'>{{ NovDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for DecDevices in DecDevices %}
+				<p class='DecDevices'>{{ DecDevices.devicecostofpurchase }}</p>
+				{% endfor %}
+			</div>
+		</div>
+		{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
 
-        <script src={% static 'dashboard/js/main.js' %}></script>
-		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
-		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-		<script>
-			var config = {
-				type: 'doughnut',
-				data: {
-				  datasets: [{
+	<script src={% static 'dashboard/js/main.js' %}></script>
+	{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
+	<script>
+		let AllMonthArray = [];
+		// JANUARY CALCULATION STARTS HERE
+		let janelement =[];
+		let janelementMain2;
+		let janSum;
+		let janDevices = document.querySelectorAll('.JanDevices')
+		janDevices.forEach(element => {
+		janelementMain2 = element.innerText;
+			janelement.push(janelementMain2)
+			janSum = janelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(janSum);
+		// JANUARY CALCULATION ENDS HERE
+
+		// FEBRUARY CALCULATION STARTS HERE
+		let febelement =[];
+		let febelementMain2;
+		let febSum;
+		let febDevices = document.querySelectorAll('.FebDevices')
+		febDevices.forEach(element => {
+		febelementMain2 = element.innerText;
+			febelement.push(febelementMain2)
+			febSum = febelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(febSum);
+		// FEBRUARY CALCULATION ENDS HERE
+
+		// MARCH CALCULATION STARTS HERE
+		let marelement =[];
+		let marelementMain2;
+		let marSum;
+		let marDevices = document.querySelectorAll('.MarDevices')
+		marDevices.forEach(element => {
+		marelementMain2 = element.innerText;
+			marelement.push(marelementMain2)
+			marSum = marelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(marSum);
+		// MARCH CALCULATION ENDS HERE
+
+		// APRIL CALCULATION STARTS HERE
+		let aprelement =[];
+		let aprelementMain2;
+		let aprSum;
+		let aprDevices = document.querySelectorAll('.AprDevices')
+		aprDevices.forEach(element => {
+		aprelementMain2 = element.innerText;
+			aprelement.push(aprelementMain2)
+			aprSum = aprelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(aprSum);
+		// APRIL CALCULATION ENDS HERE
+
+		// MAY CALCULATION STARTS HERE
+		let mayelement =[];
+		let mayelementMain2;
+		let maySum;
+		let mayDevices = document.querySelectorAll('.MayDevices')
+		mayDevices.forEach(element => {
+		mayelementMain2 = element.innerText;
+			mayelement.push(mayelementMain2)
+			maySum = mayelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(maySum);
+		// MAY CALCULATION ENDS HERE
+
+
+		// JUNE CALCULATIONS STARTS HERE
+		let juneelement =[];
+		let juneelementMain2;
+		let JuneSum;
+		let JuneDevices = document.querySelectorAll('.JuneDevices')
+		JuneDevices.forEach(element => {
+		juneelementMain2 = element.innerText;
+		juneelement.push(juneelementMain2)
+			JuneSum = juneelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(JuneSum);
+		// JUNE CALCULATIONS ENDS HERE
+
+		// JULY CALCULATIONS STARTS HERE
+		let julyelement =[];
+		let julyelementMain2;
+		let julySum;
+		let julyDevices = document.querySelectorAll('.JulyDevices')
+		julyDevices.forEach(element => {
+		julyelementMain2 = element.innerText;
+			julyelement.push(julyelementMain2)
+			julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(julySum);
+		// JULY CALCULATIONS ENDS HERE
+
+		// AUGUST CALCULATIONS STARTS HERE
+		let augelement =[];
+		let augelementMain2;
+		let augSum;
+		let augDevices = document.querySelectorAll('.AugDevices')
+		augDevices.forEach(element => {
+		augelementMain2 = element.innerText;
+			augelement.push(augelementMain2)
+			augSum = augelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(augSum);
+		// AUGUST CALCULATIONS ENDS HERE
+
+		// SEPTEMBER CALCULATIONS STARTS HERE
+		let septelement =[];
+		let septelementMain2;
+		let septSum;
+		let septDevices = document.querySelectorAll('.septDevices')
+		septDevices.forEach(element => {
+		septelementMain2 = element.innerText;
+			septelement.push(septelementMain2)
+			septSum = septelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(septSum);
+		// SEPTEMBER CALCULATIONS ENDS HERE
+
+		// OCTOBER CALCULATIONS STARTS HERE
+		let octtelement =[];
+		let octtelementMain2;
+		let octtSum;
+		let octtDevices = document.querySelectorAll('.OctDevices')
+		octtDevices.forEach(element => {
+		octtelementMain2 = element.innerText;
+			octtelement.push(octtelementMain2)
+			octtSum = octtelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(octtSum);
+		// OCTOBER CALCULATIONS ENDS HERE
+
+		// NOVEMBER CALCULATIONS STARTS HERE
+		let novtelement =[];
+		let novtelementMain2;
+		let novtSum;
+		let novtDevices = document.querySelectorAll('.NovDevices')
+		novtDevices.forEach(element => {
+		novtelementMain2 = element.innerText;
+			novtelement.push(novtelementMain2)
+			novtSum = novtelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(novtSum);
+		// NOVEMBER CALCULATIONS ENDS HERE
+
+		// DECEMBER CALCULATIONS STARTS HERE
+		let dectelement =[];
+		let dectelementMain2;
+		let dectSum;
+		let dectDevices = document.querySelectorAll('.DecDevices')
+		dectDevices.forEach(element => {
+		dectelementMain2 = element.innerText;
+			dectelement.push(dectelementMain2)
+			dectSum = dectelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});				
+		});
+		AllMonthArray.push(dectSum);
+		AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
+
+		let resultSum = result.reduce((a, b) => a + b, 0)
+		let amountspenttotal = document.querySelector('.amountspenttotal a')
+		amountspenttotal.innerText = resultSum.toLocaleString("en-US")
+	</script>
+	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
+
+	<script>
+		var config = {
+			type: 'doughnut',
+			data: {
+				datasets: [{
+				data: {{ data|safe }}, 
+				backgroundColor: [
+					'#2A66B0', '#59A2EA'
+				],
+				label: 'Population'
+				}],
+				labels: {{ labels|safe }}
+			},
+			options: {
+				responsive: true,
+				legend: {
+				display: false
+			}
+			}
+			};
+			
+		var config2 = {
+			type: 'line',
+			data: {
+				datasets: [{
+					data: {{dataMain | safe}},
+					backgroundColor: [
+					'rgba(64, 100, 255, 0.39)',
+					'#2A66B0',
+					'rgba(64, 100, 255, 0.39)',
+					'#2A66B0',
+					'rgba(64, 100, 255, 0.39)',
+					'#2A66B0',
+					'rgba(64, 100, 255, 0.39)',
+					'#2A66B0',
+					'rgba(64, 100, 255, 0.39)',
+					'#2A66B0',
+					'rgba(64, 100, 255, 0.39)',
+					'#2A66B0' 
+				  ],
+				  label: 'Amount Spent On Hardware Purchase'
+				}],
+				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+			},
+			options: {
+				responsive: true,
+				legend: {
+				display: false
+			}
+			}
+			};
+
+		
+			window.onload = function() {
+			var ctx = document.getElementById('pie-chart').getContext('2d');
+			var ctx2 = document.getElementById('layanan_subbagian').getContext('2d');
+			window.myPie = new Chart(ctx, config);
+			window.myPie = new Chart(ctx2, config2);
+			};
+
+			{% comment %} $(function () { {% endcomment %}
+				{% comment %} var ctx = document.getElementById('pie-chart').getContext('2d');
+				var data: {
+					datasets: [{
 					data: {{ data|safe }}, 
 					backgroundColor: [
-					  '#59A2EA', '#F98888', '#FFCC91'
+						'#2A66B0', '#59A2EA'
 					],
 					label: 'Population'
-				  }],
-				  labels: {{ labels|safe }}
+					}],
+					labels: {{ labels|safe }}
 				},
 				options: {
-				  responsive: true,
-				  legend: {
+					responsive: true,
+					legend: {
 					display: false
 				}
-				  
 				}
-			  };
-			
-			  window.onload = function() {
-				var ctx = document.getElementById('pie-chart').getContext('2d');
-				window.myPie = new Chart(ctx, config);
-			  };
-			
-		</script>
-		{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
+
+				var myDoughnutChart = new Chart(ctx, {
+					type: 'doughnut',
+					data: data,
+					options: {
+						responsive: true,
+						legend: {
+						  display: false
+					  }
+					}
+				}); {% endcomment %}
+
+			{% comment %} }); {% endcomment %}
+
+	</script>
+	{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
     </body>
 </html>
 {% endblock content %}

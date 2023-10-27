@@ -30,5 +30,17 @@
         {% include "navbar.html" %}{% block content %}{% endblock content %}
 		<script src={% static 'general/js/main.js' %}></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js" ></script>
+		{% comment %} <script>
+			  
+			let dashboardIcon = document.querySelector('#dashboardIcon')
+			let dashboardTwo = document.querySelector('.dashboard')
+			let dashboardThree = dashboardTwo.addEventListener('mouseout')
+			if (window.location.href.includes('dashboard') && dashboardThree){
+			dashboardIcon.style.fill='white'
+			console.log('dashboard active')
+			}
+
+		</script> {% endcomment %}
     </body>
     </html>
+

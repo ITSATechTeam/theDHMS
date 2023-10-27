@@ -15,3 +15,15 @@ selectElement.addEventListener('click', () => {
     hardwareNumber.style.display = 'none';
   }
 })
+
+
+
+// HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
+let flashReport = document.querySelector('.alert strong')
+if(flashReport){
+    console.log('flashReport around')
+    setTimeout(() => {
+        flashReport.style.display = 'none'
+    }, 5000);
+}
+// HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

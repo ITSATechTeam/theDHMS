@@ -16,6 +16,22 @@ body{
     width: 98%;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+.userisonline{
+    font-weight: bold;
+    color: green;
+}
+
+.userisoffline{
+    font-weight: bold;
+    color: red;
+}
+
 .maintopbtns{
     display: flex;
 }

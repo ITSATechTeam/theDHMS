@@ -554,8 +554,9 @@
 					}],
 					labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 				};
+
 				var myDoughnutChart = new Chart(ctx, {
-					type: 'bar',
+					type: 'line',
 					data: data,
 					options: {
 						responsive: true,
@@ -565,6 +566,7 @@
 					}
 				});
 	
+			
 				var ctx_2 = document.getElementById("layanan_subbagian").getContext('2d');
 				var data_2 = {
 					datasets: [{
@@ -588,7 +590,7 @@
 					labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 				};
 				var myDoughnutChart_2 = new Chart(ctx_2, {
-					type: 'bar',
+					type: 'line',
 					data: data_2,
 					options: {
 						responsive: true,

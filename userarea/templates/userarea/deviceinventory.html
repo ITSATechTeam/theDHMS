@@ -27,11 +27,11 @@
 					<h5>Get a detailed overview of your devices health and statuses.</h5>
 				</div>
 				
-				<div id="flash">
+				<div id="flash flashmessage">
 					{% if messages %} {% for message in messages %}
 					<div class="alert alert-{{ message.tags}} m-0" role="alert">
-						<strong style="color: red"><h4>{{ message }}</h4></strong>
-						{% comment %} <strong style="color: #2A66B0"><h4>{{ message }}</h4></strong> {% endcomment %}
+						<strong>{{ message }}</strong>
+						{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
 					</div>
 					{% endfor %} {% endif %}
 				</div>

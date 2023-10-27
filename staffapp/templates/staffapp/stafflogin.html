@@ -82,14 +82,13 @@
                                 <button type='submit'>Sign in</button>
                             </div>
                         </form>
-                        <!--<div class='googlesignin'>-->
-                        <!--        <div class='googlesigninner'>-->
-                        <!--            <img src={% static 'signup/img/google.png' %} />-->
-                        <!--            <p>Sign Up With Google</p>-->
-                        <!--        </div>-->
-                        <!--</div>-->
-                        <!--<p class='logininstead'>Don't Have An Account Yet? <a href={% url 'PreSignUpPage' %}>Sign Up</a></p>-->
-                    </div>
+                        <a href = {% url 'sign_in' %} > 
+                            <div class='googlesignin'>
+                                <div class='googlesigninner'>
+                                    <img src={% static 'staff/img/MSLogo2.png' %} />
+                                </div>
+                            </div>
+                        </a>
             </div>
         </main>
         <script src={% static 'login/js/main.js' %}></script>

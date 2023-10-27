@@ -9,7 +9,9 @@
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'staffdashboard/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		
+
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+				
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
 
@@ -19,6 +21,7 @@
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
 	</head>
 	<div class='shadow'></div>
+	<div class='shadowforazurepopup'></div>
 	<body class='body'>
 		<div class='main'>
 			<div class='maintop'>
@@ -29,15 +32,16 @@
 						<h1>Welcome back {{AllStaffMembers.staff_firstname}},</h1>
 						{% endif %}
 						{% endfor %}
+					
+						{% comment %} {% if request.identity_context_data.authenticated %}
+						<h1>Welcome on-board {{ request.identity_context_data.username }}!</h1>
+						{% else %}
+						<h1>You are logged out!</h1>
+						<a href="{% url 'sign_in' %}">Login</a>
+						{% endif %} {% endcomment %}
 						<h5>Get a detailed overview of your devices health and status.</h5>
 					</div>
 
-					{% comment %} {% if request.user.is_authenticated %}
-					{{ request.user }}
-					<p>Online</p>
-					{% else %}
-					<p>Offline</p>
-					{% endif %} {% endcomment %}
 				
 					<div id="flash">
 						{% if messages %} {% for message in messages %}
@@ -84,9 +88,7 @@
 							<div class='monthlymaintenancedate'>
 								<img src={% static 'staffdashboard/img/Calendar.png' %} />
 								<select>
-									<option>
-										2023
-									</option>
+									<option>2023</option>
 								</select>
 							</div>
 						</div>
@@ -160,15 +162,88 @@
 			</div>
 			{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
 		</div>
-		
+
+		{% comment %} COMPLETE ACCOUNT SETUP POP STARTS HERE {% endcomment %}
+
+		{% comment %} {% if request.identity_context_data.authenticated %} {% endcomment %}
+		{% comment %} {% for AllStaffMembers in AllStaffMembers %} {% endcomment %}
+		{% comment %} {{ existingUserName }} {% endcomment %}
+		{% comment %} {{ request.identity_context_data.username }} {% endcomment %}
+		<div class= 'existingUserName ' >{{existingUserName}}</div>
+		{% if existingUserName == 'NoUser' %}
+		<div class='completeprofileform'>
+			<h3>{{ request.identity_context_data.username }}, Kindly Fill The Form Completely To Optimize Your Experience Using The DHMS</h3><br/><br/>
+							
+			<div id="flash">
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong style="color: red">{{ message }}</strong>
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+
+			<form method='POST'>
+				{% csrf_token %}
+				<label for='companyname'>Company Name</label><br/>
+				<select name='companyname'>
+					{% comment %} AllCompanies {% endcomment %}
+					<option value='none'>--Select your company name--</option>
+					{{AllCompanies}}
+					{% for AllCompanies in AllCompanies %}
+					<option value= {{ AllCompanies.email }} >{{ AllCompanies.companyname }}</option>
+					{% endfor %}
+					{% comment %} <option value='none'>--Select your company name--</option>
+					<option value='ITSA'>IT Service Desk Africa</option>
+					<option value='oilserve'>Oil Serve Inc</option>
+					<option value='nddc'>NDDC</option> {% endcomment %}
+				</select><br/><br/>
+				<label for='yourphonenumber'>Your Official Phone Number</label><br/>
+				<input name='yourphonenumber' placeholder='eg: 0803 333 3333' /><br/><br/>
+				<input hidden name='staff_firstname' value="{{ request.identity_context_data.username }}" />
+				
+				<label for='youremailaddress'>Your Official Email Address</label><br/>
+				<input name='youremailaddress' placeholder='eg: johndoe@itservicedeskafrica.com' /><br/><br/>
+				
+				<label for='staff_role'>Your Department</label><br/>
+				<select name='staff_role'>
+					<option value='none'>--Select A Department--</option>
+					<option value='ict'>ICT</option>
+					<option value='hr'>HR</option>
+					<option value='admin'>Admin</option>
+					<option value='sales'>Sales Department</option>
+					<option value='accounting'>Accounting and Finance</option>
+					<option value='operations'>Operations/Delivery Department</option>
+				</select><br/><br/>
+				{% comment %} <input name='staff_role' placeholder='eg: HR' /><br/><br/> {% endcomment %}
+				
+				<label for='yourofficelocation'>Your Office Location</label><br/>
+				<input name='yourofficelocation' placeholder='eg: Lagos' /><br/><br/>
+
+				<button type='submit' name='submit'>Submit</button>
+			</form>
+			
+			{% comment %} <div class="field field_v1">
+				<label for="email" class="ha-screen-reader">Company Name</label>
+				<input id="email" type='email' name='email' class="field__input" placeholder="e.g. de-sab@gmailcom" required>
+				<span class="field__label-wrap" aria-hidden="true">
+					<span class="field__label">Email</span>
+				</span>
+			</div> {% endcomment %}
+		</div>
+		{%  else %}
+			{% comment %} <p>User Exist</p> {% endcomment %}
+		{% endif %}
+		{% comment %} {% endfor %} {% endcomment %}
 
 
-		<script></script>
+		{% comment %} COMPLETE ACCOUNT SETUP POP ENDS HERE {% endcomment %}
+
+		<script src= {% static 'staffdashboard/js/main.js' %}></script>
 		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 		<script>
 			var config = {
-				type: 'line',
+				type: 'bar',
 				data: {
 				  datasets: [{
 					data: {{ data|safe }}, 

@@ -14,6 +14,13 @@ body{
     padding-left: 270px;
 }
 
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
 .subIntroSection{
     display: flex;
     justify-content: space-between;

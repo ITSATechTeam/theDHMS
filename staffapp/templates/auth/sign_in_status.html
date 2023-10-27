@@ -1,0 +1,20 @@
+{% block header %}
+
+    {% if request.identity_context_data.authenticated %}
+        You're signed in, {{ request.identity_context_data.username }}!
+        <a href = {% url 'sign_out' %} > Click here to sign out </a>
+    {% else %}
+        You're not signed in.
+        <a href = {% url 'sign_in' %} > Click here to signin using MS Azure Account ID </a>
+    {% endif %}
+
+{% endblock %}
+
+{% comment %} {% block text %}
+    {% if request.identity_context_data.authenticated %}
+        Click here to get your <a class="btn btn-info p-1" href="{% url 'token_details' %}">ID Token Details</a>
+    {% else %}
+        Use the button on the top right to sign in. <br/>
+        Attempts to get your <a href="{% url 'token_details' %}">ID Token Details</a>
+    {% endif %}
+{% endblock %} {% endcomment %}

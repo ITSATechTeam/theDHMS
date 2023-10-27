@@ -179,11 +179,11 @@ let sectionToReplace = document.querySelector('.sectionToReplace')
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashMaintain = document.querySelector('.alert strong')
-if(flashMaintain){
-    console.log('flashMaintain around')
+let flashMaintainmaintain = document.querySelector('.alert strong')
+if(flashMaintainmaintain){
+    console.log('flashMaintainmaintain around')
     setTimeout(() => {
-        flashMaintain.style.display = 'none'
+        flashMaintainmaintain.style.display = 'none'
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

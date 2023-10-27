@@ -106,30 +106,73 @@ let logout = document.querySelector('.logout')
 let software = document.querySelector('.software')
 let subadmin = document.querySelector('.subadmin')
 
+let dashboardIcon = document.querySelector('#dashboardIcon')
+let dashboardIconWhite = document.querySelector('#dashboardIconWhite')
 dashboard.addEventListener('click', () => {
-    console.log('dashboard clicked')
     dashboard.classList.add('active')
+    dashboardIconWhite.style.display = 'block'
+    dashboardIcon.style.display = 'none'
 })
-
 if (window.location.href.includes('dashboard')){
     dashboard.classList.add('active')
 }
+
+dashboard.addEventListener('mouseover', () => {
+    dashboardIcon.style.fill='white'
+})
+
+dashboard.addEventListener('mouseout', () => {
+    dashboardIcon.style.fill='#4F4F4F'
+})
+
 
 
 if (window.location.href.includes('subadmin')){
     subadmin.classList.add('active')
 }
+let subadminIcon = document.querySelector('#subadminIcon')
+subadmin.addEventListener('mouseover', () => {
+    subadminIcon.style.fill='white'
+})
+subadmin.addEventListener('mouseout', () => {
+    subadminIcon.style.fill='#4F4F4F'
+})
+
+
+
 
 if (window.location.href.includes('devicesinventory') || window.location.href.includes('editdevice') || window.location.href.includes('viewdevicedetails') ){
     dashboard.classList.remove('active')
     deviceinventory.classList.add('active')
+    dashboardIcon.style.fill='#4F4F4F'
 }
+let deviceInventoryIcon = document.querySelector('#deviceInventoryIcon')
+deviceinventory.addEventListener('mouseover', () => {
+    deviceInventoryIcon.style.fill='white'
+})
+deviceinventory.addEventListener('mouseout', () => {
+    deviceInventoryIcon.style.fill='#4F4F4F'
+})
+
+
 
 if (window.location.href.includes('staffmembers') || window.location.href.includes('staffdetails')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.add('active')
 }
+let staffMemberIcon = document.querySelector('#staffMemberIcon')
+let staffMemberIcon2 = document.querySelector('#staffMemberIcon2')
+staffmembers.addEventListener('mouseover', () => {
+    staffMemberIcon.style.fill='white'
+    staffMemberIcon2.style.fill='white'
+})
+staffmembers.addEventListener('mouseout', () => {
+    staffMemberIcon.style.fill='#4F4F4F'
+    staffMemberIcon2.style.fill='#4F4F4F'
+})
+
+
 
 if (window.location.href.includes('reports')){
     dashboard.classList.remove('active')
@@ -137,6 +180,14 @@ if (window.location.href.includes('reports')){
     staffmembers.classList.remove('active')
     reports.classList.add('active')
 }
+let reportIcon = document.querySelector('#reportIcon')
+reports.addEventListener('mouseover', () => {
+    reportIcon.style.fill='white'
+})
+reports.addEventListener('mouseout', () => {
+    reportIcon.style.fill='#4F4F4F'
+})
+
 
 
 if (window.location.href.includes('support')){
@@ -146,6 +197,19 @@ if (window.location.href.includes('support')){
     reports.classList.remove('active')
     support.classList.add('active')
 }
+// supportIcon supportIcon1
+let supportIcon = document.querySelector('#supportIcon')
+let supportIcon1 = document.querySelector('#supportIcon1')
+support.addEventListener('mouseover', () => {
+    supportIcon.style.fill='white'
+    supportIcon1.style.fill='white'
+})
+support.addEventListener('mouseout', () => {
+    supportIcon.style.fill='#4F4F4F'
+    supportIcon1.style.fill='#4F4F4F'
+})
+
+
 
 if (window.location.href.includes('maintain') || window.location.href.includes('maintenancedetails') || window.location.href.includes('editmaintenancerequest')){
     dashboard.classList.remove('active')
@@ -155,6 +219,19 @@ if (window.location.href.includes('maintain') || window.location.href.includes('
     reports.classList.remove('active')
     maintain.classList.add('active')
 }
+let maintenanceIcon = document.querySelector('#maintenanceIcon')
+let maintenanceIcon1 = document.querySelector('#maintenanceIcon1')
+maintain.addEventListener('mouseover', () => {
+    maintenanceIcon.style.fill='white'
+    maintenanceIcon1.style.fill='white'
+})
+maintain.addEventListener('mouseout', () => {
+    maintenanceIcon.style.fill='#4F4F4F'
+    maintenanceIcon1.style.fill='#4F4F4F'
+})
+
+
+
 
 if (window.location.href.includes('setting')){
     dashboard.classList.remove('active')
@@ -165,6 +242,14 @@ if (window.location.href.includes('setting')){
     maintain.classList.remove('active')
     settings.classList.add('active')
 }
+let settingsIcon = document.querySelector('#settingsIcon')
+settings.addEventListener('mouseover', () => {
+    settingsIcon.style.fill='white'
+})
+settings.addEventListener('mouseout', () => {
+    settingsIcon.style.fill='#4F4F4F'
+})
+
 
 
 if (window.location.href.includes('software')){
@@ -178,6 +263,18 @@ if (window.location.href.includes('software')){
     software.classList.add('active')
 }
 
+// let logout = document.querySelector('.logout2')
+
+let logout1 = document.querySelector('#logout1')
+let logout2 = document.querySelector('#logout2')
+let logout3 = document.querySelector('#logout3')
+
+// logout.addEventListener('mouseover', () => {
+//     logout1.style.fill='white'
+//     logout2.style.fill='white'
+//     logout3.style.fill='white'
+// })
+// logout2
 
 
 
@@ -217,11 +314,24 @@ setTimeout(() => { clearInterval(alert); }, 5000);
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashGeneral = document.querySelector('.alert strong')
+let flashGeneral = document.querySelector('#flashmessage')
+// let flashGeneral = document.querySelector('.alert strong')
 if(flashGeneral){
-    console.log('flashGeneral around')
     setTimeout(() => {
         flashGeneral.style.display = 'none'
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE
+
+
+
+
+
+
+
+
+
+
+
+
+

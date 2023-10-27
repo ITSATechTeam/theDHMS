@@ -358,6 +358,11 @@ body{
     position: relative;
 }
 
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
 
 .shadow{
     position: fixed;
@@ -411,7 +416,8 @@ body{
 }
 
 .filterbox .selecthealth{
-    margin-bottom: -15px;
+    /* margin-bottom: -15px; */
+    /* background-color: red; */
 }
 
 .filterbox select{

@@ -191,9 +191,9 @@ main{
     margin: auto;
 }
 
-.googlesignin img{
+/* .googlesignin img{
     width: 20px;
-}
+} */
 
 form{
     width: 100%;
@@ -293,12 +293,18 @@ button{
 
 .googlesignin img{
     /* margin-left: 40px; */
-    margin: auto;
+    width: 120px;
+    /* margin: auto; */
+    /* margin-bottom: 100px; */
     background-color: transparent;
 }
 
+.buttoninner img{
+    width: 20px;
+}
+
 .googlesigninner{
-    width: 190px;
+    width: 100%;
     align-items: center;
     margin: auto;
     height: 40px;
@@ -307,7 +313,7 @@ button{
 }
 
 .googlesigninner p{
-    margin-top: 16px;
+    margin-top: 20px;
     margin-left: -16px;
 }
 

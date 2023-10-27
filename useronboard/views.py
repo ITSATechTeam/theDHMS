@@ -81,7 +81,7 @@ def SignUpPage(request):
             messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
             return redirect('SignUpPage')
         else:
-            form = SignupForm(user=request.user, companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password, repassword=rtpassword)
+            form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password, repassword=rtpassword)
             user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
             form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
@@ -208,3 +208,4 @@ def notifyLoginEmail(request, user, to_email):
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
 
 
+# def sync_user_relations(user, ldap_attributes, *, connection=None, dn=None):

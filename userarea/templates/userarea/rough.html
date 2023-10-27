@@ -1,0 +1,217 @@
+{% comment %} DEVICE ONBOARD CHOICE SECTION STARTS HERE {% endcomment %}
+<div class='deviceonboardall'>
+    {% comment %} UPLOAD CSV {% endcomment %}
+    <div class='uploaddevicecsv'>
+        <div class='uploaddevicecsvtext'>
+            <p>Upload devices through a CSV file</p>
+        </div>
+        <div class='showdeviceuploadpopup'>					
+            <button>
+                <img src={% static 'dashboard/img/uploaddevice.png' %} />
+                <p>Upload</p>
+            </button>
+        </div>
+        {% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+        <div class='uploaddevicepopup'>
+            <div class='uploaddevicepopupintro'>
+                <h1>Upload A CSV File</h1>
+                <div class='uploaddevicepopupintroclose'>
+                    <img src={% static 'dashboard/img/close2.png' %} />
+                </div>
+            </div>
+            <ul>
+                <li>To upload your list of devices, simply select click on the 'Upload' box below to select a CSV file.</l1><br/><br/>
+                {% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
+                <li>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</l1><br/><br/>
+                <li>Please note that the important field in the sample CSV file above are asterisked</l1>
+            </ul><br/>
+            <form method = 'POST' enctype="multipart/form-data" >
+                {% csrf_token %}
+                <div>
+                    <label for="images" class="drop-container">
+                        <img src={% static 'dashboard/img/csv.png' %} />
+                        <input type='text' hidden name='username' value = {{request.user}}  />
+                        <input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
+                        <span class="drop-title">Click To Select File</span>
+                        {% comment %} or {% endcomment %}
+                        <input  name='csv_file' type="file" id="images" required>
+                      </label>
+                </div>
+                <button type='submit'>Upload</button>
+            </form>
+        </div>
+        {% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
+    </div>
+    {% comment %} name='csv_file' {% endcomment %}
+    {% comment %} SCAN NETWORK {% endcomment %}
+    <div class='uploaddevicecsv'>
+        <div class='uploaddevicecsvtext'>
+            <p>Scan your network for connected devices</p>
+        </div>
+        <div class='scannetworkbtn'>
+            <a href={% url 'ScanNetwork' %}><button>
+                <img src={% static 'dashboard/img/scannetwork.png' %} />
+                <p>Scan</p>
+            </button></a>
+        </div>
+    </div>
+</div>
+{% comment %} DEVICE ONBOARD CHOICE SECTION ENDS HERE {% endcomment %}
+{% comment %} DEVICE INVENTORY LIST SECTION STARTS HERE {% endcomment %}
+<div class='deviceinventorymain'>
+    <div class='deviceinventorymaintop'>
+        <div class='deviceinventorymaintitle'>
+            <h2>Device Inventory</h2>
+        </div>
+        <div class='searchdashboardsection'>
+            <div class='searchdashboard'>
+                <form method='GET' action="{% url 'Searchresult' %}">
+                    <input type='text' name='q' placeholder='Search Devices' />
+                </form>
+                <img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+            </div>
+            <div class='filter2 filtercategory'>
+                <img src={% static 'dashboard/img/filter.png' %} />
+                <p> Health</p>
+            </div>
+            <div class='filter2 filtercategory2'>
+                <img src={% static 'dashboard/img/filter.png' %} />
+                <p> Category</p>
+            </div>
+            <div class='filter filtercalendar'>
+                <img src={% static 'dashboard/img/Calendar.png' %} />
+                <p>Calendar</p>
+            </div>
+            {% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+            <div class='filterbox filterbox1'>
+                <h2>Filter by</h2>
+                <div class='closefilter'>
+                    <img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+                </div>
+                <div>
+                    <form method='GET' action={% url 'Searchresult' %}>
+                        <p>Device health</p>
+                        <div class='selecthealth'>
+                            <select name='q'>
+                                <option>----</option>
+                                <option value='Working'>Working</option>
+                                <option value='Critical'>Critical</option>
+                                <option value='Faulty'>Faulty</option>
+                            </select>
+                        </div>
+                        <button type='submit'>Filter</button>
+                    </form>
+                </div>
+            </div>
+            {% comment %} FILTER BOX 2: FILTER BY CATEGORY STARTS HERE {% endcomment %}
+
+            <div class='filterbox filterbox1A'>
+                <h2>Filter by</h2>
+                <div class='closefilter closefilterA'>
+                    <img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+                </div>
+                <div>
+                    <form method='GET' action={% url 'Searchresult' %}>
+                        <p>Device Category</p>
+                        <select name='q'>
+                            <option>All</option>
+                            <option value='Desktop'>Desktop</option>
+                            <option value='Laptop'>Laptop</option>
+                            <option value='Printer'>Printer</option>
+                            <option value='Scanner'>Scanner</option>
+                            <option value='OtherDevices'>Other Devices</option>
+                        </select>
+                        <button type='submit'>Filter</button>
+                    </form>
+                </div>
+            </div>
+            
+            {% comment %} FILTER BOX 2: FILTER BY CATEGORY ENDS HERE {% endcomment %}
+
+            {% comment %} FILTER DATA ENTRY CALENDAR SELECTION {% endcomment %}
+            <div class='filterbox filterbox2'>
+                <h2>By Date</h2>
+                <div class='closefilter2'>
+                    <img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+                </div>
+                <div class='filterbydatemain'>
+                    <form method='GET' action={% url 'Searchresult' %}>
+                        <div>
+                            <div class='filterdateselection'>
+                                <input name='q' class='thisweek' type='checkbox' />
+                                <p>This Week</p>
+                            </div>
+                            <div class='filterdateselection'>
+                                <input name='q' class='thismonth' type='checkbox' />
+                                <p>This Month</p>
+                            </div>
+                            <div class='filterdateselection'>
+                                <input name='q' value={{thisYear}} type='checkbox' />
+                                <p>This Year</p>
+                            </div>
+                        </div>
+                        <div>
+                            <div class='filterdateselection'>
+                                <input name='q' class='lastweek' type='checkbox' />
+                                <p>Last Week</p>
+                            </div>
+                            <div class='filterdateselection'>
+                                <input name='q' class='lastMonth' type='checkbox' />
+                                <p>Last Month</p>
+                            </div>
+                            <div class='filterdateselection'>
+                                <input name='q' value='2022' type='checkbox' />
+                                <p>Last Year</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %} <hr/>
+                    <div class='filterdateselection'>
+                        <input type='checkbox' />
+                        <p>Date Range</p>
+                    </div> {% endcomment %}
+                    <button>Filter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+    <div>
+        {% comment %} {% for AllStaffMembers in AllStaffMembers %}
+        {{AllStaffMembers.StaffID}}
+        {% endfor %} {% endcomment %}
+        <table>
+            <tr>
+              <th>ID</th>
+              {% comment %} <th>Brand</th> {% endcomment %}
+              <th>Category</th>
+              <th>MAC ID</th>
+              <th>User</th>
+              <th title='Device Depreciation Rate'>DDR</th>
+              <th>Status</th>
+              <th>Department/Unit</th>
+              <th>Date Uploaded</th>
+            </tr>
+            {% for allUploadedDevices in allUploadedDevices %}
+            <tr>
+              <td class='link'><strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong></td>
+              {% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
+              <td>{{ allUploadedDevices.devicetype }}</td>
+              <td>{{ allUploadedDevices.devicemacaddress }}</td>
+              <td class='link enterStaffUser'>
+                    {% for AllStaffMembers in AllStaffMembers %}
+                    {% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+                    <strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+                    {% endif %}
+                    {% endfor %}
+              </td>
+              <td>{{ allUploadedDevices.devicedepreciationrate }}</td>
+              <td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+              <td>{{ allUploadedDevices.deviceusedepartment }}</td>
+              <td>{{ allUploadedDevices.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
+</div>
