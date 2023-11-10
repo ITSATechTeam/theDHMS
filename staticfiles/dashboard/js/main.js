@@ -12,52 +12,63 @@ const filtercategory2 = document.querySelector('.filtercategory2')
 const closefilterA = document.querySelector('.closefilterA')
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashDash = document.querySelector('.alert strong')
-if(flashDash){
+let flashGeneraldash = document.querySelector('#flashmessage')
+// let flashGeneral = document.querySelector('.alert strong')
+if(flashGeneraldash){
     setTimeout(() => {
-        flashDash.style.display = 'none'
+        flashGeneraldash.style.display = 'none'
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE
 
-filtercategory2.addEventListener('click', () => {
-    console.log('close filter')
-    shadow.style.display = 'block';
-    filterbox1A.style.display = 'block'
-})
+if(filtercategory2){
+    filtercategory2.addEventListener('click', () => {
+        console.log('close filter')
+        shadow.style.display = 'block';
+        filterbox1A.style.display = 'block'
+    })
+}
 
-
+if (closefilterA){
 closefilterA.addEventListener('click', () => {
     shadow.style.display = 'none';
     filterbox1A.style.display = 'none'
 })
+}
 
 // FILTER BY CATEGORY SECTION ENDS HERE
 
 
+if (filtercategory){
+    filtercategory.addEventListener('click', () =>{
+        shadow.style.display = 'block';
+        filterbox1.style.display = 'block';
+        // shadow.style.height === body.style.height
+    })
+}
 
-filtercategory.addEventListener('click', () =>{
-    shadow.style.display = 'block';
-    filterbox1.style.display = 'block';
-    // shadow.style.height === body.style.height
-})
-
-closefilter.addEventListener('click', () =>{
-    shadow.style.display = 'none';
-    filterbox1.style.display = 'none';
-
-})
-closefilter2.addEventListener('click', () =>{
-    shadow.style.display = 'none';
-    filterbox2.style.display = 'none';
-
-})
+if(closefilter){
+    closefilter.addEventListener('click', () =>{
+        shadow.style.display = 'none';
+        filterbox1.style.display = 'none';
+    })
+}
 
 
+if(closefilter2){
+    closefilter2.addEventListener('click', () =>{
+        shadow.style.display = 'none';
+        filterbox2.style.display = 'none';
+    
+    })
+}
+
+if (filtercalendar){
 filtercalendar.addEventListener('click', () =>{
     shadow.style.display = 'block';
     filterbox2.style.display = 'block';
-})
+    })
+}
 
 
 
@@ -85,16 +96,17 @@ let showdeviceuploadpopup = document.querySelector('.showdeviceuploadpopup')
 
 
 showdeviceuploadpopup.addEventListener('click', () => {
-    // console.log('showdeviceuploadpopup clicked')
     uploaddevicepopup.style.display = 'block'
     shadow.style.display = 'block';
 })
 
 
+if(uploaddevicepopupintroclose){
 uploaddevicepopupintroclose.addEventListener('click', () => {
     uploaddevicepopup.style.display = 'none'
     shadow.style.display = 'none';
 })
+}
 
 
 
@@ -107,8 +119,13 @@ const month = ["January","February","March","April","May","June","July","August"
 const newDate = new Date();
 let currentMonth = month [newDate.getMonth()];
 let previousMonth = month [newDate.getMonth() - 1];
-thismonth.value = currentMonth
-lastMonth.value = previousMonth
+if(thismonth){
+    thismonth.value = currentMonth
+}
+
+if(lastMonth){
+    lastMonth.value = previousMonth
+}
 
 
 // const d = new Date();
@@ -128,8 +145,12 @@ var weekNumber = Math.ceil(days / 7);
 //     " is :   " + weekNumber);
 
 // send in current and previous week number
-thisweek.value = `${weekNumber}`;
-lastweek.value = `${weekNumber- 1}` ;
+if(thisweek){
+    thisweek.value = `${weekNumber}`;
+}
+if(lastweek){
+    lastweek.value = `${weekNumber- 1}` ;
+}
 
 // current yeah
 let date =  new Date().getFullYear();
@@ -169,10 +190,65 @@ let closeCompleteProfilePrompt = document.querySelector('.closeCompleteProfilePr
 let completeDetailsPopup = document.querySelector('.completeDetailsPopup')
 let shadowForPreReg = document.querySelector('.shadowForPreReg')
 
-closeCompleteProfilePrompt.addEventListener('click', () => {
-    completeDetailsPopup.style.display = 'none'
-    shadowForPreReg.style.display = 'none'
-})
+if (closeCompleteProfilePrompt){
+    closeCompleteProfilePrompt.addEventListener('click', () => {
+        completeDetailsPopup.style.display = 'none'
+        shadowForPreReg.style.display = 'none'
+    })
+}
 
 
 // completeDetailsPopup SETUP ENDS HERE
+
+let dashboardStaffDP = document.querySelectorAll('.dashboardStaffDP')
+let staffIdSection = document.querySelectorAll('.staffIdSection')
+let allDivAr = []
+staffIdSection.forEach((e)=>{
+    if (e.innerHTML.slice(-1) < 4){
+        e.parentElement.previousElementSibling.style.backgroundColor = "#FFE7664D"
+    }else if(e.innerHTML.slice(-1) > 8){
+        e.parentElement.previousElementSibling.style.backgroundColor = "#7DF2AF4D"
+    }
+  })
+
+//   FILL SHAPE WITH FIRST LETTER FUNCTIONALITY STARTS HERE
+let staffnamesection = document.querySelectorAll('.staffnamesection')
+staffnamesection.forEach((e) => {
+    e.parentElement.previousElementSibling.innerHTML = Array.from(e.innerHTML)[0]
+})
+
+
+// MAINTENANCE SECTION ON THE DASHBOARD
+let maintenanceStatus = document.querySelectorAll('.maintenanceStatusMain')
+maintenanceStatus.forEach((e) => {
+    if (e.innerHTML === 'Pending'){
+        e.style.color = "#B2B3B5"
+        e.previousSibling.style.backgroundColor = "#B2B3B5";
+    }else if(e.innerHTML === 'Ongoing'){
+        e.style.color = "#F2994A"
+        e.previousSibling.style.backgroundColor = "#F2994A";
+    }else if(e.innerHTML === 'Completed'){
+        e.style.color = "#27AE60"
+        e.previousSibling.style.backgroundColor = "#27AE60";
+    }else if(e.innerHTML === 'Cancelled'){
+        e.style.color = "#EB5757";
+        e.previousSibling.style.backgroundColor = "#EB5757";
+    }
+})
+
+
+let maintenanceType = document.querySelectorAll('.maintenanceType')
+maintenanceType.forEach((e) => {
+    console.log(e)
+    shortenString = e.innerHTML.substring(0, 15).concat('...')
+    e.innerHTML = shortenString
+})
+
+
+
+
+
+
+
+
+

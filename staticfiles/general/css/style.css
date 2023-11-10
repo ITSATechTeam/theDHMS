@@ -191,12 +191,13 @@ nav button{
 }
 
 .sidebar img{
-    margin-right: 10px;
+    /* margin-right: 10px; */
     width: 20px;
 }
 
 .sidebar p{
     margin-top: 10px;
+    margin-left: 10px;
     font-size: 1.3rem;
 }
 
@@ -315,5 +316,26 @@ nav button{
     z-index: 10;
 }
 
-
 /* NOTIFICATION POPUP ENDS HERE */
+
+
+#staffMemberIcon2, #staffMemberIcon{
+    fill: #4F4F4F;
+}
+
+#supportIcon, #supportIcon1{
+    fill: #4F4F4F;
+}
+
+#maintenanceIcon1, #maintenanceIcon{
+    fill: #4F4F4F;
+}
+
+#logout1, #logout2, #logout3{
+    fill: #4F4F4F;
+}
+
+
+
+
+

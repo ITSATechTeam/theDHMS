@@ -17,6 +17,7 @@
 		<title>Staff Members | ITSA Inventory System</title>
 	</head>
 	<div class='shadow1'></div>
+	<div class='shadowsso'></div>
 	<body class='body'>
 		<div class='main'>
 			<div class='maintop'>
@@ -28,10 +29,11 @@
 				<div id="flash">
 					{% if messages %} {% for message in messages %}
 					<div class="alert alert-{{ message.tags}} m-0" role="alert">
-						<strong style="color: red">{{ message }}</strong>
+						<strong style="color: #2A66B0"><h4>{{ message }}</h4></strong>
 					</div>
 					{% endfor %} {% endif %}
 				</div>
+
 			</div>
       <div class='staffsearch'>
           <div class='searchdashboardout'>
@@ -47,11 +49,30 @@
             <p>Filter</p>
           </div> {% endcomment %}
           </div>
-          <div class='addstaffbtn'>
+          <div class='addstaffbtnOut'>
+            <div class='addstaffbtn'>
               <button>
                   <img src={% static 'dashboard/img/add.png' %} />
                   <p>Add New Staff</p>
               </button>
+            </div>
+            {% if StaffADListAll %}
+            <div class='addstaffbtn3'>
+              <button>
+                  {% comment %} <img src={% static 'dashboard/img/add.png' %} /> {% endcomment %}
+                  <img src={% static 'dashboard\img\MSlogo.png' %} />
+                  <p>Status: {{ StaffADListAll }}</p>
+              </button>
+            </div>
+            {% else %}
+            <div class='addstaffbtn2'>
+              <button>
+                  {% comment %} <img src={% static 'dashboard/img/add.png' %} /> {% endcomment %}
+                  <img src={% static 'dashboard\img\MSlogo.png' %} />
+                  <p>Activate AD SSO For Staff Members</p>
+              </button>
+            </div>
+            {% endif %}
           </div>
       </div>
       {% comment %} DEVICES INVENTORY TABLE {% endcomment %}
@@ -176,7 +197,7 @@
         <form method='POST'>
           {% csrf_token %}
             <div>
-                <input required name='CompanyUniqueCode' hidden type='text' value = {{request.user.email}} /><br/>
+                <input required name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/>
                 {% comment %} <input required name='CompanyUniqueCode' hidden type='text' value = {{request.user.last_name}} /><br/> {% endcomment %}
                 <input required name='staff_firstname' type='text' placeholder='Staff First Name' /><br/>
                 <input required name='staff_lastname' type='text' placeholder='Staff Last Name' /><br/>
@@ -422,6 +443,91 @@
             <button type='submit'>Register Staff</button>
         </form>
     </div>
+    {% comment %} SSO Setup starts here {% endcomment %}
+    {% comment %} <div class='ssopopup'> {% endcomment %}
+    <div class='ssopopupStageOne'>
+      <div class='ssopopupStageOneIntro'>
+        <h2>Activate AD SSO For Staff Members</h2><br/>
+        <div class='uploaddevicepopupintroclose'>
+            <img src={% static 'dashboard/img/close2.png' %} />
+        </div>
+      </div>
+      <h4>
+        For staff members in your network to access the DHMS using their Microsoft Active Directory email addresses and passwords, complete these simple steps
+      </h4><br/><br/>
+      <button class='ssopopupStageOneBTNNext'>
+        Continue
+        <img src={% static 'staff/img/rightarrow.png' %} />
+      </button>
+    </div>
+
+      <div class='ssopopupStageTwo'>
+        <div class='ssopopupStageTwoIntro'>
+          <h2>01: Note</h2><br/>
+          <div class='uploaddevicepopupintroclose2'>
+              <img src={% static 'dashboard/img/close2.png' %} />
+          </div>
+        </div>
+        <h4>
+          In order to allow staff members access to the DHMS, ITSA will need to have their email addresses registered on the application tenant. <br/><br/>
+          kindly upload a <a title='Click to download a sample' href= {% url 'SampleFileForStaffAD' %} ><strong>CSV file</strong></a> containing all <strong>exact</strong> email addresses of staff members you'd like to register on the DHMS.
+        </h4><br/><br/>
+        <div class='ssopopupStageTwoBTNS'>
+          <button class='ssopopupStageTwoBTNSPrevious'>
+            <img src={% static 'staff/img/backarrow.png' %} />
+            Previous
+          </button>
+          <button class='ssopopupStageTwoBTNSNext'>
+            Continue to upload
+            <img src={% static 'staff/img/rightarrow.png' %} />
+          </button>
+        </div>
+      </div>
+
+      
+        {% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+        <div class='uploaddevicepopup'>
+          <div class='uploaddevicepopupintro'>
+              <h2>02. Upload A CSV File</h2>
+              <div class='uploaddevicepopupintroclose3'>
+                  <img src={% static 'dashboard/img/close2.png' %} />
+              </div>
+          </div>
+          <ul class='uploadguides'>
+              {% comment %} <li><p>To upload your list of devices, simply select click on the 'Upload' box below to select a CSV file.</p></l1> {% endcomment %}
+          </ul><br/>
+
+          <form method = 'POST' enctype="multipart/form-data" >
+              {% csrf_token %}
+              <div>
+                  <label for="images" class="drop-container">
+                      <img src={% static 'dashboard/img/csv.png' %} />
+                      <input type='text' hidden name='staffaduploader' value = {{request.user}}  />
+                      {% comment %} <input type='text' name='username' value = {{request.user}}  /> {% endcomment %}
+                      <input type='text' hidden name='CompanyUniqueCode' value={{request.user.last_name}} class='sendsavetimedata'  />
+                      <span class="drop-title">Click To Select File</span>
+                      {% comment %} or {% endcomment %}
+                      <input name='staff_csv_file' type="file" id="images" required>
+                    </label>
+              </div>
+              
+              <div class='uploaddevicepopupBTN'>
+                <div class='uploaddevicepopupBTNPrev'>
+                  <img src={% static 'staff/img/backarrow.png' %} />
+                  <p>Previous</p>
+                </div>
+                
+                <button type='submit' class='uploaddevicepopupBTNNext'>
+                  Upload
+                  <img src={% static 'staff/img/rightarrow.png' %} />
+                </button>
+              </div>
+          </form>
+
+      </div>
+      {% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
+
+    {% comment %} </div> {% endcomment %}
     <script src={% static 'staff/js/main.js' %}></script>
   </body>
 {% endblock %}

@@ -13,11 +13,10 @@
 }
 
 
-
-
 /* NAV BAR STARTS HERE */
 nav{
-    background-color: #FFFFFF;
+    background-color: white;
+    /* background-color: #FFFFFF; */
     padding: 5px;
     display: flex;
     justify-content: space-between;
@@ -172,6 +171,7 @@ nav button{
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
     z-index: 2;
     color: black;
+    /* background-color: red; */
 }
 
 

@@ -71,17 +71,17 @@ def StaffDashboard(request):
 def StaffLogin(request):
     if request.method == 'POST':
         staffemail = request.POST['staffemailaddres']
-        staffUniqueID = request.POST['staffphonenumber']
+        staffphonenumber = request.POST['staffphonenumber']
         try:
             user = User.objects.get(username=staffemail)
             if user:
                 userEmail = user.email
-                print(user.username)
+                # print(user.username)
         except:
             messages.error(request, 'Login Failed: Please Try Again .')
             return redirect('StaffLogin')
         
-        user = authenticate(request, username=user, password=staffUniqueID)
+        user = authenticate(request, username=user, password=staffphonenumber)
         LoginStatus.objects.create(user = user, email = staffemail, status = 'Online')
 
         if user is not None:
@@ -149,8 +149,8 @@ def StaffViewDeviceDetails(request, name):
 
         dateNow = datetime.now()
         month1 = dateNow.strftime("%b")
-        print("Current Month Full Name:", month1)
-        print("dateNow", dateNow)
+        # print("Current Month Full Name:", month1)
+        # print("dateNow", dateNow)
 
         if not request.POST['MaintainStatus']:
             messages.error(request, 'Kindly provide a maintenance status.')
@@ -170,15 +170,15 @@ def StaffViewDeviceDetails(request, name):
 
         form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = CompanyUniqueCode, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
         MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUserID = MaintainDeviceUserID, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment,
-        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = 'MaintainStatus',
+        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
         currentMonth = month1, MaintainDeviceType = MaintainDeviceType, MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
 
         form.save()
         return redirect('StaffMaintainance')
     # AllMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainDeviceID = name)
     AllMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainDeviceName = name)
-    print(type(AllMaintenanceRequest))
-    print(type(name))
+    # print(type(AllMaintenanceRequest))
+    # print(type(name))
     # AllMaintenanceRequestCount = MaintenanceRequest.objects.filter(MaintainDeviceID = name).count()
     AllMaintenanceRequestCount = MaintenanceRequest.objects.filter(MaintainDeviceName = name).count()
     AllDevices = DeviceRegisterUpload.objects.all()
@@ -193,7 +193,7 @@ def StaffViewDeviceDetails(request, name):
 # @login_required(login_url='Login')
 # @ms_identity_web.login_required
 def StaffSearchresult(request):
-    print('seaching...')
+    # print('seaching...')
     if request.GET.get('q') == 'AllStatus':
         deviceSearch = DeviceRegisterUpload.objects.filter(
             Q(devicestatus__icontains = 'Working') |
@@ -202,35 +202,35 @@ def StaffSearchresult(request):
             
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     if request.method == 'GET':
-        print(q)
-    deviceSearch = DeviceRegisterUpload.objects.filter(
-       Q( Q(deviceid__icontains = q) | 
-        Q(deviceuserfirstname__icontains = q) |
-        Q(deviceuserlastname__icontains = q) |
-        Q(devicemacaddress__icontains = q) |
-        Q(deviceusedepartment__icontains = q) |
-        Q(devicestatus__icontains = q) |
-        Q(devicebrand__icontains = q) |
-        Q(created_at__icontains = q) |
-        Q(devicetype__icontains = q) |
-        Q(devicelocation__icontains = q) |
-        Q(savetimedata__icontains = q) |
-        Q(weekNumberSaved__icontains = q)
-    ) & Q(deviceuseremail = request.user.username))
-# Q(devicestatus = 'Faulty') & Q(user = request.user)
-    deviceSearchCount = deviceSearch.count()
-    thisYear = datetime.today().year
-    today = datetime.today()
-    dateNow = datetime.now()
-    month1 = dateNow.strftime("%b")
-    # month1 = 'April'
-    print("Current Month Full Name:", month1)
-    print("dateNow", dateNow)
-    print("today", today)
-    date = datetime.today()
-    weekNumber = date.isocalendar().week
-    print('this week number:', weekNumber)
-    allUsers = User.objects.all()
+        # print(q)
+        deviceSearch = DeviceRegisterUpload.objects.filter(
+           Q( Q(deviceid__icontains = q) | 
+            Q(deviceuserfirstname__icontains = q) |
+            Q(deviceuserlastname__icontains = q) |
+            Q(devicemacaddress__icontains = q) |
+            Q(deviceusedepartment__icontains = q) |
+            Q(devicestatus__icontains = q) |
+            Q(devicebrand__icontains = q) |
+            Q(created_at__icontains = q) |
+            Q(devicetype__icontains = q) |
+            Q(devicelocation__icontains = q) |
+            Q(savetimedata__icontains = q) |
+            Q(weekNumberSaved__icontains = q)
+        ) & Q(deviceuseremail = request.user.username))
+    # Q(devicestatus = 'Faulty') & Q(user = request.user)
+        deviceSearchCount = deviceSearch.count()
+        thisYear = datetime.today().year
+        today = datetime.today()
+        dateNow = datetime.now()
+        month1 = dateNow.strftime("%b")
+        # month1 = 'April'
+        # print("Current Month Full Name:", month1)
+        # print("dateNow", dateNow)
+        # print("today", today)
+        date = datetime.today()
+        weekNumber = date.isocalendar().week
+        # print('this week number:', weekNumber)
+        allUsers = User.objects.all()
     
     context = {'allUsers':allUsers, 'deviceSearch': deviceSearch, 'deviceSearchCount':deviceSearchCount}
     return render(request, 'staffapp/staffsearchresult.html', context)
@@ -244,8 +244,8 @@ def StaffMaintainance(request):
     # REDIRECT TO VIEW DETAILS PAGE FOR SELECTED MAINTENANCE REQUEST
     if request.method == 'GET' and 'requesttoviewdetails' in request.GET:
         requesttoviewdetailsMain = request.GET['requesttoviewdetails']
-        print(' see requesttoviewdetailsMain below:')
-        print(requesttoviewdetailsMain)
+        # print(' see requesttoviewdetailsMain below:')
+        # print(requesttoviewdetailsMain)
         currentDevice = MaintenanceRequest.objects.filter(MaintainRequestID = requesttoviewdetailsMain)
         return redirect('MaintainanceDetails', name = requesttoviewdetailsMain )
         # return redirect('ProfilePage', pk=currentUser.id)
@@ -301,7 +301,7 @@ def StaffMaintainanceDetails(request, name):
     currentDeviceMain = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainDeviceID)
     currentDeviceDetails = DeviceRegisterUpload.objects.get(deviceid = currentDeviceMain).staffUserID
     currentDeviceUser = StaffDataSet.objects.get(StaffID = currentDeviceDetails)
-    print(currentDeviceUser)
+    # print(currentDeviceUser)
     AllCommments = AddedMaintenanceComments.objects.all()
     AllMaintainDevice = MaintenanceRequest.objects.get(MaintainRequestID = name)
     context = {'currentDeviceUser':currentDeviceUser, 'currentDeviceDetails':currentDeviceDetails, 'AllCommments':AllCommments, 'AllMaintainDevice':AllMaintainDevice, 'currentDevice':currentDevice}
@@ -356,14 +356,11 @@ def index(request):
         # print(thisStaffName)
         if a == thisStaffName:
             existingUserName = a
-            print(existingUserName)
-        # IF USER EXIST ALREADY, LOG USER IN
+            # print(existingUserName)
+            # IF USER EXIST ALREADY, LOG USER IN
             currentStaffUser = StaffDataSet.objects.filter(staff_firstname = existingUserName).values_list('staff_email', flat=True).first()
             currentStaffUserID = StaffDataSet.objects.filter(staff_firstname = existingUserName).values_list('StaffID', flat=True).first()
             currentStaffUserMain = User.objects.filter(username = currentStaffUser)
-            print(currentStaffUser)
-            print(currentStaffUserID)
-            print(currentStaffUserMain)
             user = authenticate(request, username=currentStaffUser, password=currentStaffUserID)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('StaffDashboard')
@@ -372,11 +369,9 @@ def index(request):
         # if user is not None:
         #     login(request, user)
         #     return redirect('StaffDashboard')
-
+        
         else:
             existingUserName = 'NoUser'
-            # return redirect('StaffDashboard')
-
 
 
     findStaffFromDB = list(StaffDataSet.objects.filter(staff_firstname = thisStaffName).values_list('staff_firstname', flat=True))
@@ -397,7 +392,7 @@ def index(request):
             return redirect('index')
        
         if not request.POST['youremailaddress']:
-            messages.error(request, 'Kindly select a company name.')
+            messages.error(request, 'Kindly insert your company email address.')
             return redirect('index')
        
         if not request.POST['yourofficelocation']:
@@ -413,39 +408,43 @@ def index(request):
             return redirect('index')
 
         randomNumberForStaff = random.randint(1000, 99999)
-        SelectedCompany = list(SignupForm.objects.filter(email = companyname).values_list('companyname', flat=True))[0]
-        SelectedCompanyUniqueID = list(SignupForm.objects.filter(email = companyname).values_list('companyUniqueID', flat=True))[0]
-        StaffUniqueId = 'Staff-' + SelectedCompany + str(randomNumberForStaff)
+        try:
+            SelectedCompany = list(SignupForm.objects.filter(email = companyname).values_list('companyname', flat=True))[0]
+            SelectedCompanyUniqueID = list(SignupForm.objects.filter(email = companyname).values_list('companyUniqueID', flat=True))[0]
+            StaffUniqueId = 'Staff-' + SelectedCompany + str(randomNumberForStaff)
+        except:
+            messages.error(request, "An error occured. Kindly fill the form completely")
+            return redirect('index')
 
 
         checkIfUsernameExit = User.objects.filter(username = youremailaddress)
+        checkIfPhoneNumberExit = StaffDataSet.objects.filter(staff_phonenumber = yourphonenumber)
         checkIfStaffEmailExit = StaffDataSet.objects.filter(staff_email = youremailaddress)
-        if checkIfUsernameExit or checkIfStaffEmailExit: 
+
+        if checkIfStaffEmailExit: 
             messages.error(request, 'Registration Failed: The email address you entered is in use already.')
             return redirect('StaffDashboard')
-        else:            
-            StaffDataSetForm = StaffDataSet(staff_firstname = staff_firstname, staff_phonenumber = yourphonenumber, 
-            staff_email = youremailaddress, staff_location = yourofficelocation, staff_role = staff_role, StaffID = StaffUniqueId, 
-            CompanyUniqueCode = SelectedCompanyUniqueID)
 
-            checkUniqueUser =  User.objects.create_user(
-            username = youremailaddress, email = StaffUniqueId, password =  StaffUniqueId, last_name = staff_firstname, first_name = SelectedCompanyUniqueID)
-            StaffDataSetForm.save()
-            checkUniqueUser.save()
+        elif checkIfPhoneNumberExit:
+            messages.error(request, 'Registration Failed: The Phone Number you entered is in use already.')
+            return redirect('StaffDashboard')
 
-        # except:
-        #     messages.error(request, 'Registration Failed: Please Try Again.')
-            # return redirect('StaffDashboard')
-
-        #   log this user in
-        # try:
-        #     user = User.objects.get(username=staffemail)
-        #     if user:
-        #         userEmail = user.email
-        #         print(user.username)
-        # except:
-        #     messages.error(request, 'Login Failed: Please Try Again .')
-        #     return redirect('StaffLogin')
+        else:
+            try:            
+                StaffDataSetForm = StaffDataSet(staff_firstname = staff_firstname, staff_phonenumber = yourphonenumber, 
+                staff_email = youremailaddress, staff_location = yourofficelocation, staff_role = staff_role, StaffID = StaffUniqueId, 
+                CompanyUniqueCode = SelectedCompanyUniqueID)
+    
+                checkUniqueUser =  User.objects.create_user(username = youremailaddress, email = StaffUniqueId, password =  StaffUniqueId, 
+                last_name = staff_firstname, first_name = SelectedCompanyUniqueID)
+                
+                StaffDataSetForm.save()
+                checkUniqueUser.save()
+            except:
+                messages.error(request, 'An error occured when creating your account. Please try again, and if this persists, kindly contact ITSA support')
+                return redirect('StaffDashboard')
+                
+            
         
         user = authenticate(request, username=youremailaddress, password=StaffUniqueId)
         # LoginStatus.objects.create(user = user, email = youremailaddress, status = 'Online')
@@ -458,7 +457,6 @@ def index(request):
             # print(error)
             messages.error(request, 'Login Failed: Please Try Again or Contact Your IT Admin.')
             return redirect('StaffLogin')
-
             return redirect('index')
 
     
@@ -474,3 +472,114 @@ ms_identity_web = settings.MS_IDENTITY_WEB
 @ms_identity_web.login_required
 def secret_page(request):
     return render(request, 'secret.html')
+
+@ms_identity_web.login_required
+def organizations(request):
+    AllCompanies = SignupForm.objects.all()
+    thisStaffName = request.identity_context_data.username
+    Allstaffmembers = StaffDataSet.objects.all().values_list('staff_firstname', flat=True)
+    for a in Allstaffmembers:
+        # print(thisStaffName)
+        if a == thisStaffName:
+            existingUserName = a
+            # IF USER EXIST ALREADY, LOG USER IN
+            currentStaffUser = StaffDataSet.objects.filter(staff_firstname = existingUserName).values_list('staff_email', flat=True).first()
+            currentStaffUserID = StaffDataSet.objects.filter(staff_firstname = existingUserName).values_list('StaffID', flat=True).first()
+            currentStaffUserMain = User.objects.filter(username = currentStaffUser)
+            user = authenticate(request, username=currentStaffUser, password=currentStaffUserID)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('StaffDashboard')
+        
+        else:
+            existingUserName = 'NoUser'
+            
+
+    findStaffFromDB = list(StaffDataSet.objects.filter(staff_firstname = thisStaffName).values_list('staff_firstname', flat=True))
+    if request.method == 'POST' and 'companyname' in request.POST:
+        companyname = request.POST['companyname']
+        yourphonenumber = request.POST['yourphonenumber']
+        staff_firstname = request.POST['staff_firstname']
+        yourofficelocation = request.POST['yourofficelocation']
+        youremailaddress = request.POST['youremailaddress']
+        staff_role = request.POST['staff_role']
+
+        if not request.POST['companyname']:
+            messages.error(request, 'Kindly select the company you work with.')
+            return redirect('index')
+       
+        if not request.POST['yourphonenumber']:
+            messages.error(request, 'Kindly insert your company phone number.')
+            return redirect('index')
+       
+        if not request.POST['youremailaddress']:
+            messages.error(request, 'Kindly insert your company email address.')
+            return redirect('index')
+       
+        if not request.POST['yourofficelocation']:
+            messages.error(request, 'Kindly insert your office location.')
+            return redirect('index')
+       
+        if not request.POST['staff_firstname']:
+            messages.error(request, "You didn't enter a full name, Please do.")
+            return redirect('index')
+       
+        if not request.POST['staff_role']:
+            messages.error(request, "Kindly enter your role of department you work with.")
+            return redirect('index')
+
+        randomNumberForStaff = random.randint(1000, 99999)
+        try:
+            SelectedCompany = list(SignupForm.objects.filter(email = companyname).values_list('companyname', flat=True))[0]
+            SelectedCompanyUniqueID = list(SignupForm.objects.filter(email = companyname).values_list('companyUniqueID', flat=True))[0]
+            print(SelectedCompanyUniqueID)
+            StaffUniqueId = 'Staff-' + SelectedCompany + str(randomNumberForStaff)
+        except:
+            messages.error(request, "An error occured. Kindly fill the form completely")
+            return redirect('index')
+
+
+        checkIfUsernameExit = User.objects.filter(username = youremailaddress)
+        checkIfPhoneNumberExit = StaffDataSet.objects.filter(staff_phonenumber = yourphonenumber)
+        checkIfStaffEmailExit = StaffDataSet.objects.filter(staff_email = youremailaddress)
+
+        if checkIfStaffEmailExit: 
+            messages.error(request, 'Registration Failed: The email address you entered is in use already.')
+            return redirect('StaffDashboard')
+
+        elif checkIfPhoneNumberExit:
+            messages.error(request, 'Registration Failed: The Phone Number you entered is in use already.')
+            return redirect('StaffDashboard')
+
+        else:
+            try:            
+                StaffDataSetForm = StaffDataSet(staff_firstname = staff_firstname, staff_phonenumber = yourphonenumber, 
+                staff_email = youremailaddress, staff_location = yourofficelocation, staff_role = staff_role, StaffID = StaffUniqueId, 
+                CompanyUniqueCode = SelectedCompanyUniqueID)
+    
+                checkUniqueUser =  User.objects.create_user(username = youremailaddress, email = StaffUniqueId, password =  StaffUniqueId, 
+                last_name = staff_firstname, first_name = SelectedCompanyUniqueID)
+                
+                StaffDataSetForm.save()
+                checkUniqueUser.save()
+            except:
+                messages.error(request, 'An error occured when creating your account. Please try again, and if this persists, kindly contact ITSA support')
+                return redirect('StaffDashboard')
+                
+            
+        
+        user = authenticate(request, username=youremailaddress, password=StaffUniqueId)
+        # LoginStatus.objects.create(user = user, email = youremailaddress, status = 'Online')
+
+        if user is not None:
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('StaffDashboard')
+
+        else:
+            # print(error)
+            messages.error(request, 'Login Failed: Please Try Again or Contact Your IT Admin.')
+            return redirect('StaffLogin')
+            return redirect('index')
+
+    
+    context = {'AllCompanies':AllCompanies, 'existingUserName':existingUserName, 'findStaffFromDB':findStaffFromDB}
+    return render(request, 'staffapp/staffdashboard.html')

@@ -30,7 +30,7 @@ body{
 
 .main{
     padding-top: 100px;
-    padding-left: 270px;
+    padding-left: 240px;
 }
 
 .main h5{
@@ -48,7 +48,7 @@ body{
     margin-top: 9px;
 }
 
-.maintop button{
+.addnewdevicebtn button{
     display: flex;
     background-color: #2A66B0;
     border: none;
@@ -71,6 +71,7 @@ body{
 /* SECTION BELOW DASHBOARD INTRO SECTION STARTS HERE */
 .introdetailssection{
     display: flex;
+    padding-right: 10px;
     justify-content: space-between
 }
 
@@ -79,8 +80,8 @@ body{
 
 .introdetailsbar{
     padding: 20px;
-    height: 150px;
-    width: 240px;
+    height: 115px;
+    width: 200px;
     margin-right: 10px;
     border-radius: 10px;
     align-items: center;
@@ -88,7 +89,8 @@ body{
 }
 
 .introdetailsbar img{
-    margin-bottom: 30px;
+    margin-bottom: 10px;
+    margin-top: -10px;
     width: 30px;
 }
 
@@ -157,8 +159,7 @@ body{
 }
 
 .deviceschartout{
-    display: flex;
-    justify-content: space-between;
+    /* background-color: red; */
 }
 
 .deviceschartintro{
@@ -566,8 +567,6 @@ tr:nth-child(1) {
     cursor: pointer;
     font-weight: bold;
     border-radius: 15px;
-    /* position: absolute;
-    right: 0px; */
 }
 
 .actionbtns img{
@@ -679,9 +678,9 @@ tr:nth-child(1) {
     background-color: white;
     padding: 25px;
     position: fixed;
-    height: 95vh;
+    height: 80vh;
     overflow-y: scroll;
-    top: 2%;
+    top: 10%;
     left: 40%;
     z-index: 7;
     display: none;
@@ -824,7 +823,6 @@ tr:nth-child(1) {
 }
 
 .uploaddevicepopup form button{
-    display: flex;
     background-color: #2A66B0;
     /* background-color: #E1E7FC; */
     border: none;
@@ -838,7 +836,6 @@ tr:nth-child(1) {
     padding: 6px 5px 5px 5px;
     border-radius: 8px;
     font-weight: bold;
-
 }
 
 /* UPLOAD CSV FILE POPUP ENDS HERE */
@@ -882,7 +879,23 @@ tr:nth-child(1) {
 /* CHART EFFECTS STARTS HERE */
 #container{
     background-color: transparent;
-    width: 180px;
+    width: 300px;
+}
+
+#container2{
+    /* background-color: red; */
+    width: 670px;
+}
+
+.minipiechartlabel{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.3rem;
+}
+
+.minipiechartlabel img{
+    margin-right: 5px;
 }
 
 
@@ -923,19 +936,286 @@ tr:nth-child(1) {
     color: white;
     align-items: center;
     width: 160px;
-    font-size: 1.4rem;
     height: 40px;
+    font-size: 1.4rem;
     padding: 6px 5px 5px 5px;
     border-radius: 8px;
     font-weight: bold;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
+
+
+.scannetworkbtn2 button{
+    /* margin-top: 20px; */
+    border: #2A66B0 solid 1px;
+    color:#2A66B0;
+    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    width: 190px;
+    height: 40px;
+    align-items: center;
+    border: none;
+    justify-content: space-around;
+    background-color: #E1E7FC;
+    margin-right: 20px;
+}
+
+.heroTopButtons{
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+
 .completeDetailsPopup2btn{
     display: flex;
     justify-content: space-between;
 }
 
+.uploadguides li p{
+    font-size: 1.2rem;
+}
+
 /* completeDetailsPopup SETUP ENDS HERE */
+
+
+.department{
+    background-color: #D2EFF1;
+}
+
+.faultydevices{
+    background-color: #EED0D0;
+}
+
+.healthydevices{
+    background-color: #7df2b054;
+}
+
+.onmaintenance{
+    background-color: #ffe86655;
+}
+
+.postherosection{
+    display: grid;
+    grid-template-columns: 65% 33%;
+    padding-top: 40px;
+    justify-content: space-between;
+    /* align-items: center; */
+    width: 98%;
+    padding-bottom: 100px;
+}
+
+.graphintrotext{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    height: 420px;
+}
+
+.monthlyAmount{
+    display: none;
+}
+
+.graphintrotextInner{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+
+}
+
+.devicetypesummary{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    height: 270px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.graphdate select{
+    border: none;
+    font-size: 1.3rem;
+    background-color: transparent;
+}
+
+.graphdate img{
+    width: 20px;
+}
+
+.graphdate{
+    background-color:#EAF0F7;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.deviceInvetorySection{
+    width: 100%;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    /* min-height: 300px; */
+    height: 500px;
+}
+
+.deviceInvetorySectionIn{
+    overflow-y: scroll;
+    height: 400px;
+
+}
+
+.deviceInvetorySection::-webkit-scrollbar{
+    display: none;
+}
+
+.deviceInvetorySectionIn::-webkit-scrollbar{
+    display: none;
+}
+
+.maintenanceRequestSection{
+    width: 100%;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    min-height: 200px;
+    overflow: hidden;
+}
+
+
+.maintenanceRequestSectionmain{
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.maintenanceRequestSectionMain{
+    width: 100%;
+    position: relative;
+}
+
+
+.maintenanceRequestSectioninner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.dashboardStaffDP{
+    height: 50px;
+    width: 50px;
+    background-color: #E1E7FC;
+    border-radius: 50px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    padding-top: 7px;
+    font-weight: bold;
+    font-size: 2.4rem;
+    color: black;
+}
+
+.hideThis{
+    display: none;
+}
+
+.staffListSection{
+    display: flex;
+}
+
+.staffnamesectionOut{
+    margin-top: 0px;
+}
+
+.maintenanceType{
+    font-weight: 400;
+}
+
+.maintenanceStatusMain{
+    width: 78px;
+    position: absolute;
+    right: 0;
+    margin-top: -50px;
+    margin-right: 20px;
+    text-align: end;
+    align-items: center;
+    height: 13px;
+    justify-content: space-around;
+    /* background-color: green; */
+}
+
+/* .maintenanceStatus:hover{
+    transform: scale(1.1);
+} */
+
+.maintainancedot{
+    height: 6px;
+    width: 6px;
+    border-radius: 50px;
+    background-color: red;
+    margin-top: 0px;
+    position: absolute;
+    right: 0;
+    margin-top: -45px;
+    margin-right: 10px;
+    text-align: end;
+}
+
+.emptydevinvmain img{
+    width: 400px;
+}
+
+.emptydevinv{
+    text-align: center;
+    width: 100%;
+}
+
+.emptydevinvBTNS{
+    width: 370px;
+    margin: auto;
+}
+
+
+.emptydevinvBTNS .addnewdevicebtn img{
+    margin-right: 10px;
+}
+
+.emptydevinvBTNS p{
+    margin-top: 10px;
+}
+
+.noDeviveYet{
+    text-align: center;
+    border: solid 3px black;
+    border-radius: 100px;
+    width: 200px;
+    margin: auto;
+    padding: 30px;
+    /* height: 100px; */
+}
+
+.emptymaintenance{
+    margin: auto;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.emptymaintenance2{
+    margin: auto;
+    text-align: center;
+    margin-top: -100px;
+    margin-bottom: 100px;
+}
+
 
 
 

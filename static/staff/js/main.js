@@ -27,15 +27,88 @@ if(flashStaff){
 
 // user online setup starts here
 
-let userisonline = document.querySelector('.userisonline').innerHTML
-let userisoffline = document.querySelector('.userisoffline')
-
-
-if (userisonline != '' || userisonline){
-    userisoffline.style.display = 'none'
-}else{
-    userisoffline.style.display = 'block'
+let userisonline = document.querySelector('.userisonline')
+if(userisonline){
+    let userisonlineMain = userisonline.innerHTML
+    let userisoffline = document.querySelector('.userisoffline')
+    if (userisonlineMain != '' || userisonlineMain){
+        userisoffline.style.display = 'none'
+    }else{
+        userisoffline.style.display = 'block'
+    }
 }
 
 
+
 // user online setup ends here
+
+let addstaffbtn2 = document.querySelector('.addstaffbtn2')
+let ssopopupStageOne = document.querySelector('.ssopopupStageOne')
+let ssopopupStageTwo = document.querySelector('.ssopopupStageTwo')
+let shadowsso = document.querySelector('.shadowsso')
+let ssopopupStageOneBTNNext = document.querySelector('.ssopopupStageOneBTNNext')
+let ssopopupStageTwoBTNSPrevious = document.querySelector('.ssopopupStageTwoBTNSPrevious')
+let ssopopupStageTwoBTNSNext = document.querySelector('.ssopopupStageTwoBTNSNext')
+let uploaddevicepopupBTNPrev = document.querySelector('.uploaddevicepopupBTNPrev')
+let uploaddevicepopup = document.querySelector('.uploaddevicepopup')
+let uploaddevicepopupintroclose = document.querySelector('.uploaddevicepopupintroclose')
+
+addstaffbtn2.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'block'
+    shadowsso.style.display = 'block'
+})
+
+
+ssopopupStageOneBTNNext.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'none'
+    ssopopupStageTwo.style.display = 'block'
+    shadowsso.style.display = 'block'
+})
+
+ssopopupStageTwoBTNSPrevious.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'block'
+    ssopopupStageTwo.style.display = 'none'
+    shadowsso.style.display = 'block'
+})
+
+
+uploaddevicepopupBTNPrev.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'none'
+    ssopopupStageTwo.style.display = 'block'
+    uploaddevicepopup.style.display = 'none'
+    shadowsso.style.display = 'block'
+
+})
+
+ssopopupStageTwoBTNSNext.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'none'
+    ssopopupStageTwo.style.display = 'none'
+    uploaddevicepopup.style.display = 'block'
+    shadowsso.style.display = 'block'
+})
+
+uploaddevicepopupintroclose.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'none'
+    ssopopupStageTwo.style.display = 'none'
+    uploaddevicepopup.style.display = 'none'
+    shadowsso.style.display = 'none'
+})
+
+let uploaddevicepopupintroclose2 = document.querySelector('.uploaddevicepopupintroclose2')
+let uploaddevicepopupintroclose3 = document.querySelector('.uploaddevicepopupintroclose3')
+
+uploaddevicepopupintroclose2.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'none'
+    ssopopupStageTwo.style.display = 'none'
+    uploaddevicepopup.style.display = 'none'
+    shadowsso.style.display = 'none'
+})
+
+uploaddevicepopupintroclose3.addEventListener('click', () => {
+    ssopopupStageOne.style.display = 'none'
+    ssopopupStageTwo.style.display = 'none'
+    uploaddevicepopup.style.display = 'none'
+    shadowsso.style.display = 'none'
+})
+
+

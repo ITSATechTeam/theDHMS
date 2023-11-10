@@ -20,6 +20,7 @@ from django.contrib.auth.models import User
 # import winapps
 import random
 import time
+import os
 
 # FIND ALL INSTALLED APPS TRIAL STARTS HERE
 # importing the module
@@ -853,7 +854,6 @@ def StaffMembers(request):
         if not request.POST['staff_firstname']:
             messages.error(request, 'Staff registration failed: Please provide a firstname for this staff.')
             return redirect('StaffMembers')
-
         
         if not request.POST['staff_lastname']:
             messages.error(request, 'Staff registration failed: Please provide a lastname for this staff.')
@@ -886,8 +886,42 @@ def StaffMembers(request):
             messages.success(request, 'Staff created successfully')
             return redirect('StaffMembers')
 
+    if request.method == 'POST' and 'staffaduploader' in request.POST:
+        from datetime import datetime
+        # staffADFormMain = StaffADForm(request.POST, request.FILES)
+        # if staffADFormMain.is_valid():
+        staff_csv_file = request.FILES.get('staff_csv_file', False)
+        CompanyUniqueCode = request.POST['CompanyUniqueCode']
+        username = request.POST['staffaduploader']
+
+        if not request.FILES.get('staff_csv_file'):
+            messages.error(request, 'An error occured. Please review the file and try again')
+            return redirect('StaffMembers')
+
+        if not request.POST['CompanyUniqueCode']:
+            messages.error(request, 'An error occured.')
+            return redirect('StaffMembers')
+
+        if not request.POST['staffaduploader']:
+            messages.error(request, 'An error occured. Kindly try again.')
+            return redirect('StaffMembers')        
+        
+        if 'csv' not in str(staff_csv_file):
+            messages.error(request, 'You uploaded the wrong File Format. Please use a CSV file instead.')
+            return redirect('StaffMembers')
+        
+        StaffADListForm = StaffADList(staff_csv_file = staff_csv_file, CompanyUniqueCode = CompanyUniqueCode, user = request.user)
+
+        try:
+            StaffADListForm.save()
+            messages.error(request, 'List uploaded successfully. As soon as setup is complete, this feature will be approved.')
+            return redirect('StaffMembers')
+        except:
+            messages.error(request, 'An error occured. Kindly try again.')
+            return redirect('StaffMembers')
+
+
     staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
-    # staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
     allDevices = DeviceRegisterUpload.objects.all()
     allUploadedDevices = DeviceRegisterUpload.objects.all()
     staffCount = staffMembers.count()
@@ -895,8 +929,9 @@ def StaffMembers(request):
     AllUsers = User.objects.all()
     AllLoginStatus = LoginStatus.objects.all().first()
     # AllLoginStatus = list(LoginStatus.objects.all().values_list('email', flat=True))
+    StaffADListAll = StaffADList.objects.filter(user = request.user).values_list('approvalstatus', flat=True).first()
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
-    context = {'AllLoginStatus':AllLoginStatus, 'AllMaintenanceRequests':AllMaintenanceRequests, 'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
+    context = {'StaffADListAll':StaffADListAll, 'AllLoginStatus':AllLoginStatus, 'AllMaintenanceRequests':AllMaintenanceRequests, 'AllUsers':AllUsers, 'allDevices':allDevices, 'allSignUps':allSignUps, 'staffMembers': staffMembers, 'staffCount':staffCount, 'allUploadedDevices':allUploadedDevices}
     return render(request, 'userarea/staffpage.html', context)
 
 
@@ -1072,8 +1107,6 @@ def Dashboard(request):
         savetimedata = request.POST['savetimedata']
         filedata = request.FILES.get('csv_file', False)
         
-        print(str(username))
-        print(str(filedata))
         if 'csv' not in str(filedata):
             messages.success(request, 'Wrong File Format. Please Use The Recommended CSV File.')
             return redirect('Dashboard')
@@ -1088,8 +1121,8 @@ def Dashboard(request):
 
         form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
         form.save()
-        obj = uploadedDeviceData.objects.all().first()
         randomNumber = random.randint(100, 9999)
+        obj = uploadedDeviceData.objects.all().first()
 
         with open(obj.mainfile.path, 'r') as f:
             reader = csv.reader(f)
@@ -1366,7 +1399,7 @@ def Dashboard(request):
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignupsForUpdatePopup':allSignupsForUpdatePopup, 
     'AllStaffMembers':AllStaffMembers,'allUsers':allUsers, 'allSignUps':allSignUps, 'labels':labels,'thisYear':thisYear, 'data':data, 
     'allUploadedDevices':allUploadedDevices,'badSystems':badSystems, 'allUploadedDevicesCount':allUploadedDevicesCount, 'StaffCount':StaffCount,
-    'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 
+    'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices, 'workingSystems':workingSystems,
     'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
     'AprDevices':AprDevices, 'MayDevices':MayDevices,'JuneDevices':JuneDevices, 'JulyDevices':JulyDevices, 
     'labels':labels, 'dataMain':dataMain, 'allDevicesMonth':allDevicesMonth, 'FirstThreeMaintenanceRequest':FirstThreeMaintenanceRequest,
@@ -2000,3 +2033,16 @@ def DeletSubAdmin(request, pk):
     messages.error(request, 'Sub-Admin has been deleted')
     return redirect('SubAdmin')
 
+
+
+# SAMPLE LIST TO SEE HOW HEADERS ARE ON CSV FILE
+@login_required(login_url='Login')
+def SampleFileForStaffAD(request):
+    response = HttpResponse('')
+    response['Content-Disposition'] = 'attachment; filename = Staff AD Sample File.csv'
+    writer = csv.writer(response)
+    writer.writerow(['staff name', 'staff email address'])
+    writer.writerow(['Franklin Isaac', 'franklin.i@itservicedeskafrica.com'])
+    writer.writerow(['Jane Doe', 'jane.d@itservicedeskafrica.com'])
+    writer.writerow(['John Doe', 'john.d@itservicedeskafrica.com'])
+    return response

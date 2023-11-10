@@ -47,11 +47,11 @@ window.addEventListener("scroll", () => {
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashHome = document.querySelector('.alert strong')
-if(flashHome){
-    console.log('flashHome around')
+let flashGeneral = document.querySelector('#flashmessage')
+// let flashGeneral = document.querySelector('.alert strong')
+if(flashGeneral){
     setTimeout(() => {
-        flashHome.style.display = 'none'
+        flashGeneral.style.display = 'none'
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

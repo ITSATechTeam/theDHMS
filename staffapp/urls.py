@@ -21,5 +21,6 @@ urlpatterns = [
     path('redirect/', views.AuthRedirect, name="AuthRedirect"),
     path('index/', views.index, name="index"),
     path('secret/', views.secret_page, name="secret"),
+    path('organizations/', views.organizations, name="organizations"),
 ]
 

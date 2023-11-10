@@ -88,8 +88,8 @@
 				</div>
 				<div class='introdetailsbar healthydevices'>
 					<img src={% static 'dashboard/img/healthydevices.png' %} />
-					{% if StaffCount  %}
-					<h1>{{ StaffCount }}</h1>
+					{% if workingSystems  %}
+					<h1>{{ workingSystems }}</h1>
 					{% else %}
 					<h1>0</h1>
 					{% endif %}
@@ -119,7 +119,7 @@
 							</div>
 	
 							<div class='graphdate'>
-								<img src={% static 'dashboard/img/Calendar2.png' %} />
+								<img src={% static 'dashboard/img/calendar2.png' %} />
 								<select>
 									<option>2023</option>
 								</select>
@@ -136,8 +136,9 @@
 					<div class='deviceInvetorySection'>
 						<h2>Device Inventory</h2>
 						{% comment %} <h5>Gain insights on faulty devices over time</h5> {% endcomment %}
-						<div>
+						<div class='deviceInvetorySectionIn'>
 							<table>
+								{% if allUploadedDevices %}
 								<tr>
 								{% comment %} <th>ID</th> {% endcomment %}
 								{% comment %} <th>Brand</th> {% endcomment %}
@@ -151,27 +152,53 @@
 								</tr>
 								{% for allUploadedDevices in allUploadedDevices %}
 								<tr>
-								{% comment %} <td class='link'>
-									<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong>
-								</td> {% endcomment %}
-								{% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
-								<td class='link'>
-									<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.devicetype }}</a></strong>
-								</td>
-								<td>{{ allUploadedDevices.devicemacaddress }}</td>
-								<td class='link enterStaffUser'>
-										{% for AllStaffMembers in AllStaffMembers %}
-										{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
-										<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
-										{% endif %}
-										{% endfor %}
-								</td>
-								<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
-								<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-								<td>{{ allUploadedDevices.deviceusedepartment }}</td>
-								{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
+									{% comment %} <td class='link'>
+										<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong>
+									</td> {% endcomment %}
+									{% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
+									<td class='link'>
+										<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.devicetype }}</a></strong>
+									</td>
+									<td>{{ allUploadedDevices.devicemacaddress }}</td>
+									<td class='link enterStaffUser'>
+											{% for AllStaffMembers in AllStaffMembers %}
+											{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+											<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+											{% endif %}
+											{% endfor %}
+									</td>
+									<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
+									<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+									<td>{{ allUploadedDevices.deviceusedepartment }}</td>
+									{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
 								</tr>
 								{% endfor %}
+								{% else %}
+								<div class='emptydevinv'>
+									<div class='emptydevinvmain'>
+										<img src={% static 'dashboard/img/emptydevinv.png' %} />
+									</div><br/>
+									<h2>No device added</h2><br/>
+									<h4>
+										You have no devices in your inventory. Add new <br/> devices with the Add Device button, or upload a CSV file.
+									</h4><br/><br/>
+				
+									<div class='heroTopButtons emptydevinvBTNS'>
+										<div class='scannetworkbtn2 showdeviceuploadpopup'>
+											<button>
+												<img src={% static 'dashboard/img/scannetwork.png' %} />
+												<p>Upload CSV File</p>
+											</button>
+										</div>
+										<div class='addnewdevicebtn'>
+											<button>
+												<img src={% static 'dashboard/img/add.png' %} />
+												<p>Add New Device</p>
+											</button>
+										</div>
+									</div>
+								</div>
+								{% endif %}
 							</table>
 						</div>
 
@@ -187,11 +214,22 @@
 								</div>
 							</div>
 						</div>
+						{% if allUploadedDevices %}
 						<div class='minipiechartlabel'>
 							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} />Laptop</div>
 							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />Desktop</div>
 						</div>
+						{% else %}
+						<div class='emptymaintenance2'>
+							<h5>No device added yet</h5>
+						</div>
+						<div class='minipiechartlabel'>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} /> 0 Laptop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />0 Desktop</div>
+						</div>
+						{% endif %}
 					</div>
+
 					{% comment %} LATEST MAINTENANCE MINI LIST STARTS HERE {% endcomment %}
 					<div class='maintenanceRequestSection maintenanceRequestSectionMain'>
 						<div class='maintenanceRequestSectioninner'>
@@ -199,6 +237,7 @@
 							<h4 class='link'><a href={% url 'Maintainance' %}>See All</a></h4>
 						</div><br/>
 						<div class='maintenanceRequestSectionmain'>
+							{% if FirstThreeMaintenanceRequest %}
 							{% for FirstThreeMaintenanceRequest in FirstThreeMaintenanceRequest %}
 							{% comment %} <a href= "/member/maintenancedetails/{{FirstThreeMaintenanceRequest.MaintainRequestID}}/ "> {% endcomment %}
 								<div class='staffListSection'>
@@ -209,8 +248,12 @@
 										<a href= "/member/maintenancedetails/{{FirstThreeMaintenanceRequest.MaintainRequestID}}/ "><h5 class='maintenanceStatus'><div class='maintainancedot'></div><p class='maintenanceStatusMain'>{{ FirstThreeMaintenanceRequest.MaintainStatus }}</p></h5><br/></a>
 									</div>
 								</div>
-							{% comment %} </a> {% endcomment %}
 							{% endfor %}
+							{% else %}
+							<div class='emptymaintenance'>
+								<h5>No maintenance request yet</h5>
+							</div>
+							{% endif %}
 						</div>
 					</div>
 					{% comment %} LATEST STAFF MINI LIST STARTS HERE {% endcomment %}
@@ -220,6 +263,7 @@
 							<h4 class='link'><a href={% url 'StaffMembers' %}>See all</a></h4>
 						</div><br/>
 						<div class='maintenanceRequestSectionmain'>
+							{% if FirstStaffMembers %}
 							{% for FirstStaffMembers in FirstStaffMembers %}
 							<div class='staffListSection'>
 								<div class='dashboardStaffDP'></div>
@@ -227,18 +271,22 @@
 									{% if FirstStaffMembers.staff_lastname %}
 									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }} {{ FirstStaffMembers.staff_lastname }}</h3>
 									{% else %}
-									<h3>{{ FirstStaffMembers.staff_firstname }}</h3>
+									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }}</h3>
 									{% endif %}
 									<h5 >Staff ID: <a href= /member/staffdetails/{{ FirstStaffMembers.id }}/  >{{ FirstStaffMembers.StaffID }}</a></h5><br/>
 									<h5 class='staffIdSection hideThis'> {{ FirstStaffMembers.StaffID }}</h5><br/>
 								</div>
 							</div>
 							{% endfor %}
+							{% else %}
+							<div class='emptymaintenance'>
+								<h5>No staff member added yet</h5>
+							</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>
 			</div>
-
 			{% comment %} ENDS OF GRAPH FOR FAULTY DEVICES BY THE MONTH {% endcomment %}			
 		</div>
 	{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
@@ -669,7 +717,9 @@
 
 		let resultSum = result.reduce((a, b) => a + b, 0)
 		let amountspenttotal = document.querySelector('.amountspenttotal a')
-		amountspenttotal.innerText = resultSum.toLocaleString("en-US")
+		if (amountspenttotal){
+			amountspenttotal.innerText = resultSum.toLocaleString("en-US")
+		}
 	</script>
 	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
 

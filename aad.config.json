@@ -7,7 +7,7 @@
     "client": {
         "client_id": "5f67eca6-a36e-4253-8863-7d7109d8f36b",
         "client_credential": "Oxs8Q~Hmv.ZhSciZ~qk.A31WPFaRwuAPDP1GFafL",
-        "authority": "https://login.microsoftonline.com/06974b87-2a3c-4958-9c63-f376f089f6fb"      
+        "authority": "https://login.microsoftonline.com/06974b87-2a3c-4958-9c63-f376f089f6fb"
     },
     "auth_request": {
         "redirect_uri": null,
@@ -21,7 +21,7 @@
             "prefix": "auth",
             "sign_in": "sign_in",
             "edit_profile": "edit_profile",
-            "redirect": "redirect",
+            "redirect": "organizations",
             "sign_out": "sign_out",
             "post_sign_out": "post_sign_out"
         }

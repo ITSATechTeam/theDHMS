@@ -54,15 +54,21 @@ class UserRegistrationForm(forms.ModelForm):
         fields = ['user', 'companyname', 'email', 'phone', 'city', 'country', 'address']
 
 
-
-# STATUS_CHOICES= [
-#     ('Ongoing', 'Ongoing'),
-#     ('Completed', 'Completed'),
-#     ('Canceled', 'Cancelede'),
-#     ]
-
-
 class EditMaintenanceRequest(forms.ModelForm):
     class Meta:
         model = MaintenanceRequest
         fields = ['MaintainStatus', 'MaintainRequestDescription']
+
+
+
+class StaffADForm(forms.Form):
+    class Meta:
+        model = StaffADList
+        field = "__all__"
+
+
+
+
+
+
+

@@ -295,8 +295,12 @@ button{
     /* margin-left: 40px; */
     width: 120px;
     /* margin: auto; */
-    margin-bottom: 100px;
+    /* margin-bottom: 100px; */
     background-color: transparent;
+}
+
+.buttoninner img{
+    width: 20px;
 }
 
 .googlesigninner{

@@ -12,7 +12,7 @@ from .tokens import account_activation_token
 
 # RESET PASSWORD IMPORTS STARTS HERE
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
@@ -77,9 +77,15 @@ def SignUpPage(request):
 
         data = SignupForm.objects.filter(companyname=companyname)
         UserData = User.objects.filter(username=companyname)
+        UserDataCheckEmail = User.objects.filter(email=email)
         if data or UserData:
             messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
             return redirect('SignUpPage')
+
+        elif UserDataCheckEmail:
+            messages.error(request, 'Sorry, Email Address Is Already Taken, Please Use A Unique Email Address')
+            return redirect('SignUpPage')
+
         else:
             form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password, repassword=rtpassword)
             user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
@@ -98,6 +104,11 @@ def SignUpPage(request):
 
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def Login(request):
+    next = ""
+
+    if request.GET:  
+        next = request.GET['next']
+        
     if request.method == 'POST':
         companymail = request.POST['companymail']
         password = request.POST['password']
@@ -105,22 +116,24 @@ def Login(request):
             user = User.objects.get(email=companymail)
             if user:
                 userEmail = user.email
-                # print(user.email)
         except:
-            messages.error(request, 'Login Failed: Please Try Again.')
-            return redirect('Login')
+            messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
+            return redirect('SignUpPage')
         
         user = authenticate(request, username=user, password=password)
-        LoginStatus.objects.create(user = user, email = companymail, status = 'Online')
+        # LoginStatus.objects.create(user = user, email = companymail, status = 'Online')
 
         if user is not None:
-            try:
-                # notifyLoginEmail(request, user, companymail)
-                login(request, user)
+            login(request, user)
+            # notifyLoginEmail(request, user, companymail)
+            # try:
+            #     notifyLoginEmail(request, user, companymail)
+            # except:
+                # pass
+            if next == "":
                 return redirect('Dashboard')
-            except:
-                messages.error(request, 'Login Failed: Please Try Again.')
-                return redirect('Login')
+            else:
+                return HttpResponseRedirect(next)
 
         else:
             # print(error)

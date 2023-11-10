@@ -19,6 +19,13 @@ DEVICE_WORKING_CONDITION = (
 )
 
 
+AD_APPROVAL_STATUS_CHOICE = (
+    ("Under Review", "Under Review"),
+    ("Rejected", "Rejected"),
+    ("Approved", "Approved"),
+)
+
+
 STAFF_DEPARTMENT = (
     ("None", "None"),
     ("ICT", "ICT"),
@@ -231,4 +238,21 @@ class SubAdminModel(models.Model):
         
     def __str__(self):
         return self.StaffID
+
+
+
+class StaffADList(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    approvalstatus = models.CharField(max_length= 300,choices = AD_APPROVAL_STATUS_CHOICE, default = 'Under Review', null=True, blank = True)
+    staff_csv_file = models.FileField(upload_to='staffadcsv/', null=True, blank=True)
+    CompanyUniqueCode = models.EmailField(max_length= 300, null=True, blank = True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return self.user.username
 

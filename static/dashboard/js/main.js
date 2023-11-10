@@ -213,7 +213,9 @@ staffIdSection.forEach((e)=>{
 
 //   FILL SHAPE WITH FIRST LETTER FUNCTIONALITY STARTS HERE
 let staffnamesection = document.querySelectorAll('.staffnamesection')
+console.log(staffnamesection)
 staffnamesection.forEach((e) => {
+    console.log(e)
     e.parentElement.previousElementSibling.innerHTML = Array.from(e.innerHTML)[0]
 })
 

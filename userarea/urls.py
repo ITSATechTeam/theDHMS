@@ -42,6 +42,7 @@ urlpatterns = [
     path('viewdevicedetails/<str:name>/', views.ViewDeviceDetails, name="ViewDeviceDetails"),
     path('subadmin/', views.SubAdmin, name="SubAdmin"),
     path('deletesubadmin/<str:pk>/', views.DeletSubAdmin, name="DeletSubAdmin"),
+    path('sample_staffad_file/', views.SampleFileForStaffAD, name="SampleFileForStaffAD"),
 ]
 
 

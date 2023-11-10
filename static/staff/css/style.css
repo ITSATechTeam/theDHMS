@@ -187,6 +187,7 @@ body{
     display: none;
 }
 
+
 form select{
     
     width: 100%;
@@ -221,4 +222,225 @@ table a{
 
 
 /* staffassigneddevice ends here */
+
+.addstaffbtn2 button{
+    border: none;
+    background-color: #E1E7FC;
+    color: #2A66B0;
+    padding-right: 5px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 100%;
+    margin-left: 5px;
+}
+
+.addstaffbtn2 img{
+    width: 20px;
+}
+
+.addstaffbtn3 button{
+    border: none;
+    background-color: #E1E7FC;
+    color: #2A66B0;
+    padding-right: 5px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 100%;
+    margin-left: 5px;
+}
+/* 
+.addstaffbtn3 button{
+    width: 100%;
+    background-color: white;
+    color: #2A66B0;
+    border:1px solid #2A66B0;
+    padding-right: 5px;
+    margin-left: 5px;
+} */
+
+.addstaffbtn3 img{
+    width: 20px;
+}
+
+.addstaffbtnOut{
+    display: flex;
+    justify-content: space-between;
+}
+
+.ssopopupStageTwoIntro{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.ssopopupStageOneIntro{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.ssopopupStageOne h3, .ssopopupStageOne h2, .ssopopupStageTwo h3, .ssopopupStageTwo h2, .uploaddevicepopupintro h2{
+    font-weight: 400;
+}
+
+.ssopopupStageOne{
+    width: 500px;
+    padding: 20px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    background-color: white;
+    position: fixed;
+    top: 30%;
+    left: 35%;
+    border-radius: 10px;
+    height: 260px;
+    display: none;
+}
+
+.ssopopupStageOne button{
+    background-color: #2A66B0;
+    color: white;
+    border:1px solid #2A66B0;
+    padding: 10px;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    margin-left: 5px;
+    position: absolute;
+    right: 20px;
+}
+
+
+.uploaddevicepopup{
+    width: 500px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    left: 35%;
+    top: 20%;
+    height: 390px;
+    background-color: white;
+    z-index: 7;
+    display: none;
+}
+
+.ssopopupStageOne button img, .ssopopupStageTwo button img{
+    width: 15px;
+}
+
+.ssopopupStageTwoBTNS button{
+    background-color: #2A66B0;
+    color: white;
+    border:1px solid #2A66B0;
+    padding: 10px;
+    font-size: 1.3rem;
+    border-radius: 5px;
+}
+
+.uploaddevicepopupBTNNext img{
+    width: 15px;
+}
+
+.ssopopupStageTwoBTNS{
+    display: flex;
+    justify-content: space-between;
+}
+
+.ssopopupStageTwo{
+    width: 500px;
+    padding: 20px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 20;
+    position: fixed;
+    background-color: white;
+    top: 30%;
+    left: 35%;
+    border-radius: 10px;
+    height: 320px;
+    display: none;
+}
+
+.uploaddevicepopupintroclose2, .uploaddevicepopupintroclose3{
+    cursor: pointer;
+}
+
+
+
+.shadowsso{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+
+.uploaddevicepopup form button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 25%;
+    font-size: 1.4rem;
+    margin: auto;
+    margin-top: 0px;
+    height: 40px;
+    margin-right: 0px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-weight: 400;
+}
+
+.uploaddevicepopupBTN{
+    display: flex;
+    margin-top: 30px;
+    /* background-color: red; */
+    justify-content: space-between;
+}
+
+.uploaddevicepopupBTN p{
+    margin-top: 8px;
+    font-weight: 400;
+}
+
+.uploaddevicepopupBTNPrev img{
+    width: 15px;
+    margin-right: 5px;
+}
+
+.uploaddevicepopupBTNPrev{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 23%;
+    font-size: 1.4rem;
+    margin: auto;
+    margin-top: 0px;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-left: 0px;
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
 

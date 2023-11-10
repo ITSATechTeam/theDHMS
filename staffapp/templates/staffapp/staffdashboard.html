@@ -164,11 +164,7 @@
 		</div>
 
 		{% comment %} COMPLETE ACCOUNT SETUP POP STARTS HERE {% endcomment %}
-
-		{% comment %} {% if request.identity_context_data.authenticated %} {% endcomment %}
-		{% comment %} {% for AllStaffMembers in AllStaffMembers %} {% endcomment %}
-		{% comment %} {{ existingUserName }} {% endcomment %}
-		{% comment %} {{ request.identity_context_data.username }} {% endcomment %}
+		
 		<div class= 'existingUserName ' >{{existingUserName}}</div>
 		{% if existingUserName == 'NoUser' %}
 		<div class='completeprofileform'>
@@ -181,7 +177,7 @@
 				</div>
 				{% endfor %} {% endif %}
 			</div>
-
+			{% comment %} {{ request.identity_context_data.username }} {% endcomment %}
 			<form method='POST'>
 				{% csrf_token %}
 				<label for='companyname'>Company Name</label><br/>
