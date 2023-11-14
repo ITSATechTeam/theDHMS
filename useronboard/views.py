@@ -57,17 +57,14 @@ def SignUpPage(request):
         if not request.POST['companyname']:
             messages.success(request, 'Registration Failed: Enter Your Company Name')
             return redirect('SignUpPage')
-            messages.success(request, 'Registration Failed: Enter Your Company Name')
 
         if not request.POST['companymail']:
             messages.success(request, 'Registration Failed: Enter Your Company Email Address')
             return redirect('SignUpPage')
-            messages.success(request, 'Registration Failed: Enter Your Company Email Address')
         
         if not request.POST['phonenumber']:
             messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
             return redirect('SignUpPage')
-            messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
 
 
         if (password != rtpassword):

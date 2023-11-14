@@ -263,7 +263,7 @@ form{
     margin-top: 20px;
     align-items: center;
     color: #2A66B0;
-    font-weight: bold;
+    /* font-weight: bold; */
     cursor: pointer;
 }
 
@@ -274,6 +274,7 @@ form{
     padding-bottom: 10px;
 }
 
+
 .buttoninner{
     width: 200px;
     display: flex;
@@ -282,7 +283,7 @@ form{
     /* background-color: red; */
     align-items: center;
     height:45px;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 
@@ -318,13 +319,10 @@ button{
 }
 
 .logininstead{
-    /* background-color: red; */
     width: 100%;
     text-align: center;
     padding-left: 0px;
-    /* margin: auto; */
     margin-top: 30px;
-    /* margin-left: 140px; */
 }
 
 input:focus{

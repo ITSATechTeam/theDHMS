@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'useronboard.apps.UseronboardConfig',
     'django_countries',
     'staffapp.apps.StaffappConfig',
+    'familydhmsapp.apps.FamilydhmsappConfig',
     # 
     
     'django.contrib.sites',

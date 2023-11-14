@@ -1,0 +1,345 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    /* font-size: .9rem; */
+}
+
+
+
+/* NAV BAR STARTS HERE */
+nav{
+    background-color: #FFFFFF;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    width: 100vw;
+    z-index: 10;
+}
+
+/* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2); */
+
+.closereguser1 img{
+    width: 20px;
+    background-color: #E1E7FC;
+    padding: 2px;
+    border-radius: 5px;
+    cursor: pointer;
+} 
+
+
+.profileBoxintro{
+    display: flex;
+    align-items: top;
+    justify-content: space-between;
+}
+
+
+.profileBox a li{
+    color: grey;
+}
+
+.notifysectioninner{
+    cursor: pointer;
+}
+
+.notifysectioninner p{
+    cursor: pointer;
+}
+
+.notifysection{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notifysection img{
+    margin-right: 10px;
+}
+
+.notifysectioninner{
+    align-items: center;
+    display: flex;
+    padding-right: 20px;
+}
+
+.notifysectioninner p{
+    margin-top: 13px;
+}
+
+.notifysectioninner img{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+
+.profileimgsectiontext {
+    width: 40px;
+    font-size: 1rem;
+    background-color:#2A66B0;
+    color: white;
+    margin: 5px;
+    padding-top: 5px;
+    text-align: center;
+    border-radius: 40px;
+} 
+
+
+.requestUser{
+    display: none;
+}
+
+.profileimgproper img{
+    width: 50px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.search input{
+    display: flex;
+    align-items: center;
+    border: solid rgb(190, 190, 190) 1px;
+    border-radius: 8px;
+    width: 500px;
+    position: relative;
+    height: 40px;
+    padding: 20px;
+    padding-left: 50px;
+    background-color: transparent;
+}
+
+.searchIcon{
+    position: absolute;
+    top: 18px;
+    padding-left: 7px;
+}
+
+input:focus{
+    outline: none;
+}
+
+.search p{
+    margin-top: 13px;
+}
+
+.search img{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+nav button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 150px;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 8px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+.notifyout{
+    position: relative;
+    cursor: pointer;
+}
+
+.notifyactive{
+    position: absolute;
+    right: -3px;
+}
+
+.allNotificationTabElements{
+    display: none;
+}
+
+/* NAV BAR ENDS HERE */
+
+/* SIDE BAR STARTS HERE */
+.sidebarsection{
+    padding-top: 100px;
+    padding-left: 20px;
+    height: 100vh;
+    width: 220px;
+    position: fixed;
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    color: black;
+}
+
+
+.sidebar{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
+    width: 95%;
+    padding: 0px 5px;
+    /* border-radius: 8px; */
+    color: rgb(105, 105, 105);
+    transition: ease-in-out .3s;
+}
+
+.sidebar:hover{
+    color: #2A66B0;
+    border-right:2px solid #2A66B0;
+    background-color: #F1F5FA;
+
+    /* background-color: #2A66B0; */
+}
+
+.sidebar img{
+    /* margin-right: 10px; */
+    width: 20px;
+}
+
+.sidebar p{
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 1.3rem;
+}
+
+.logout{
+    position: absolute;
+    bottom: 40px;
+    width: 85%;
+}
+
+.active{
+    color: #2A66B0;
+    border-right:2px solid #2A66B0;
+    background-color: #F1F5FA;
+}
+
+.active p{
+    color: #2A66B0;
+    font-weight: bold;
+}
+
+.dashboard svg{
+    fill: black;
+    /* margin-right: 10px; */
+}
+/* SIDE BAR ENDS HERE */
+
+/* NOTIFICATION POPUP STARTS HERE */
+
+.notifySectionPopuP{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.notifySectionPopuPOut{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    padding: 20px;
+    margin-left: -270px;
+    width: 400px;
+    margin-top: 60px;
+    z-index: 20;
+    height: 100%;
+    padding-bottom: 30px;
+    overflow-y: scroll;
+}
+
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
+.noticationSectionProper{
+    margin-top: 0px;
+}
+
+.notifySectionPopuPOut a .noticationSectionProper h3{
+    color: black;
+}
+
+
+.noticationSectionProper h3 a{
+    color: #2A66B0;
+}
+.noticationSectionProperIn{
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    font-size: 1.5rem;
+    /* border-right: 2px solid #2A66B0; */
+}
+
+.noticationSectionProperIn p{
+    font-size: 12px;
+}
+
+/* NewNotifyCount starts here */
+.NewNotifyCount{
+    background-color:#2A66B0;
+    text-align: center;
+    color: white;
+    border-radius: 100px;
+    font-weight: bold;
+    position: absolute;
+    width: 20px;
+    top: -9px;
+    right: 0px;
+}
+
+
+.notifySectionPopuPInner{
+    display: flex;
+    justify-content: space-between;
+}
+
+.notifySectionPopuP select{
+    width: 40px;
+    border: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.notifySectionPopupEdge{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    position: absolute;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    top: 80px;
+    right: 140px;
+    z-index: 10;
+}
+
+/* NOTIFICATION POPUP ENDS HERE */
+
+
+#staffMemberIcon2, #staffMemberIcon{
+    fill: #4F4F4F;
+}
+
+#supportIcon, #supportIcon1{
+    fill: #4F4F4F;
+}
+
+#maintenanceIcon1, #maintenanceIcon{
+    fill: #4F4F4F;
+}
+
+#logout1, #logout2, #logout3{
+    fill: #4F4F4F;
+}
+
+
+
+
+

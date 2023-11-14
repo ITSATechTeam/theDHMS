@@ -125,6 +125,7 @@ def StaffSupport(request):
 
 # VIEW DEVICE DETAILS PAGE
 # @ms_identity_web.login_required
+@login_required(login_url='StaffLogin')
 def StaffViewDeviceDetails(request, name):
     randomNumber = random.randint(10, 9999)
     if request.method == 'POST' and 'MaintainStatus' in request.POST:

@@ -8,15 +8,14 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 from django.contrib.auth import login, logout, authenticate
 import csv
 from django.db.models import Q
 from useronboard.models import SignupForm, UserProfileImage
 from datetime import datetime
 from datetime import date
-from django.utils.crypto import get_random_string
 import json
-from django.contrib.auth.models import User
 # import winapps
 import random
 import time

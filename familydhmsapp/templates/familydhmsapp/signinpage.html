@@ -1,0 +1,119 @@
+{% comment %} {% include 'general.html' %}  {% endcomment %}
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		{% comment %} <link rel="stylesheet" href={% static 'generalonboard/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href={% static 'onboard/css/formcss.css' %} />
+		<link rel="stylesheet" href={% static 'onboard/css/loginstyle.css' %} />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Your Family DHMS | Register </title>
+	</head>
+	<body>
+		<main>
+            <div class='logo'>
+                <img src={% static 'onboard/img/itsalogopng1.png' %} />
+            </div>
+            <div class='mainhero'>
+                <div class='mainheroimg'>
+                    <img src={% static 'onboard/img/famonboard.png' %} />
+                </div>
+                <div class='mainheroform'>
+                   <div class='mainherowaveout'>
+                        <div class='mainherowave mainherowaveab'>
+                            <img src={% static 'onboard/img/wave.png' %} />
+                            <h3>Welcome!!!</h3>
+                        </div>
+                        <p>Sign up for Family DHMS and keep your family's devices safe, secure, and running smoothly.</p>
+                   </div>
+
+                   
+				
+                    <div id="flash flashmessage">
+                        {% if messages %} {% for message in messages %}
+                        <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                            <strong>{{ message }}</strong>
+                            {% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+                        </div>
+                        {% endfor %} {% endif %}
+                    </div>
+				
+
+                    <div class='signupformmain'>
+                        <form method='POST' class='signupform'>
+                            {% csrf_token %}
+                            <label for='fullname'>Full Name</label><br/>
+                            <input id='fullname' name='fullname' type='text' required placeholder='John Doe' /><br/><br/>
+
+                            <label for='email'>Email Address</label><br/>
+                            <input id='email' name='familyemail' required type='email' placeholder='johndoe@gmail.com' /><br/><br/>
+
+                            <div class='passwordinput'>
+                                <label for='password'>Password</label><br/>
+                                <input id='password' name='password' class='password' required type='password' placeholder='*****' /><br/><br/>
+                                <div class='pwdeye eye'>
+                                    <img src={% static 'onboard/img/eyeshow.png' %} />
+                                </div>
+                                <div class='pwdeye eyeicon2'>
+                                    <img src={% static 'onboard/img/eyehide.png' %} />
+                                </div>
+                            </div>
+                            <div class='passwordcheck'>
+                                <p class='passchecksectionintro'><strong>Your password must include a minimum of </strong></p>
+                                <div class='passchecksection checklenght'>
+                                    <img src={% static 'onboard/img/tick.png'  %} />
+                                    <p>Eight Characters </p>
+                                </div>
+                                <div class='passchecksection checkcase'>
+                                    <img src={% static 'onboard/img/tick.png'  %} />
+                                    <p>One UPPERCASE Letter</p>
+                                </div>
+                                <div class='passchecksection checknum'>
+                                    <img src={% static 'onboard/img/tick.png'  %} />
+                                    <p>One Number, and</p>
+                                </div>
+                                <div class='passchecksection checkspec'>
+                                    <img src={% static 'onboard/img/tick.png'  %} />
+                                    <p>One Special Character (e.g !”@#%^&?)</p>
+                                </div>
+
+                            </div>
+                            <p class='submitbtnbeforechecks' title='Please Create A Proper Password To Continue'>Sign Up</p>
+                            <button type='submit' class='submitformbtn'>Sign Up</button>
+                        </form>
+                        <div>
+                            <div><br/>
+                                <p class='loginwithgfoption'>or sign in with</p>
+
+                                <div class='googlesignin'>
+                                    {% load socialaccount %}
+                                    <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
+                                        {% csrf_token %}
+                                        <button type='submit' class='googlesigninner'>
+                                            <img src={% static 'onboard/img/google.png' %} />
+                                        </button>
+                                    </form>
+                                    <button>
+                                        {% comment %} <img src={% static 'onboard/img/facebook.png' %} /> {% endcomment %}
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                        <p class='logininstead'>Have an account already? <a href={% url 'UserLogin' %}>Sign In</a></p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src={% static 'onboard/js/onboard.js' %}></script>
+    </body>
+</html>
+
+{% endblock content %}
