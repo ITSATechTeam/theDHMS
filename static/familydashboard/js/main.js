@@ -160,43 +160,6 @@ let date =  new Date().getFullYear();
 // send main savetimedata pack to db
 const savetimedata = document.querySelector('.sendsavetimedata');
 savetimedata.value = 'currentWeek is week '+ weekNumber +' and this month is ' + currentMonth +' and this year is year '+ date 
-// console.log(weekNumber)
-
-// console.log('currentWeek is   ' + weekNumber +' and this month is  '+ currentMonth +' and this year is ' +date );
-
-// enterStaffUser DEFAULT DATA ALLOCATION FUNCTIONALITY STARTS HERE
-// let enterStaffUser = Array.from(document.querySelectorAll('.enterStaffUser'));
-// let enterStaffUserArr = []
-// console.log(typeof(enterStaffUser))
-// enterStaffUser.forEach(e => {
-//     enterStaffUserArr.push(e)
-//     if(e === ' '){
-//         enterStaffUser = 'None'
-//     }    
-// });
-
-// enterStaffUserArr.forEach(element => {
-//     console.log(element.innerHTML)
-//     if(element.innerHTML === "" ){
-//         element.innerHTML = 'None'
-//     }    
-// });
-
-// console.log(enterStaffUserArr)
-
-// enterStaffUser DEFAULT DATA ALLOCATION FUNCTIONALITY ENDS HERE
-// // completeDetailsPopup SETUP STARTS HERE
-// let closeCompleteProfilePrompt = document.querySelector('.closeCompleteProfilePrompt')
-// let completeDetailsPopup = document.querySelector('.completeDetailsPopup')
-// let shadowForPreReg = document.querySelector('.shadowForPreReg')
-
-// if (closeCompleteProfilePrompt){
-//     closeCompleteProfilePrompt.addEventListener('click', () => {
-//         completeDetailsPopup.style.display = 'none'
-//         shadowForPreReg.style.display = 'none'
-//     })
-// }
-
 
 // // completeDetailsPopup SETUP ENDS HERE
 
@@ -246,6 +209,22 @@ maintenanceType.forEach((e) => {
     e.innerHTML = shortenString
 })
 
+
+let registerthisdevice = document.querySelector('.registerthisdevice button')
+let regmydevicepopup = document.querySelector('.regmydevicepopup')
+let regmydevicepopupclose = document.querySelector('.regmydevicepopupclose')
+
+
+registerthisdevice.addEventListener('click', () => {
+    regmydevicepopup.style.display = 'block'
+    shadow.style.display = 'block';
+})
+
+
+regmydevicepopupclose.addEventListener('click', () => {
+    regmydevicepopup.style.display = 'none'
+    shadow.style.display = 'none';
+})
 
 
 

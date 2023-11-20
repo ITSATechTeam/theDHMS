@@ -100,9 +100,9 @@ def SignUpPage(request):
 
 
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
+
 def Login(request):
     next = ""
-
     if request.GET:  
         next = request.GET['next']
         
@@ -113,6 +113,7 @@ def Login(request):
             user = User.objects.get(email=companymail)
             if user:
                 userEmail = user.email
+                # print(user.email)
         except:
             messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
             return redirect('SignUpPage')
@@ -122,22 +123,26 @@ def Login(request):
 
         if user is not None:
             login(request, user)
-            # notifyLoginEmail(request, user, companymail)
             # try:
             #     notifyLoginEmail(request, user, companymail)
             # except:
-                # pass
+            #     pass
             if next == "":
                 return redirect('Dashboard')
             else:
                 return HttpResponseRedirect(next)
+                
+            # try:
+            #     notifyLoginEmail(request, user, companymail)
+            # except:
+            #     pass
+            return redirect('Dashboard')
 
         else:
             # print(error)
             messages.error(request, 'Login Failed: Please Try Again!!')
             return render(request, 'useronboard/login.html')
     return render(request, 'useronboard/login.html')
-
 
 
 # RESET PASSWORD VIEW STARTS HERE

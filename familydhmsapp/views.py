@@ -7,6 +7,26 @@ from django.contrib import messages
 from .models import *
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
+from datetime import datetime
+from datetime import date
+
+
+# 
+from getmac import get_mac_address as gma
+import socket
+## getting the hostname by socket.gethostname() method
+hostname = socket.gethostname()
+## getting the IP address using socket.gethostbyname() method
+ip_address = socket.gethostbyname(hostname)
+
+import wmi
+c = wmi.WMI()    
+my_system = c.Win32_ComputerSystem()[0]
+
+
+import platform
+os_name = platform.system()
+
 
 # Create your views here.
 def UserReg(request):
@@ -67,7 +87,7 @@ def UserLogin(request):
             user = User.objects.get(email=familyuser)
             if user:
                 userEmail = user.email
-                user = authenticate(request, username=user, password=password)
+                # user = authenticate(request, username=user, password=password)
             else:
                 messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
                 return redirect('UserReg')
@@ -76,7 +96,7 @@ def UserLogin(request):
             messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
             return redirect('UserReg')
         
-        # user = authenticate(request, username=user, password=password)
+        user = authenticate(request, username=user, password=password)
 
         if user is not None:
             login(request, user)
@@ -92,7 +112,170 @@ def UserLogin(request):
 
 @login_required(login_url='UserLogin')
 def FamilyDHMSDashboard(request):
-    return render(request, 'familydhmsapp/familydashboard.html')
+    DeviceHostName = hostname
+    DeviceMacAddress = gma()
+    DeviceIP = ip_address
+    DeviceManufacturter = my_system.Manufacturer
+    DeviceSystemModel = my_system. Model
+    DeviceName = my_system.Name
+    DeviceNumOfProcessor = my_system.NumberOfProcessors
+    DeviceSystemType = my_system.SystemType
+    DeviceSystemFamily = my_system.SystemFamily
+    DeviceOS = os_name
+
+    if request.method == 'POST' and 'deviceyearofpurchase' in request.POST:
+        print('deviceyearofpurchase triggered successfully')
+        today = date.today()                                        
+        dateForWeekNumber = datetime.today()
+        weekNumber = dateForWeekNumber.isocalendar().week
+        devicetype = request.POST['devicetype']
+        devicebrand = request.POST['devicebrand']
+        deviceOS = request.POST['deviceos']
+        devicelocation = request.POST['devicelocation']
+        deviceyearofpurchase = request.POST['deviceyearofpurchase']
+        FamilyUniqueCode = request.POST['FamilyUniqueCode']
+        devicename = request.POST['devicename']
+        devicemacaddress = request.POST['devicemacaddress']
+        deviceipaddress = request.POST['deviceip']
+        Reqfamilyadmin = request.user
+        FamilyUniqueCode = request.user.last_name
+        uniqueId = 'Family_Device-'  + get_random_string(length=8)
+        dateForWeekNumber = datetime.today()
+        
+        if not request.POST['devicetype']:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's Type.")
+            return redirect('FamilyDHMSDashboard')
+        
+        if not request.POST['devicebrand']:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's Brand.")
+            return redirect('FamilyDHMSDashboard')
+        
+        if not request.POST['devicemacaddress']:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's MAC Address.")
+            return redirect('FamilyDHMSDashboard')
+        
+        if not request.POST['deviceip']:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's IP Address.")
+            return redirect('FamilyDHMSDashboard')
+
+        
+        if request.POST['deviceyearofpurchase']:
+            depreciateRate = 2023 - int(request.POST['deviceyearofpurchase'])
+            # calc depreciateRateReal from depreciateRate below:
+            if depreciateRate <= 0:
+                depreciateRateReal = '100%'
+            elif depreciateRate == 1:
+                depreciateRateReal = '75%'
+            elif depreciateRate == 2:
+                depreciateRateReal = '50%'
+            elif depreciateRate == 3:
+                depreciateRateReal = '25%'
+            elif depreciateRate >= 4:
+                depreciateRateReal = '0%'
+            else:
+                depreciateRateReal = 'Nil'
+        else:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's Year Of Purchase.")
+            return redirect('FamilyDHMSDashboard')
+
+        FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
+        deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
+        deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
+        savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber)
+        FamilyDeviceRegForm.save()
+        messages.error(request, "Device saved successfully.")
+        return redirect('FamilyDHMSDashboard')
+
+        try:
+            FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
+            deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
+            deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
+            savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber)
+            FamilyDeviceRegForm.save()
+            messages.error(request, "Device registered successfully.")
+            return redirect('FamilyDHMSDashboard')
+        except:
+            messages.error(request, "An error occured while trying to save this device, please try again.")
+            return redirect('FamilyDHMSDashboard')
+
+
+
+        # REGISTER YOUR DEVICE SELF SET UP STARTS HERE
+
+    if request.method == 'POST' and 'DeviceHostName_Self' in request.POST:
+        today = date.today()                                        
+        dateForWeekNumber = datetime.today()
+        weekNumber = dateForWeekNumber.isocalendar().week
+        DeviceHostName_Self = request.POST['DeviceHostName_Self']
+        DeviceMacAddress_Self = request.POST['DeviceMacAddress_Self']
+        DeviceIP_Self = request.POST['DeviceIP_Self']
+        DeviceName_Self = request.POST['DeviceName_Self']
+        DeviceManufacturter_Self = request.POST['DeviceManufacturter_Self']
+        DeviceSystemModel_Self = request.POST['DeviceSystemModel_Self']
+        DeviceNumOfProcessor_Self = request.POST['DeviceNumOfProcessor_Self']
+        DeviceSystemType_Self = request.POST['DeviceSystemType_Self']
+        DeviceOS_Self = request.POST['DeviceOS_Self']
+        devicelocation_Self = request.POST['devicelocation_Self']
+        Deviceyearofpurchase_Self = request.POST['Deviceyearofpurchase_Self']
+
+        uniqueId = 'Family_Device-'  + get_random_string(length=8)
+        dateForWeekNumber = datetime.today()
+        
+        if request.POST['Deviceyearofpurchase_Self']:
+            depreciateRate = 2023 - int(request.POST['Deviceyearofpurchase_Self'])
+            # calc depreciateRateReal from depreciateRate below:
+            if depreciateRate <= 0:
+                depreciateRateReal_self = '100%'
+            elif depreciateRate == 1:
+                depreciateRateReal_self = '75%'
+            elif depreciateRate == 2:
+                depreciateRateReal_self = '50%'
+            elif depreciateRate == 3:
+                depreciateRateReal_self = '25%'
+            elif depreciateRate >= 4:
+                depreciateRateReal_self = '0%'
+            else:
+                depreciateRateReal_self = 'Nil'
+        else:
+            depreciateRateReal_self = 'Nil'
+        # else:
+        #     messages.error(request, "Device registration failed. Please Indicate This Device's Year Of Purchase.")
+        #     return redirect('FamilyDHMSDashboard')
+        
+        # if not request.POST['devicelocation_Self']:
+        #     messages.error(request, "Device uploaded failed. Please Indicate This Device's Location.")
+        #     return redirect('FamilyDHMSDashboard')
+
+        
+        FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, devicebrand = DeviceManufacturter_Self, deviceOS = DeviceOS_Self,
+        deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceHostName_Self, devicemacaddress = DeviceMacAddress_Self,
+        deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
+        savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, devicemodel = DeviceSystemModel_Self)
+        FamilyDeviceRegForm.save()
+        messages.error(request, "Device Registered Successfully.")
+        return redirect('FamilyDHMSDashboard')
+
+        # try:
+        #     FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, devicebrand = DeviceManufacturter_Self, deviceOS = DeviceOS_Self,
+        #     deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceHostName_Self, devicemacaddress = DeviceMacAddress_Self,
+        #     deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
+        #     savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, devicemodel = DeviceSystemModel_Self)
+        #     FamilyDeviceRegForm.save()
+        #     messages.error(request, "An error occured while trying to save this device, please try again.")
+        #     return redirect('FamilyDHMSDashboard')
+
+        # except:
+        #     messages.error(request, "An error occured while trying to save this device, please try again.")
+        #     return redirect('FamilyDHMSDashboard')
+        
+
+
+    context = {'DeviceHostName':DeviceHostName, 'DeviceMacAddress':DeviceMacAddress, 'DeviceIP':DeviceIP, 'DeviceManufacturter':DeviceManufacturter,
+    'DeviceSystemModel':DeviceSystemModel, 'DeviceName':DeviceName, 'DeviceNumOfProcessor':DeviceNumOfProcessor, 'DeviceSystemType':DeviceSystemType, 
+    'DeviceSystemFamily': DeviceSystemFamily, 'DeviceOS':DeviceOS}
+
+    return render(request, 'familydhmsapp/familydashboard.html', context)
+
 
 
 def FamilyInventory(request):
@@ -125,7 +308,7 @@ def FamilyLogout(request):
     return redirect('UserLogin')
 
 
-
+# def FinDetails(request):
 
 
 

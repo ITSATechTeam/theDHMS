@@ -42,15 +42,23 @@
 				
 				<div class='heroTopButtons'>
 					<div class='scannetworkbtn2 showdeviceuploadpopup'>
-						<button>
+						{% comment %} <button>
 							<img src={% static 'dashboard/img/scannetwork.png' %} />
 							<p>Upload CSV File</p>
-						</button>
+						</button> {% endcomment %}
 					</div>
+
 					<div class='addnewdevicebtn'>
 						<button>
 							<img src={% static 'dashboard/img/add.png' %} />
 							<p>Add New Device</p>
+						</button>
+					</div>
+
+					<div class='registerthisdevice'>
+						<button>
+							<img src={% static 'familydashboard/img/mydeviceblue.png' %} />
+							<p>Register My Device</p>
 						</button>
 					</div>
 				</div>
@@ -188,7 +196,7 @@
 									</h4><br/><br/>
 				
 									<div class='heroTopButtons emptydevinvBTNS'>
-										<div class='scannetworkbtn2 showdeviceuploadpopup'>
+										{% comment %} <div class='scannetworkbtn2 showdeviceuploadpopup'>
 											<button>
 												<img src={% static 'dashboard/img/scannetwork.png' %} />
 												<p>Upload CSV File</p>
@@ -199,13 +207,12 @@
 												<img src={% static 'dashboard/img/add.png' %} />
 												<p>Add New Device</p>
 											</button>
-										</div>
+										</div> {% endcomment %}
 									</div>
 								</div>
 								{% endif %}
 							</table>
 						</div>
-
 					</div>
 				</div>
 				<div class='postherosectionB'>
@@ -293,114 +300,149 @@
 			</div>
 			{% comment %} ENDS OF GRAPH FOR FAULTY DEVICES BY THE MONTH {% endcomment %}			
 		</div>
-	{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
-	<div class='registerDevice'>
-		<form method = 'POST'>
-			{% csrf_token %}
-			<div class='registerDeviceIntro'>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
+		<div class='registerDevice'>
+			<form method = 'POST'>
+				{% csrf_token %}
+				<div class='registerDeviceIntro'>
+					<div>
+						<h1>Add New Device</h1>
+					</div><br/><br/><br/><br/>
+					<div class='closeaddnewdeviceopoup'>
+						<img src={% static 'dashboard/img/close2.png' %} />
+					</div>
+				</div>
 				<div>
-					<h1>Add New Device</h1>
-				</div><br/><br/><br/><br/>
-				<div class='closeaddnewdeviceopoup'>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Select device type</p> {% endcomment %}
+						<select required name='devicetype'>
+							<option>Select Device Kind</option>
+							<option value='Laptop'>Laptop</option>
+							<option value='Desktop'>Desktop</option>
+						</select>
+					</div><br/>
+					{% comment %} <input required name='deviceusedepartment' type='text' placeholder='Device Department' /><br/><br/> {% endcomment %}
+
+					<input required name='devicebrand' type='text' placeholder='Device Brand(eg: HP, Dell)' /><br/><br/>
+
+					<input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/>
+
+					<input required name='deviceyearofpurchase' type='number' placeholder='Device Year Of Purchase eg: 2023' />
+
+					<input required name='FamilyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
+					{% comment %} <input name='FamilyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
+
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device Name</p> {% endcomment %}
+						<input required name='devicename' type='text'placeholder='Device Name' />
+					</div><br/>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device MAC ID</p> {% endcomment %}
+						<input required name='devicemacaddress' type='text'placeholder=' MAC Address (XX:XX:XX:XX:XX)' />
+					</div><br/>
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device IP Address</p> {% endcomment %}
+						<input required name='deviceip' type='text'placeholder='Device IP Address' />
+					</div><br/>
+					{% comment %} <div class='adddevicedashboard'>
+						<select name='devicestatus'>
+							<option>Select Device Working Condition</option>
+							<option value='Working'>Working</option>
+							<option value='Faulty'>Faulty</option>
+							<option value='Critical'>Critical</option>
+						</select>
+					</div><br/> {% endcomment %}
+					<div class='adddevicedashboard'>
+						{% comment %} <p>Device Location</p> {% endcomment %}
+						<input required name='devicelocation' type='text'placeholder='Device Location' />
+						<input type='text' name='familyadmin' value={{request.user}} hidden />
+					</div>
+				</div><br/>
+				<hr/><br/>
+				<h4>Assign Device To A Family Member(Optional)</h4><br/>
+
+				<select name="staffUserID" class="player-dropdown">
+					<option value='None'>Select A Family Member</option>
+					{% for AllStaffMembers in AllStaffMembers %}
+						<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
+					{% endfor %}
+				</select><br/><br/>
+
+				<button type='submit'>Register Device</button>
+			</form>
+		</div>
+		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
+
+		{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
+		<div class='uploaddevicepopup'>
+			<div class='uploaddevicepopupintro'>
+				<h1>Upload A CSV File</h1>
+				<div class='uploaddevicepopupintroclose'>
 					<img src={% static 'dashboard/img/close2.png' %} />
 				</div>
 			</div>
-			<div>
-				<div class='adddevicedashboard'>
-					{% comment %} <p>Select device type</p> {% endcomment %}
-					<select required name='devicetype'>
-						<option>Select Device Kind</option>
-						<option value='Laptop'>Laptop</option>
-						<option value='Desktop'>Desktop</option>
-						<option value='Printer'>Printer</option>
-						<option value='Scanner'>Scanner</option>
-					</select>
-				</div><br/>
-				<input required name='deviceusedepartment' type='text' placeholder='Enter Device Department' /><br/><br/>
+			<ul class='uploadguides'>
+				<li><p>To upload your list of devices, simply select click on the 'Upload' box below to select a CSV file.</p></l1>
+				{% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
+				<li><p>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</p></l1>
+				<li><p>Please note that the important field in the sample CSV file above are asterisked</p></l1>
+			</ul><br/>
+			<form method = 'POST' enctype="multipart/form-data" >
+				{% csrf_token %}
+				<div>
+					<label for="images" class="drop-container">
+						<img src={% static 'dashboard/img/csv.png' %} />
+						<input type='text' hidden name='username' value = {{request.user}}  />
+						<input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
+						<span class="drop-title">Click To Select File</span>
+						{% comment %} or {% endcomment %}
+						<input  name='csv_file' type="file" id="images" required>
+						</label>
+				</div>
+				<button type='submit'>Upload</button>
+			</form>
+		</div>
+		{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
 
-				<input required name='devicebrand' type='text' placeholder='Enter Device Brand(eg: HP, Dell)' /><br/><br/>
-
-				<input required name='deviceos' type='text' placeholder='Enter Device Operating System' /><br/><br/>
-
-				<input required name='devicecostofpurchase' type='number' placeholder='Enter Device Cost Of Purchase' /><br/><br/>
-
-				<input required name='deviceyearofpurchase' type='number' placeholder='Enter Device Year Of Purchase' />
-
-				<input required name='CompanyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
-				{% comment %} <input name='CompanyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
-
-				<div class='adddevicedashboard'>
-					{% comment %} <p>Device Name</p> {% endcomment %}
-					<input required name='devicename' type='text'placeholder='Enter Device Name' />
-				</div><br/>
-				<div class='adddevicedashboard'>
-					{% comment %} <p>Device MAC ID</p> {% endcomment %}
-					<input required name='devicemacaddress' type='text'placeholder=' Enter MAC Address (XX:XX:XX:XX:XX)' />
-				</div><br/>
-				<div class='adddevicedashboard'>
-					{% comment %} <p>Device IP Address</p> {% endcomment %}
-					<input required name='deviceip' type='text'placeholder='Enter Device IP Address' />
-				</div><br/>
-				<div class='adddevicedashboard'>
-					{% comment %} <p>Device Working Condition</p> {% endcomment %}
-					<select name='devicestatus'>
-						<option>Select Device Working Condition</option>
-						<option value='Working'>Working</option>
-						<option value='Faulty'>Faulty</option>
-						<option value='Critical'>Critical</option>
-					</select>
-				</div><br/>
-				<div class='adddevicedashboard'>
-					{% comment %} <p>Device Location</p> {% endcomment %}
-					<input required name='devicelocation' type='text'placeholder='Enter Device Location' />
-					<input type='text' name='savedevicefromform' value={{request.user}} hidden />
+		{% comment %} REGISTER MY DEVICE POP STARTS HERE {% endcomment %}
+		<div class='regmydevicepopup'>
+			
+			<div class='uploaddevicepopupintro'><br/>
+				<h2>Kindly Confirm Your Device Information</h2>
+				<div class='regmydevicepopupclose'>
+					<img src={% static 'dashboard/img/close2.png' %} />
 				</div>
 			</div><br/>
-			<hr/><br/>
-			<h4>Assign Device An Existing Staff Member To This Device(Optional)</h4><br/>
-
-			<select name="staffUserID" class="player-dropdown">
-				<option value='None'>Select A Staff Member</option>
-				{% for AllStaffMembers in AllStaffMembers %}
-					<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
-				{% endfor %}
-			</select><br/><br/>
-
-			<button type='submit'>Add Device</button>
-		</form>
-	</div>
-	{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
-	{% comment %} USE COMPLETE PROFILE PROMPT STARTS HERE {% endcomment %}
-        {% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
-        <div class='uploaddevicepopup'>
-            <div class='uploaddevicepopupintro'>
-                <h1>Upload A CSV File</h1>
-                <div class='uploaddevicepopupintroclose'>
-                    <img src={% static 'dashboard/img/close2.png' %} />
-                </div>
-            </div>
-            <ul class='uploadguides'>
-                <li><p>To upload your list of devices, simply select click on the 'Upload' box below to select a CSV file.</p></l1>
-                {% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
-                <li><p>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</p></l1>
-                <li><p>Please note that the important field in the sample CSV file above are asterisked</p></l1>
-            </ul><br/>
-            <form method = 'POST' enctype="multipart/form-data" >
-                {% csrf_token %}
-                <div>
-                    <label for="images" class="drop-container">
-                        <img src={% static 'dashboard/img/csv.png' %} />
-                        <input type='text' hidden name='username' value = {{request.user}}  />
-                        <input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
-                        <span class="drop-title">Click To Select File</span>
-                        {% comment %} or {% endcomment %}
-                        <input  name='csv_file' type="file" id="images" required>
-                      </label>
-                </div>
-                <button type='submit'>Upload</button>
-            </form>
-        </div>
-        {% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
+			{% comment %} <h2>Kindly Confirm Your Device Information</h2><br/><br/> {% endcomment %}
+			<h5>Device Hostname :<br/> <strong>{{DeviceHostName}}</strong></h5><br/><br/>
+			<h5>Device MAC Address :<br/> <strong>{{DeviceMacAddress}}</strong></h5><br/><br/>
+			<h5>Device IP Address :<br/> <strong>{{DeviceIP}}</strong></h5><br/><br/>
+			<h5>Device Name :<br/> <strong>{{DeviceName}}</strong></h5><br/><br/>
+			<h5>Device Maunufacturer :<br/> <strong>{{DeviceManufacturter}}</strong></h5><br/><br/>
+			<h5>Device System Model :<br/> <strong>{{DeviceSystemModel}}</strong></h5><br/><br/>
+			<h5>Device Number Processor :<br/> <strong>{{DeviceNumOfProcessor}}</strong></h5><br/><br/>
+			<h5>Device Type :<br/> <strong>{{DeviceSystemType}}</strong></h5><br/><br/>
+			<h5>Device OS :<br/> <strong>{{DeviceOS}}</strong></h5>
+			
+			<br/><hr/><br/>
+			<h4>Provide Device's Price & Location Below(Optional):</h4><br/>
+			<form method='POST'>
+				{% csrf_token %}
+				<input type='number' name='Deviceyearofpurchase_Self' placeholder='Device Year Of Purchase. Eg: 2020' /><br/>
+				<input type='text'  name='devicelocation_Self' placeholder="Device's Location."/> <br/>
+				<input hidden value="{{DeviceHostName}}" name="DeviceHostName_Self" />
+				<input hidden value="{{DeviceMacAddress}}" name="DeviceMacAddress_Self" />
+				<input hidden value="{{DeviceIP}}" name="DeviceIP_Self" />
+				<input hidden value="{{DeviceName}}" name="DeviceName_Self" />
+				<input hidden value="{{DeviceManufacturter}}" name="DeviceManufacturter_Self" />
+				<input hidden value="{{DeviceSystemModel}}" name="DeviceSystemModel_Self" />
+				<input hidden value="{{DeviceNumOfProcessor}}" name="DeviceNumOfProcessor_Self" />
+				<input hidden value="{{DeviceSystemType}}" name="DeviceSystemType_Self" />
+				<input hidden value="{{DeviceOS}}" name="DeviceOS_Self" />
+				<button>Register My Device</button>
+			</form>
+		</div>
+		{% comment %} REGISTER MY DEVICE POP ENDS HERE {% endcomment %}
 		
 		{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS STARTS HERE {% endcomment %}
 		<div class='monthlyAmount'>
@@ -467,311 +509,252 @@
 		</div>
 		{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
 
-	<script src={% static 'dashboard/js/main.js' %}></script>
-	{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
-	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
-	<script>
-		let AllMonthArray = [];
-		// JANUARY CALCULATION STARTS HERE
-		let janelement =[];
-		let janelementMain2;
-		let janSum;
-		let janDevices = document.querySelectorAll('.JanDevices')
-		janDevices.forEach(element => {
-		janelementMain2 = element.innerText;
-			janelement.push(janelementMain2)
-			janSum = janelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+		<script src={% static 'familydashboard/js/main.js' %}></script>
+		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
+		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
+		<script>
+			let AllMonthArray = [];
+			// JANUARY CALCULATION STARTS HERE
+			let janelement =[];
+			let janelementMain2;
+			let janSum;
+			let janDevices = document.querySelectorAll('.JanDevices')
+			janDevices.forEach(element => {
+			janelementMain2 = element.innerText;
+				janelement.push(janelementMain2)
+				janSum = janelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(janSum);
-		// JANUARY CALCULATION ENDS HERE
+			AllMonthArray.push(janSum);
+			// JANUARY CALCULATION ENDS HERE
 
-		// FEBRUARY CALCULATION STARTS HERE
-		let febelement =[];
-		let febelementMain2;
-		let febSum;
-		let febDevices = document.querySelectorAll('.FebDevices')
-		febDevices.forEach(element => {
-		febelementMain2 = element.innerText;
-			febelement.push(febelementMain2)
-			febSum = febelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// FEBRUARY CALCULATION STARTS HERE
+			let febelement =[];
+			let febelementMain2;
+			let febSum;
+			let febDevices = document.querySelectorAll('.FebDevices')
+			febDevices.forEach(element => {
+			febelementMain2 = element.innerText;
+				febelement.push(febelementMain2)
+				febSum = febelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(febSum);
-		// FEBRUARY CALCULATION ENDS HERE
+			AllMonthArray.push(febSum);
+			// FEBRUARY CALCULATION ENDS HERE
 
-		// MARCH CALCULATION STARTS HERE
-		let marelement =[];
-		let marelementMain2;
-		let marSum;
-		let marDevices = document.querySelectorAll('.MarDevices')
-		marDevices.forEach(element => {
-		marelementMain2 = element.innerText;
-			marelement.push(marelementMain2)
-			marSum = marelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// MARCH CALCULATION STARTS HERE
+			let marelement =[];
+			let marelementMain2;
+			let marSum;
+			let marDevices = document.querySelectorAll('.MarDevices')
+			marDevices.forEach(element => {
+			marelementMain2 = element.innerText;
+				marelement.push(marelementMain2)
+				marSum = marelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(marSum);
-		// MARCH CALCULATION ENDS HERE
+			AllMonthArray.push(marSum);
+			// MARCH CALCULATION ENDS HERE
 
-		// APRIL CALCULATION STARTS HERE
-		let aprelement =[];
-		let aprelementMain2;
-		let aprSum;
-		let aprDevices = document.querySelectorAll('.AprDevices')
-		aprDevices.forEach(element => {
-		aprelementMain2 = element.innerText;
-			aprelement.push(aprelementMain2)
-			aprSum = aprelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// APRIL CALCULATION STARTS HERE
+			let aprelement =[];
+			let aprelementMain2;
+			let aprSum;
+			let aprDevices = document.querySelectorAll('.AprDevices')
+			aprDevices.forEach(element => {
+			aprelementMain2 = element.innerText;
+				aprelement.push(aprelementMain2)
+				aprSum = aprelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(aprSum);
-		// APRIL CALCULATION ENDS HERE
+			AllMonthArray.push(aprSum);
+			// APRIL CALCULATION ENDS HERE
 
-		// MAY CALCULATION STARTS HERE
-		let mayelement =[];
-		let mayelementMain2;
-		let maySum;
-		let mayDevices = document.querySelectorAll('.MayDevices')
-		mayDevices.forEach(element => {
-		mayelementMain2 = element.innerText;
-			mayelement.push(mayelementMain2)
-			maySum = mayelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// MAY CALCULATION STARTS HERE
+			let mayelement =[];
+			let mayelementMain2;
+			let maySum;
+			let mayDevices = document.querySelectorAll('.MayDevices')
+			mayDevices.forEach(element => {
+			mayelementMain2 = element.innerText;
+				mayelement.push(mayelementMain2)
+				maySum = mayelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(maySum);
-		// MAY CALCULATION ENDS HERE
+			AllMonthArray.push(maySum);
+			// MAY CALCULATION ENDS HERE
 
 
-		// JUNE CALCULATIONS STARTS HERE
-		let juneelement =[];
-		let juneelementMain2;
-		let JuneSum;
-		let JuneDevices = document.querySelectorAll('.JuneDevices')
-		JuneDevices.forEach(element => {
-		juneelementMain2 = element.innerText;
-		juneelement.push(juneelementMain2)
-			JuneSum = juneelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// JUNE CALCULATIONS STARTS HERE
+			let juneelement =[];
+			let juneelementMain2;
+			let JuneSum;
+			let JuneDevices = document.querySelectorAll('.JuneDevices')
+			JuneDevices.forEach(element => {
+			juneelementMain2 = element.innerText;
+			juneelement.push(juneelementMain2)
+				JuneSum = juneelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(JuneSum);
-		// JUNE CALCULATIONS ENDS HERE
+			AllMonthArray.push(JuneSum);
+			// JUNE CALCULATIONS ENDS HERE
 
-		// JULY CALCULATIONS STARTS HERE
-		let julyelement =[];
-		let julyelementMain2;
-		let julySum;
-		let julyDevices = document.querySelectorAll('.JulyDevices')
-		julyDevices.forEach(element => {
-		julyelementMain2 = element.innerText;
-			julyelement.push(julyelementMain2)
-			julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// JULY CALCULATIONS STARTS HERE
+			let julyelement =[];
+			let julyelementMain2;
+			let julySum;
+			let julyDevices = document.querySelectorAll('.JulyDevices')
+			julyDevices.forEach(element => {
+			julyelementMain2 = element.innerText;
+				julyelement.push(julyelementMain2)
+				julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(julySum);
-		// JULY CALCULATIONS ENDS HERE
+			AllMonthArray.push(julySum);
+			// JULY CALCULATIONS ENDS HERE
 
-		// AUGUST CALCULATIONS STARTS HERE
-		let augelement =[];
-		let augelementMain2;
-		let augSum;
-		let augDevices = document.querySelectorAll('.AugDevices')
-		augDevices.forEach(element => {
-		augelementMain2 = element.innerText;
-			augelement.push(augelementMain2)
-			augSum = augelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// AUGUST CALCULATIONS STARTS HERE
+			let augelement =[];
+			let augelementMain2;
+			let augSum;
+			let augDevices = document.querySelectorAll('.AugDevices')
+			augDevices.forEach(element => {
+			augelementMain2 = element.innerText;
+				augelement.push(augelementMain2)
+				augSum = augelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(augSum);
-		// AUGUST CALCULATIONS ENDS HERE
+			AllMonthArray.push(augSum);
+			// AUGUST CALCULATIONS ENDS HERE
 
-		// SEPTEMBER CALCULATIONS STARTS HERE
-		let septelement =[];
-		let septelementMain2;
-		let septSum;
-		let septDevices = document.querySelectorAll('.septDevices')
-		septDevices.forEach(element => {
-		septelementMain2 = element.innerText;
-			septelement.push(septelementMain2)
-			septSum = septelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// SEPTEMBER CALCULATIONS STARTS HERE
+			let septelement =[];
+			let septelementMain2;
+			let septSum;
+			let septDevices = document.querySelectorAll('.septDevices')
+			septDevices.forEach(element => {
+			septelementMain2 = element.innerText;
+				septelement.push(septelementMain2)
+				septSum = septelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(septSum);
-		// SEPTEMBER CALCULATIONS ENDS HERE
+			AllMonthArray.push(septSum);
+			// SEPTEMBER CALCULATIONS ENDS HERE
 
-		// OCTOBER CALCULATIONS STARTS HERE
-		let octtelement =[];
-		let octtelementMain2;
-		let octtSum;
-		let octtDevices = document.querySelectorAll('.OctDevices')
-		octtDevices.forEach(element => {
-		octtelementMain2 = element.innerText;
-			octtelement.push(octtelementMain2)
-			octtSum = octtelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// OCTOBER CALCULATIONS STARTS HERE
+			let octtelement =[];
+			let octtelementMain2;
+			let octtSum;
+			let octtDevices = document.querySelectorAll('.OctDevices')
+			octtDevices.forEach(element => {
+			octtelementMain2 = element.innerText;
+				octtelement.push(octtelementMain2)
+				octtSum = octtelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(octtSum);
-		// OCTOBER CALCULATIONS ENDS HERE
+			AllMonthArray.push(octtSum);
+			// OCTOBER CALCULATIONS ENDS HERE
 
-		// NOVEMBER CALCULATIONS STARTS HERE
-		let novtelement =[];
-		let novtelementMain2;
-		let novtSum;
-		let novtDevices = document.querySelectorAll('.NovDevices')
-		novtDevices.forEach(element => {
-		novtelementMain2 = element.innerText;
-			novtelement.push(novtelementMain2)
-			novtSum = novtelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
+			// NOVEMBER CALCULATIONS STARTS HERE
+			let novtelement =[];
+			let novtelementMain2;
+			let novtSum;
+			let novtDevices = document.querySelectorAll('.NovDevices')
+			novtDevices.forEach(element => {
+			novtelementMain2 = element.innerText;
+				novtelement.push(novtelementMain2)
+				novtSum = novtelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 			});
-			
-		});
-		AllMonthArray.push(novtSum);
-		// NOVEMBER CALCULATIONS ENDS HERE
+			AllMonthArray.push(novtSum);
+			// NOVEMBER CALCULATIONS ENDS HERE
 
-		// DECEMBER CALCULATIONS STARTS HERE
-		let dectelement =[];
-		let dectelementMain2;
-		let dectSum;
-		let dectDevices = document.querySelectorAll('.DecDevices')
-		dectDevices.forEach(element => {
-		dectelementMain2 = element.innerText;
-			dectelement.push(dectelementMain2)
-			dectSum = dectelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
-			});				
-		});
-		AllMonthArray.push(dectSum);
-		AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
+			// DECEMBER CALCULATIONS STARTS HERE
+			let dectelement =[];
+			let dectelementMain2;
+			let dectSum;
+			let dectDevices = document.querySelectorAll('.DecDevices')
+			dectDevices.forEach(element => {
+			dectelementMain2 = element.innerText;
+				dectelement.push(dectelementMain2)
+				dectSum = dectelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});				
+			});
+			AllMonthArray.push(dectSum);
+			AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
 
-		let resultSum = result.reduce((a, b) => a + b, 0)
-		let amountspenttotal = document.querySelector('.amountspenttotal a')
-		if (amountspenttotal){
-			amountspenttotal.innerText = resultSum.toLocaleString("en-US")
-		}
-	</script>
-	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
-
-	<script>
-		var config = {
-			type: 'doughnut',
-			data: {
-				datasets: [{
-				data: {{ data|safe }}, 
-				backgroundColor: [
-					'#2A66B0', '#59A2EA'
-				],
-				label: 'Population'
-				}],
-				labels: {{ labels|safe }}
-			},
-			options: {
-				responsive: true,
-				legend: {
-				display: false
+			let resultSum = result.reduce((a, b) => a + b, 0)
+			let amountspenttotal = document.querySelector('.amountspenttotal a')
+			if (amountspenttotal){
+				amountspenttotal.innerText = resultSum.toLocaleString("en-US")
 			}
-			}
-			};
-			
-		var config2 = {
-			type: 'line',
-			data: {
-				datasets: [{
-					data: {{dataMain | safe}},
-					backgroundColor: [
-					'rgba(64, 100, 255, 0.39)',
-					'#2A66B0',
-					'rgba(64, 100, 255, 0.39)',
-					'#2A66B0',
-					'rgba(64, 100, 255, 0.39)',
-					'#2A66B0',
-					'rgba(64, 100, 255, 0.39)',
-					'#2A66B0',
-					'rgba(64, 100, 255, 0.39)',
-					'#2A66B0',
-					'rgba(64, 100, 255, 0.39)',
-					'#2A66B0' 
-				  ],
-				  label: 'Amount Spent On Hardware Purchase'
-				}],
-				labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-			},
-			options: {
-				responsive: true,
-				legend: {
-				display: false
-			}
-			}
-			};
+		</script>
+		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
 
-		
-			window.onload = function() {
-			var ctx = document.getElementById('pie-chart').getContext('2d');
-			var ctx2 = document.getElementById('layanan_subbagian').getContext('2d');
-			window.myPie = new Chart(ctx, config);
-			window.myPie = new Chart(ctx2, config2);
-			};
-
-			{% comment %} $(function () { {% endcomment %}
-				{% comment %} var ctx = document.getElementById('pie-chart').getContext('2d');
-				var data: {
+		<script>
+			var config = {
+				type: 'doughnut',
+				data: {
 					datasets: [{
 					data: {{ data|safe }}, 
 					backgroundColor: [
@@ -787,22 +770,81 @@
 					display: false
 				}
 				}
+				};
+				
+			var config2 = {
+				type: 'line',
+				data: {
+					datasets: [{
+						data: {{dataMain | safe}},
+						backgroundColor: [
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0' 
+					],
+					label: 'Amount Spent On Hardware Purchase'
+					}],
+					labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+				},
+				options: {
+					responsive: true,
+					legend: {
+					display: false
+				}
+				}
+				};
 
-				var myDoughnutChart = new Chart(ctx, {
-					type: 'doughnut',
-					data: data,
+			
+				window.onload = function() {
+				var ctx = document.getElementById('pie-chart').getContext('2d');
+				var ctx2 = document.getElementById('layanan_subbagian').getContext('2d');
+				window.myPie = new Chart(ctx, config);
+				window.myPie = new Chart(ctx2, config2);
+				};
+
+				{% comment %} $(function () { {% endcomment %}
+					{% comment %} var ctx = document.getElementById('pie-chart').getContext('2d');
+					var data: {
+						datasets: [{
+						data: {{ data|safe }}, 
+						backgroundColor: [
+							'#2A66B0', '#59A2EA'
+						],
+						label: 'Population'
+						}],
+						labels: {{ labels|safe }}
+					},
 					options: {
 						responsive: true,
 						legend: {
-						  display: false
-					  }
+						display: false
 					}
-				}); {% endcomment %}
+					}
 
-			{% comment %} }); {% endcomment %}
+					var myDoughnutChart = new Chart(ctx, {
+						type: 'doughnut',
+						data: data,
+						options: {
+							responsive: true,
+							legend: {
+							display: false
+						}
+						}
+					}); {% endcomment %}
 
-	</script>
-	{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
+				{% comment %} }); {% endcomment %}
+
+		</script>
+		{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
     </body>
 </html>
 {% endblock content %}

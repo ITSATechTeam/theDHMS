@@ -59,7 +59,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # 
     # 'django_python3_ldap',
-
 ]
 
 
@@ -87,6 +86,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django_auto_logout.middleware.auto_logout',
 ]
+
 MIDDLEWARE.append('ms_identity_web.django.middleware.MsalMiddleware')
 AAD_CONFIG = AADConfig.parse_json(file_path='aad.config.json')
 MS_IDENTITY_WEB = IdentityWebPython(AAD_CONFIG)
