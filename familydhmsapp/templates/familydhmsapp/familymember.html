@@ -8,6 +8,8 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familymembers/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,8 +26,192 @@
 	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
 	{% endif %}
 	<body class='body'>
+		<div class='shadow'></div>
 		<div class='main'>
-        </main>
+			{% comment %} MAIN STARTS ABOVE {% endcomment %}
+			<div class='familymemberintro'>
+				<div>
+					<h1>Family Members</h1>
+					<h4>Manage your family members and  devices </h4>
+				</div>
+				<div class='familymemberintrobtn'>
+					<button>
+						<img src={% static 'familymembers/img/add.png' %} />
+						Add Member
+					</button>
+				</div>
+			</div>
+				
+			<div id="flash" class='flashmessage'>
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong>{{ message }}</strong>
+					{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+			{% comment %} EMPTY STATE STARTS HERE {% endcomment %}
+			<div class='emptystate'>
+				<img src={% static 'familymembers/img/familymemberemptystate.png' %} />
+				<h4>No family members have been added yet. Add family members and start managing them.</h4>					
+				<button>
+					<img src={% static 'familymembers/img/add2.png' %} />
+					Add Member
+				</button>
+			</div>
+			{% comment %} EMPTY STATE ENDS HERE {% endcomment %}			
+			<div class='familymemberCount'>
+				<p>{{allfamilymembersCount}}</p>
+			</div>
+			{% comment %} MAIN FAMILY MEMBERS DISPLAY STARTS HERE {% endcomment %}
+
+			<div class='mainfamilymemberslistsection'>
+				{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
+				<div class='deviceinventorymaintop'>
+					<div class='searchdashboardsection'>
+						<div class='searchdashboard'>
+							{% comment %} <form method='GET' action="{% url 'Searchresult' %}"> {% endcomment %}
+							<form>
+								<input type='text' name='q' placeholder='Search Devices' />
+							</form>
+							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+						</div>
+						
+						<div class='filteroutter'>
+							<div class='filter filtercategory'>
+								<img src={% static 'familymembers/img/filter.png' %} />
+								<p>Filter by Category</p>
+							</div>
+							{% comment %} <div class='filter filtercategory filter2'>
+								<img src={% static 'inventory/img/filter.png' %} />
+								<p>Filter by Device Status</p>
+							</div> {% endcomment %}
+						</div>
+						
+						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+						<div class='filterbox filterbox1'>
+							<h2>Filter by</h2>
+							<div class='closefilter'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									
+									<p>Device Category</p>
+									<select name='q'>
+										<option value = 'AllCategory'>All</option>
+										<option value='Desktop'>Desktop</option>
+										<option value='Laptop'>Laptop</option>
+										<option value='Printer'>Printer</option>
+										<option value='Scanner'>Scanner</option>
+										<option value='OtherDevices'>Other Devices</option>
+									</select>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+						{% comment %} FILTER BY DEVICE STATUS {% endcomment %}
+						{% comment %} <div class='filterbox filterbox2'>
+							<h2>Filter by</h2>
+							<div class='closefilter2'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									<div class='selecthealth'>
+										<p>Device Health</p>
+											<select name='q'>
+												<option value = 'AllStatus' >All</option>
+												<option value='Working'>Working</option>
+												<option value='Critical'>Critical</option>
+												<option value='Faulty'>Faulty</option>
+											</select>
+									</div>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div> {% endcomment %}
+					</div>
+					<div class='searchsidebtns'>
+						{% comment %} <div class='uploaddevicecsv showdeviceuploadpopup'>
+							<button>
+								<img src={% static 'dashboard/img/uploaddevice.png' %} />
+								<p>Upload</p>
+							</button>
+						</div> {% endcomment %}
+						<div class='scannetworkbtn'>
+							<a href={% url 'ScanNetwork' %}>
+								<button class='scannetworkbtn'>
+									<img src={% static 'familymembers/img/export.png' %} />
+									<p>Export</p>
+								</button>
+							</a>
+						</div>
+					</div>
+				</div>
+				{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
+				
+				<table  id="paginated-list" >
+					<tr>
+					  <th class='topCheckBox'>
+						<input type='radio' />
+					  </th>
+					  <th>Name</th>
+					  <th>Member ID</th>
+					  <th>Email</th>
+					  <th>Assigned Device ID</th>
+					  <th>Action</th>
+					</tr>
+					{% for FamilyMemberReg in allfamilymembers %}
+					<div class='item'>
+						<tr class='item'>
+							<td><input type='radio' /></td>
+							<td class={{ FamilyMemberReg.memberfullname }}>{{ FamilyMemberReg.memberfullname }}</td>
+							<td>{{ FamilyMemberReg.memberid }}</td>
+							<td class={{ FamilyMemberReg.memberemail }}>{{ FamilyMemberReg.memberemail }}</td>
+							<td>DEVICE</td>
+							<td>
+								<div class='actionbtns'>
+									<img src={% static 'familymembers/img/action.png' %} />
+								</div>
+							</td>
+						</tr>
+					</div>
+					{% endfor %}
+				</table>
+			</div>
+
+			{% comment %} MAIN FAMILY MEMBERS DISPLAY ENDS HERE {% endcomment %}
+			{% comment %} MAIN ENDS BELOW {% endcomment %}
+        </div>
+		{% comment %} ADD FAMILY MEMBER POP UP STARTS HERE {% endcomment %}
+
+		<div class='addfampopup'>
+			<div class='addfampopuphead'>
+				<div>
+					<h1>Add Family Member</h1>
+					<p>Add a new family member to your Family DHMS </p>
+				</div>
+				<div class='addfampopupheadclosebtn'>
+					<img src={% static 'familymembers/img/x.png' %} />
+				</div>
+			</div><br/><br/>
+			<div>
+				<form method='POST'>
+					{% csrf_token %}
+					<label for='fullname'>Full Name</label><br/>
+					<input id='fullname' name='fullname' type='text' required placeholder='John Doe' /><br/><br/>
+
+					<label for='email'>Email Address</label><br/>
+					<input id='email' name='email' type='email' required placeholder='johndoe@gmail.com' /><br/><br/>
+					<button>Add Member</button>
+				</form>
+			</div>
+
+		</div>
+
+		{% comment %} ADD FAMILY MEMBER POP UP ENDS HERE {% endcomment %}
+		<script src={% static 'familymembers/js/familymembers.js' %}></script>
     </body>
 </html>
 {% endblock content %}

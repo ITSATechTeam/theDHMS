@@ -48,3 +48,28 @@ class FamilyDeviceReg(models.Model):
         
     def __str__(self):
         return f'{self.FamilyUniqueCode} {self.devicename} {self.deviceid} {self.deviceuser}'
+
+
+class FamilyMemberReg(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    memberfullname = models.CharField(max_length = 1500, null=True, blank = True)
+    memberemail = models.EmailField(max_length = 1500, null=True, blank = True)
+    memberid = models.CharField(max_length = 1500, null=True, blank = True)
+    familyid = models.CharField(max_length = 1500, null=True, blank = True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return f'{self.user} registered {self.memberfullname} with id {self.memberid}'
+
+
+
+
+
+
+
+

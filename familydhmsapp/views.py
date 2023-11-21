@@ -238,41 +238,31 @@ def FamilyDHMSDashboard(request):
                 depreciateRateReal_self = 'Nil'
         else:
             depreciateRateReal_self = 'Nil'
-        # else:
-        #     messages.error(request, "Device registration failed. Please Indicate This Device's Year Of Purchase.")
-        #     return redirect('FamilyDHMSDashboard')
+
+        try:
+            FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, devicebrand = DeviceManufacturter_Self, deviceOS = DeviceOS_Self,
+            deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceHostName_Self, devicemacaddress = DeviceMacAddress_Self,
+            deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
+            savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, devicemodel = DeviceSystemModel_Self)
+            FamilyDeviceRegForm.save()
+            messages.error(request, "Device Registered Successfully.")
+            return redirect('FamilyDHMSDashboard')
+
+        except:
+            messages.error(request, "An error occured while trying to save this device, please try again.")
+            return redirect('FamilyDHMSDashboard')
         
-        # if not request.POST['devicelocation_Self']:
-        #     messages.error(request, "Device uploaded failed. Please Indicate This Device's Location.")
-        #     return redirect('FamilyDHMSDashboard')
-
-        
-        FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, devicebrand = DeviceManufacturter_Self, deviceOS = DeviceOS_Self,
-        deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceHostName_Self, devicemacaddress = DeviceMacAddress_Self,
-        deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
-        savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, devicemodel = DeviceSystemModel_Self)
-        FamilyDeviceRegForm.save()
-        messages.error(request, "Device Registered Successfully.")
-        return redirect('FamilyDHMSDashboard')
-
-        # try:
-        #     FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, devicebrand = DeviceManufacturter_Self, deviceOS = DeviceOS_Self,
-        #     deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceHostName_Self, devicemacaddress = DeviceMacAddress_Self,
-        #     deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
-        #     savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, devicemodel = DeviceSystemModel_Self)
-        #     FamilyDeviceRegForm.save()
-        #     messages.error(request, "An error occured while trying to save this device, please try again.")
-        #     return redirect('FamilyDHMSDashboard')
-
-        # except:
-        #     messages.error(request, "An error occured while trying to save this device, please try again.")
-        #     return redirect('FamilyDHMSDashboard')
-        
-
+    
+    allfamilymembers = FamilyMemberReg.objects.filter(user = request.user)
+    allfamilymembersCount = allfamilymembers.count()
+    
+    allFamilyDeviceReg = FamilyDeviceReg.objects.filter(user = request.user)
+    allFamilyDeviceRegCount = allFamilyDeviceReg.count()
 
     context = {'DeviceHostName':DeviceHostName, 'DeviceMacAddress':DeviceMacAddress, 'DeviceIP':DeviceIP, 'DeviceManufacturter':DeviceManufacturter,
     'DeviceSystemModel':DeviceSystemModel, 'DeviceName':DeviceName, 'DeviceNumOfProcessor':DeviceNumOfProcessor, 'DeviceSystemType':DeviceSystemType, 
-    'DeviceSystemFamily': DeviceSystemFamily, 'DeviceOS':DeviceOS}
+    'DeviceSystemFamily': DeviceSystemFamily, 'DeviceOS':DeviceOS, 'allfamilymembersCount':allfamilymembersCount, 
+    'allFamilyDeviceRegCount':allFamilyDeviceRegCount}
 
     return render(request, 'familydhmsapp/familydashboard.html', context)
 
@@ -297,9 +287,54 @@ def FamilySupport(request):
 def FamilySettings(request):
     return render(request, 'familydhmsapp/familysettings.html')
 
-
+@login_required(login_url='UserLogin')
 def FamilyMembers(request):
-    return render(request, 'familydhmsapp/familymember.html')
+    if request.method == 'POST' and 'email' in request.POST:
+        fullname = request.POST['fullname']
+        email = request.POST['email']
+        memberid = 'FM-'  + get_random_string(length=5)
+
+        if not request.POST['fullname']:
+            messages.error(request, 'Registration Failed: Kindly provide a full name for this family member.')
+            return redirect('FamilyMembers')
+
+        if not request.POST['email']:
+            messages.error(request, 'Registration Failed: Kindly provide an email address for this family member.')
+            return redirect('FamilyMembers')
+
+        checkemail = User.objects.filter(email = request.POST['email'])
+        checkfullname = User.objects.filter(first_name = request.POST['fullname'])
+        checkfamilyemail = FamilyMemberReg.objects.filter(memberemail = request.POST['email'])
+        checkfamilyfullname = FamilyMemberReg.objects.filter(memberfullname = request.POST['fullname'])
+        if (checkemail):
+            messages.error(request, 'Registration Failed: Email address is already registered to an existing user.')
+            return redirect('FamilyMembers')
+
+        if (checkfullname):
+            messages.error(request, 'Registration Failed: Full name is already registered to an existing user.')
+            return redirect('FamilyMembers')
+
+        if (checkfamilyemail):
+            messages.error(request, 'Registration Failed: Email address is already registered to an existing user.')
+            return redirect('FamilyMembers')
+
+        if (checkfamilyfullname):
+            messages.error(request, 'Registration Failed: Full name is already registered to an existing user.')
+            return redirect('FamilyMembers')
+
+        familymemberform = FamilyMemberReg(user = request.user, memberfullname = fullname, memberemail = email, memberid = memberid, familyid = request.user.last_name)
+
+        try:
+            familymemberform.save()
+            messages.success(request, "You registered a family member successfully.")
+            return redirect('FamilyMembers')
+        except:
+            messages.error(request, "An error occured while saving family member. Kindly try again.")
+            return redirect('FamilyMembers')
+    allfamilymembers = FamilyMemberReg.objects.filter(user = request.user)
+    allfamilymembersCount = allfamilymembers.count()
+    context = {'allfamilymembers':allfamilymembers, 'allfamilymembersCount':allfamilymembersCount}
+    return render(request, 'familydhmsapp/familymember.html', context)
 
 
 def FamilyLogout(request):

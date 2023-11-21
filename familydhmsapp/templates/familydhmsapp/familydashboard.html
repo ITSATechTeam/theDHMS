@@ -27,7 +27,7 @@
 		<div class='main'>
 			<div class='maintop'>
 				<div>
-					<h1>Welcome back {{request.user}},</h1>
+					<h1><strong class='greetuser'></strong> {{request.user}},</h1>
 					<h5>Manage all your family's devices in one place.</h5>
 				</div>
 				
@@ -73,7 +73,11 @@
 						<div class='introdetailsbar department'>
 							<img src={% static 'familydashboard/img/members.png' %} />
 							<div>
+								{% if allfamilymembersCount %}
+								<h1>{{allfamilymembersCount}}</h1>
+								{% else %}
 								<h1>0</h1>
+								{% endif %}
 								<p>Family Members</p>
 							</div>
 						</div>
@@ -113,8 +117,8 @@
 						<div class='introdetailsbar allusers'>
 							<img src={% static 'familydashboard/img/devices.png' %} />
 							<div>
-								{% if StaffCount  %}
-								<h1>{{ StaffCount }}</h1>
+								{% if allFamilyDeviceRegCount  %}
+								<h1>{{ allFamilyDeviceRegCount }}</h1>
 								{% else %}
 								<h1>0</h1>
 								{% endif %}
@@ -509,7 +513,7 @@
 		</div>
 		{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
 
-		<script src={% static 'familydashboard/js/main.js' %}></script>
+		<script src={% static 'familydashboard/js/familydashboard.js' %}></script>
 		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
