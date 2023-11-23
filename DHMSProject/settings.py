@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     # 
     # 'django_python3_ldap',
+    'django_user_agents',
 ]
 
 
@@ -85,6 +86,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django_auto_logout.middleware.auto_logout',
+
+    # 
+    'django_user_agents.middleware.UserAgentMiddleware'
 ]
 
 MIDDLEWARE.append('ms_identity_web.django.middleware.MsalMiddleware')

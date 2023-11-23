@@ -49,7 +49,7 @@ import platform
 os_name = platform.system()
 
 # Print the operating system name
-# print("Operating System:", os_name)
+print("Operating System:", os_name)
 
 
 @login_required(login_url='Login')

@@ -9,6 +9,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
 from datetime import date
+from django.db.models import Q
 
 
 # 
@@ -19,13 +20,11 @@ hostname = socket.gethostname()
 ## getting the IP address using socket.gethostbyname() method
 ip_address = socket.gethostbyname(hostname)
 
-import wmi
-c = wmi.WMI()    
-my_system = c.Win32_ComputerSystem()[0]
-
 
 import platform
 os_name = platform.system()
+my_system = platform.uname()
+
 
 
 # Create your views here.
@@ -83,48 +82,57 @@ def UserLogin(request):
         familyuser = request.POST['familyemail']
         password = request.POST['password']
 
-        try:
-            user = User.objects.get(email=familyuser)
-            if user:
-                userEmail = user.email
-                # user = authenticate(request, username=user, password=password)
-            else:
+        findemailinrec = Familyregister.objects.filter(email=familyuser)
+        if findemailinrec:
+
+            try:
+                user = User.objects.get(email=familyuser)
+                if user:
+                    userEmail = user.email
+                    # user = authenticate(request, username=user, password=password)
+                else:
+                    messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
+                    return redirect('UserReg')
+
+            except:
                 messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
                 return redirect('UserReg')
+            
+            user = authenticate(request, username=user, password=password)
 
-        except:
+            if user is not None:
+                login(request, user)
+                if next == "":
+                    return redirect('FamilyDHMSDashboard')
+                else:
+                    return HttpResponseRedirect(next)
+
+            else:
+                messages.error(request, 'Login Failed: Please Try Again!!')
+                
+        else:
             messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
             return redirect('UserReg')
-        
-        user = authenticate(request, username=user, password=password)
-
-        if user is not None:
-            login(request, user)
-            if next == "":
-                return redirect('FamilyDHMSDashboard')
-            else:
-                return HttpResponseRedirect(next)
-
-        else:
-            messages.error(request, 'Login Failed: Please Try Again!!')
 
     return render(request, 'familydhmsapp/loginpage.html')
 
+import requests
 @login_required(login_url='UserLogin')
 def FamilyDHMSDashboard(request):
-    DeviceHostName = hostname
-    DeviceMacAddress = gma()
-    DeviceIP = ip_address
-    DeviceManufacturter = my_system.Manufacturer
-    DeviceSystemModel = my_system. Model
-    DeviceName = my_system.Name
-    DeviceNumOfProcessor = my_system.NumberOfProcessors
-    DeviceSystemType = my_system.SystemType
-    DeviceSystemFamily = my_system.SystemFamily
-    DeviceOS = os_name
-
+    # GET DEVICE INFO
+    if request.user_agent.is_mobile:
+        device_type = "Mobile"
+    if request.user_agent.is_tablet:
+        device_type = "Tablet"
+    if request.user_agent.is_pc:
+        device_type = "PC"    
+    browser_type = request.user_agent.browser.family
+    browser_version = request.user_agent.browser.version_string
+    os_type = request.user_agent.os.family
+    os_version = request.user_agent.os.version_string
+    Device_IP_Self = request.META.get('REMOTE_ADDR')
+    # 
     if request.method == 'POST' and 'deviceyearofpurchase' in request.POST:
-        print('deviceyearofpurchase triggered successfully')
         today = date.today()                                        
         dateForWeekNumber = datetime.today()
         weekNumber = dateForWeekNumber.isocalendar().week
@@ -137,6 +145,7 @@ def FamilyDHMSDashboard(request):
         devicename = request.POST['devicename']
         devicemacaddress = request.POST['devicemacaddress']
         deviceipaddress = request.POST['deviceip']
+        devicestatus = request.POST['devicestatus']
         Reqfamilyadmin = request.user
         FamilyUniqueCode = request.user.last_name
         uniqueId = 'Family_Device-'  + get_random_string(length=8)
@@ -157,7 +166,6 @@ def FamilyDHMSDashboard(request):
         if not request.POST['deviceip']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's IP Address.")
             return redirect('FamilyDHMSDashboard')
-
         
         if request.POST['deviceyearofpurchase']:
             depreciateRate = 2023 - int(request.POST['deviceyearofpurchase'])
@@ -178,16 +186,13 @@ def FamilyDHMSDashboard(request):
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Year Of Purchase.")
             return redirect('FamilyDHMSDashboard')
 
-        FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
-        deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
-        deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
-        savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber)
-        FamilyDeviceRegForm.save()
-        messages.error(request, "Device saved successfully.")
-        return redirect('FamilyDHMSDashboard')
-
         try:
-            FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
+            if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
+                FaultyDevicesTrendForm = FaultyDevicesTrend(user = request.user, deviceID = uniqueId, month =  today.strftime("%b"), 
+                year = today.strftime("%B %d, %Y"), FamilyUniqueCode = request.user.last_name)
+                FaultyDevicesTrendForm.save()
+
+            FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
             deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
             deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
             savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber)
@@ -202,24 +207,32 @@ def FamilyDHMSDashboard(request):
 
         # REGISTER YOUR DEVICE SELF SET UP STARTS HERE
 
-    if request.method == 'POST' and 'DeviceHostName_Self' in request.POST:
-        today = date.today()                                        
+    if request.method == 'POST' and 'Device_IP_Self' in request.POST:
+        today = date.today()
         dateForWeekNumber = datetime.today()
         weekNumber = dateForWeekNumber.isocalendar().week
-        DeviceHostName_Self = request.POST['DeviceHostName_Self']
-        DeviceMacAddress_Self = request.POST['DeviceMacAddress_Self']
-        DeviceIP_Self = request.POST['DeviceIP_Self']
+        devicestatus = request.POST['devicestatus']
         DeviceName_Self = request.POST['DeviceName_Self']
-        DeviceManufacturter_Self = request.POST['DeviceManufacturter_Self']
-        DeviceSystemModel_Self = request.POST['DeviceSystemModel_Self']
-        DeviceNumOfProcessor_Self = request.POST['DeviceNumOfProcessor_Self']
+        DeviceMacAddress_Self = request.POST['devicemacaddress_Self']
+        DeviceIP_Self = request.POST['Device_IP_Self']
+        BrowserType_Self = request.POST['BrowserType_Self']
+        BrowserVersion_Self = request.POST['BrowserVersion_Self']
         DeviceSystemType_Self = request.POST['DeviceSystemType_Self']
-        DeviceOS_Self = request.POST['DeviceOS_Self']
+        DeviceOSType_Self = request.POST['DeviceOSType_Self']
+        DeviceOSVersion_Self = request.POST['DeviceOSVersion_Self']
         devicelocation_Self = request.POST['devicelocation_Self']
         Deviceyearofpurchase_Self = request.POST['Deviceyearofpurchase_Self']
 
         uniqueId = 'Family_Device-'  + get_random_string(length=8)
         dateForWeekNumber = datetime.today()
+        
+        if not request.POST['DeviceName_Self']:
+            messages.error(request, "Device uploaded failed. Kindly try again.")
+            return redirect('FamilyDHMSDashboard')
+        
+        if not request.POST['devicestatus']:
+            messages.error(request, "Device uploaded failed. Kindly Provide Your Device Health Status.")
+            return redirect('FamilyDHMSDashboard')
         
         if request.POST['Deviceyearofpurchase_Self']:
             depreciateRate = 2023 - int(request.POST['Deviceyearofpurchase_Self'])
@@ -240,10 +253,17 @@ def FamilyDHMSDashboard(request):
             depreciateRateReal_self = 'Nil'
 
         try:
-            FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, devicebrand = DeviceManufacturter_Self, deviceOS = DeviceOS_Self,
-            deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceHostName_Self, devicemacaddress = DeviceMacAddress_Self,
+            if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
+                FaultyDevicesTrendForm = FaultyDevicesTrend(user = request.user, deviceID = uniqueId, month =  today.strftime("%b"), 
+                year = today.strftime("%B %d, %Y"), FamilyUniqueCode = request.user.last_name)
+                FaultyDevicesTrendForm.save()
+
+            FamilyDeviceRegForm = FamilyDeviceReg(user = request.user, devicetype = DeviceSystemType_Self, deviceOS = DeviceOSType_Self,
+            deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceName_Self, devicemacaddress = DeviceMacAddress_Self,
             deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
-            savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, devicemodel = DeviceSystemModel_Self)
+            userbrowser = BrowserType_Self, userbrowserversion = BrowserVersion_Self, userOSVersion = DeviceOSVersion_Self, devicestatus = devicestatus,
+            savetimedata = today.strftime("%B %d, %Y"), 
+            registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber)
             FamilyDeviceRegForm.save()
             messages.error(request, "Device Registered Successfully.")
             return redirect('FamilyDHMSDashboard')
@@ -259,13 +279,66 @@ def FamilyDHMSDashboard(request):
     allFamilyDeviceReg = FamilyDeviceReg.objects.filter(user = request.user)
     allFamilyDeviceRegCount = allFamilyDeviceReg.count()
 
-    context = {'DeviceHostName':DeviceHostName, 'DeviceMacAddress':DeviceMacAddress, 'DeviceIP':DeviceIP, 'DeviceManufacturter':DeviceManufacturter,
-    'DeviceSystemModel':DeviceSystemModel, 'DeviceName':DeviceName, 'DeviceNumOfProcessor':DeviceNumOfProcessor, 'DeviceSystemType':DeviceSystemType, 
-    'DeviceSystemFamily': DeviceSystemFamily, 'DeviceOS':DeviceOS, 'allfamilymembersCount':allfamilymembersCount, 
-    'allFamilyDeviceRegCount':allFamilyDeviceRegCount}
+    allLaptopDevices = FamilyDeviceReg.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(devicetype = 'Laptop'))
+    allPCDevices = FamilyDeviceReg.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(devicetype = 'PC'))
+    allPCDevicesCount = allPCDevices.count()
+    allLaptopDevicesCount = allLaptopDevices.count()
+    allLaptopDevicesCountMain = allLaptopDevicesCount + allPCDevicesCount
+    allDesktopDevices = FamilyDeviceReg.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(devicetype = 'Desktop'))
+    allDesktopDevicesCount = allDesktopDevices.count()
+    data = [allLaptopDevicesCountMain, allDesktopDevicesCount]
+    labels = ['Laptops', 'Desktops']
+
+    AllFaultyDevicesTrend = FaultyDevicesTrend.objects.all()
+    JanDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Jan'))
+    FebDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Feb'))
+    MarDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Mar'))
+    AprDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Apr'))
+    MayDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'May'))
+    JunDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Jun'))
+    JulDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Jul'))
+    AugDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Aug'))
+    SeptDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Sep'))
+    OctDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Oct'))
+    NovDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Nov'))
+    DecDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Dec'))
+
+    #
+    # AprDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(registeredMonth = 'Apr'))
+    # AprDevices1 = AprDevices.count()
+    # 
+
+
+    context = {
+    'DeviceType':device_type,
+    'BrowserType':browser_type, 
+    'BrowserVersion':browser_version, 
+    'DeviceOSType':os_type,
+    'DeviceOSVersion':os_version, 
+    'Device_IP_Self': Device_IP_Self,
+    'allfamilymembersCount':allfamilymembersCount, 
+    'allFamilyDeviceReg':allFamilyDeviceReg,
+    'allFamilyDeviceRegCount':allFamilyDeviceRegCount,
+    'AllFaultyDevicesTrend':AllFaultyDevicesTrend,
+    'JanDevices':JanDevices,
+    'FebDevices':FebDevices,
+    'MarDevices':MarDevices,
+    'AprDevices':AprDevices,
+    'MayDevices':MayDevices,
+    'JunDevices':JunDevices,
+    'JulDevices':JulDevices,
+    'AugDevices':AugDevices,
+    'SeptDevices':SeptDevices,
+    'OctDevices':OctDevices,
+    'NovDevices':NovDevices,
+    'DecDevices':DecDevices,
+    'data':data,
+    'labels':labels,
+    'allLaptopDevicesCountMain':allLaptopDevicesCountMain,
+    'allDesktopDevicesCount':allDesktopDevicesCount
+    }
 
     return render(request, 'familydhmsapp/familydashboard.html', context)
-
 
 
 def FamilyInventory(request):
@@ -341,6 +414,8 @@ def FamilyLogout(request):
     logout(request)
     messages.error(request, 'Logout Successfull.')
     return redirect('UserLogin')
+
+
 
 
 # def FinDetails(request):

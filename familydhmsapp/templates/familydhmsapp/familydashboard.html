@@ -130,8 +130,8 @@
 					<div class='graphintrotext'>
 						<div class='graphintrotextInner'>
 							<div>
-								<h2>Hardware Expenses Trends</h2>
-								<h5>Gain insights on expenses made on devices/hardwares over time</h5>
+								<h2>Statistics Of Faulty Devices</h2>
+								<h5>Gain insights on faulty devices over time</h5>
 							</div>
 	
 							<div class='graphdate'>
@@ -154,7 +154,7 @@
 						{% comment %} <h5>Gain insights on faulty devices over time</h5> {% endcomment %}
 						<div class='deviceInvetorySectionIn'>
 							<table>
-								{% if allUploadedDevices %}
+								{% if allFamilyDeviceReg %}
 								<tr>
 								{% comment %} <th>ID</th> {% endcomment %}
 								{% comment %} <th>Brand</th> {% endcomment %}
@@ -166,7 +166,7 @@
 								<th>Department/Unit</th>
 								{% comment %} <th>Date Uploaded</th> {% endcomment %}
 								</tr>
-								{% for allUploadedDevices in allUploadedDevices %}
+								{% for allUploadedDevices in allFamilyDeviceReg %}
 								<tr>
 									{% comment %} <td class='link'>
 										<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong>
@@ -229,10 +229,15 @@
 								</div>
 							</div>
 						</div>
-						{% if allUploadedDevices %}
+						{% if allDesktopDevicesCount %}
 						<div class='minipiechartlabel'>
-							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} />Laptop</div>
-							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />Desktop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} /> {{ allLaptopDevicesCountMain }} Laptop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />{{ allDesktopDevicesCount }} Desktop</div>
+						</div>
+						{% elif allLaptopDevicesCountMain %}
+						<div class='minipiechartlabel'>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} /> {{ allLaptopDevicesCountMain }} Laptop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />{{ allDesktopDevicesCount }} Desktop</div>
 						</div>
 						{% else %}
 						<div class='emptymaintenance2'>
@@ -330,6 +335,13 @@
 					<input required name='devicebrand' type='text' placeholder='Device Brand(eg: HP, Dell)' /><br/><br/>
 
 					<input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/>
+					
+					<select name='devicestatus'>
+						<option>--Select Device Status--</option>
+						<option value='Working'>Working</option>
+						<option value='Faulty'>Faulty</option>
+						<option value='Critical'>Critical</option>
+					</select><br/><br/>
 
 					<input required name='deviceyearofpurchase' type='number' placeholder='Device Year Of Purchase eg: 2023' />
 
@@ -418,31 +430,39 @@
 				</div>
 			</div><br/>
 			{% comment %} <h2>Kindly Confirm Your Device Information</h2><br/><br/> {% endcomment %}
-			<h5>Device Hostname :<br/> <strong>{{DeviceHostName}}</strong></h5><br/><br/>
-			<h5>Device MAC Address :<br/> <strong>{{DeviceMacAddress}}</strong></h5><br/><br/>
-			<h5>Device IP Address :<br/> <strong>{{DeviceIP}}</strong></h5><br/><br/>
-			<h5>Device Name :<br/> <strong>{{DeviceName}}</strong></h5><br/><br/>
-			<h5>Device Maunufacturer :<br/> <strong>{{DeviceManufacturter}}</strong></h5><br/><br/>
-			<h5>Device System Model :<br/> <strong>{{DeviceSystemModel}}</strong></h5><br/><br/>
-			<h5>Device Number Processor :<br/> <strong>{{DeviceNumOfProcessor}}</strong></h5><br/><br/>
-			<h5>Device Type :<br/> <strong>{{DeviceSystemType}}</strong></h5><br/><br/>
-			<h5>Device OS :<br/> <strong>{{DeviceOS}}</strong></h5>
+			<h5>Device Type :<br/> <strong>{{DeviceType}}</strong></h5><br/><br/>
+			<h5>Device IP Address :<br/> <strong>{{Device_IP_Self}}</strong></h5><br/><br/>
+			<h5>Browser Type :<br/> <strong>{{BrowserType}}</strong></h5><br/><br/>
+			<h5>Browser Version :<br/> <strong>{{BrowserVersion}}</strong></h5><br/><br/>
+			<h5>Device OS Type :<br/> <strong>{{DeviceOSType}}</strong></h5><br/><br/>
+			<h5>Device OS Version :<br/> <strong>{{DeviceOSVersion}}</strong></h5><br/><br/>
+			<label for='devicestatusselect'><h5>Select Your Device Status:</h5></label><br/>
+
+			{% comment %} <h5>Device System Model :<br/> <strong>{{DeviceSystemModel}}</strong></h5><br/><br/> {% endcomment %}
 			
-			<br/><hr/><br/>
-			<h4>Provide Device's Price & Location Below(Optional):</h4><br/>
 			<form method='POST'>
+				<select style="font-size: 1.4rem"  id='devicestatusselect' name='devicestatus'>
+					<option style="font-size: 1.4rem" >--Select Device Status--</option>
+					<option value='Working' style="font-size: 1.4rem" >Working</option>
+					<option value='Faulty' style="font-size: 1.4rem" >Faulty</option>
+					<option value='Critical' style="font-size: 1.4rem" >Critical</option>
+				</select><br/><br/>
+			<br/><hr/><br/>
+			<h4>Provide Device's MAC Address, Name, Price & Location Below(Optional):</h4><br/>
 				{% csrf_token %}
+				<input type='text' name='DeviceName_Self' placeholder="Device Name. Eg: John's Device" /><br/>
+				<input type='text' name='devicemacaddress_Self' placeholder='Device MAC Address. Eg: XX:XX:XX:XX:XX' /><br/>
 				<input type='number' name='Deviceyearofpurchase_Self' placeholder='Device Year Of Purchase. Eg: 2020' /><br/>
 				<input type='text'  name='devicelocation_Self' placeholder="Device's Location."/> <br/>
-				<input hidden value="{{DeviceHostName}}" name="DeviceHostName_Self" />
-				<input hidden value="{{DeviceMacAddress}}" name="DeviceMacAddress_Self" />
-				<input hidden value="{{DeviceIP}}" name="DeviceIP_Self" />
-				<input hidden value="{{DeviceName}}" name="DeviceName_Self" />
-				<input hidden value="{{DeviceManufacturter}}" name="DeviceManufacturter_Self" />
-				<input hidden value="{{DeviceSystemModel}}" name="DeviceSystemModel_Self" />
-				<input hidden value="{{DeviceNumOfProcessor}}" name="DeviceNumOfProcessor_Self" />
-				<input hidden value="{{DeviceSystemType}}" name="DeviceSystemType_Self" />
-				<input hidden value="{{DeviceOS}}" name="DeviceOS_Self" />
+				{% comment %} <input hidden value="{{DeviceHostName}}" name="DeviceHostName_Self" /> {% endcomment %}
+				{% comment %} <input hidden value="{{DeviceMacAddress}}" name="DeviceMacAddress_Self" /> {% endcomment %}
+				<input hidden value="{{DeviceIP}}" name="Device_IP_Self" />
+				{% comment %} <input hidden value="{{DeviceName}}" name="DeviceName_Self" /> {% endcomment %}
+				<input hidden value="{{BrowserType}}" name="BrowserType_Self" />
+				<input hidden value="{{BrowserVersion}}" name="BrowserVersion_Self" />
+				<input hidden value="{{DeviceOSType}}" name="DeviceOSType_Self" />
+				<input hidden value="{{DeviceOSVersion}}" name="DeviceOSVersion_Self" />
+				<input hidden value="{{DeviceType}}" name="DeviceSystemType_Self" />
 				<button>Register My Device</button>
 			</form>
 		</div>
@@ -452,62 +472,62 @@
 		<div class='monthlyAmount'>
 			<div>
 				{% for JanDevices in JanDevices %}
-				<p class='JanDevices'>{{ JanDevices.devicecostofpurchase }}</p>
+				<p class='JanDevices'>{{ JanDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for FebDevices in FebDevices %}
-				<p class='FebDevices'>{{ FebDevices.devicecostofpurchase }}</p>
+				<p class='FebDevices'>{{ FebDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for MarDevices in MarDevices %}
-				<p class='MarDevices'>{{ MarDevices.devicecostofpurchase }}</p>
+				<p class='MarDevices'>{{ MarDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for AprDevices in AprDevices %}
-				<p class='AprDevices'>{{ AprDevices.devicecostofpurchase }}</p>
+				<p class='AprDevices'>{{ AprDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for MayDevices in MayDevices %}
-				<p class='MayDevices'>{{ MayDevices.devicecostofpurchase }}</p>
+				<p class='MayDevices'>{{ MayDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for JuneDevices in JuneDevices %}
-				<p class='JuneDevices'>{{ JuneDevices.devicecostofpurchase }}</p>
+				<p class='JuneDevices'>{{ JuneDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for JulyDevices in JulyDevices %}
-				<p class='JulyDevices'>{{ JulyDevices.devicecostofpurchase }}</p>
+				<p class='JulyDevices'>{{ JulyDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for AugDevices in AugDevices %}
-				<p class='AugDevices'>{{ AugDevices.devicecostofpurchase }}</p>
+				<p class='AugDevices'>{{ AugDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for SeptDevices in SeptDevices %}
-				<p class='SeptDevices'>{{ SeptDevices.devicecostofpurchase }}</p>
+				<p class='SeptDevices'>{{ SeptDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for OctDevices in OctDevices %}
-				<p class='OctDevices'>{{ OctDevices.devicecostofpurchase }}</p>
+				<p class='OctDevices'>{{ OctDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for NovDevices in NovDevices %}
-				<p class='NovDevices'>{{ NovDevices.devicecostofpurchase }}</p>
+				<p class='NovDevices'>{{ NovDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for DecDevices in DecDevices %}
-				<p class='DecDevices'>{{ DecDevices.devicecostofpurchase }}</p>
+				<p class='DecDevices'>{{ DecDevices }}</p>
 				{% endfor %}
 			</div>
 		</div>
@@ -518,6 +538,12 @@
 		<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
 		<script>
+		</script>
+		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
+
+		<script>
+			{% comment %}  {% endcomment %}
+			
 			let AllMonthArray = [];
 			// JANUARY CALCULATION STARTS HERE
 			let janelement =[];
@@ -535,7 +561,7 @@
 				});
 				
 			});
-			AllMonthArray.push(janSum);
+			AllMonthArray.push(janelement.length);
 			// JANUARY CALCULATION ENDS HERE
 
 			// FEBRUARY CALCULATION STARTS HERE
@@ -554,7 +580,7 @@
 				});
 				
 			});
-			AllMonthArray.push(febSum);
+			AllMonthArray.push(febelement.length);
 			// FEBRUARY CALCULATION ENDS HERE
 
 			// MARCH CALCULATION STARTS HERE
@@ -573,7 +599,7 @@
 				});
 				
 			});
-			AllMonthArray.push(marSum);
+			AllMonthArray.push(marelement.length);
 			// MARCH CALCULATION ENDS HERE
 
 			// APRIL CALCULATION STARTS HERE
@@ -592,7 +618,7 @@
 				});
 				
 			});
-			AllMonthArray.push(aprSum);
+			AllMonthArray.push(aprelement.length);
 			// APRIL CALCULATION ENDS HERE
 
 			// MAY CALCULATION STARTS HERE
@@ -611,7 +637,7 @@
 				});
 				
 			});
-			AllMonthArray.push(maySum);
+			AllMonthArray.push(mayelement.length);
 			// MAY CALCULATION ENDS HERE
 
 
@@ -631,7 +657,7 @@
 				});
 				
 			});
-			AllMonthArray.push(JuneSum);
+			AllMonthArray.push(juneelement.length);
 			// JUNE CALCULATIONS ENDS HERE
 
 			// JULY CALCULATIONS STARTS HERE
@@ -650,7 +676,7 @@
 				});
 				
 			});
-			AllMonthArray.push(julySum);
+			AllMonthArray.push(julyelement.length);
 			// JULY CALCULATIONS ENDS HERE
 
 			// AUGUST CALCULATIONS STARTS HERE
@@ -669,7 +695,7 @@
 				});
 				
 			});
-			AllMonthArray.push(augSum);
+			AllMonthArray.push(augelement.length);
 			// AUGUST CALCULATIONS ENDS HERE
 
 			// SEPTEMBER CALCULATIONS STARTS HERE
@@ -688,7 +714,7 @@
 				});
 				
 			});
-			AllMonthArray.push(septSum);
+			AllMonthArray.push(septelement.length);
 			// SEPTEMBER CALCULATIONS ENDS HERE
 
 			// OCTOBER CALCULATIONS STARTS HERE
@@ -707,7 +733,7 @@
 				});
 				
 			});
-			AllMonthArray.push(octtSum);
+			AllMonthArray.push(octtelement.length);
 			// OCTOBER CALCULATIONS ENDS HERE
 
 			// NOVEMBER CALCULATIONS STARTS HERE
@@ -718,7 +744,7 @@
 			novtDevices.forEach(element => {
 			novtelementMain2 = element.innerText;
 				novtelement.push(novtelementMain2)
-				novtSum = novtelement.map( function(elt){ // assure the value can be converted into an integer
+				novtSum = novtelement.map(function(elt){ // assure the value can be converted into an integer
 				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
 				})
 				.reduce( function(a,b){ // sum all resulting numbers
@@ -726,7 +752,8 @@
 				});
 				
 			});
-			AllMonthArray.push(novtSum);
+			AllMonthArray.push(novtelement.length);
+			console.log(novtelement.length);
 			// NOVEMBER CALCULATIONS ENDS HERE
 
 			// DECEMBER CALCULATIONS STARTS HERE
@@ -744,29 +771,30 @@
 				return a+b
 				});				
 			});
-			AllMonthArray.push(dectSum);
+			AllMonthArray.push(dectelement.length);
 			AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
+			{% comment %} console.log(AllMonthArray) {% endcomment %}
 
 			let resultSum = result.reduce((a, b) => a + b, 0)
 			let amountspenttotal = document.querySelector('.amountspenttotal a')
 			if (amountspenttotal){
 				amountspenttotal.innerText = resultSum.toLocaleString("en-US")
 			}
-		</script>
-		{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
+			console.log(AllMonthArray)
+			{% comment %}  {% endcomment %}
 
-		<script>
+			let AllMonthArray2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1]
 			var config = {
 				type: 'doughnut',
 				data: {
 					datasets: [{
-					data: {{ data|safe }}, 
+					data: {{ data | safe }}, 
 					backgroundColor: [
 						'#2A66B0', '#59A2EA'
 					],
 					label: 'Population'
 					}],
-					labels: {{ labels|safe }}
+					labels: {{ labels | safe}}
 				},
 				options: {
 					responsive: true,
@@ -775,12 +803,11 @@
 				}
 				}
 				};
-				
 			var config2 = {
 				type: 'line',
 				data: {
 					datasets: [{
-						data: {{dataMain | safe}},
+						data: AllMonthArray,
 						backgroundColor: [
 						'rgba(64, 100, 255, 0.39)',
 						'#2A66B0',
