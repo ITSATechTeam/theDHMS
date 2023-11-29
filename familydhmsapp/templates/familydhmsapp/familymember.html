@@ -160,6 +160,8 @@
 					  <th>Member ID</th>
 					  <th>Email</th>
 					  <th>Assigned Device ID</th>
+					  <th>Device Type</th>
+					  <th>Device Status</th>
 					  <th>Action</th>
 					</tr>
 					{% for FamilyMemberReg in allfamilymembers %}
@@ -169,6 +171,8 @@
 							<td class={{ FamilyMemberReg.memberfullname }}>{{ FamilyMemberReg.memberfullname }}</td>
 							<td>{{ FamilyMemberReg.memberid }}</td>
 							<td class={{ FamilyMemberReg.memberemail }}>{{ FamilyMemberReg.memberemail }}</td>
+							<td>DEVICE</td>
+							<td>DEVICE</td>
 							<td>DEVICE</td>
 							<td>
 								<div class='actionbtns'>

@@ -60,6 +60,8 @@ INSTALLED_APPS = [
     # 
     # 'django_python3_ldap',
     'django_user_agents',
+    # 
+    'storages'
 ]
 
 
@@ -204,6 +206,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -236,6 +239,31 @@ AUTHENTICATION_BACKENDS = [
     # 
     'django_python3_ldap.auth.LDAPBackend',
 ]
+
+
+
+
+# AWS S3 Configuration starts here
+AWS_ACCESS_KEY_ID = "AKIAQRVIHB6EPQLTI3SL"
+AWS_SECRET_ACCESS_KEY = "ZLCrN68pLrtK+/wvMD+g15p8aFsjRYD7OzxdkLhA"
+
+# Your app endpoint
+# AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  
+
+# Only public read for now
+AWS_QUERYSTRING_AUTH = False
+AWS_DEFAULT_ACL='public-read'
+
+AWS_STORAGE_BUCKET_NAME = 'dhmsimages'
+
+AWS_S3_FILE_OVERWRITE = False
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# AWS S3 Configuration ends here
+
+
+
+
 
 
 # LDAP SETTINGS RECOMMENDATION STARTS HERE

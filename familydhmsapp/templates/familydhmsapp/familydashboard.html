@@ -84,8 +84,8 @@
 						<div class='introdetailsbar faultydevices'>
 							<img src={% static 'familydashboard/img/healthy.png' %} />
 							<div>
-								{% if badSystems  %}
-								<h1>{{ badSystems }}</h1>
+								{% if AllWorkingDevicesCount  %}
+								<h1>{{ AllWorkingDevicesCount }}</h1>
 								{% else %}
 								<h1>0</h1>
 								{% endif %}
@@ -95,8 +95,8 @@
 						<div class='introdetailsbar healthydevices'>
 							<img src={% static 'familydashboard/img/faulty.png' %} />
 							<div>
-								{% if workingSystems  %}
-								<h1>{{ workingSystems }}</h1>
+								{% if AllFaultyAndCritialDevices  %}
+								<h1>{{ AllFaultyAndCritialDevices }}</h1>
 								{% else %}
 								<h1>0</h1>
 								{% endif %}
@@ -160,10 +160,10 @@
 								{% comment %} <th>Brand</th> {% endcomment %}
 								<th>Category</th>
 								<th>MAC ID</th>
-								<th>User</th>
+								<th>Device User</th>
 								<th title='Device Depreciation Rate'>DDR</th>
 								<th>Status</th>
-								<th>Department/Unit</th>
+								{% comment %} <th>Department/Unit</th> {% endcomment %}
 								{% comment %} <th>Date Uploaded</th> {% endcomment %}
 								</tr>
 								{% for allUploadedDevices in allFamilyDeviceReg %}
@@ -177,15 +177,15 @@
 									</td>
 									<td>{{ allUploadedDevices.devicemacaddress }}</td>
 									<td class='link enterStaffUser'>
-											{% for AllStaffMembers in AllStaffMembers %}
-											{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
-											<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+											{% for allfamilymembers in allfamilymembers %}
+											{% if allfamilymembers.memberid == allUploadedDevices.deviceUserID %}
+											<strong><a href= /member/staffdetails/{{ allfamilymembers.id }}/  >{{ allfamilymembers.memberfullname }}</a></strong>
 											{% endif %}
 											{% endfor %}
 									</td>
 									<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
 									<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-									<td>{{ allUploadedDevices.deviceusedepartment }}</td>
+									{% comment %} <td>{{ allUploadedDevices.deviceusedepartment }}</td> {% endcomment %}
 									{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
 								</tr>
 								{% endfor %}
@@ -360,14 +360,7 @@
 						{% comment %} <p>Device IP Address</p> {% endcomment %}
 						<input required name='deviceip' type='text'placeholder='Device IP Address' />
 					</div><br/>
-					{% comment %} <div class='adddevicedashboard'>
-						<select name='devicestatus'>
-							<option>Select Device Working Condition</option>
-							<option value='Working'>Working</option>
-							<option value='Faulty'>Faulty</option>
-							<option value='Critical'>Critical</option>
-						</select>
-					</div><br/> {% endcomment %}
+					
 					<div class='adddevicedashboard'>
 						{% comment %} <p>Device Location</p> {% endcomment %}
 						<input required name='devicelocation' type='text'placeholder='Device Location' />
@@ -377,10 +370,10 @@
 				<hr/><br/>
 				<h4>Assign Device To A Family Member(Optional)</h4><br/>
 
-				<select name="staffUserID" class="player-dropdown">
-					<option value='None'>Select A Family Member</option>
-					{% for AllStaffMembers in AllStaffMembers %}
-						<option value="{{ AllStaffMembers.StaffID}}">{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} [{{ AllStaffMembers.StaffID}}]</option>
+				<select name="deviceUserID" class="player-dropdown">
+					<option value='None'>--Select A Family Member--</option>
+					{% for allfamilymembers in allfamilymembers %}
+						<option value="{{ allfamilymembers.memberid}}">{{ allfamilymembers.memberfullname }} [{{ allfamilymembers.memberid}}]</option>
 					{% endfor %}
 				</select><br/><br/>
 
@@ -822,7 +815,7 @@
 						'rgba(64, 100, 255, 0.39)',
 						'#2A66B0' 
 					],
-					label: 'Amount Spent On Hardware Purchase'
+					label: 'Number of Faulty Devices'
 					}],
 					labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 				},

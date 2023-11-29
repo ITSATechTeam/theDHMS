@@ -1,0 +1,173 @@
+
+
+/* postheroinv */
+
+
+.introdetailsbar{
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    margin: 10px;
+    height: 80px;
+    width: 205px;
+    cursor:crosshair;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    align-items: center;
+    transition: .4s ease-in-out;
+}
+
+.postheroinv button{
+    display: flex;
+    border: none;
+    align-items: center;
+    background-color: #2A66B0;
+    padding: 2px 3px;
+    color: white;
+    width: 120px;
+    justify-content: space-around;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    margin-left: 20px;
+    font-weight: bold;
+    margin-right: 50px;
+}
+
+
+.postheroinv button p{
+    margin-top: 10px;
+}
+
+.postheroinv{
+    display: grid;
+    grid-template-columns: 70% 14%;
+    margin-right: 10px;
+    /* background-color: red; */
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.emptystate{
+    text-align: center;
+    margin: auto;
+    width: 500px;
+}
+
+.maindevicelistsection{
+    width: 98%;
+    min-height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.emptystatemaining img{
+    margin: 20px;
+    margin-top: 60px;
+}
+
+.emptystate button{
+    display: flex;
+    margin: auto;
+    border: none;
+    align-items: center;
+    background-color: #2A66B0;
+    padding: 2px 3px;
+    color: white;
+    height: 50px;
+    width: 180px;
+    justify-content: space-around;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+
+.emptystate button p{
+    margin-top: 10px;
+}
+
+
+.shadow{
+    position: fixed;
+    margin-left: 0px;
+    height: 100vh;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 10;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+.registerDevice{
+    width: 750px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 25px;
+    position: fixed;
+    height: 80vh;
+    overflow-y: scroll;
+    top: 10%;
+    left: 25%;
+    z-index: 11;
+}
+
+#images{
+    display: none;
+}
+
+.registerDeviceinv{
+    display: none;
+}
+
+.uploaddevicepopup{
+    width: 100%;
+    padding: 10px 0px;
+    border-radius: 10px;
+    box-shadow: none;
+    position: relative;
+    left: 0%;
+    top: 10%;
+    background-color: white;
+    z-index: 7;
+    display: block;
+}
+
+.span{
+    font-size: 1.4rem;
+}
+
+.registerDeviceinvinner{
+    display: grid;
+    grid-template-columns: 40% 50%;
+    justify-content: space-between;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

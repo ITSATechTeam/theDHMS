@@ -8,6 +8,7 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familyinv/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +19,194 @@
 		<title>Family Inventory | ITSA Inventory System</title>
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
 	</head>
-	<div class='shadow'></div>	
-	{% if allSignupsForUpdatePopup %}
-	{% else %}
-	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
-	{% endif %}
 	<body class='body'>
-		<div class='main'>
+		<div class='shadow'></div>
+		<div class='main'>			
+			<h1><strong>Device inventory</strong></h1>
+			<h5>Manage your family's devices</h5>
+				
+			<div id="flash flashmessage">
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong>{{ message }}</strong>
+					{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+			
+			<div class='postheroinv'>
+				<div>
+					<div class='introdetailssection'>
+						<div class='introdetailsbar allusers'>
+							<img src={% static 'familydashboard/img/devices.png' %} />
+							<div>
+								{% if AllFamilyDevicesCount  %}
+								<h1>{{ AllFamilyDevicesCount }}</h1>
+								{% else %}
+								<h1>0</h1>
+								{% endif %}
+								<p>Devices</p>
+							</div>
+						</div>
+						<div class='introdetailsbar faultydevices'>
+							<img src={% static 'familydashboard/img/healthy.png' %} />
+							<div>
+								{% if AllWorkingDevicesCount  %}
+								<h1>{{ AllWorkingDevicesCount }}</h1>
+								{% else %}
+								<h1>0</h1>
+								{% endif %}
+								<p>Healthy Devices</p>
+							</div>
+						</div>
+						<div class='introdetailsbar healthydevices'>
+							<img src={% static 'familydashboard/img/faulty.png' %} />
+							<div>
+								{% if AllFaultyAndCritialDevices  %}
+								<h1>{{ AllFaultyAndCritialDevices }}</h1>
+								{% else %}
+								<h1>0</h1>
+								{% endif %}
+								<p>Faulty Devices</p>
+							</div>
+						</div>
+						<div class='introdetailsbar onmaintenance'>
+							<img src={% static 'familydashboard/img/maintenance.png' %} />
+							<div>
+								{% if AllMaintenancesCount  %}
+								<h1>{{ AllMaintenancesCount }}</h1>
+								{% else %}
+								<h1>0</h1>
+								{% endif %}
+								<p>On Maintenance</p>
+							</div>
+						</div>
+					</div><br/>
+				</div>
+				<div class='addnewdevicebtn'>
+					<button>
+						<img src={% static 'dashboard/img/add.png' %} />
+						<p>Add Device</p>
+					</button>
+				</div>
+			</div>
+			<div class='maindevicelistsection'>
+				{% comment %} {% if AllFamilyDevices %} {% endcomment %}
+				<div class='fillstate'></div>
+				{% comment %} {% else %} {% endcomment %}
+					<div class='emptystate'>
+						<div class='emptystatemaining'><img src={% static 'familyinv/img/emptystate.png' %} /></div>
+						<h4>You haven't added any devices yet. Click the "Add New Device" button to add devices to your inventory</h4>
+						<button class='addnewdevicebtn'>
+							<img src={% static 'dashboard/img/add.png' %} />
+							<p>Add New Device</p>
+						</button>
+					</div>
+				{% comment %} {% endif %} {% endcomment %}
+			</div>
         </main>
+		{% comment %} ADD NEW DEVICE POP STARTS HERE {% endcomment %}
+
+		
+		<div class='registerDevice registerDeviceinv'>
+			<form method = 'POST' enctype="multipart/form-data" >
+				{% csrf_token %}			
+				<div class='registerDeviceIntro'>
+					<div>
+						<h1>Add New Device</h1>
+					</div><br/><br/><br/><br/>
+					<div class='closeaddnewdeviceopoup'>
+						<img src={% static 'dashboard/img/close2.png' %} />
+					</div>
+				</div>
+				<div class='registerDeviceinvinner'>
+					<div>
+						<h4>Upload pictures of device (optional): <h4>
+							<div>
+								<div class='uploaddevicepopup'>
+									<form method = 'POST' enctype="multipart/form-data">
+										{% comment %} {% csrf_token %} {% endcomment %}
+										<div>
+											<label for="images" class="drop-container">
+												<img src={% static 'familyinv/img/addgrey.png' %} />
+												{% comment %} <input type='text' hidden name='username' value = {{request.user}}  />
+												<input type='text' hidden name='savetimedata' class='sendsavetimedata'  /> {% endcomment %}
+												<div class="drop-title span">Click To Select Picture</div>
+												{% comment %} or {% endcomment %}
+												<input name='device_images' type="file" id="images">
+											</label>
+										</div>
+										{% comment %} <button type='submit'>Upload</button> {% endcomment %}
+									{% comment %} </form> {% endcomment %}
+								</div>
+	
+							</div>
+					</div>
+					<div>
+						<div>
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Select device type</p> {% endcomment %}
+								<select required name='devicetype'>
+									<option>Select Device Kind</option>
+									<option value='Laptop'>Laptop</option>
+									<option value='Desktop'>Desktop</option>
+								</select>
+							</div><br/>
+							{% comment %} <input required name='deviceusedepartment' type='text' placeholder='Device Department' /><br/><br/> {% endcomment %}
+	
+							<input required name='devicebrand' type='text' placeholder='Device Brand(eg: HP, Dell)' /><br/><br/>
+	
+							<input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/>
+							
+							<select name='devicestatus'>
+								<option>--Select Device Status--</option>
+								<option value='Working'>Working</option>
+								<option value='Faulty'>Faulty</option>
+								<option value='Critical'>Critical</option>
+							</select><br/><br/>
+	
+							<input required name='deviceyearofpurchase' type='number' placeholder='Device Year Of Purchase eg: 2023' />
+	
+							<input required name='FamilyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
+							{% comment %} <input name='FamilyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
+	
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device Name</p> {% endcomment %}
+								<input required name='devicename' type='text'placeholder='Device Name' />
+							</div><br/>
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device MAC ID</p> {% endcomment %}
+								<input required name='devicemacaddress' type='text'placeholder=' MAC Address (XX:XX:XX:XX:XX)' />
+							</div><br/>
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device IP Address</p> {% endcomment %}
+								<input required name='deviceip' type='text'placeholder='Device IP Address' />
+							</div><br/>
+							
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device Location</p> {% endcomment %}
+								<input required name='devicelocation' type='text'placeholder='Device Location' />
+								<input type='text' name='familyadmin' value={{request.user}} hidden />
+							</div>
+						</div><br/>
+						<hr/><br/>
+						<h4>Assign Device To A Family Member(Optional)</h4><br/>
+	
+						<select name="deviceUserID" class="player-dropdown">
+							<option value='None'>--Select A Family Member--</option>
+							{% for allfamilymembers in allfamilymembers %}
+								<option value="{{ allfamilymembers.memberid}}">{{ allfamilymembers.memberfullname }} [{{ allfamilymembers.memberid}}]</option>
+							{% endfor %}
+						</select><br/><br/>
+	
+						<button type='submit'>Register Device</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		{% comment %} ADD NEW DEVICE POP ENDS HERE {% endcomment %}
+		<script src={% static 'familyinv/js/main.js' %}></script>
     </body>
 </html>
 {% endblock content %}

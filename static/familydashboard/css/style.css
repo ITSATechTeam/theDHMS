@@ -118,8 +118,9 @@ body{
     display: flex;
     align-items: center;
     background-color: white;
+    padding-right: 10px;
     height: 95px;
-    width: 135px;
+    /* width: 135px; */
     margin: 0px;
     cursor:crosshair;
     border-radius: 10px;
