@@ -375,7 +375,8 @@ def FamilyDHMSDashboard(request):
 @login_required(login_url='UserLogin')
 def FamilyInventory(request):
     #     
-    if request.method == 'POST' and 'devicebrand' in request.POST:
+    if request.method == 'POST' and 'FamilyUniqueCode' in request.POST:
+        print('form triggered')
         today = date.today()                                        
         dateForWeekNumber = datetime.today()
         weekNumber = dateForWeekNumber.isocalendar().week
@@ -390,12 +391,14 @@ def FamilyInventory(request):
         deviceipaddress = request.POST['deviceip']
         devicestatus = request.POST['devicestatus']
         deviceUserID = request.POST['deviceUserID']
-        device_images = request.FILES['device_images']
+        deviceimage = request.FILES.get('device_images')
         Reqfamilyadmin = request.user
         FamilyUniqueCode = request.user.last_name
         uniqueId = 'Family_Device-'  + get_random_string(length=8)
         dateForWeekNumber = datetime.today()
-        
+
+        if deviceimage is not None:
+            print('No device image')
         if not request.POST['devicetype']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Type.")
             return redirect('FamilyInventory')
@@ -406,6 +409,14 @@ def FamilyInventory(request):
         
         if not request.POST['devicemacaddress']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's MAC Address.")
+            return redirect('FamilyInventory')
+        
+        if not request.POST['deviceip']:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's IP Address.")
+            return redirect('FamilyInventory')
+        
+        if not request.POST['deviceos']:
+            messages.error(request, "Device uploaded failed. Please Indicate This Device's Operating System(OS).")
             return redirect('FamilyInventory')
         
         if not request.POST['deviceip']:
@@ -445,7 +456,7 @@ def FamilyInventory(request):
             deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
             deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
             savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceUserID = deviceUserID,
-            deviceuseremail = FindDeviceUserEmailMain, deviceuserfullname = FindDeviceUserFullnameMain, deviceImageOne = device_images)
+            deviceuseremail = FindDeviceUserEmailMain, deviceuserfullname = FindDeviceUserFullnameMain, deviceImageOne = deviceimage)
             FamilyDeviceRegForm.save()
             FaultyDevicesTrendForm.save()
             messages.error(request, "Device registered successfully.")
@@ -501,6 +512,7 @@ def FamilyInventory(request):
         # REGISTER YOUR DEVICE SELF SET UP STARTS HERE
 
     # 
+    allfamilymembers = FamilyMemberReg.objects.filter(user = request.user)
     AllFamilyDevices = FamilyDeviceReg.objects.filter(user = request.user)
     AllFamilyDevicesCount = AllFamilyDevices.count()
     allLaptopDevices = FamilyDeviceReg.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(devicetype = 'Laptop'))
@@ -520,7 +532,7 @@ def FamilyInventory(request):
     AllWorkingDevicesCount = AllWorkingDevices.count()
 
     
-    context = {'AllFamilyDevices':AllFamilyDevices, 'AllFamilyDevicesCount':AllFamilyDevicesCount, 'AllWorkingDevicesCount':AllWorkingDevicesCount, 'AllFaultyAndCritialDevices':AllFaultyAndCritialDevices}
+    context = {'allfamilymembers':allfamilymembers, 'AllFamilyDevices':AllFamilyDevices, 'AllFamilyDevicesCount':AllFamilyDevicesCount, 'AllWorkingDevicesCount':AllWorkingDevicesCount, 'AllFaultyAndCritialDevices':AllFaultyAndCritialDevices}
     return render(request, 'familydhmsapp/familyinventory.html', context)
 
 

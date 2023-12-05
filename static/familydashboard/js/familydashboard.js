@@ -237,8 +237,10 @@ if (hrs < 12)
   greet = 'Good Morning';
 else if (hrs >= 12 && hrs <= 16)
 greet = 'Good Afternoon';
-else if (hrs >= 16 && hrs <= 24)
+else if (hrs >= 16 && hrs <= 20)
 greet = 'Good Evening';
+else if (hrs >= 21 && hrs <= 24)
+greet = 'You should be in bed now';
 
 document.querySelector('.greetuser').innerHTML = greet;
 

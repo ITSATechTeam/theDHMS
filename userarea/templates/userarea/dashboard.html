@@ -27,7 +27,8 @@
 		<div class='main'>
 			<div class='maintop'>
 				<div>
-					<h1>Welcome back {{request.user}},</h1>
+					<h1><strong class='greetuser'></strong> {{request.user}},</h1>
+					{% comment %} <h1>Welcome back {{request.user}},</h1> {% endcomment %}
 					<h5>Get an overview of your devices health and status.</h5>
 				</div>
 				
@@ -114,7 +115,7 @@
 					<div class='graphintrotext'>
 						<div class='graphintrotextInner'>
 							<div>
-								<h2>Hardware Expenses Trends</h2>
+								<h2>Faulty Device Trends</h2>
 								<h5>Gain insights on expenses made on devices/hardwares over time</h5>
 							</div>
 	

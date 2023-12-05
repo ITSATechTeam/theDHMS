@@ -49,23 +49,60 @@
     margin-top: 20px;
 }
 
+
 .emptystate{
     text-align: center;
     margin: auto;
     width: 500px;
+    height: 100%;
+    /* display: none; */
 }
 
 .maindevicelistsection{
     width: 98%;
     min-height: 500px;
     background-color: white;
+    margin-bottom: 50px;
     border-radius: 10px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.deviceregsuccess{
+    width: 370px;
+    height: 200px;
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 40%;
+    left: 40%;
+    display: none;
+    z-index: 11;
+}
+
+#previewimage{
+    display: none;
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+}
+
+.closedeviceregsuccess{
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
 }
 
 .emptystatemaining img{
     margin: 20px;
     margin-top: 60px;
+}
+
+table{
+    height: 100%;
 }
 
 .emptystate button{
@@ -119,7 +156,7 @@
 }
 
 #images{
-    display: none;
+    /* display: none; */
 }
 
 .registerDeviceinv{

@@ -324,6 +324,13 @@ if(flashGeneral){
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE
 
 
+// LOADING SCENE SETUP
+var overlay = document.getElementById("overlay");
+
+window.addEventListener('load', function(){
+  overlay.style.display = 'none';
+})
+
 
 
 

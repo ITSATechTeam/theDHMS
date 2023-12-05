@@ -88,10 +88,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django_auto_logout.middleware.auto_logout',
-
     # 
     'django_user_agents.middleware.UserAgentMiddleware'
 ]
+
 
 MIDDLEWARE.append('ms_identity_web.django.middleware.MsalMiddleware')
 AAD_CONFIG = AADConfig.parse_json(file_path='aad.config.json')
