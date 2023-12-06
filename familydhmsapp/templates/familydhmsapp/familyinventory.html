@@ -119,17 +119,21 @@
 								</td>
 								<td>{{ AllFamilyDevices.devicemacaddress }}</td>
 								<td>{{ AllFamilyDevices.devicebrand }}</td>
-								<td class='link enterStaffUser'>
-										{% for AllStaffMembers in AllStaffMembers %}
-										{% if AllStaffMembers.StaffID == AllFamilyDevices.staffUserID %}
-										<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
-										{% endif %}
-										{% endfor %}
-								</td>
 								<td>{{ AllFamilyDevices.devicedepreciationrate }}</td>
-								<td class={{ AllFamilyDevices.devicestatus }}>{{ AllFamilyDevices.devicestatus }}</td>
-								<td>{{ AllFamilyDevices.deviceusedepartment }}</td>
-								{% comment %} <td>{{ AllFamilyDevices.created_at }}</td> {% endcomment %}
+								<td>{{ AllFamilyDevices.deviceOS }}</td>
+								<td>{{ AllFamilyDevices.devicetype }}</td>
+								<td><p class="{{ AllFamilyDevices.devicestatus }}">{{ AllFamilyDevices.devicestatus }}</p></td>
+								<td class='link enterStaffUser'>
+									{% if AllFamilyDevices.deviceuserfullname %}
+										{{ AllFamilyDevices.deviceuserfullname }}
+									{% else %}
+										{% for allfamilymembers in allfamilymembers %}
+											{% if AllFamilyDevices.deviceUserID == allfamilymembers.memberid %}
+												<strong><a href= /member/staffdetails/{{ allfamilymembers.id }}/  >{{ allfamilymembers.memberfullname }}</a></strong>
+											{% endif %}
+										{% endfor %}
+									{% endif %}
+								</td>
 							</tr>
 							{% endfor %}
 						</table>
@@ -204,20 +208,20 @@
 							{% comment %} <input required name='devicebrand' type='text' placeholder='Device Brand(eg: HP, Dell)' /><br/><br/> {% endcomment %}							
 							<select required name='devicebrand'>
 								<option>--Select Device Brand--</option>
-								<option value='Laptop'>Dell</option>
-								<option value='Desktop'>HP</option>
-								<option value='Desktop'>Samsung</option>
-								<option value='Desktop'>Toshiba</option>
-								<option value='Desktop'>Acer</option>
-								<option value='Desktop'>Other</option>
+								<option value='Dell'>Dell</option>
+								<option value='HP'>HP</option>
+								<option value='Samsung'>Samsung</option>
+								<option value='Toshiba'>Toshiba</option>
+								<option value='Acer'>Acer</option>
+								<option value='Not Listed'>Not listed</option>
 							</select><br/><br/> 
 	
 							{% comment %} <input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/> {% endcomment %}
 							<select name='deviceos'>
 								<option>--Select Device Operating System--</option>
-								<option value='Working'>Windows OS</option>
-								<option value='Faulty'>Mac OS</option>
-								<option value='Critical'>Linux Os</option>
+								<option value='Windows OS'>Windows OS</option>
+								<option value='Mac OS'>Mac OS</option>
+								<option value='Linux Os'>Linux Os</option>
 							</select><br/><br/>
 							
 							<select name='devicestatus'>

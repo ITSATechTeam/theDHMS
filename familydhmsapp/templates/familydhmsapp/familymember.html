@@ -159,9 +159,9 @@
 					  <th>Name</th>
 					  <th>Member ID</th>
 					  <th>Email</th>
-					  <th>Assigned Device ID</th>
-					  <th>Device Type</th>
-					  <th>Device Status</th>
+					  <th>Assigned Device ID(s)</th>
+					  <th>Device Type(s)</th>
+					  <th>Device Status(s)</th>
 					  <th>Action</th>
 					</tr>
 					{% for FamilyMemberReg in allfamilymembers %}
@@ -171,12 +171,52 @@
 							<td class={{ FamilyMemberReg.memberfullname }}>{{ FamilyMemberReg.memberfullname }}</td>
 							<td>{{ FamilyMemberReg.memberid }}</td>
 							<td class={{ FamilyMemberReg.memberemail }}>{{ FamilyMemberReg.memberemail }}</td>
-							<td>DEVICE</td>
-							<td>DEVICE</td>
-							<td>DEVICE</td>
+
 							<td>
+								{% for AllFamilyDevices in AllFamilyDevices %}
+								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								<a href=''>{{ AllFamilyDevices.deviceid }}</a><br/>
+								{% endif %}
+								{% endfor %}
+							</td>
+							
+							<td>
+								{% for AllFamilyDevices in AllFamilyDevices %}
+								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								{{ AllFamilyDevices.devicetype }}<br/>
+								{% endif %}
+								{% endfor %}
+							</td>
+							
+							<td>
+								{% for AllFamilyDevices in AllFamilyDevices %}
+								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								<p class="{{ AllFamilyDevices.devicestatus }}">{{ AllFamilyDevices.devicestatus }}<br/></p>
+								{% endif %}
+								{% endfor %}
+							</td>
+
+							<td class='actiongensection'>
 								<div class='actionbtns'>
 									<img src={% static 'familymembers/img/action.png' %} />
+								</div>
+								<div class='memberaction'>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/eye.png' %} />
+										<p>View Details</p>
+									</div>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/edit.png' %} />
+										<p>Edit Member Details</p>
+									</div>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/bin.png' %} />
+										<p>Remove Member</p>
+									</div>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/admin.png' %} />
+										<p>Make Admin</p>
+									</div>
 								</div>
 							</td>
 						</tr>

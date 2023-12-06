@@ -1,0 +1,220 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main{
+    margin-right: 3px;
+}
+
+
+
+.familymemberintro{
+    background-color: #2A66B0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+}
+
+.familymemberintro button{
+    background-color: #F7F7FB;
+    color: #2A66B0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.familymemberintro h4{
+    font-weight:lighter;
+}
+
+.familymemberintro img{
+    width: 20px;
+    margin-bottom: 5px;
+}
+
+.emptystate{
+    margin: auto;
+    text-align: center;
+    width: 400px;
+    display: none;
+}
+
+.emptystate h4{
+    margin-top: 20px;
+} 
+
+.emptystate button{
+    background-color: #2A66B0;
+    color: #F7F7FB;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.emptystate button img{
+    width: 20px;
+    margin-bottom: 5px;
+}
+
+.addfampopup{
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    position: fixed;
+    left: 30%;
+    top: 20%;
+    height: 360px;
+    z-index: 21;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 480px;
+    display: none;
+    transition: ease-in-out .4s;
+}
+
+.addfampopup form label{
+    font-size: 1.3rem;
+}
+
+
+
+.shadow{
+    position: fixed;
+    margin-left: 0px;
+    height: 100vh;
+    padding: 20px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 20;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+.addfampopup form input{
+    width: 445px;
+    height: 44px;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border:  1px solid #C3C3C3;
+}
+
+.addfampopup form button{
+    background-color: #2A66B0;
+    color: #F7F7FB;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 10px;
+    position: absolute;
+    right: 20px;
+}
+.searchsidebtns button{
+    background-color: transparent;
+    color: #636363;
+    padding: 10px;
+    border: 1px solid #C3C3C3;
+    width: 100px;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 10px;
+
+}
+
+.addfampopuphead{
+    display: flex;
+    justify-content: space-between;
+}
+
+.addfampopuphead img{
+    cursor: pointer;
+}
+
+.addfampopuphead p{
+    font-size: 1.2rem;
+}
+
+.familymemberCount{
+    visibility: hidden;
+}
+
+.mainfamilymemberslistsection{
+    background-color: white;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    min-height: 40vh;
+    margin-top: -10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    /* padding-top: -100px; */
+}
+
+.actiongensection{
+    position: relative;
+}
+
+.memberaction{
+    position: absolute;
+    right: 40px;
+    bottom: 0px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    width: 200px;
+    display: none;
+    z-index: 10;
+}
+
+.memberactioninner{
+    display: flex;
+    align-items: center;
+    transition: ease-in-out .3s;
+    cursor: pointer;
+    padding: 5px;
+    height: 40px;
+}
+
+.memberactioninner:hover{
+    background-color: rgba(0, 0, 0, 0.582);
+    color: white;
+    font-weight: bold;
+}
+
+.memberactioninner p{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

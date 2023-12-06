@@ -1,0 +1,353 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-color: #F7F7FB;
+}
+
+.mainherowaveout{
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+
+
+.mainhero{
+    display: grid;
+    grid-template-columns: 45% 50%;
+    justify-content: space-between;
+}
+
+.mainheroimg img{
+    height: 100%;
+    width: 45%;
+    border-top-right-radius: 0px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    object-fit: cover;
+}
+
+.logo img{
+    /* height: 40%; */
+    width: 150px;
+    z-index: 2;
+    position: fixed;
+    top: 20px;
+    left: 10px;
+}
+
+.mainherowave{
+    align-items: center;
+    text-align: center;
+}
+
+
+.mainherowave img{
+    width: 30px;
+    margin-right: 10px;
+}
+
+.mainherowave h3{
+    margin-top: 10px;
+}
+
+.mainheroform{
+    background-color: white;
+    width: 500px;
+    margin: 30px;
+    padding: 20px 20px;
+    border-top-left-radius: 0px;
+}
+
+
+input:focus{
+    outline: none;
+}
+
+/* FORGOT PASSWORD STARTS HERE */
+.forgotpwd1{
+    display: flex;
+    width: 30%;
+    align-items: center;
+}
+
+
+.forgotpwd1 p{
+    margin-top: 10px;
+}
+.forgotpwd2 p{
+    display: flex;
+    width: 110px;
+    align-items: center;
+    text-align: end;
+    margin-top: 15px;
+    font-weight: bold;
+    /* background-color: white; */
+}
+
+.forgotpwd1 input{
+    width: 20px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+
+.forgotpwd{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.passwordinput{
+    position: relative;
+}
+
+
+.passwordinput input{
+    padding-left: 30px;
+}
+
+
+.pwdlock img{
+    width: 10px;
+    background-color: transparent;
+}
+
+.pwdlock{
+    position: absolute;
+    top: 30px;
+    left: 15px;
+}
+
+.pwdeye img{
+    width: 20px;
+    background-color: transparent;
+}
+
+.eyeicon2{
+    display: none;
+}
+
+.pwdeye{
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    cursor: pointer;
+}
+
+.signupform button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 100%;
+    font-size: 1rem;
+    height: 50px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 40px;
+}
+
+
+.submitbtnbeforechecks{
+    background-color: grey;
+    border: none;
+    color: white;
+    /* #2A66B0 */
+    align-items: center;
+    width: 100%;
+    font-size: 1rem;
+    height: 50px;
+    padding: 12px 5px 5px 5px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    margin: auto;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+.signupform input{
+    width: 100%;
+    height: 50px;
+    padding: 6px;
+    border-radius: 10px;
+    border: 1px solid #7C7C7C;
+}
+
+button{
+    border: none;
+}
+
+
+.googlesignin img{
+    /* margin-left: 40px; */
+    margin: auto;
+    background-color: transparent;
+}
+
+.googlesigninner p{
+    margin-top: 16px;
+    margin-left: -16px;
+}
+
+.passwordcheck img{
+    width: 25px;
+    padding: 3px;
+    /* background-color: #C3C3C3; */
+    border-radius: 100px;
+    margin-right: 10px;
+    border: 1px solid #434343;
+}
+
+.passchecksection{
+    display: flex;
+    align-items: center;
+    margin-bottom: -10px;
+}
+
+.passchecksection p{
+    margin-top: 19px;
+}
+
+.passchecksectionintro{
+    margin-bottom: -10px;
+}
+
+
+.googlesignin button{
+    width: 0%;
+    margin: 20px;
+    border-radius: 10px;
+    padding-top: 10px;
+}
+
+
+
+.googlesignin img{
+    margin-right: 30px;
+    width: 20px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.googlesignin{
+    width: 20%;
+    text-align: center;
+    display: flex;
+    margin: auto;
+    align-items: center;
+}
+
+.loginwithgfoption{
+    margin: auto;
+    text-align: center;
+}
+
+.forgotpass{
+    text-align: right;
+}
+
+
+.logininstead{
+    /* background-color: red; */
+    width: 100%;
+    text-align: center;
+    padding-left: 0px;
+    /* margin: auto; */
+    margin-top: 0px;
+    /* margin-left: 140px; */
+}
+
+
+
+
+@media only screen and (max-width: 600px) {.mainhero{
+    display: inline;
+    grid-template-columns: 100%;
+    justify-content: space-between;
+    }
+
+    .mainheroimg img{
+        display: none;
+    
+    
+    }.signupform input{
+        width: 100%;
+        height: 50px;
+        padding: 6px;
+        border-radius: 10px;
+        border: 1px solid #7C7C7C;
+    }
+
+    .mainherowaveout{
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .mainherowaveab{
+        width: 180px;
+        margin: auto;
+    }
+
+    .mainheroform{
+        width: 90vw;
+        padding: 20px;
+        margin: 10px;
+        margin-top: 40px;
+    }
+
+    .logo img{
+        position: relative;
+        margin: auto;
+    }
+
+    .logo{
+        width: 150px;
+        position: relative;
+        margin: auto;
+    }
+
+    
+    .googlesignin{
+        width: 30%;
+        text-align: center;
+        display: flex;
+        margin: auto;
+        align-items: center;
+    }
+
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

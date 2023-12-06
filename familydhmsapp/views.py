@@ -10,7 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
 from datetime import date
 from django.db.models import Q
-
+import json
 
 # 
 from getmac import get_mac_address as gma
@@ -281,10 +281,10 @@ def FamilyDHMSDashboard(request):
             deviceyearofpurchase = Deviceyearofpurchase_Self, devicelocation = devicelocation_Self, devicename = DeviceName_Self, devicemacaddress = DeviceMacAddress_Self,
             deviceipaddress = DeviceIP_Self, FamilyUniqueCode = request.user.last_name, devicedepreciationrate = depreciateRateReal_self, deviceid = uniqueId,
             userbrowser = BrowserType_Self, userbrowserversion = BrowserVersion_Self, userOSVersion = DeviceOSVersion_Self, devicestatus = devicestatus,
-            savetimedata = today.strftime("%B %d, %Y"), deviceUserID = request.user.last_name, deviceuseremail = request.user.email,
-            registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceuserfullname = request.user.username)
+            savetimedata = today.strftime("%B %d, %Y"), deviceuserfullname = request.user.first_name, deviceUserID = request.user.last_name, deviceuseremail = request.user.email,
+            registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber)
             FamilyDeviceRegForm.save()
-            messages.error(request, "Device Registered Successfully.")
+            messages.success(request, "Device Registered Successfully.")
             return redirect('FamilyDHMSDashboard')
 
         except:
@@ -440,76 +440,43 @@ def FamilyInventory(request):
                 depreciateRateReal = 'Nil'
         else:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Year Of Purchase.")
-            return redirect('FamilyInventory')
-        # 
-        if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
-            FaultyDevicesTrendForm = FaultyDevicesTrend(user = request.user, deviceID = uniqueId, month =  today.strftime("%b"), 
-            year = today.strftime("%B %d, %Y"), FamilyUniqueCode = request.user.last_name)
+            return redirect('FamilyInventory')      
 
-        if request.POST['deviceUserID']:
-            FindDeviceUserEmail = FamilyMemberReg.objects.filter(Q(user = request.user) & Q(memberid = request.POST['deviceUserID']))
-            FindDeviceUserEmailMain = FindDeviceUserEmail.values_list('memberemail', flat=True)
-            FindDeviceUserFullname = FamilyMemberReg.objects.filter(Q(user = request.user) & Q(memberid = request.POST['deviceUserID']))
-            FindDeviceUserFullnameMain = FindDeviceUserFullname.values_list('memberfullname', flat=True)
-            
-            FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
-            deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
-            deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
-            savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceUserID = deviceUserID,
-            deviceuseremail = FindDeviceUserEmailMain, deviceuserfullname = FindDeviceUserFullnameMain, deviceImageOne = deviceimage)
-            FamilyDeviceRegForm.save()
-            FaultyDevicesTrendForm.save()
-            messages.error(request, "Device registered successfully.")
-            return redirect('FamilyInventory')
-        
-        else:
-            FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
-            deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
-            deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
-            savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceImageOne = device_images)            
-            FamilyDeviceRegForm.save()
-            FaultyDevicesTrendForm.save()
-            messages.error(request, "Device registered successfully.")
-            return redirect('FamilyInventory')        
-
-        # try:
-        #     if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
-        #         FaultyDevicesTrendForm = FaultyDevicesTrend(user = request.user, deviceID = uniqueId, month =  today.strftime("%b"), 
-        #         year = today.strftime("%B %d, %Y"), FamilyUniqueCode = request.user.last_name)
-
-        #     if request.POST['deviceUserID']:
-        #         FindDeviceUserEmail = FamilyMemberReg.objects.filter(Q(user = request.user) & Q(memberid = request.POST['deviceUserID']))
-        #         FindDeviceUserEmailMain = FindDeviceUserEmail.values_list('memberemail', flat=True)
-        #         FindDeviceUserFullname = FamilyMemberReg.objects.filter(Q(user = request.user) & Q(memberid = request.POST['deviceUserID']))
-        #         FindDeviceUserFullnameMain = FindDeviceUserFullname.values_list('memberfullname', flat=True)
+        try:
+            if request.POST['deviceUserID']:
+                FindDeviceUserEmail = FamilyMemberReg.objects.filter(Q(user = request.user) & Q(memberid = request.POST['deviceUserID']))
+                FindDeviceUserEmailMain = FindDeviceUserEmail.values_list('memberemail', flat=True)
+                FindDeviceUserFullname = FamilyMemberReg.objects.filter(Q(user = request.user) & Q(memberid = request.POST['deviceUserID']))
+                FindDeviceUserFullnameMain = FindDeviceUserFullname.values_list('memberfullname', flat=True)
                 
-        #         FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
-        #         deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
-        #         deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
-        #         savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceUserID = deviceUserID,
-        #         deviceuseremail = FindDeviceUserEmailMain, deviceuserfullname = FindDeviceUserFullnameMain, deviceImageOne = device_images)
-        #         FamilyDeviceRegForm.save()
-        #         FaultyDevicesTrendForm.save()
-        #         messages.error(request, "Device registered successfully, and has been assigned.")
-        #         return redirect('FamilyInventory')
+                FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
+                deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
+                deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
+                savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceUserID = deviceUserID,
+                deviceuseremail = FindDeviceUserEmailMain, deviceuserfullname = FindDeviceUserFullnameMain, deviceImageOne = deviceimage)
+                # 
+                if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
+                    FaultyDevicesTrendForm = FaultyDevicesTrend(user = request.user, deviceID = uniqueId, month =  today.strftime("%b"), 
+                    year = today.strftime("%B %d, %Y"), FamilyUniqueCode = request.user.last_name)
+                    FaultyDevicesTrendForm.save()
+
+                FamilyDeviceRegForm.save()
+                messages.error(request, "Device registered successfully.")
+                return redirect('FamilyInventory')
             
-        #     else:
-        #         FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
-        #         deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
-        #         deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
-        #         savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceImageOne = device_images)            
-        #         FamilyDeviceRegForm.save()
-        #         FaultyDevicesTrendForm.save()
-        #         messages.error(request, "Device registered successfully.")
-        #         return redirect('FamilyInventory')
+            else:
+                FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
+                deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
+                deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
+                savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceImageOne = device_images)            
+                FamilyDeviceRegForm.save()
+                FaultyDevicesTrendForm.save()
+                messages.error(request, "Device registered successfully.")
+                return redirect('FamilyInventory') 
 
-        # except:
-        #     messages.error(request, "An error occured while trying to save this device, please try again.")
-        #     return redirect('FamilyInventory')
-
-
-
-        # REGISTER YOUR DEVICE SELF SET UP STARTS HERE
+        except:
+            messages.error(request, "An error occured while trying to save this device, please try again.")
+            return redirect('FamilyInventory')
 
     # 
     allfamilymembers = FamilyMemberReg.objects.filter(user = request.user)
@@ -597,7 +564,8 @@ def FamilyMembers(request):
             return redirect('FamilyMembers')
     allfamilymembers = FamilyMemberReg.objects.filter(user = request.user)
     allfamilymembersCount = allfamilymembers.count()
-    context = {'allfamilymembers':allfamilymembers, 'allfamilymembersCount':allfamilymembersCount}
+    AllFamilyDevices = FamilyDeviceReg.objects.filter(user = request.user)
+    context = {'allfamilymembers':allfamilymembers, 'allfamilymembersCount':allfamilymembersCount, 'AllFamilyDevices':AllFamilyDevices}
     return render(request, 'familydhmsapp/familymember.html', context)
 
 
@@ -607,9 +575,58 @@ def FamilyLogout(request):
     return redirect('UserLogin')
 
 
+# AUTO COMPLETE SETUP STARTS HERE
+# def autocompleteModel(request):
+    # if request.is_ajax():
+    #     q = request.GET.get('term', '').capitalize()
+    #     search_qs = FamilyDeviceReg.objects.filter(name__startswith=q)
+    #     results = []
+    #     print (q)
+    #     for r in search_qs:
+    #         results.append(r.deviceid)
+    #     data = json.dumps(results)
+    # else:
+    #     data = 'fail'
+    # mimetype = 'application/json'
+    # return HttpResponse(data, mimetype)
 
 
-# def FinDetails(request):
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+def autocompleteModel(request):
+    # if request.is_ajax():
+    if is_ajax(request=request):
+        q = request.GET.get('term', '').capitalize()
+        search_qs = FamilyDeviceReg.objects.filter(
+       Q( Q(deviceid__icontains = q) | 
+        Q(devicebrand__icontains = q) |
+        Q(deviceOS__icontains = q) |
+        Q(devicemodel__icontains = q) |
+        Q(deviceyearofpurchase__icontains = q) |
+        Q(devicename__icontains = q) |
+        Q(devicemacaddress__icontains = q) |
+        Q(deviceipaddress__icontains = q) |
+        Q(devicetype__icontains = q) |
+        Q(deviceUserID__icontains = q) |
+        Q(deviceuserfullname__icontains = q) |
+        Q(devicestatus__icontains = q)
+    ) & Q(user = request.user))
+
+        results = []
+        for r in search_qs:
+            results.append(r.devicename)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+    
+
+# AUTO COMPLETE SETUP ENDS HERE
+
+
+
 
 
 

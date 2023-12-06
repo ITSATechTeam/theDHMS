@@ -38,6 +38,40 @@ if (familymemberCount === '0'){
     emptystate.style.display = 'none'
 }
 
+// DISPLAY ACTION ON HOVER ON DOTS STARTS HERE
+let actionbtns = document.querySelectorAll('.actionbtns')
+
+actionbtns.forEach(element => {
+    element.addEventListener('click', () => {
+        console.log(element.nextElementSibling )
+        element.nextElementSibling.style.display = 'block'
+    });
+});
+
+// HIDE DIV ON CLICK OUTSIDE
+let memberaction = document.querySelectorAll('.memberaction');
+memberaction.forEach(element => {
+    window.addEventListener('mouseup', function(event){
+        if(event.target != element && event.target.parentNode != element){
+            element.style.display = 'none';
+        }
+    }); 
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

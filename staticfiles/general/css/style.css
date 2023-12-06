@@ -221,7 +221,7 @@ nav button{
 
 .dashboard svg{
     fill: black;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 /* SIDE BAR ENDS HERE */
 
@@ -336,6 +336,15 @@ nav button{
 }
 
 
+
+#overlay{
+    height:100%;
+    width:100%;
+    background:rgba(0, 0, 0, 1);
+    position:fixed;
+    left:0;
+    top:0;
+}
 
 
 

@@ -1,0 +1,1323 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+
+.pageerrortext{
+    text-align: center;
+    /* background-color: red; */
+}
+
+.pageerrortext button{
+    background-color: #2A66B0;
+    color: white;
+    padding: 10px;
+    border: none;
+    font-size: 1.2rem;
+    margin: 30px;
+    border-radius: 10px;
+}
+
+body{
+    overflow-x: hidden;
+    background-color: #F7F7FB;
+    /* color: white; */
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 240px;
+}
+
+.main h5{
+    color: rgb(175, 175, 175);
+}
+
+.maintop{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20px;
+    margin-bottom: 30px;
+}
+
+.maintop button p{
+    margin-top: 9px;
+}
+
+.addnewdevicebtn button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 160px;
+    margin-right: 10px;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    /* justify-content: space-around; */
+}
+
+.registerthisdevice button{
+    /* margin-top: 20px; */
+    border: #2A66B0 solid 1px;
+    color:#2A66B0;
+    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    width: 200px;
+    height: 40px;
+    align-items: center;
+    border: none;
+    justify-content: space-around;
+    background-color: #E1E7FC;
+    margin-right: 20px;
+}
+
+.regmydevicepopup form input{
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    background-color: #e1e2e3;
+}
+
+.registerthisdevice img{
+    width: 20px;
+}
+
+.maintop button img{
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+/* SECTION BELOW DASHBOARD INTRO SECTION STARTS HERE */
+.introdetailssection{
+    display: flex;
+    width: 100%;
+    padding-right: 0px;
+    justify-content: space-between
+}
+
+
+/* ALL DEVICES */
+
+.introdetailsbar{
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding-right: 10px;
+    height: 95px;
+    /* width: 135px; */
+    margin: 0px;
+    cursor:crosshair;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    align-items: center;
+    transition: .4s ease-in-out;
+}
+
+.introdetailsbar img{
+    margin-bottom: 10px;
+    /* background-color: red; */
+    margin-right: 10px;
+    margin-top: -30px;
+    width: 30px;
+}
+
+.introdetailsbar h1{
+    font-weight: bold;
+    /* font-size: 120%; */
+}
+
+.introdetailsbar p{
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.introdetailsbar:hover{
+    transform: scale(1.1);
+}
+
+
+.alldevices{
+ background-color: #DFEBF8;
+}
+
+.alldevices h1{
+    margin-top: 6px;
+}
+
+/* DEVICES AT RISK */
+.deviceatrisk{
+    background-color: #F9DCDC;
+}
+
+/* ALL DEVICES */
+/* .allusers{
+    background-color: #E7DCFA;
+} */
+
+.allusers h1{
+    margin-top: 10px;
+}
+
+
+/* DEVICES CHART SECTION */
+
+
+.devicesreport{
+    border: solid 1px #EFEFEF;
+    width: 300px;
+    padding: 10px;
+    border-radius: 10px;
+    margin-right: 20px;
+    height: 150px;
+    padding-right: 20px;
+    transition: .4s ease-in-out;
+}
+
+.devicesreport:hover{
+    transform: scale(1.1);
+}
+
+.deviceschartimgmain img{
+    width: 90px;
+    margin-top: 10px;
+}
+
+.deviceschart img{
+    width: 8px;
+}
+
+.deviceschartout{
+    /* background-color: red; */
+}
+
+.deviceschartintro{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deviceschartintro h3{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.devicestatus{
+    display: flex;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.devicestatus img{
+    margin-right: 5px;
+}
+
+.devicestatus p{
+    margin-top: 10px;
+}
+
+.devicestatus select{
+    padding: 1px;
+    border: none;
+    width: 40px;
+}
+
+
+/* SECTION BELOW DASHBOARD INTRO SECTION ENDS HERE */
+
+/* UPLOAD CSV AND SCAN NETWORK STARTS HERE */
+
+.deviceonboardall {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: -25px;
+}
+.uploaddevicecsv {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-top: 30px;
+}
+
+.uploaddevicecsv button{
+    display: flex;
+    border: none;
+    align-items: center;
+    background-color: #2A66B0;
+    padding: 2px 3px;
+    color: white;
+    width: 120px;
+    justify-content: space-around;
+    border-radius: 10px;
+    margin-left: 20px;
+    font-weight: bold;
+    margin-right: 50px;
+}
+
+.scannetworkbtn button{
+    background-color: white;
+    border: #2A66B0 solid 1px;
+    color:#2A66B0;
+}
+
+.uploaddevicecsv button p{
+    margin-top: 8px;
+}
+
+.uploaddevicecsvtext p{
+    margin-top: 10px;
+}
+
+/* DEVICE INVENTORY MAIN STARTS HERE */
+.deviceinventorymain{
+    margin-top: 100px;
+}
+
+.deviceinventorymaintop{
+    display: grid;
+    grid-template-columns: 42% 68.5%;
+    justify-content: space-between;
+    margin-right: 110px;
+    align-items: center;
+    /* background-color: red; */
+}
+
+.deviceinventorymaintitle h2{
+    font-size: 1.7rem;
+}
+
+.searchdashboard{
+    position: relative;
+    
+
+}
+
+.searchdashboard input{
+    display: flex;
+    align-items: center; 
+    border: solid rgb(190, 190, 190) 1px;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+    height: 10px;
+    padding: 15px;
+    padding-left: 50px;
+    background-color: transparent;
+    font-size: 1.3rem;
+}
+
+.searchicon{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    padding-left: 7px;
+}
+
+.search p{
+    margin-top: 13px;
+}
+
+.search img{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.filter{
+    border: solid rgb(90, 90, 90) 1px;
+    padding: 15px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    height: 10px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.filter2{
+    border: solid rgb(90, 90, 90) 1px;
+    padding: 15px;
+    width: 220px;
+    /* margin-right: -20px; */
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    height: 10px;
+    margin-left: 0px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.closefilter img{
+    width: 20px;
+}
+
+.closefilter{
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    cursor: pointer;
+}
+.closefilter2 img{
+    width: 20px;
+}
+
+.closefilter2{
+    position: absolute;
+    right: 20px;
+    top: 30px;
+    cursor: pointer;
+}
+
+.filter p{
+    margin-top: 10px;
+    margin-left: 3px;
+}
+
+.filter2 p{
+    margin-top: 10px;
+    margin-left: 3px;
+}
+
+
+.searchdashboardsection{
+    display: flex;
+    /* justify-content: space-between; */
+    margin-right: 0px;
+    position: relative;
+}
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
+.shadow{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    /* border-radius: 10px; */
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: none;
+}
+
+.shadowForPreReg{
+    position: fixed;
+    margin-left: 220px;
+    height: 140%;
+    padding: 20px;
+    width: 90%;
+    /* background-color: red; */
+    background-color: rgba(0, 0, 0, 0.233);
+    z-index: 6;
+    transition: 0.5s ease-in-out;
+    display: block;
+}
+
+.filterbox{
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    z-index: 7;
+    text-align: left;
+    display: none;
+}
+
+.filterbox1{
+    width: 300px;
+}
+
+.filterbox1A{
+    display: none;
+}
+
+.filterbox p{
+    font-size: 1.5rem;
+    margin-top: 30px;
+}
+
+.filterbox .selecthealth{
+    /* margin-bottom: -15px; */
+    /* background-color: red; */
+}
+
+.filterbox select{
+    /* margin-bottom: -10px; */
+    /* margin-top: 10px; */
+    width: 100%;
+    height: 30px;
+    font-size: 1.2rem;
+    /* background-color: red; */
+    border: solid 1px grey;
+    border-radius: 10px;
+}
+
+.filterbox button{
+    border: none;
+    height: 30px;
+    align-items: center;
+    background-color: #2A66B0;
+    padding: 2px 3px;
+    color: white;
+    width: 100%;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin-top: 20px;
+}
+
+
+/* FILTER BY CALENDAR */
+
+.filterbydatemain{
+    display: flex;
+    align-items: center;
+}
+
+.filterdateselection {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    margin-right: 20px;
+    /* padding-bottom: 0px; */
+    /* background-color: red; */
+    height: 40px;
+}
+
+.filterdateselection p{
+    padding-bottom: 17px;
+}
+
+.filterdateselection input{
+    margin-right: 10px;
+}
+
+/* TABLE STARTS HERE */
+
+.Working{
+    background-color: #b7f2bc;
+    height: 23px;
+    width: 60px;
+    padding-left: 2px;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+.link strong a {
+    color: #2A66B0;
+}
+
+
+.Faulty{
+    background-color: #EED0D0;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+
+.Critical{
+    background-color: #eeedd0;
+    height: 23px;
+    width: 60px;
+    padding-left: 5px;
+    font-weight: bold;
+    border-radius: 50px;
+}
+
+
+table td a{
+    color: black
+}
+.devicesinvintro{
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20px;
+    align-items: center;
+}
+
+
+table {
+    margin-top: 30px;
+    border: 1px solid white;
+    width: 100%;
+    font-size: 1.2rem;
+    /* margin: auto; */
+    margin-bottom: 60px;
+    overflow: scroll;
+}
+
+td,
+th {
+    border: 1px solid #EEF3F9;
+    text-align: left;
+    padding: 8px;
+}
+th{
+    border: 1px solid #EEF3F9;
+    text-align: left;
+    padding: 8px;
+    color: black;
+}
+
+/* tr:nth-child(even) {} */
+
+tr:nth-child(1) {
+    color: #4F4F4F;
+    background-color: #EEF3F9;
+    /* background-color: #19193a3d; */
+}
+
+/* table button{
+    border: none;
+    background-color: white;
+    color: #2464b4;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 15px;
+} */
+
+.seealldevices{
+    border: none;
+    background-color: white;
+    color: #EEF3F9;
+    padding: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 15px;
+}
+
+.actionbtns img{
+    padding: 5px;
+    border: solid 1px #EEF3F9;
+    border-radius: 50%;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+.actionbtns img:hover{
+    border: solid 1px black;
+}
+/* TABLE ENDS HERE */
+
+
+/* DEVICE INVENTORY MAIN ENDS HERE */
+
+/* PROFILE BOX STARTS HERE */
+.profileBox {
+    overflow: hidden;
+}
+
+.profileBoxintro{
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+
+.profileBox ul li{
+    list-style: none;
+}
+
+.profileBox ul li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    width: 120%;
+    padding-left: 20px;
+    margin-left: -20px;
+}
+
+.profileBox ul li:hover{
+    background-color: #2A66B0;
+    cursor: pointer;
+    color: white;
+}
+
+.profileBox ul{
+    width: 100%;
+    margin-left: 0px;
+}
+
+
+.profileBox ul li p{
+    margin-top: 10px;
+}
+
+.profileBox ul li img{
+    width: 22px;
+    margin-right: 3px;
+}
+
+.profileBox hr{
+    width: 120%;
+    margin-left: -30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.profileBox p{
+    font-size: 1.5rem;
+    /* margin-top: 20px; */
+}
+
+
+.profileBox{
+    background-color: white;
+    /* padding: 10px; */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 300px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    z-index: 6;
+    display: none;
+}
+
+
+/* PROFILE BOX ENDS HERE */
+
+/* UPLOAD/REGISTER A DEVICE POP UP STARTS HERE */
+.registerDeviceIntro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.registerDeviceIntro img{
+    cursor: pointer;
+}
+
+
+.registerDevice{
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 25px;
+    position: fixed;
+    height: 80vh;
+    overflow-y: scroll;
+    top: 10%;
+    left: 40%;
+    z-index: 7;
+    display: none;
+}
+
+.registerDevice form{
+    font-size: 1.4rem;
+}
+
+.registerDevice input{
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: rgb(226, 226, 226) solid .8px;
+    padding: 5px;
+    font-family: 1.1rem;
+}
+
+select{
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: rgb(226, 226, 226) solid .8px;
+    padding: 5px;
+    font-family: 1.1rem;
+}
+
+
+
+.registerDevice button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.regmydevicepopup{
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 25px;
+    position: fixed;
+    height: 80vh;
+    overflow-y: scroll;
+    top: 10%;
+    left: 40%;
+    z-index: 7;
+    /* text-align: center; */
+    display: none;
+}
+
+.regmydevicepopupclose{
+    cursor: pointer;
+}
+
+.regmydevicepopup button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.regmydevicepopup h5 strong{
+    font-size: 1.7rem;
+}
+
+.adddevicedashboard{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+/* UPLOAD/REGISTER A DEVICE POP UP ENDS HERE */
+
+/* UPLOAD CSV FILE POPUP STARTS HERE */
+.uploaddevicepopupintro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    /* display: none; */
+}
+
+
+.drop-container {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    /* width: 240px; */
+    border: 2px dashed #555;
+    color: #444;
+    cursor: pointer;
+    transition: background .2s ease-in-out, border .2s ease-in-out;
+  }
+  
+  .drop-container:hover {
+    background: #eee;
+    border-color: #111;
+  }
+  
+  .drop-container:hover .drop-title {
+    color: #222;
+  }
+  
+  .drop-title {
+    color: #444;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    transition: color .2s ease-in-out;
+  }
+.uploaddevicepopup h1{
+    font-size: 1.7rem;
+}
+.uploaddevicepopupintroclose{
+    cursor: pointer;
+}
+
+
+.uploaddevicepopup{
+    width: 500px;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    position: fixed;
+    left: 40%;
+    top: 10%;
+    background-color: white;
+    z-index: 7;
+    display: none;
+}
+
+
+
+.profileimgproper img{
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+
+/* .profileimgpropernav img{
+    border: 1px solid grey;
+    background-color: rgba(158, 157, 157, 0.397);
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+    overflow: hidden;
+    border-radius: 100px;
+    object-fit: cover;
+} */
+
+.scannetworkintroleft{
+    align-items: left;
+    text-align: left;
+    justify-content: space-between;
+}
+
+.uploaddevicepopup form button{
+    background-color: #2A66B0;
+    /* background-color: #E1E7FC; */
+    border: none;
+    color: white;
+    align-items: center;
+    width: 100%;
+    font-size: 1.4rem;
+    margin: auto;
+    margin-top: 20px;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* UPLOAD CSV FILE POPUP ENDS HERE */
+
+/* RECENT DRAG AND DROP FILE DEVICES UPLOAD STARTS HERE */
+.upload-container {
+    position: relative;
+}
+
+.upload-container input {
+    border: 1px solid #92b0b3;
+    background: #f1f1f1;
+    outline: 2px dashed #92b0b3;
+    outline-offset: -10px;
+    padding: 100px 0px 100px 250px;
+    text-align: center !important;
+    width: 500px;
+}
+
+.upload-container input:hover {
+    background: #ddd;
+}
+
+.upload-container:before {
+    position: absolute;
+    bottom: 50px;
+    left: 245px;
+    content: " (or) Drag and Drop files here. ";
+    color: #3f8188;
+    font-weight: 900;
+}   
+.upload-btn {
+    margin-left: 300px;
+    padding: 7px 20px;
+}   
+
+
+/* RECENT DRAG AND DROP FILE DEVICES UPLOAD ENDS HERE */
+
+
+/* CHART EFFECTS STARTS HERE */
+#container{
+    background-color: transparent;
+    width: 300px;
+}
+
+#container2{
+    /* background-color: red; */
+    width: 670px;
+}
+
+.minipiechartlabel{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.3rem;
+}
+
+.minipiechartlabel img{
+    margin-right: 5px;
+}
+
+
+/* CHART EFFECTS ENDS HERE */
+
+/* completeDetailsPopup SETUP STARTS HERE */
+
+.completeDetailsPopup{
+    background-color: transparent;
+    z-index: 6;
+    width: 100%;
+    margin: auto;
+    position: fixed;
+    top: 30%;
+}
+
+.completeDetailsPopup2{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: auto;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.completeDetailsPopup h3{
+    font-size: 2rem;
+}
+
+.completeDetailsPopup p{
+    font-size: 1.7rem;
+}
+
+.completeDetailsPopup button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 160px;
+    height: 40px;
+    font-size: 1.4rem;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    /* margin-top: 20px; */
+}
+
+
+.scannetworkbtn2 button{
+    /* margin-top: 20px; */
+    border: #2A66B0 solid 1px;
+    color:#2A66B0;
+    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.4rem;
+    width: 190px;
+    height: 40px;
+    align-items: center;
+    border: none;
+    justify-content: space-around;
+    background-color: #E1E7FC;
+    margin-right: 20px;
+}
+
+.heroTopButtons{
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
+
+
+.completeDetailsPopup2btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+.uploadguides li p{
+    font-size: 1.2rem;
+}
+
+/* completeDetailsPopup SETUP ENDS HERE */
+
+
+/* .department{
+    background-color: #D2EFF1;
+}
+
+.faultydevices{
+    background-color: #EED0D0;
+}
+
+.healthydevices{
+    background-color: #7df2b054;
+}
+
+.onmaintenance{
+    background-color: #ffe86655;
+} */
+
+.postherosection{
+    display: grid;
+    grid-template-columns: 65% 33%;
+    padding-top: 10px;
+    justify-content: space-between;
+    /* align-items: center; */
+    width: 98%;
+    padding-bottom: 100px;
+}
+
+.graphintrotext{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    height: 420px;
+}
+
+.monthlyAmount{
+    background-color: red;
+    color: white;
+    position: fixed;
+    left: 20%;
+    top: 10%;
+    height: 50%;
+    width: 50vw;
+    font-size: 2rem;
+    display: none;
+}
+
+.graphintrotextInner{
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+
+}
+
+.devicetypesummary{
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    height: 270px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.postherosectionB{
+    margin-top: 0px;
+}
+
+.graphdate select{
+    border: none;
+    font-size: 1.3rem;
+    background-color: transparent;
+}
+
+.graphdate img{
+    width: 20px;
+}
+
+.graphdate{
+    background-color:#EAF0F7;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    height: 30px;
+}
+
+.deviceInvetorySection{
+    width: 100%;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    /* min-height: 300px; */
+    height: 500px;
+}
+
+.deviceInvetorySectionIn{
+    overflow-y: scroll;
+    height: 400px;
+
+}
+
+.deviceInvetorySection::-webkit-scrollbar{
+    display: none;
+}
+
+.deviceInvetorySectionIn::-webkit-scrollbar{
+    display: none;
+}
+
+.maintenanceRequestSection{
+    width: 100%;
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    min-height: 200px;
+    overflow: hidden;
+}
+
+
+.maintenanceRequestSectionmain{
+    overflow-y: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.maintenanceRequestSectionMain{
+    width: 100%;
+    position: relative;
+}
+
+
+.maintenanceRequestSectioninner{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.dashboardStaffDP{
+    height: 50px;
+    width: 50px;
+    background-color: #E1E7FC;
+    border-radius: 50px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    padding-top: 7px;
+    font-weight: bold;
+    font-size: 2.4rem;
+    color: black;
+}
+
+.hideThis{
+    display: none;
+}
+
+.staffListSection{
+    display: flex;
+}
+
+.staffnamesectionOut{
+    margin-top: 0px;
+}
+
+.maintenanceType{
+    font-weight: 400;
+}
+
+.maintenanceStatusMain{
+    width: 78px;
+    position: absolute;
+    right: 0;
+    margin-top: -50px;
+    margin-right: 20px;
+    text-align: end;
+    align-items: center;
+    height: 13px;
+    justify-content: space-around;
+    /* background-color: green; */
+}
+
+/* .maintenanceStatus:hover{
+    transform: scale(1.1);
+} */
+
+.maintainancedot{
+    height: 6px;
+    width: 6px;
+    border-radius: 50px;
+    background-color: red;
+    margin-top: 0px;
+    position: absolute;
+    right: 0;
+    margin-top: -45px;
+    margin-right: 10px;
+    text-align: end;
+}
+
+.emptydevinvmain img{
+    width: 400px;
+}
+
+.emptydevinv{
+    text-align: center;
+    width: 100%;
+}
+
+.emptydevinvBTNS{
+    width: 370px;
+    margin: auto;
+}
+
+
+.emptydevinvBTNS .addnewdevicebtn img{
+    margin-right: 10px;
+}
+
+.emptydevinvBTNS p{
+    margin-top: 10px;
+}
+
+.noDeviveYet{
+    text-align: center;
+    border: solid 3px black;
+    border-radius: 100px;
+    width: 200px;
+    margin: auto;
+    padding: 30px;
+    /* height: 100px; */
+}
+
+.emptymaintenance{
+    margin: auto;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.emptymaintenance2{
+    margin: auto;
+    text-align: center;
+    margin-top: -100px;
+    margin-bottom: 100px;
+}
+
+
+
+
+
+
+

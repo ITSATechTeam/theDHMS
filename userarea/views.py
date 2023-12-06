@@ -1531,7 +1531,7 @@ def Searchresult(request):
     if request.method == 'GET':
         print(q)
         deviceSearch = DeviceRegisterUpload.objects.filter(
-       Q( Q(deviceid__icontains = q) | 
+       Q(Q(deviceid__icontains = q) | 
         Q(deviceuserfirstname__icontains = q) |
         Q(deviceuserlastname__icontains = q) |
         Q(devicemacaddress__icontains = q) |

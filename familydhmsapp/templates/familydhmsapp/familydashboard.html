@@ -177,14 +177,18 @@
 									</td>
 									<td>{{ allUploadedDevices.devicemacaddress }}</td>
 									<td class='link enterStaffUser'>
+										{% if allUploadedDevices.deviceuserfullname %}
+											{{ allUploadedDevices.deviceuserfullname }}
+										{% else %}
 											{% for allfamilymembers in allfamilymembers %}
-											{% if allfamilymembers.memberid == allUploadedDevices.deviceUserID %}
-											<strong><a href= /member/staffdetails/{{ allfamilymembers.id }}/  >{{ allfamilymembers.memberfullname }}</a></strong>
-											{% endif %}
+												{% if allfamilymembers.memberid == allUploadedDevices.deviceUserID %}
+													<strong><a href= /member/staffdetails/{{ allfamilymembers.id }}/  >{{ allfamilymembers.memberfullname }}</a></strong>
+												{% endif %}
 											{% endfor %}
+										{% endif %}
 									</td>
 									<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
-									<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+									<td><p class="{{ allUploadedDevices.devicestatus }}">{{ allUploadedDevices.devicestatus }}</p></td>
 									{% comment %} <td>{{ allUploadedDevices.deviceusedepartment }}</td> {% endcomment %}
 									{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
 								</tr>
@@ -337,7 +341,7 @@
 					<input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/>
 					
 					<select name='devicestatus'>
-						<option>--Select Device Status--</option>
+						<option value='Working'>--Select Device Status--</option>
 						<option value='Working'>Working</option>
 						<option value='Faulty'>Faulty</option>
 						<option value='Critical'>Critical</option>
@@ -435,13 +439,13 @@
 			
 			<form method='POST'>
 				<select style="font-size: 1.4rem"  id='devicestatusselect' name='devicestatus'>
-					<option style="font-size: 1.4rem" >--Select Device Status--</option>
+					<option style="font-size: 1.4rem" value='Working' >--Select Device Status--</option>
 					<option value='Working' style="font-size: 1.4rem" >Working</option>
 					<option value='Faulty' style="font-size: 1.4rem" >Faulty</option>
 					<option value='Critical' style="font-size: 1.4rem" >Critical</option>
 				</select><br/><br/>
-			<br/><hr/><br/>
-			<h4>Provide Device's MAC Address, Name, Price & Location Below(Optional):</h4><br/>
+				<br/><hr/><br/>
+				<h4>Provide Device's MAC Address, Name, Price & Location Below(Optional):</h4><br/>
 				{% csrf_token %}
 				<input type='text' name='DeviceName_Self' placeholder="Device Name. Eg: John's Device" /><br/>
 				<input type='text' name='devicemacaddress_Self' placeholder='Device MAC Address. Eg: XX:XX:XX:XX:XX' /><br/>

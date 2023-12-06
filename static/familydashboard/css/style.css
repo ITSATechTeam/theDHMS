@@ -520,10 +520,11 @@ body{
 
 .Working{
     background-color: #b7f2bc;
-    height: 1px;
+    height: 23px;
     width: 60px;
     padding-left: 2px;
     font-weight: bold;
+    border-radius: 50px;
 }
 
 .link strong a {
@@ -537,6 +538,7 @@ body{
     width: 60px;
     padding-left: 5px;
     font-weight: bold;
+    border-radius: 50px;
 }
 
 
@@ -546,6 +548,7 @@ body{
     width: 60px;
     padding-left: 5px;
     font-weight: bold;
+    border-radius: 50px;
 }
 
 
