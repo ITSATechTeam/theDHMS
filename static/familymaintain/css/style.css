@@ -1,0 +1,33 @@
+
+.actiondots{
+    cursor: pointer;
+}
+
+.actiondots img{
+    padding: 5px;
+    transition: ease-in-out .3s;
+    cursor: pointer;
+}
+
+.actiondots img:hover{
+    border-radius: 20px;
+    background-color: rgba(128, 128, 128, 0.334);
+}
+
+.actiondotsout{
+    position: relative;
+}
+
+
+.memberaction2{
+    position: absolute;
+    right: 40px;
+    bottom: 0px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    width: 200px;
+    display: none;
+    z-index: 10;
+}

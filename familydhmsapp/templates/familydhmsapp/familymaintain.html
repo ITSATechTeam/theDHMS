@@ -7,7 +7,9 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
-		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familymembers/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familymaintain/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +17,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-		<title>Family Maintenance | ITSA Inventory System</title>
+		<title>Family Maintenance | DHMS Inventory System</title>
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
 	</head>
 	<div class='shadow'></div>	
@@ -25,7 +27,246 @@
 	{% endif %}
 	<body class='body'>
 		<div class='main'>
+			<div class='familymemberintro'>
+				<div>
+					<h1>Maintenance</h1>
+					<h4>Have your devices fixed with zero hassles</h4>
+				</div>
+				<div class='familymemberintrobtn'>
+					<button>
+						<img src={% static 'familymembers/img/add.png' %} />
+						Request Maintenance
+					</button>
+				</div>
+			</div>
+				
+			<div id="flash" class='flashmessage'>
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong>{{ message }}</strong>
+					{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+			{% comment %} EMPTY STATE STARTS HERE {% endcomment %}
+			<div class='emptystate'>
+				<img src={% static 'familymembers/img/familymemberemptystate.png' %} />
+				<h4>No family members have been added yet. Add family members and start managing them.</h4>					
+				<button>
+					<img src={% static 'familymembers/img/add2.png' %} />
+					Add Member
+				</button>
+			</div>
+			{% comment %} EMPTY STATE ENDS HERE {% endcomment %}			
+			<div class='familymemberCount'>
+				<p>{{allfamilymembersCount}}</p>
+			</div>
+			{% comment %} MAIN FAMILY MEMBERS DISPLAY STARTS HERE {% endcomment %}
+
+			<div class='mainfamilymemberslistsection'>
+				{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
+				<div class='deviceinventorymaintop'>
+					<div class='searchdashboardsection'>
+						<div class='searchdashboard'>
+							{% comment %} <form method='GET' action="{% url 'Searchresult' %}"> {% endcomment %}
+							<form>
+								<input type='text' name='q' placeholder='Search Devices' />
+							</form>
+							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+						</div>
+						
+						<div class='filteroutter'>
+							<div class='filter filtercategory'>
+								<img src={% static 'familymembers/img/filter.png' %} />
+								<p>Filter by Category</p>
+							</div>
+							{% comment %} <div class='filter filtercategory filter2'>
+								<img src={% static 'inventory/img/filter.png' %} />
+								<p>Filter by Device Status</p>
+							</div> {% endcomment %}
+						</div>
+						
+						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+						<div class='filterbox filterbox1'>
+							<h2>Filter by</h2>
+							<div class='closefilter'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									
+									<p>Device Category</p>
+									<select name='q'>
+										<option value = 'AllCategory'>All</option>
+										<option value='Desktop'>Desktop</option>
+										<option value='Laptop'>Laptop</option>
+										<option value='Printer'>Printer</option>
+										<option value='Scanner'>Scanner</option>
+										<option value='OtherDevices'>Other Devices</option>
+									</select>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+						{% comment %} FILTER BY DEVICE STATUS {% endcomment %}
+						{% comment %} <div class='filterbox filterbox2'>
+							<h2>Filter by</h2>
+							<div class='closefilter2'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									<div class='selecthealth'>
+										<p>Device Health</p>
+											<select name='q'>
+												<option value = 'AllStatus' >All</option>
+												<option value='Working'>Working</option>
+												<option value='Critical'>Critical</option>
+												<option value='Faulty'>Faulty</option>
+											</select>
+									</div>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div> {% endcomment %}
+					</div>
+					<div class='searchsidebtns'>
+						{% comment %} <div class='uploaddevicecsv showdeviceuploadpopup'>
+							<button>
+								<img src={% static 'dashboard/img/uploaddevice.png' %} />
+								<p>Upload</p>
+							</button>
+						</div> {% endcomment %}
+						<div class='scannetworkbtn'>
+							<a>
+								<button class='scannetworkbtn'>
+									<img src={% static 'familymembers/img/export.png' %} />
+									<p>Export</p>
+								</button>
+							</a>
+						</div>
+					</div>
+				</div>
+				{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
+				
+				<table  id="paginated-list" >
+					<tr>
+					  <th class='topCheckBox'>
+						<input type='radio' />
+					  </th>
+					  <th>Device Name</th>
+					  <th>Serial NO</th>
+					  <th>Model</th>
+					  <th>Operating system</th>
+					  <th>Device Type</th>
+					  <th>Issue</th>
+					  <th>Status</th>
+					  <th>Request by</th>
+					  <th></th>
+					</tr>
+					<tr>
+						<td>
+							<input type='radio' />
+						</td>
+						<td>NAME</td>
+						<td>111111</td>
+						<td>SSS</td>
+						<td>SSS</td>
+						<td>SSSS</td>
+						<td>SSS</td>
+						<td>SSSS</td>
+						<td>SSS</td>
+						<td class='actiondotsout'>
+							<div class='actionbtns2'>
+								<img src={% static 'familymaintain/img/actiondots.png' %} />
+							</div>
+							<div class='memberaction2'>
+								<div class='memberactioninner'>
+									<img src={% static 'familyinv/img/eye.png' %} />
+									<p>View Details</p>
+								</div>
+								<div class='memberactioninner'>
+									<img src={% static 'familyinv/img/edit.png' %} />
+									<p>Edit Member Details</p>
+								</div>
+								<div class='memberactioninner'>
+									<img src={% static 'familymaintain/img/x.png' %} />
+									<p>Cancel Request</p>
+								</div>
+								<div class='memberactioninner'>
+									<img src={% static 'familymaintain/img/checkgood.png' %} />
+									<p>Approve Request</p>
+								</div>
+							</div>
+						</td>
+					</tr>
+					{% for FamilyMemberReg in allfamilymembers %}
+					<div class='item'>
+						<tr class='item'>
+							<td><input type='radio' /></td>
+							<td class={{ FamilyMemberReg.memberfullname }}>{{ FamilyMemberReg.memberfullname }}</td>
+							<td>{{ FamilyMemberReg.memberid }}</td>
+							<td class={{ FamilyMemberReg.memberemail }}>{{ FamilyMemberReg.memberemail }}</td>
+
+							<td>
+								{% for AllFamilyDevices in AllFamilyDevices %}
+								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								<a href=''>{{ AllFamilyDevices.deviceid }}</a><br/>
+								{% endif %}
+								{% endfor %}
+							</td>
+							
+							<td>
+								{% for AllFamilyDevices in AllFamilyDevices %}
+								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								{{ AllFamilyDevices.devicetype }}<br/>
+								{% endif %}
+								{% endfor %}
+							</td>
+							
+							<td>
+								{% for AllFamilyDevices in AllFamilyDevices %}
+								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								<p class="{{ AllFamilyDevices.devicestatus }}">{{ AllFamilyDevices.devicestatus }}<br/></p>
+								{% endif %}
+								{% endfor %}
+							</td>
+
+							<td class='actiongensection'>
+								<div class='actionbtns'>
+									<img src={% static 'familymembers/img/action.png' %} />
+								</div>
+								<div class='memberaction'>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/eye.png' %} />
+										<p>View Details</p>
+									</div>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/edit.png' %} />
+										<p>Edit Member Details</p>
+									</div>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/bin.png' %} />
+										<p>Remove Member</p>
+									</div>
+									<div class='memberactioninner'>
+										<img src={% static 'familyinv/img/admin.png' %} />
+										<p>Make Admin</p>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</div>
+					{% endfor %}
+				</table>
+			</div>
+			{% comment %} MAIN SECTION ENDS IMMEDIATELY BELOW {% endcomment %}
         </main>
+		<script src={% static 'familymaintain/js/familymaintain.js' %}></script>
     </body>
 </html>
 {% endblock content %}
+
+
+
+

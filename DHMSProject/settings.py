@@ -24,8 +24,8 @@ from ms_identity_web import IdentityWebPython
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']

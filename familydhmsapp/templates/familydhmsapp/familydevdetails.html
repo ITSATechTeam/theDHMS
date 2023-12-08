@@ -1,0 +1,97 @@
+<!-- @format -->
+{% include 'famgeneral.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familymembers/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Device Details | Family Members DHMS</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<div class='shadow'></div>	
+	{% if allSignupsForUpdatePopup %}
+	{% else %}
+	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
+	{% endif %}
+	<body class='body'>
+		<div class='shadow'></div>
+		<div class='main'>
+			{% comment %} MAIN STARTS ABOVE {% endcomment %}
+			{% comment %} <div class='familymemberintro'>
+				<div>
+					<h1>Family Members</h1>
+					<h4>Manage your family members and  devices </h4>
+				</div>
+				<div class='familymemberintrobtn'>
+					<button>
+						<img src={% static 'familymembers/img/add.png' %} />
+						Add Member
+					</button>
+				</div>
+			</div> {% endcomment %}
+				
+			<div id="flash" class='flashmessage'>
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong>{{ message }}</strong>
+					{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+			{% comment %} EMPTY STATE STARTS HERE {% endcomment %}
+			<div class='emptystate'>
+				<img src={% static 'familymembers/img/familymemberemptystate.png' %} />
+				<h4>No family members have been added yet. Add family members and start managing them.</h4>					
+				<button>
+					<img src={% static 'familymembers/img/add2.png' %} />
+					Add Member
+				</button>
+			</div>
+			<div>
+
+			</div>
+			{% comment %} MAIN ENDS BELOW {% endcomment %}
+        </div>
+		{% comment %} ADD FAMILY MEMBER POP UP STARTS HERE {% endcomment %}
+
+		<div class='addfampopup'>
+			<div class='addfampopuphead'>
+				<div>
+					<h1>Add Family Member</h1>
+					<p>Add a new family member to your Family DHMS </p>
+				</div>
+				<div class='addfampopupheadclosebtn'>
+					<img src={% static 'familymembers/img/x.png' %} />
+				</div>
+			</div><br/><br/>
+			<div>
+				<form method='POST'>
+					{% csrf_token %}
+					<label for='fullname'>Full Name</label><br/>
+					<input id='fullname' name='fullname' type='text' required placeholder='John Doe' /><br/><br/>
+
+					<label for='email'>Email Address</label><br/>
+					<input id='email' name='email' type='email' required placeholder='johndoe@gmail.com' /><br/><br/>
+					<button>Add Member</button>
+				</form>
+			</div>
+
+		</div>
+
+		{% comment %} ADD FAMILY MEMBER POP UP ENDS HERE {% endcomment %}
+		<script src={% static 'familymembers/js/familymembers.js' %}></script>
+    </body>
+</html>
+{% endblock content %}

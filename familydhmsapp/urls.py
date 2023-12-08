@@ -13,6 +13,7 @@ urlpatterns = [
     path('familymember', views.FamilyMembers, name="FamilyMembers"),
     path('familysettings', views.FamilySettings, name="FamilySettings"),
     path('familylogout', views.FamilyLogout, name="FamilyLogout"),
+    path('familydevicedetails/<str:deviceid>/', views.FamilyDeviceDetails, name="FamilyDeviceDetails"),
     path('ajax_calls/search/', views.autocompleteModel)
     # path('logout', views.UserLogout, name="UserLogout"),
     # path('maintenancedetails/<str:name>/', views.MaintainanceDetails, name="MaintainanceDetails"),

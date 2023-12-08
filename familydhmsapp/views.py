@@ -625,7 +625,13 @@ def autocompleteModel(request):
 
 # AUTO COMPLETE SETUP ENDS HERE
 
+# FAMILY DEVICE DETAILS SECTION STARTS HERE
 
+def FamilyDeviceDetails(request, deviceid):
+    return render(request, 'familydhmsapp/familydevdetails.html', context)
+
+
+# FAMILY DEVICE DETAILS SECTION ENDS HERE
 
 
 
