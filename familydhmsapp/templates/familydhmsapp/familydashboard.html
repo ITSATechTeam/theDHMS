@@ -7,6 +7,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'famgeneral/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
@@ -29,7 +30,7 @@
 				<div>
 					<h1><strong class='greetuser'></strong> {{request.user}},</h1>
 					<h5>Manage all your family's devices in one place.</h5>
-				</div>
+				</div><br/><br/>
 				
 				<div id="flash flashmessage">
 					{% if messages %} {% for message in messages %}
@@ -42,10 +43,6 @@
 				
 				<div class='heroTopButtons'>
 					<div class='scannetworkbtn2 showdeviceuploadpopup'>
-						{% comment %} <button>
-							<img src={% static 'dashboard/img/scannetwork.png' %} />
-							<p>Upload CSV File</p>
-						</button> {% endcomment %}
 					</div>
 
 					<div class='addnewdevicebtn'>
@@ -284,27 +281,25 @@
 					<div class='maintenanceRequestSection'>
 						<div class='maintenanceRequestSectioninner'>
 							<h2>Family Members</h2>
-							<h4 class='link'><a href={% url 'StaffMembers' %}>See all</a></h4>
+							<h4 class='link'><a href={% url 'FamilyMembers' %}>See all</a></h4>
 						</div><br/>
 						<div class='maintenanceRequestSectionmain'>
-							{% if FirstStaffMembers %}
-							{% for FirstStaffMembers in FirstStaffMembers %}
+							{% if allfamilymembers %}
+							{% for allfamilymembers in allfamilymembers %}
 							<div class='staffListSection'>
 								<div class='dashboardStaffDP'></div>
 								<div class='staffnamesectionOut'>
-									{% if FirstStaffMembers.staff_lastname %}
-									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }} {{ FirstStaffMembers.staff_lastname }}</h3>
-									{% else %}
-									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }}</h3>
+									{% if allfamilymembers.memberfullname %}
+									<h3 class='staffnamesection'>{{ allfamilymembers.memberfullname }}</h3>
 									{% endif %}
-									<h5 >Staff ID: <a href= /member/staffdetails/{{ FirstStaffMembers.id }}/  >{{ FirstStaffMembers.StaffID }}</a></h5><br/>
-									<h5 class='staffIdSection hideThis'> {{ FirstStaffMembers.StaffID }}</h5><br/>
+									<h5 >Staff ID: <a href= /member/staffdetails/{{ allfamilymembers.id }}/  >{{ allfamilymembers.memberid }}</a></h5><br/>
+									<h5 class='staffIdSection hideThis'> {{ allfamilymembers.memberid }}</h5><br/>
 								</div>
 							</div>
 							{% endfor %}
 							{% else %}
 							<div class='emptymaintenance'>
-								<h5>No staff member added yet</h5>
+								<h5>No family member added yet</h5>
 							</div>
 							{% endif %}
 						</div>

@@ -1,9 +1,31 @@
 
+// HAMBURGER MENU STARTS HERE
+let hamburger = document.querySelector('.hamburger')
+
+hamburger.addEventListener('click' , () => {
+    hamburger.classList.toggle("hamburgeractive");
+  });
+
+
+let userSectionResponsiveOut = document.querySelector('.userSectionResponsiveOut')
+let hamburgerMain = document.querySelector('.hamburgerMain')
+let sidebarsection = document.querySelector('.sidebarsection')
+
+hamburgerMain.addEventListener('click', () => {
+    sidebarsection.classList.toggle('showMenu')
+})
+
+
+
+
+
 //   NOTIFICATION DISPLAY SIGN
 let noticationSectionProper = document.querySelectorAll('.noticationSectionProper')
 let CurrentNotificationAmount = Array.from(noticationSectionProper).length
 let NewNotifyCount  = document.querySelector('.NewNotifyCount')
+let NewNotifyCount2  = document.querySelector('.NewNotifyCount2')
 NewNotifyCount.innerHTML = CurrentNotificationAmount
+NewNotifyCount2.innerHTML = CurrentNotificationAmount
 
 // console.log(CurrentNotificationAmount)
 
@@ -12,11 +34,15 @@ NewNotifyCount.innerHTML = CurrentNotificationAmount
 
 const profileBox = document.querySelector('.profileBox')
 const notifysectioninner = document.querySelector('.notifysectioninner')
+const notifysectioninner2 = document.querySelector('.notifysectioninner2')
 const closereguser1 = document.querySelector('.closereguser1')
 
 notifysectioninner.addEventListener('click', () => {
     profileBox.style.display = 'block'
-    console.log('clicked!')
+})
+
+notifysectioninner2.addEventListener('click', () => {
+    profileBox.style.display = 'block'
 })
 
 
@@ -39,7 +65,7 @@ let software = document.querySelector('.software')
 // let subadmin = document.querySelector('.subadmin')
 
 let dashboardIcon = document.querySelector('#dashboardIcon')
-if (!window.location.href.includes('familyinventory') && !window.location.href.includes('familymember') && !window.location.href.includes('viewdevicedetails') ){
+if (!window.location.href.includes('familyinventory') && !window.location.href.includes('familymember') && !window.location.href.includes('familydevicedetails') ){
     dashboard.classList.add('active')
     dashboardIcon.style.fill='#2A66B0'
 }
@@ -58,7 +84,7 @@ if (!window.location.href.includes('familyinventory') && !window.location.href.i
 
 let deviceInventoryIcon = document.querySelector('#deviceInventoryIcon')
 
-if (window.location.href.includes('familyinventory') || window.location.href.includes('editdevice') || window.location.href.includes('viewdevicedetails') ){
+if (window.location.href.includes('familyinventory') || window.location.href.includes('editdevice') || window.location.href.includes('familydevicedetails') ){
     dashboard.classList.remove('active')
     deviceinventory.classList.add('active')
     deviceInventoryIcon.style.fill='#2A66B0'
@@ -168,12 +194,14 @@ let logout3 = document.querySelector('#logout3')
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP STARTS HERE
 let requestUser = document.querySelector('.requestUser').innerHTML
 let profileimgsectiontext = document.querySelector('.profileimgsectiontext h1')
+let profileimgsectiontext2 = document.querySelector('.profileimgsectiontext2 h1')
 let firstAlphabet;
 // console.log('requestUser')
 for (let i = 0; i < requestUser.length; i++) {
     firstAlphabet = requestUser[0];
 }
 profileimgsectiontext.innerHTML = firstAlphabet
+profileimgsectiontext2.innerHTML = firstAlphabet
 
 
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE

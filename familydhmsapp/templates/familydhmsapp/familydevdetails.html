@@ -7,9 +7,9 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
-		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
-		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} /> {% endcomment %}
 		<link rel="stylesheet" href={% static 'familymembers/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familydevdetails/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,27 +20,30 @@
 		<title>Device Details | Family Members DHMS</title>
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
 	</head>
-	<div class='shadow'></div>	
-	{% if allSignupsForUpdatePopup %}
-	{% else %}
-	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
-	{% endif %}
 	<body class='body'>
-		<div class='shadow'></div>
+		<div class='shadow'></div>	
 		<div class='main'>
 			{% comment %} MAIN STARTS ABOVE {% endcomment %}
-			{% comment %} <div class='familymemberintro'>
+			<div class='familymemberintrodevdetails'>
 				<div>
-					<h1>Family Members</h1>
-					<h4>Manage your family members and  devices </h4>
+					<h1>Device Details</h1>
+					<h4><a href={% url 'FamilyInventory' %}>All Devices</a> > {{ curretdevice.devicename }}</h4>
 				</div>
-				<div class='familymemberintrobtn'>
-					<button>
-						<img src={% static 'familymembers/img/add.png' %} />
-						Add Member
-					</button>
+				<div class='topnavbtns'>
+					{% comment %} <div class='familymemberintrobtn'>
+						<button>
+							<img src={% static 'familymembers/img/add.png' %} />
+							Edit Device
+						</button>
+					</div> {% endcomment %}
+					<div class='requestmaintenance'>
+						<button>
+							<img src={% static 'familymembers/img/add.png' %} />
+							Request Maintenance 
+						</button>
+					</div>
 				</div>
-			</div> {% endcomment %}
+			</div>
 				
 			<div id="flash" class='flashmessage'>
 				{% if messages %} {% for message in messages %}
@@ -50,27 +53,37 @@
 				</div>
 				{% endfor %} {% endif %}
 			</div>
-			{% comment %} EMPTY STATE STARTS HERE {% endcomment %}
-			<div class='emptystate'>
-				<img src={% static 'familymembers/img/familymemberemptystate.png' %} />
-				<h4>No family members have been added yet. Add family members and start managing them.</h4>					
-				<button>
-					<img src={% static 'familymembers/img/add2.png' %} />
-					Add Member
-				</button>
+			{% comment %} DEVICE DETAILS PROPER STARTS HERE {% endcomment %}
+			<div class='devicedetailsmain'>
+				<h1>{{ curretdevice.devicename }}</h1><br/><br/>
+				<div class='devicedetailsmaininner'>
+					<div>
+						{% comment %} <h3>Device details</h3><br/> {% endcomment %}
+						<h4>Device Model: <strong>{{ curretdevice.devicemodel }}</strong></h4><br/>
+						<h4>Device Type: <strong>{{ curretdevice.devicetype }}</strong></h4><br/>
+						<h4>IP Address: <strong>{{ curretdevice.deviceipaddress }}</strong></h4><br/>
+						<h4>OS: <strong>{{ curretdevice.deviceOS }}</strong></h4><br/>
+						<h4>Device Status: <strong>{{ curretdevice.devicestatus }}</strong></h4><br/>
+						<h4>Assigned to: <strong>{{ curretdevice.deviceuserfullname }}</strong></h4><br/>
+					</div>
+					{% if curretdevice.deviceImageOne %}
+					<div class='deviceimageproper'>
+						<img src="{{ curretdevice.deviceImageOne.url }}" />
+					</div>
+					{% else %}
+					<br/><div><h4><strong>A picture of this device was not found</strong></h4></div>
+					{% endif %}
+				</div>
 			</div>
-			<div>
-
-			</div>
-			{% comment %} MAIN ENDS BELOW {% endcomment %}
+			{% comment %} DEVICE DETAILS PROPER ENDS HERE {% endcomment %}
         </div>
 		{% comment %} ADD FAMILY MEMBER POP UP STARTS HERE {% endcomment %}
 
-		<div class='addfampopup'>
+		<div class='requestmain'>
 			<div class='addfampopuphead'>
 				<div>
-					<h1>Add Family Member</h1>
-					<p>Add a new family member to your Family DHMS </p>
+					<h3>Request a maintenance for this device</h3>
+					{% comment %} <p>Add a new family member to your Family DHMS </p> {% endcomment %}
 				</div>
 				<div class='addfampopupheadclosebtn'>
 					<img src={% static 'familymembers/img/x.png' %} />
@@ -79,12 +92,12 @@
 			<div>
 				<form method='POST'>
 					{% csrf_token %}
-					<label for='fullname'>Full Name</label><br/>
-					<input id='fullname' name='fullname' type='text' required placeholder='John Doe' /><br/><br/>
+					<label for='title'>What fault did you notice?</label><br/>
+					<input id='title' name='title' type='text' required placeholder='Eg: The screen is bad' /><br/><br/>
 
-					<label for='email'>Email Address</label><br/>
-					<input id='email' name='email' type='email' required placeholder='johndoe@gmail.com' /><br/><br/>
-					<button>Add Member</button>
+					<label for='details'>Describe this fault as much as you can</label><br/>
+					<input id='details' name='details' type='details' required placeholder='Eg: The device stopped displaying anything on the screen suddenly this afternon and I need it for a project delivery tommorow' /><br/><br/>
+					<button>Request maintenance</button>
 				</form>
 			</div>
 

@@ -17,6 +17,7 @@ let registerDeviceinv = document.querySelector('.registerDeviceinv')
 let shadow = document.querySelector('.shadow')
 let closeaddnewdeviceopoup = document.querySelector('.closeaddnewdeviceopoup')
 let addnewdevicebtn = document.querySelector('.addnewdevicebtn button')
+let addnewdevicebtn2 = document.querySelector('.addnewdevicebtn2 button')
 let emptystatebtn = document.querySelector('.emptystate button')
 
 if (emptystatebtn){
@@ -27,6 +28,11 @@ if (emptystatebtn){
 }
 
 addnewdevicebtn.addEventListener('click', () => {
+    shadow.style.display = 'block'
+    registerDeviceinv.style.display = 'block'
+})
+
+addnewdevicebtn2.addEventListener('click', () => {
     shadow.style.display = 'block'
     registerDeviceinv.style.display = 'block'
 })

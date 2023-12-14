@@ -1128,6 +1128,7 @@ select{
     border-radius: 10px;
     height: 270px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    overflow: scroll;
 }
 
 .postherosectionB{
@@ -1321,3 +1322,292 @@ select{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+    /* PROFILE BOX STARTS HERE */
+    .profileBox {
+        overflow: hidden;
+    }
+
+    .profileBoxintro{
+        padding: 10px;
+        padding-bottom: 0px;
+    }
+
+
+    .profileBox ul li{
+        list-style: none;
+    }
+
+    .profileBox ul li{
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+        width: 120%;
+        padding-left: 20px;
+        margin-left: -20px;
+    }
+
+    .profileBox ul li:hover{
+        background-color: #2A66B0;
+        cursor: pointer;
+        color: white;
+    }
+
+    .profileBox ul{
+        width: 100%;
+        margin-left: 0px;
+    }
+
+
+    .profileBox ul li p{
+        margin-top: 10px;
+    }
+    
+    .profileBox ul li img{
+        width: 22px;
+        margin-right: 3px;
+    }
+    
+    .profileBox hr{
+        width: 120%;
+        margin-left: -30px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    
+    .profileBox p{
+        font-size: 1.3rem;
+        /* margin-top: 20px; */
+    }
+    
+    
+    .profileBox{
+        background-color: white;
+        /* padding: 10px; */
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        width: 200px;
+        position: absolute;
+        top: 110px;
+        right: 10px;
+        z-index: 6;
+        display: none;
+    }
+    
+    
+    /* PROFILE BOX ENDS HERE */
+
+    .main{
+        padding-top: 120px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .main h5{
+        color: rgb(175, 175, 175);
+    }
+    
+    .maintop{
+        display: inline;
+        justify-content: space-between;
+        padding-right: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .maintop button p{
+        margin-top: 9px;
+    }
+
+    
+    .emptydevinvBTNS .addnewdevicebtn img{
+        margin-right: 5px;
+    }
+
+        
+    .addnewdevicebtn button{
+        width: 160px;
+        font-size: 1.2rem;
+    }
+    .registerthisdevice button{
+        font-size: 1.2rem;
+        width: 180px;
+    }
+
+    .postherosection{
+        display: grid;
+        grid-template-columns: 100%;
+        padding-top: 10px;
+        justify-content: space-between;
+        /* align-items: center; */
+        width: 100%;
+        padding-bottom: 100px;
+    }
+
+    .introdetailssection{
+        display: flex;
+        width: 100%;
+        padding-right: 0px;
+        justify-content: space-between;
+        overflow-x: scroll;
+        
+    }
+    
+    
+    /* ALL DEVICES */
+    
+    .introdetailsbar{
+        height: 95px;
+        width: 175px;
+        margin-right:10px;
+    }
+    #container2{
+        background-color: transparent;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .graphintrotext{
+        background-color: white;
+        overflow: scroll;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        height: 270px;
+    }
+
+    .graphdate{
+        display: none;
+    }
+    
+    .deviceInvetorySection{
+        width: 100%;
+        margin-top: 20px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        /* min-height: 300px; */
+        height: 350px;
+        overflow: scroll;
+        margin-bottom: 20px;
+    }
+
+    /* UPLOAD/REGISTER A DEVICE POP UP STARTS HERE */
+    .registerDeviceIntro{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .registerDeviceIntro img{
+        cursor: pointer;
+    }
+
+
+    .registerDevice{
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        padding: 25px;
+        position: absolute;
+        height: 80vh;
+        overflow-y: scroll;
+        top: 10%;
+        left: 0%;
+        z-index: 10;
+        display: none;
+    }
+
+    .registerDevice form{
+        font-size: 1.4rem;
+    }
+
+        
+    .shadow{
+        position: absolute;
+        margin-left: 0px;
+        height: 140%;
+        padding: 20px;
+        /* border-radius: 10px; */
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 10;
+        transition: 0.5s ease-in-out;
+        display: none;
+    }
+
+    .shadowForPreReg{
+        position: absolute;
+        margin-left: 0px;
+        height: 140%;
+        padding: 20px;
+        width: 100%;
+        /* background-color: red; */
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 10;
+        transition: 0.5s ease-in-out;
+        display: block;
+    }
+
+    
+    .regmydevicepopup{
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        padding: 25px;
+        position: fixed;
+        height: 80vh;
+        overflow-y: scroll;
+        top: 10%;
+        left: 0%;
+        z-index: 20;
+        /* text-align: center; */
+        display: none;
+    }
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+@media only screen and (max-width: 326px){
+    .heroTopButtons{
+        display: inline;
+        justify-content: space-between;
+        /* align-items: center; */
+    }
+
+}

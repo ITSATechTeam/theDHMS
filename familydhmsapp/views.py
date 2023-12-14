@@ -25,7 +25,8 @@ import platform
 os_name = platform.system()
 my_system = platform.uname()
 
-
+def Famnavbar(request):
+    return render(request, 'famgeneral.html')
 
 # Create your views here.
 def UserReg(request):
@@ -626,13 +627,30 @@ def autocompleteModel(request):
 # AUTO COMPLETE SETUP ENDS HERE
 
 # FAMILY DEVICE DETAILS SECTION STARTS HERE
-
+@login_required(login_url='UserLogin')
 def FamilyDeviceDetails(request, deviceid):
+    curretdevice = FamilyDeviceReg.objects.get(Q(user = request.user) and Q(deviceid = deviceid))
+    context = {'curretdevice' : curretdevice}
     return render(request, 'familydhmsapp/familydevdetails.html', context)
 
 
 # FAMILY DEVICE DETAILS SECTION ENDS HERE
 
+
+@login_required(login_url='UserLogin')
+def FamilySubAdminFxn(request, pk):
+    familymember = FamilyMemberReg.objects.filter(Q(user = request.user) and Q(id = pk))
+    print(familymember.values_list('memberemail', flat=True))
+    if familymember:
+        Reqfamilyadmin = request.user
+        FamilySubAdminForm = FamilySubAdmin(user = Reqfamilyadmin, FamilyUniqueCode = request.user.last_name,  userfullname = familymember.values_list('memberfullname', flat=True), useremail = familymember.values_list('memberemail', flat=True))
+        FamilySubAdminForm.save()
+        messages.success(request, f'You added a subadmin on your account')
+        return redirect('FamilyMembers')
+    else:
+        messages.error(request, "An error occured. Kindly try again.")
+        return redirect('FamilyMembers')
+    return render(request, 'familydhmsapp/familymember.html', context)
 
 
 

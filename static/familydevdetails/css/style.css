@@ -1,0 +1,166 @@
+
+
+.familymemberintrodevdetails h4 a{
+    color: white;
+}
+
+.familymemberintrodevdetails h4{
+    font-weight: 400;
+}
+
+
+.familymemberintro h4{
+    font-weight:lighter;
+}
+
+.topnavbtns img{
+    width: 20px;
+    margin-bottom: 5px;
+}
+
+.familymemberintrodevdetails{
+    background-color: #2A66B0;
+    padding: 10px;
+    border: none;
+    display: grid;
+    grid-template-columns: 60% 27%;
+    justify-content: space-between;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    color: white;
+    font-weight: bold;
+}
+
+.familymemberintrodevdetails button{
+    background-color: #F7F7FB;
+    color: #2A66B0;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.deviceimageproper img{
+    width: 300px;
+    border: 2px solid black;
+}
+
+.devicedetailsmain{
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+
+}
+
+
+.devicedetailsmaininner{
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+}
+
+.topnavbtns{
+    display: flex;
+}
+
+
+.topnavbtns button:nth-child(1){
+    margin-right: 10px;
+}
+
+.requestmain{
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    position: fixed;
+    left: 30%;
+    top: 20%;
+    height: 360px;
+    z-index: 21;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 480px;
+    display: block;
+    transition: ease-in-out .4s;
+}
+
+.requestmain form label{
+    font-size: 1.3rem;
+}
+
+
+.requestmain form input{
+    width: 445px;
+    height: 44px;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    border:  1px solid #C3C3C3;
+}
+
+.requestmain form button{
+    background-color: #2A66B0;
+    color: #F7F7FB;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 10px;
+    position: absolute;
+    right: 20px;
+}
+
+
+
+
+
+
+
+ 
+
+
+
+
+@media only screen and (max-width: 1202px){
+    
+
+    .devicedetailsmaininner{
+        display: inline;
+        justify-content: space-between;
+        align-items: top;
+    }
+
+    .familymemberintrodevdetails{
+        background-color: #2A66B0;
+        padding: 10px;
+        border-radius: 20px;
+        color: white;
+        display: grid;
+        grid-template-columns: 100%;
+    }
+
+    .topnavbtns{
+        margin-top: 20px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

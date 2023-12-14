@@ -218,6 +218,20 @@
 										<p>Make Admin</p>
 									</div>
 								</div>
+								<div class='addsubadmin'>
+									<div class='addsubadminclosebtn'>
+										<img src={% static 'familymembers/img/x.png' %} />
+									</div>
+									<div class='addsubadminmain'>
+										<img src={% static 'familymembers/img/subadmin.png' %} />
+									</div><br/>
+									<h3>Assign Admin Role<h3>
+									<h4>Are you sure you want to make <strong>{{FamilyMemberReg.memberfullname}}</strong> an Admin? </h4>
+									<div class='addsubadminbtns'>
+										<div class='addsubadminbtns1'><button class='addsubadminbtnscancel'>Cancel</button></div>
+										<a class='addsubadminbtns2' href= "familysubadmin/{{FamilyMemberReg.id}}/" ><button>yes, confirm</button></a>
+									</div>
+								</div>
 							</td>
 						</tr>
 					</div>
@@ -229,7 +243,6 @@
 			{% comment %} MAIN ENDS BELOW {% endcomment %}
         </div>
 		{% comment %} ADD FAMILY MEMBER POP UP STARTS HERE {% endcomment %}
-
 		<div class='addfampopup'>
 			<div class='addfampopuphead'>
 				<div>
@@ -253,8 +266,19 @@
 			</div>
 
 		</div>
-
 		{% comment %} ADD FAMILY MEMBER POP UP ENDS HERE {% endcomment %}
+
+		<div class='newsubadmin'>
+			<div class='newsubadminclosebtn'>
+				<img src={% static 'familymembers/img/x.png' %} />
+			</div>
+			<div class='newsubadminimg'>
+				<img src={% static 'familymembers/img/success.png' %} />
+			</div>
+			<h4>Your Assigned a New Sub Admin</h4>
+		</div>
+
+
 		<script src={% static 'familymembers/js/familymembers.js' %}></script>
     </body>
 </html>

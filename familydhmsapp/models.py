@@ -148,6 +148,20 @@ class FamilyMaintainanceReq(models.Model):
 
 
 
+class FamilySubAdmin(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    userfullname = models.CharField(max_length = 1500, default='None', null=True, blank = True)
+    useremail = models.CharField(max_length= 200, null=True, blank = True)
+    FamilyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return f'{self.FamilyUniqueCode} {self.userfullname} {self.useremail}'
 
 
 

@@ -22,8 +22,25 @@
 	<body class='body'>
 		<div class='shadow'></div>
 		<div class='main'>			
-			<h1><strong>Device inventory</strong></h1>
-			<h5>Manage your family's devices</h5>
+			<div class='desktopintro'>
+				<h1><strong>Device inventory</strong></h1>
+				<h5>Manage your family's devices</h5>
+			</div>
+
+			<div class='mobiletopbar'>
+				<div>
+					<h1><strong>Device inventory</strong></h1>
+					<h5>Manage your family's devices</h5>
+				</div>
+
+				
+				<div class='addnewdevicebtn2'>
+					<button>
+						<img src={% static 'dashboard/img/add.png' %} />
+						<p>Add Device</p>
+					</button>
+				</div>
+			</div>
 				
 			<div id="flash flashmessage">
 				{% if messages %} {% for message in messages %}
@@ -83,7 +100,7 @@
 						</div>
 					</div><br/>
 				</div>
-				<div class='addnewdevicebtn'>
+				<div class='addnewdevicebtn addnewdevicebtndesktop'>
 					<button>
 						<img src={% static 'dashboard/img/add.png' %} />
 						<p>Add Device</p>
@@ -92,7 +109,7 @@
 			</div>
 			<div class='maindevicelistsection'>
 				{% comment %} {% if AllFamilyDevices %} {% endcomment %}
-				<div class='fillstate'>					
+				<div class='fillstate'>
 					{% comment %} <div class='deviceInvetorySectionIn'> {% endcomment %}
 						{% if AllFamilyDevices %}
 						<table>
@@ -115,7 +132,7 @@
 								<td><input type="radio" /></td>
 								<td>{{ AllFamilyDevices.devicename }}</td>
 								<td class='link'>
-									<strong><a href= /member/viewdevicedetails/{{AllFamilyDevices.deviceid}}/ >{{ AllFamilyDevices.deviceid }}</a></strong>
+									<strong><a href= "/familydhms/familydevicedetails/{{AllFamilyDevices.deviceid}}/" >{{ AllFamilyDevices.deviceid }}</a></strong>
 								</td>
 								<td>{{ AllFamilyDevices.devicemacaddress }}</td>
 								<td>{{ AllFamilyDevices.devicebrand }}</td>
@@ -149,8 +166,6 @@
 						{% endif %}
 					{% comment %} </div> {% endcomment %}
 				</div>
-				{% comment %} {% else %} {% endcomment %}
-				{% comment %} {% endif %} {% endcomment %}
 			</div>
         </main>
 		{% comment %} ADD NEW DEVICE POP STARTS HERE {% endcomment %}		

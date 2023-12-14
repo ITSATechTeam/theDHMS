@@ -2,8 +2,41 @@
 {% block content %}
 <body>
     <nav>
-        <div>
+        <div class='desktoplogo'>
             <img src={% static 'general/img/itsalogopng1.png' %} />
+        </div>
+        <div class='responsivesection'>
+            <div class='responsivesection1'>
+                <img src={% static 'general/img/itsalogopng1.png' %} />            
+                <div class='hamburgerMain'>
+                    <a class="hamburger" href="#"><span></span></a>
+                </div>
+            </div>
+            <div class='responsivesection2'>
+                <div class='notifyout' >
+                    <img class='notify' src={% static 'general/img/notify.png' %} />
+                    <div class='NewNotifyCount2'></div>
+                </div>
+                <div class='notifysectioninner2'>
+                    {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
+                    {% if allSignUps.user == request.user %}
+                    <h4>{{ allSignUps.companyname }}</h4>
+                    {% else %}
+                    {{request.user}}
+                    {% comment %} {{allSignupsForUpdatePopup.companyname}} {% endcomment %}
+                    {% endif %}
+                    {% comment %} {% endfor %} {% endcomment %}
+                    <div class='profileimgsectiontext2'>
+                        <h1></h1>                        
+                        {% if allSignUps.user == request.user %}
+                        <p class='requestUser'>{{ allSignUps.companyname }}</p>
+                        {% else %}
+                        <p class='requestUser'>{{ request.user }}</p>
+                        {% endif %}
+                    </div>
+                    <img src={% static 'general/img/arrow-down.png' %} />
+                </div>
+            </div>
         </div>
         <div class='search'>
             <form method='GET' action="{% url 'Searchresult' %}">
@@ -11,16 +44,10 @@
             </form>
             <img class='searchIcon' src={% static 'general/img/searchicon.png' %} />
         </div>
-        {% comment %} <div class='navBtn'>
-            <a href='https://itservicedeskafrica.com/home/' target='_blank'><button>
-                <p>Visit ITSA Website</p>
-            </button></a>
-        </div> {% endcomment %}
         <div class='notifysection'>
             <div class='notifyout' >
                 <img class='notify' src={% static 'general/img/notify.png' %} />
                 <div class='NewNotifyCount'></div>
-                {% comment %} <img class='notifyactive' src={% static 'general/img/notify-active.png' %} /> {% endcomment %}
             </div>
             
             {% comment %} NOTIFICATION TAB STARTS HERE {% endcomment %}
@@ -174,8 +201,6 @@
         </a>
     </div>
     {% comment %} SIDE BAR ENDS HERE {% endcomment %}
-
-    
 
     {% comment %} PROFILE BOX SECTION STARTS HERE {% endcomment %}
     <div class='profileBox'>

@@ -7,4 +7,5 @@ admin.site.register(FamilyDeviceReg)
 admin.site.register(FamilyMemberReg)
 admin.site.register(FaultyDevicesTrend)
 admin.site.register(FamilyMaintainanceReq)
+admin.site.register(FamilySubAdmin)
 
