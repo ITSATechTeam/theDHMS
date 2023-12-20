@@ -113,28 +113,10 @@ class FaultyDevicesTrend(models.Model):
 
 class FamilyMaintainanceReq(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    maintaindevicetype = models.CharField(max_length = 1500, default='None')
-    maintaindevicebrand = models.CharField(max_length= 200, null=True, blank = True)
-    maintaindeviceOS = models.CharField(max_length= 200, null=True, blank = True)
-    maintaindevicemodel = models.CharField(max_length= 200, null=True, blank = True)
-    maintaindevicename = models.CharField(max_length= 200, null=True, blank = True)
-    maintaindevicemacaddress = models.CharField(max_length= 200, null=True, blank = True)    
-    maintaindeviceipaddress = models.CharField(max_length = 1500, null=True, blank = True)
-    maintaindeviceid = models.CharField(max_length = 1500, null=True, blank = True)
-    maintaindeviceuser = models.CharField(max_length = 1500, null=True, blank = True)
-
-    # SPECS FOR REGISTER MY DEVICE FEATURE STARTS HERE
-    maindeviceuserbrowser = models.CharField(max_length = 1500, null=True, blank = True)
-    maindeviceuserbrowserversion = models.CharField(max_length = 1500, null=True, blank = True)
-    maindeviceuserOSVersion = models.CharField(max_length = 1500, null=True, blank = True)
-    # SPECS FOR REGISTER MY DEVICE FEATURE ENDS HERE
-    
-    # DEVICE USER DETAILS STARTS HERE
-    maintaindeviceUserID = models.CharField(max_length = 1500, default='None', null=True, blank = True)
-    maintaindeviceuseremail = models.CharField(max_length= 200, null=True, blank = True)
-    maintaindeviceuserfullname = models.CharField(max_length= 200, null=True, blank = True)
-    # deviceUser = models.ForeignKey(FamilyMemberReg, null=True, on_delete=models.CASCADE)
-    # DEVICE USER DETAILS ENDS HERE
+    maintaindeviceID = models.CharField(max_length = 1500, default='None', null=True, blank = True)
+    maintainancetitle = models.CharField(max_length= 200, null=True, blank = True)
+    maintainancedescription = models.CharField(max_length= 200, null=True, blank = True)
+    maintainanceID = models.CharField(max_length= 200, null=True, blank = True)
     FamilyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -144,7 +126,7 @@ class FamilyMaintainanceReq(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.FamilyUniqueCode} {self.devicename} {self.deviceid} {self.devicetype}'
+        return f'{self.FamilyUniqueCode} {self.maintainancetitle} {self.maintainanceID}'
 
 
 

@@ -32,7 +32,6 @@ def Famnavbar(request):
 def UserReg(request):
     ThisFamilyId = 'Family-' + get_random_string(length=5)
     if request.method == 'POST' and 'fullname' in request.POST:
-        print('fam dhms submitted')
         email = request.POST['familyemail']
         fullname = request.POST['fullname']
         password = request.POST['password']
@@ -504,7 +503,9 @@ def FamilyInventory(request):
     return render(request, 'familydhmsapp/familyinventory.html', context)
 
 
-def FamilyMaintenance(request):
+def FamilyDeviceMaintenance(request):
+    # FamilyMaintainanceReq
+
     return render(request, 'familydhmsapp/familymaintain.html')
 
 
@@ -595,6 +596,7 @@ def FamilyLogout(request):
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+
 def autocompleteModel(request):
     # if request.is_ajax():
     if is_ajax(request=request):
@@ -630,6 +632,22 @@ def autocompleteModel(request):
 @login_required(login_url='UserLogin')
 def FamilyDeviceDetails(request, deviceid):
     curretdevice = FamilyDeviceReg.objects.get(Q(user = request.user) and Q(deviceid = deviceid))
+    if request.method == 'POST':
+        try:
+            uniqueMaintenanceID = 'Maintainance -'  + get_random_string(length=5)
+            title = request.POST['title']
+            description = request.POST['details']
+            FamilyMaintainanceReqForm = FamilyMaintainanceReq(maintaindeviceID = curretdevice.deviceid, user = request.user,
+            maintainancetitle = title, maintainancedescription = description, maintainanceID = uniqueMaintenanceID, FamilyUniqueCode = request.user.last_name)
+            FamilyMaintainanceReqForm.save()
+
+            messages.success(request, "Maintenance request was created successfully. A support staff will attend to this request shortly")
+            return redirect('FamilyDeviceMaintenance')
+
+        except:
+            messages.success(request, "An error occured while creating a maintenance reqeust. Kindly try again.")
+            return redirect('FamilyDeviceDetails', deviceid)
+
     context = {'curretdevice' : curretdevice}
     return render(request, 'familydhmsapp/familydevdetails.html', context)
 
@@ -640,7 +658,7 @@ def FamilyDeviceDetails(request, deviceid):
 @login_required(login_url='UserLogin')
 def FamilySubAdminFxn(request, pk):
     familymember = FamilyMemberReg.objects.filter(Q(user = request.user) and Q(id = pk))
-    print(familymember.values_list('memberemail', flat=True))
+    # print(familymember.values_list('memberemail', flat=True))
     if familymember:
         Reqfamilyadmin = request.user
         FamilySubAdminForm = FamilySubAdmin(user = Reqfamilyadmin, FamilyUniqueCode = request.user.last_name,  userfullname = familymember.values_list('memberfullname', flat=True), useremail = familymember.values_list('memberemail', flat=True))
