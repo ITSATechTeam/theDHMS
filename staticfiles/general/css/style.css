@@ -18,7 +18,7 @@ nav{
     font-size: 1.3rem;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
     position: fixed;
-    width: 100vw;
+    width: 100%;
     z-index: 10;
 }
 
@@ -32,6 +32,9 @@ nav{
     cursor: pointer;
 } 
 
+.profileBox{
+    display: none;
+}
 
 .profileBoxintro{
     display: flex;
@@ -149,6 +152,7 @@ nav button{
     cursor: pointer;
 }
 
+
 .notifyactive{
     position: absolute;
     right: -3px;
@@ -164,6 +168,7 @@ nav button{
 .sidebarsection{
     padding-top: 100px;
     padding-left: 20px;
+    background-color: white;
     height: 100vh;
     width: 220px;
     position: fixed;
@@ -292,6 +297,19 @@ nav button{
 }
 
 
+.NewNotifyCount2{
+    background-color:#2A66B0;
+    text-align: center;
+    color: white;
+    border-radius: 100px;
+    font-weight: bold;
+    position: absolute;
+    width: 20px;
+    top: -9px;
+    right: -10px;
+}
+
+
 .notifySectionPopuPInner{
     display: flex;
     justify-content: space-between;
@@ -347,4 +365,181 @@ nav button{
 }
 
 
+.hamburgerMain{
+    display: none;
+    z-index: 10;
+}
 
+
+.hamburger{
+    display: none;
+    z-index: 10;
+}
+
+
+.desktoplogo{
+    display: block;
+}
+
+
+.hideonmobile{
+    display: block;
+}
+
+
+.responsivesection{
+    display: none;
+}
+
+.responsivesection2{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+
+    .desktoplogo{
+        display: none;
+    }
+    .responsivesection{
+        display: block;
+    }
+
+    .search{
+        display: none;
+    }
+
+    .responsivesection1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100vw;
+        padding-right: 25px;
+    }
+    
+    .profileimgsectiontext2 {
+        width: 40px;
+        font-size: 1rem;
+        background-color:#2A66B0;
+        color: white;
+        margin: 5px;
+        padding-top: 5px;
+        text-align: center;
+        border-radius: 40px;
+    } 
+
+    nav{
+        background-color: #FFFFFF;
+        padding: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.3rem;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        width: 100%;
+        z-index: 10;
+    }
+
+    .navBtn{
+        display: none;
+    }
+
+    .sidebarsection{
+        display: none;
+        background-color: white;
+    }
+    
+    .showMenu{
+        display: block;
+    }
+    .notifysection .notifyout{
+        display: none;
+    }
+    .notifysectioninner{
+        display: none;
+    }
+
+    .responsivesection2{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding-right: 25px;
+    }
+
+    .hideonmobile{
+        display: none;
+    }
+
+    .notifysectioninner2{
+        align-items: center;
+        display: flex;
+        padding-right: 0px;
+    }
+
+    .notifysectioninner2 p{
+        margin-top: 13px;
+    }
+
+    .notifysectioninner2 img{
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    
+    
+     /* HAMBURGER MENU STARTS HERE */
+     .hamburger, .hamburgerMain{ 
+        z-index: 10;
+        display: block;
+    }
+
+    .hamburger { cursor: pointer; padding: 10px 35px 16px 0px; }
+    .hamburger span, .hamburger span:before, .hamburger span:after {
+    cursor: pointer;
+    border-radius: 1px;
+    height: 3px;
+    width: 35px;
+    background: black;
+    position: absolute;
+    display: inline-block;
+    content: '';
+    }
+    .hamburger span:before {
+    top: -10px; 
+    }
+    .hamburger span:after {
+    bottom: -10px;
+    }
+    
+    .hamburger span, .hamburger span:before, .hamburger span:after {
+    -webkit-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); 
+    -moz-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); 
+        -o-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); 
+            transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); /* easeInOutCubic */
+    }
+    .hamburger.hamburgeractive span {
+    background-color: transparent;
+    }
+    .hamburger.hamburgeractive span:before, .hamburger.hamburgeractive span:after {
+    top: 0;
+    }
+    .hamburger.hamburgeractive span:before {
+    transform: rotate(45deg);
+    }
+    .hamburger.hamburgeractive span:after {
+    transform: translateY(-10px) rotate(-45deg);
+    top: 10px;
+    }    
+
+    .hamburgerMain{
+        margin-top: 0px;
+    }
+}

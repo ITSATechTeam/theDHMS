@@ -19,7 +19,7 @@
 		{% comment %} BOOTSTRAP CDN ENDS HERE {% endcomment %}
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'general/css/style.css' %} />
-		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'dashboard/css/style.css' %} /> {% endcomment %}
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
@@ -27,6 +27,7 @@
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 	</head>
 	<body>
+		<div id='overlay'></div>
         {% include "navbar.html" %}{% block content %}{% endblock content %}
 		<script src={% static 'general/js/main.js' %}></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js" ></script>

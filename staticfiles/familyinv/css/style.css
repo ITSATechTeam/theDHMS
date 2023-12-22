@@ -34,6 +34,22 @@
     margin-right: 50px;
 }
 
+.addnewdevicebtn2 button{
+    display: flex;
+    border: none;
+    align-items: center;
+    background-color: #2A66B0;
+    padding: 2px 3px;
+    color: white;
+    width: 120px;
+    justify-content: space-around;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    margin-left: 0px;
+    font-weight: bold;
+    margin-right: 0px;
+} 
+
 
 .postheroinv button p{
     margin-top: 10px;
@@ -186,6 +202,13 @@ table{
     justify-content: space-between;
 }
 
+.desktopintro, .addnewdevicebtndesktop{
+    display: block;
+}
+
+.mobiletopbar{        
+    display: none;
+}
 
 
 
@@ -206,5 +229,97 @@ table{
 
 
 
+
+
+@media only screen and (max-width: 1202px){
+    
+    .maindevicelistsection{
+        width: 98%;
+        min-height: 300px;
+        background-color: white;
+        margin-bottom: 50px;
+        border-radius: 10px;
+        overflow: scroll;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    
+    .postheroinv{
+        display: grid;
+        grid-template-columns: 100%;
+        margin-right: 10px;
+        /* background-color: red; */
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .desktopintro, .addnewdevicebtndesktop{
+        display: none;
+    }
+
+    .mobiletopbar{        
+        display: block;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .mobiletopbar button{
+        width: 120px;
+        align-items: center;
+    }
+
+    .mobiletopbar button img{
+        margin: 10px;
+    }
+
+    .mobiletopbar button p{
+        margin-top: 10px;
+    }
+    
+    .registerDevice{
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        padding: 25px;
+        position: fixed;
+        height: 80vh;
+        overflow-y: scroll;
+        top: 10%;
+        left: 0%;
+        z-index: 11;
+    }
+    
+    .registerDeviceinvinner{
+        display: grid;
+        grid-template-columns: 100%;
+        justify-content: space-between;
+    }
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+@media only screen and (max-width: 326px){
+    
+
+}
 
 

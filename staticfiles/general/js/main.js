@@ -71,7 +71,9 @@
 let noticationSectionProper = document.querySelectorAll('.noticationSectionProper')
 let CurrentNotificationAmount = Array.from(noticationSectionProper).length
 let NewNotifyCount  = document.querySelector('.NewNotifyCount')
+let NewNotifyCount2  = document.querySelector('.NewNotifyCount2')
 NewNotifyCount.innerHTML = CurrentNotificationAmount
+NewNotifyCount2.innerHTML = CurrentNotificationAmount
 
 // console.log(CurrentNotificationAmount)
 
@@ -282,12 +284,19 @@ let logout3 = document.querySelector('#logout3')
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP STARTS HERE
 let requestUser = document.querySelector('.requestUser').innerHTML
 let profileimgsectiontext = document.querySelector('.profileimgsectiontext h1')
+let profileimgsectiontext2 = document.querySelector('.profileimgsectiontext2 h1')
 let firstAlphabet;
 // console.log('requestUser')
 for (let i = 0; i < requestUser.length; i++) {
     firstAlphabet = requestUser[0];
 }
-profileimgsectiontext.innerHTML = firstAlphabet
+
+if(profileimgsectiontext){
+    profileimgsectiontext.innerHTML = firstAlphabet
+}
+if(profileimgsectiontext2){
+    profileimgsectiontext2.innerHTML = firstAlphabet
+}
 
 
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE
@@ -331,6 +340,24 @@ window.addEventListener('load', function(){
   overlay.style.display = 'none';
 })
 
+
+
+
+// HAMBURGER MENU STARTS HERE
+let hamburger = document.querySelector('.hamburger')
+
+hamburger.addEventListener('click' , () => {
+    hamburger.classList.toggle("hamburgeractive");
+  });
+
+
+let userSectionResponsiveOut = document.querySelector('.userSectionResponsiveOut')
+let hamburgerMain = document.querySelector('.hamburgerMain')
+let sidebarsection = document.querySelector('.sidebarsection')
+
+hamburgerMain.addEventListener('click', () => {
+    sidebarsection.classList.toggle('showMenu')
+})
 
 
 

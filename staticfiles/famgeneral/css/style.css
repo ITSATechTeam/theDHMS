@@ -32,6 +32,81 @@ nav{
     cursor: pointer;
 } 
 
+/* PROFILE BOX STARTS HERE */
+.profileBox {
+    overflow: hidden;
+}
+
+.profileBoxintro{
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
+
+.profileBox ul li{
+    list-style: none;
+}
+
+.profileBox ul li{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    width: 120%;
+    padding-left: 20px;
+    margin-left: -20px;
+}
+
+.profileBox ul li:hover{
+    background-color: #2A66B0;
+    cursor: pointer;
+    color: white;
+}
+
+.profileBox ul{
+    width: 100%;
+    margin-left: 0px;
+}
+
+
+.profileBox ul li p{
+    margin-top: 10px;
+}
+
+.profileBox ul li img{
+    width: 22px;
+    margin-right: 3px;
+}
+
+.profileBox hr{
+    width: 120%;
+    margin-left: -30px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.profileBox p{
+    font-size: 1.5rem;
+    /* margin-top: 20px; */
+}
+
+
+.profileBox{
+    background-color: white;
+    /* padding: 10px; */
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 300px;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    z-index: 6;
+    display: none;
+}
+
+
+/* PROFILE BOX ENDS HERE */
+
 
 .profileBoxintro{
     display: flex;
@@ -48,14 +123,16 @@ nav{
     cursor: pointer;
 }
 
-.notifysectioninner p{
-    cursor: pointer;
-}
 
 .notifysection{
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+
+.notifysectioninner p{
+    cursor: pointer;
 }
 
 .notifysection img{
@@ -338,6 +415,317 @@ nav button{
 #logout1, #logout2, #logout3{
     fill: #4F4F4F;
 }
+
+
+.hamburgerMain{
+    display: none;
+    z-index: 10;
+}
+
+
+.hamburger{
+    display: none;
+    z-index: 10;
+}
+
+
+.responsivesection{
+    display: none;
+}
+.desktoplogo{
+    display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1102px){
+    .desktoplogo{
+        display: none;
+    }
+    
+    .responsivesection{
+        display: block;
+    }
+    .sidebarsection{
+        padding-top: 100px;
+        padding-left: 20px;
+        height: 100vh;
+        width: 220px;
+        position: fixed;
+        background-color: white;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        z-index: 2;
+        color: black;
+        display: none;
+    }
+
+    
+    .search input{
+        display: none;
+    }
+
+    
+    .searchIcon{
+        display: none;
+    }
+
+     /* HAMBURGER MENU STARTS HERE */
+     .hamburger, .hamburgerMain{ 
+        z-index: 10;
+        display: block;
+    }
+
+    .hamburger { cursor: pointer; padding: 10px 35px 16px 0px; }
+    .hamburger span, .hamburger span:before, .hamburger span:after {
+    cursor: pointer;
+    border-radius: 1px;
+    height: 3px;
+    width: 35px;
+    background: black;
+    position: absolute;
+    display: inline-block;
+    content: '';
+    }
+    .hamburger span:before {
+    top: -10px; 
+    }
+    .hamburger span:after {
+    bottom: -10px;
+    }
+    
+    .hamburger span, .hamburger span:before, .hamburger span:after {
+    -webkit-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); 
+    -moz-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); 
+        -o-transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); 
+            transition: all 300ms cubic-bezier(0.645, 0.045, 0.355, 1.000); /* easeInOutCubic */
+    }
+    .hamburger.hamburgeractive span {
+    background-color: transparent;
+    }
+    .hamburger.hamburgeractive span:before, .hamburger.hamburgeractive span:after {
+    top: 0;
+    }
+    .hamburger.hamburgeractive span:before {
+    transform: rotate(45deg);
+    }
+    .hamburger.hamburgeractive span:after {
+    transform: translateY(-10px) rotate(-45deg);
+    top: 10px;
+    }    
+
+    .hamburgerMain{
+        margin-top: 0px;
+    }    
+
+    .showIt{
+        display: block;
+        left: 0px;
+        position: absolute;
+    }
+
+    
+    .showMenu{
+        display: block;
+    }
+
+    .responsivesection1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding-right: 25px;
+    }
+
+    .responsivesection2{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100vw;
+        margin-left: 10px;
+    }
+
+    .notifysection{
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .profileimgsectiontext img{
+        margin-right: 0px;
+    }
+    
+    .profileimgsectiontext2 {
+        width: 40px;
+        font-size: 1rem;
+        background-color:#2A66B0;
+        color: white;
+        margin: 5px;
+        padding-top: 5px;
+        text-align: center;
+        border-radius: 40px;
+    } 
+
+    .notifyout img{
+        width: 20px;
+    }
+
+    .NewNotifyCount2{
+        background-color:#2A66B0;
+        text-align: center;
+        color: white;
+        border-radius: 100px;
+        font-weight: bold;
+        position: absolute;
+        width: 20px;
+        top: -9px;
+        right: -10px;
+    }
+
+    
+    .closereguser1 img{
+        width: 20px;
+        background-color: #E1E7FC;
+        padding: 2px;
+        border-radius: 5px;
+        cursor: pointer;
+    } 
+    
+    /* PROFILE BOX STARTS HERE */
+    .profileBox {
+        overflow: hidden;
+    }
+
+    .profileBoxintro{
+        padding: 10px;
+        padding-bottom: 0px;
+    }
+
+
+    .profileBox ul li{
+        list-style: none;
+    }
+
+    .profileBox ul li{
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 1.3rem;
+        width: 120%;
+        padding-left: 20px;
+        margin-left: -20px;
+    }
+
+    .profileBox ul li:hover{
+        background-color: #2A66B0;
+        cursor: pointer;
+        color: white;
+    }
+
+    .profileBox ul{
+        width: 100%;
+        margin-left: 0px;
+    }
+
+
+    .profileBox ul li p{
+        margin-top: 10px;
+    }
+    
+    .profileBox ul li img{
+        width: 22px;
+        margin-right: 3px;
+    }
+    
+    .profileBox hr{
+        width: 120%;
+        margin-left: -30px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+    
+    .profileBox p{
+        font-size: 1.3rem;
+        /* margin-top: 20px; */
+    }
+    
+    
+    .profileBox{
+        background-color: white;
+        /* padding: 10px; */
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        width: 200px;
+        position: absolute;
+        top: 110px;
+        right: 10px;
+        z-index: 6;
+        display: none;
+    }
+    
+    
+    /* PROFILE BOX ENDS HERE */
+
+    
+    .notifysectioninner2 p{
+        cursor: pointer;
+    }
+
+    .notifysection img{
+        margin-right: 10px;
+    }
+
+    .notifysectioninner2{
+        align-items: center;
+        display: flex;
+        padding-right: 20px;
+    }
+
+    .notifysectioninner2 p{
+        margin-top: 13px;
+    }
+
+    .notifysectioninner2 img{
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

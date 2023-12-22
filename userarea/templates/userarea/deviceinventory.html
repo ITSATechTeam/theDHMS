@@ -25,7 +25,7 @@
 				<div>
 					<h1>Device Inventory</h1>
 					<h5>Get a detailed overview of your devices health and statuses.</h5>
-				</div>
+				</div><br/>
 				
 				<div id="flash flashmessage">
 					{% if messages %} {% for message in messages %}
@@ -51,7 +51,7 @@
 							</button>
 						</div>
 					</a>
-				</div>
+				</div><br/><br/>
 			</div>
 			{% comment %} SUBTOP SECTION STARTS HERE {% endcomment %}
 			<div class='sectionintro'>
@@ -183,7 +183,7 @@
 					<div class='uploaddevicecsv showdeviceuploadpopup'>
 						<button>
 							<img src={% static 'dashboard/img/uploaddevice.png' %} />
-							<p>Upload</p>
+							<p>Upload CSV</p>
 						</button>
 					</div>
 					<div class='scannetworkbtn'>
@@ -198,76 +198,78 @@
 			
 			{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
 			<div>
-				<table  id="paginated-list" >
-					<tr>
-					  <th class='topCheckBox'>
-						<input type='radio' />
-					  </th>
-					  <th>ID</th>
-					  {% comment %} <th>Brand</th> {% endcomment %}
-					  {% comment %} <th>MAC ID</th> {% endcomment %}
-					  <th>Category</th>
-					  
-					  {% comment %} {% for AllStaffMembers in AllStaffMembers %}
-					  {% for allUploadedDevices in allUploadedDevices %} {% endcomment %}
-					  {% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
-					  {% comment %} <th>Staff User ID</th> {% endcomment %}
-					  <th>Staff User Name</th>
-					  {% endif %}
-					  {% comment %} {% endfor %}
-					  {% endfor %} {% endcomment %}
-					  <th>Status</th>
-					  <th>Department/<br/>Unit</th>
-					  <th>Device <br/>Depreciation<br/> Rate</th>
-					  <th>Date Uploaded</th>
-					  <th>Action</th>
-					  <th>More Info</th>
-					</tr>
-					{% for allUploadedDevices in allUploadedDevices %}
-					<div class='item'>
-						<tr class='item'>
-							<td class='sectionCheckBox'>
-								<input class='sectionCheckBoxinput' type='radio' value={{ allUploadedDevices.deviceid }} />
-							</td>
-							<td class='devicebrandName'><p>{{ allUploadedDevices.deviceid }}</p></td>
-							<div class='hidethis deviceID'>
-								{% comment %} <td class='devicebrandName'><p>{{ allUploadedDevices.devicebrand }}</p></td> {% endcomment %}
-								<p>{{ allUploadedDevices.deviceid }}</p>
-							</div>
-							{% comment %} <td>{{ allUploadedDevices.devicemacaddress }}</td> {% endcomment %}
-							<td>{{ allUploadedDevices.devicetype }}</td>
-
-							
-							<td class='link enterStaffUser'>
-								{% for AllStaffMembers in AllStaffMembers %}
-								{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
-								<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
-								{% endif %}
-								{% endfor %}
-						  	</td>
-
-							{% comment %} <td><a href=''>{{ AllStaffMembers.StaffID }}</a></td> {% endcomment %}
-							<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-							<td>{{ allUploadedDevices.deviceusedepartment }}</td>
-							<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
-							<td>{{ allUploadedDevices.created_at }}</td>
-							<td>
-								<div class='actionbtns'>
-									<div class='testbox'></div>
-									<button class='editDeviceData'><a href=/member/editdevice/{{ allUploadedDevices.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
-										<input hidden name='IdRequest' value={{ allUploadedDevices.id }} />
-										<button ><a href= /member/deletedevice/{{ allUploadedDevices.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>									
-								</div>
-							</td>
-							<td class='moredetailsbtn'>
-								<a href = /member/viewdevicedetails/{{ allUploadedDevices.deviceid }}/ >
-									<button>More Details</button>
-								</a>
-							</td>
+				<div class='devinvetable'>
+					<table  id="paginated-list" >
+						<tr>
+						  <th class='topCheckBox'>
+							<input type='radio' />
+						  </th>
+						  <th>ID</th>
+						  {% comment %} <th>Brand</th> {% endcomment %}
+						  {% comment %} <th>MAC ID</th> {% endcomment %}
+						  <th>Category</th>
+						  
+						  {% comment %} {% for AllStaffMembers in AllStaffMembers %}
+						  {% for allUploadedDevices in allUploadedDevices %} {% endcomment %}
+						  {% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+						  {% comment %} <th>Staff User ID</th> {% endcomment %}
+						  <th>Staff User Name</th>
+						  {% endif %}
+						  {% comment %} {% endfor %}
+						  {% endfor %} {% endcomment %}
+						  <th>Status</th>
+						  <th>Department/<br/>Unit</th>
+						  <th>Device <br/>Depreciation<br/> Rate</th>
+						  <th>Date Uploaded</th>
+						  <th>Action</th>
+						  <th>More Info</th>
 						</tr>
-					</div>
-					{% endfor %}
-				</table>
+						{% for allUploadedDevices in allUploadedDevices %}
+						<div class='item'>
+							<tr class='item'>
+								<td class='sectionCheckBox'>
+									<input class='sectionCheckBoxinput' type='radio' value={{ allUploadedDevices.deviceid }} />
+								</td>
+								<td class='devicebrandName'><p>{{ allUploadedDevices.deviceid }}</p></td>
+								<div class='hidethis deviceID'>
+									{% comment %} <td class='devicebrandName'><p>{{ allUploadedDevices.devicebrand }}</p></td> {% endcomment %}
+									<p>{{ allUploadedDevices.deviceid }}</p>
+								</div>
+								{% comment %} <td>{{ allUploadedDevices.devicemacaddress }}</td> {% endcomment %}
+								<td>{{ allUploadedDevices.devicetype }}</td>
+	
+								
+								<td class='link enterStaffUser'>
+									{% for AllStaffMembers in AllStaffMembers %}
+									{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+									<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
+									{% endif %}
+									{% endfor %}
+								  </td>
+	
+								{% comment %} <td><a href=''>{{ AllStaffMembers.StaffID }}</a></td> {% endcomment %}
+								<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
+								<td>{{ allUploadedDevices.deviceusedepartment }}</td>
+								<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
+								<td>{{ allUploadedDevices.created_at }}</td>
+								<td>
+									<div class='actionbtns'>
+										<div class='testbox'></div>
+										<button class='editDeviceData'><a href=/member/editdevice/{{ allUploadedDevices.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
+											<input hidden name='IdRequest' value={{ allUploadedDevices.id }} />
+											<button ><a href= /member/deletedevice/{{ allUploadedDevices.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>									
+									</div>
+								</td>
+								<td class='moredetailsbtn'>
+									<a href = /member/viewdevicedetails/{{ allUploadedDevices.deviceid }}/ >
+										<button>More Details</button>
+									</a>
+								</td>
+							</tr>
+						</div>
+						{% endfor %}
+					</table>
+				</div>
 				<div class='pagesdetailsseection'>
 					<div class='perpagecount'>
 						<div>

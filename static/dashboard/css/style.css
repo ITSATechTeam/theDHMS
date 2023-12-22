@@ -1222,3 +1222,129 @@ tr:nth-child(1) {
 
 
 
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+
+    .main{
+        padding-top: 120px;
+        padding-left: 5px;
+    }
+
+    .maintop{
+        display: inline;
+        justify-content: space-between;
+        padding-right: 20px;
+        margin-bottom: 50px;
+    }
+
+    /* SECTION BELOW DASHBOARD INTRO SECTION STARTS HERE */
+    .introdetailssection{
+        display: flex;
+        padding-right: 10px;
+        width: 100vw;
+        overflow-x: scroll;
+        justify-content: space-between
+    }
+    .introdetailsbar{
+        padding: 20px;
+        height: 125px;
+        min-width: 150px; 
+        margin-right: 10px;
+        border-radius: 10px;
+        align-items: center;
+        transition: .4s ease-in-out;
+    }
+    .postherosection{
+        display: grid;
+        grid-template-columns: 100%;
+        padding-top: 40px;
+        justify-content: space-between;
+        /* align-items: center; */
+        width: 98%;
+        padding-bottom: 100px;
+    }
+
+    #container2{
+        background-color: transparent;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .graphintrotext{
+        background-color: white;
+        padding: 20px;
+        overflow-y: scroll;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        height: 270px;
+    }
+
+    .deviceInvetorySection{
+        width: 100%;
+        margin-top: 30px;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        height: 300px;
+        overflow-y: scroll;
+        margin-bottom: 20px;
+    }
+
+    .registerDevice{
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        padding: 25px;
+        position: fixed;
+        height: 80vh;
+        width: 100%;
+        overflow-y: scroll;
+        top: 20%;
+        left: 0%;
+        z-index: 7;
+        display: none;
+    }
+
+    .shadow{
+        position: fixed;
+        margin-left: 0px;
+        height: 100vh;
+        padding: 20px;
+        /* border-radius: 10px; */
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 6;
+        transition: 0.5s ease-in-out;
+        display: none;
+    }
+    
+    .completeDetailsPopup2{
+        width: 100%;
+    }
+    .uploaddevicepopup{
+        width: 100%;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        left: 0%;
+        top: 20%;
+        background-color: white;
+        z-index: 7;
+        display: none;
+    }
+    
+    
+    
+    
+
+}

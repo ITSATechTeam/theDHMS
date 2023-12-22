@@ -7,7 +7,6 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
-		{% comment %} <link rel="stylesheet" href={% static 'signup/css/style.css' %} /> {% endcomment %}
 		<link rel="stylesheet" href={% static 'login/css/style.css' %} />
 		{% comment %} <link rel="stylesheet" href={% static 'generalonboard/css/style.css' %} /> {% endcomment %}
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -28,71 +27,71 @@
                 <div class='navmain'>
                     <img src={% static 'generalonboard/img/itsalogopng.png' %} />
                 </div>
-                    <div class='registerform'>
-                        <h4>Welcome Back</h4>
-                        <p>
-                            Please log into your account
-                        </p>
-				
-                        <div id="flash">
-                            {% if messages %} {% for message in messages %}
-                            <div class="alert alert-{{ message.tags}} m-0" role="alert">
-                                <strong style="color: red">{{ message }}</strong>
-                            </div>
-                            {% endfor %} {% endif %}
+                <div class='registerform'>
+                    <h4>Welcome Back</h4>
+                    <p>
+                        Please log into your account
+                    </p>
+            
+                    <div id="flash">
+                        {% if messages %} {% for message in messages %}
+                        <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                            <strong style="color: red">{{ message }}</strong>
                         </div>
-
-                        <form method='POST'>
-							{% csrf_token %}
-                            <div class='formsection'>
-                                <p>Email Address</p>
-                                <input name='companymail' type='text' placeholder='Enter Email Address' />
-                            </div>
-                            <div class='formsection passwordinput'>
-                                <p>Password</p>
-                                <input name='password' class='password' type='password' placeholder='********' />
-                                <div class='pwdlock'>
-                                    <img src={% static 'login/img/lock.png' %} />
-                                </div>
-                                <div class='pwdeye eye'>
-                                    <img src={% static 'login/img/eyeshow.png' %} />
-                                </div>
-                                <div class='pwdeye eyeicon2'>
-                                    <img src={% static 'login/img/eyehide.png' %} />
-                                </div>
-                            </div>
-                            <div class='forgotpwd'>
-                                <div class='forgotpwd1'>
-                                    <input type='checkbox' />
-                                    <p>Remember me</p>
-                                </div>
-                                <a href ={% url 'password_reset' %} >
-                                    <div class='forgotpwd2'>
-                                        <p>Forgot password</p>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class='formsubmitbtn'>
-                                <button type='submit'>Sign in</button>
-                            </div>
-                        </form>
-                        {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
-                        <div class='googlesignin'>
-                            {% load socialaccount %}
-                            <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
-                                {% csrf_token %}
-                                <button type='submit' class='googlesigninner'>
-                                    <div class='buttoninner'>
-                                        <img src={% static 'signup/img/google.png' %} />
-                                        <p>Login With Google</p>
-                                    </div>
-                                </button>
-                            </form>
-                        </div>
-                        <div class='logininstead'>
-                            <h8>Don't Have An Account Yet? <a href={% url 'SignUpPage' %}>Sign Up</a></h8>
-                        </div>
+                        {% endfor %} {% endif %}
                     </div>
+
+                    <form method='POST'>
+                        {% csrf_token %}
+                        <div class='formsection'>
+                            <p>Email Address</p>
+                            <input name='companymail' type='text' placeholder='Enter Email Address' />
+                        </div>
+                        <div class='formsection passwordinput'>
+                            <p>Password</p>
+                            <input name='password' class='password' type='password' placeholder='********' />
+                            <div class='pwdlock'>
+                                <img src={% static 'login/img/lock.png' %} />
+                            </div>
+                            <div class='pwdeye eye'>
+                                <img src={% static 'login/img/eyeshow.png' %} />
+                            </div>
+                            <div class='pwdeye eyeicon2'>
+                                <img src={% static 'login/img/eyehide.png' %} />
+                            </div>
+                        </div>
+                        <div class='forgotpwd'>
+                            <div class='forgotpwd1'>
+                                <input type='checkbox' />
+                                <p>Remember me</p>
+                            </div>
+                            <a href ={% url 'password_reset' %} >
+                                <div class='forgotpwd2'>
+                                    <p>Forgot password</p>
+                                </div>
+                            </a>
+                        </div>
+                        <div class='formsubmitbtn'>
+                            <button type='submit'>Sign in</button>
+                        </div>
+                    </form>
+                    {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
+                    <div class='googlesignin'>
+                        {% load socialaccount %}
+                        <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
+                            {% csrf_token %}
+                            <button type='submit' class='googlesigninner'>
+                                <div class='buttoninner'>
+                                    <img src={% static 'signup/img/google.png' %} />
+                                    <p>Login With Google</p>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                    <div class='logininstead'>
+                        <h8>Don't Have An Account Yet? <a href={% url 'SignUpPage' %}>Sign Up</a></h8>
+                    </div>
+                </div>
             </div>
         </main>
         <script src={% static 'login/js/main.js' %}></script>

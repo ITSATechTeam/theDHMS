@@ -13,6 +13,7 @@ from .tokens import account_activation_token
 # RESET PASSWORD IMPORTS STARTS HERE
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
@@ -57,14 +58,17 @@ def SignUpPage(request):
         if not request.POST['companyname']:
             messages.success(request, 'Registration Failed: Enter Your Company Name')
             return redirect('SignUpPage')
+            messages.success(request, 'Registration Failed: Enter Your Company Name')
 
         if not request.POST['companymail']:
             messages.success(request, 'Registration Failed: Enter Your Company Email Address')
             return redirect('SignUpPage')
+            messages.success(request, 'Registration Failed: Enter Your Company Email Address')
         
         if not request.POST['phonenumber']:
             messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
             return redirect('SignUpPage')
+            messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
 
 
         if (password != rtpassword):
@@ -82,7 +86,7 @@ def SignUpPage(request):
         elif UserDataCheckEmail:
             messages.error(request, 'Sorry, Email Address Is Already Taken, Please Use A Unique Email Address')
             return redirect('SignUpPage')
-
+            
         else:
             form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password, repassword=rtpassword)
             user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
@@ -100,7 +104,6 @@ def SignUpPage(request):
 
 
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
-
 def Login(request):
     next = ""
     if request.GET:  
@@ -123,10 +126,11 @@ def Login(request):
 
         if user is not None:
             login(request, user)
-            # try:
-            #     notifyLoginEmail(request, user, companymail)
-            # except:
-            #     pass
+            try:
+                # notifyLoginEmail(request, user, companymail)
+                pass
+            except:
+                pass
             if next == "":
                 return redirect('Dashboard')
             else:
@@ -143,6 +147,7 @@ def Login(request):
             messages.error(request, 'Login Failed: Please Try Again!!')
             return render(request, 'useronboard/login.html')
     return render(request, 'useronboard/login.html')
+
 
 
 # RESET PASSWORD VIEW STARTS HERE

@@ -130,3 +130,63 @@
 .noAnswerFound button p{
     margin-top: 10px;
 }
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+    .main{
+        margin-bottom: 50px;
+        margin-left: 0px;
+    }
+    .supportpageheader{
+        display: inline;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: 20px;
+    }
+
+    .supportpageheader button{
+        align-items: center;
+        padding: 2px;
+        border-radius: 10px;
+        margin-top: 10px;
+        width: 150px;
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+    .searchdashboard{
+        display: none;
+    }
+    .faqresponse{
+        width: 98%;
+    }
+    .faqSectionInner h3{
+        width: 100%;
+    }
+    
+    
+    
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

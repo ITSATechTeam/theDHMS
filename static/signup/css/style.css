@@ -249,6 +249,8 @@ main{
     color: #2A66B0;
     font-weight: bold;
     cursor: pointer;
+    padding-left: 100px;
+    text-align: center;
 }
 
 button{
@@ -318,5 +320,109 @@ input:focus{
 
 
 /* FORM SECTION ENDS HERE*/
+
+
+
+
+@media only screen and (max-width: 1202px){
+    .sideimagesection{
+        display: none;
+    }
+    .sideimagesection img{
+        display: none;
+    }
+
+    .registerform{
+        padding: 10px;
+        margin-left: 0;
+        /* background-color: red; */
+        margin-top: 0%;
+        width: 100%;
+    }
+
+    .navmain {
+        padding: 5px;
+        padding-left: 0%;
+        width: 100%;
+        z-index: 1;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: 70px;
+    }
+
+    main{
+        padding-top: 0px;
+        display: inline;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    /* FORM SECTION STARTS HERE*/
+    .nav{
+        width: 100%;
+        height: 100%;
+        margin-top: 0px;
+        padding-top: 0px;
+    }
+    .registerform input{
+        width: 100%;
+    }
+    .registerform p{
+        font-size: .8rem;
+        width: 100%;
+    }
+
+        
+    .formsubmitbtn button{
+        width: 100%;
+    }
+    .googlesignin {
+        width: 100%;
+    }
+    .googlesigninner p{
+        margin-top: 16px;
+        margin-left: 0px;
+    }
+    
+    .googlesignin button{
+        background-color: transparent;
+        width: 100%;
+        /* background-color: red; */
+        /* margin-left: 20px; */
+    }
+    .logininstead{
+        margin: auto;
+        margin-top: 10px;
+        margin-left: 20%;
+        margin-bottom: 200px;
+    }
+    
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

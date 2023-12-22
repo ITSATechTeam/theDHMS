@@ -409,11 +409,11 @@ topCheckBox.addEventListener('change', () => {
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashGeneral = document.querySelector('#flashmessage')
-// let flashGeneral = document.querySelector('.alert strong')
-if(flashGeneral){
+let flashGeneralInv = document.querySelector('#flashmessage')
+// let flashGeneralInv = document.querySelector('.alert strong')
+if(flashGeneralInv){
     setTimeout(() => {
-        flashGeneral.style.display = 'none'
+        flashGeneralInv.style.display = 'none'
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE

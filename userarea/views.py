@@ -809,7 +809,6 @@ def ExportDevice(request):
 
 
 
-
 # MAIN DEVICE EDIT DATA PAGE LINKED BELOW
 @login_required(login_url='Login')
 def EditDevice(request, deviceid):

@@ -2,9 +2,41 @@
 {% block content %}
 <body>
     <nav>
-        <div>
+        <div class='desktoplogo'>
             <img src={% static 'general/img/itsalogopng1.png' %} />
         </div>
+
+        <div class='responsivesection'>
+            <div class='responsivesection1'>
+                <img src={% static 'general/img/itsalogopng1.png' %} />            
+                <div class='hamburgerMain'>
+                    <a class="hamburger" href="#"><span></span></a>
+                </div>
+            </div>
+            <div class='responsivesection2'>
+                <div class='notifyout' >
+                    <img class='notify' src={% static 'general/img/notify.png' %} />
+                    <div class='NewNotifyCount2'></div>
+                </div>
+                <div class='notifysectioninner2'>
+                    {% if allSignUps.user == request.user %}
+                    <h4>{{ allSignUps.companyname }}</h4>
+                    {% else %}
+                    {{request.user}}
+                    {% endif %}
+                    <div class='profileimgsectiontext2'>
+                        <h1></h1>                        
+                        {% if allSignUps.user == request.user %}
+                        <p class='requestUser'>{{ allSignUps.companyname }}</p>
+                        {% else %}
+                        <p class='requestUser'>{{ request.user }}</p>
+                        {% endif %}
+                    </div>
+                    <img src={% static 'general/img/arrow-down.png' %} />
+                </div>
+            </div>
+        </div>
+
         <div class='search'>
             <form method='GET' action="{% url 'Searchresult' %}">
                 <input type='text' name='q' placeholder='Search Devices' />
@@ -22,10 +54,10 @@
                 <div class='NewNotifyCount'></div>
                 {% comment %} <img class='notifyactive' src={% static 'general/img/notify-active.png' %} /> {% endcomment %}
             </div>
-            
+
             {% comment %} NOTIFICATION TAB STARTS HERE {% endcomment %}
             <div class='allNotificationTabElements'>
-            <div class='notifySectionPopupEdge'></div>
+                <div class='notifySectionPopupEdge'></div>
                 <div class='notifySectionPopuPOut'>
                     <div class='notifySectionPopuP'>
                         <div class='notifySectionPopuPInner'>
@@ -57,15 +89,7 @@
                 </div>
             </div>
             {% comment %} NOTIFICATION TAB ENDS HERE {% endcomment %}
-            <div class='notifysectioninner'>
-                {% comment %} {% for allSignUps in allSignUps %} {% endcomment %}
-                {% if allSignUps.user == request.user %}
-                <h4>{{ allSignUps.companyname }}</h4>
-                {% else %}
-                {{request.user}}
-                {% comment %} {{allSignupsForUpdatePopup.companyname}} {% endcomment %}
-                {% endif %}
-                {% comment %} {% endfor %} {% endcomment %}
+            <div class='notifysectioninner'>                
                 <div class='profileimgsectiontext'>
                     <h1></h1>
                     
@@ -78,6 +102,8 @@
                 <img src={% static 'general/img/arrow-down.png' %} />
             </div>
         </div>
+
+
     </nav>
     {% comment %} SIDE BAR STARTS HERE {% endcomment %}
     <div class='sidebarsection'>
@@ -163,7 +189,6 @@
         
         <a href={% url 'Logout' %}>
             <div class='sidebar logout'>
-                {% comment %} <img src={% static 'general/img/logout.png' %} /> {% endcomment %}
                 <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                     <path id='logout1' d="M13.8335 14.1663L18.0002 9.99967L13.8335 5.83301" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <path id='logout2' d="M18 10H8" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

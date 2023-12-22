@@ -16,7 +16,6 @@ addfampopupheadclosebtn.addEventListener('click', () => {
 
 // HANDLE FLASH MESSAGES ON FAMILY MEMBER AREA STARTS HERE
 let flashfammember = document.querySelector('.alert')
-// let flashGeneral = document.querySelector('.alert strong')
 if (flashfammember){
     setInterval(() => {
         flashfammember.style.display = 'none'
@@ -43,7 +42,7 @@ let actionbtns = document.querySelectorAll('.actionbtns')
 
 actionbtns.forEach(element => {
     element.addEventListener('click', () => {
-        console.log(element.nextElementSibling )
+        // console.log(element.nextElementSibling )
         element.nextElementSibling.style.display = 'block'
     });
 });
@@ -60,9 +59,54 @@ memberaction.forEach(element => {
 
 
 
+let addsubadmin  = document.querySelector('.addsubadmin')
+let addsubadminclosebtn  = document.querySelectorAll('.addsubadminclosebtn')
+let addsubadminbtnscancel  = document.querySelectorAll('.addsubadminbtnscancel')
+
+addsubadminclosebtn.forEach(element => {
+    element.addEventListener('click', () => {
+        element.parentElement.style.display = 'none'
+        shadow.style.display = 'none'
+    })
+});
+
+
+addsubadminbtnscancel.forEach(element => {
+    element.addEventListener('click', () => {
+        element.parentElement.parentElement.parentElement.style.display = 'none'
+        shadow.style.display = 'none'
+    })
+});
+
+
+let memberactioninner = document.querySelectorAll('.memberactioninner')
+memberactioninner.forEach(element => {
+    element.addEventListener('click', () => {
+        shadow.style.display = 'block'
+        element.parentNode.nextElementSibling.style.display = 'block'
+    });
+});
 
 
 
+let newsubadminclosebtn  = document.querySelector('.newsubadminclosebtn')
+let newsubadmin  = document.querySelector('.newsubadmin')
+
+
+let alertprompt = document.querySelector('.alert strong').innerHTML
+
+if (alertprompt === "You added a subadmin on your account"){
+    newsubadmin.style.display = 'block'
+    shadow.style.display = 'block'
+
+}
+
+newsubadminclosebtn.addEventListener('click', () => {
+    if (newsubadmin){
+        newsubadmin.style.display = 'none'
+        shadow.style.display = 'none'
+    }
+})
 
 
 

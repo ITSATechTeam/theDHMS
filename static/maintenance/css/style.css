@@ -312,3 +312,59 @@ body{
 
 
 /* viewdetails ON STAFF PAGE ENDS HERE */
+
+
+
+
+@media only screen and (max-width: 1202px){
+    .main{
+        padding-top: 130px;
+        padding-left: 5px;
+    }
+
+    .subIntroSection{
+        display: inline;
+        justify-content: space-between;
+        align-items: center;
+        margin-right: 20px;
+    }
+
+    .maintainReqMain{
+        display: flex;
+        background-color: white;
+        border-radius: 10px;
+        width: 450px;
+        padding: 2px;
+        margin-right: 10px;
+        padding-top: 10px;
+        transition: .3s ease-in-out;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    }
+    .maintainReqMainOut{
+        overflow-x: scroll;
+    }
+
+    .maintaintable{
+        width: 100%;
+        overflow-x: scroll;
+    }
+    
+    
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
