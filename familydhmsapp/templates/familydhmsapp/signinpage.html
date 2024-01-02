@@ -1,6 +1,8 @@
 {% comment %} {% include 'general.html' %}  {% endcomment %}
 {% load static %} 
 {% block content %}
+{% load socialaccount %}
+{% providers_media_js %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -108,11 +110,46 @@
                             </div>
                         </div>
                         <p class='logininstead'>Have an account already? <a href={% url 'UserLogin' %}>Sign In</a></p>
+                        <form action="{% provider_login_url "facebook" method="js_sdk" %}?next=/member/dashboard/" method='POST'>
+                            {% csrf_token %}
+                        {% comment %} <a href="{% provider_login_url "facebook" method="js_sdk" %}"> {% endcomment %}
+                            <button  type='submit'>Signup with Facebook</button>
+                        {% comment %} </a> {% endcomment %}
+                        </form>
                     </div>
                 </div>
             </div>
         </main>
         <script src={% static 'onboard/js/onboard.js' %}></script>
+        
+        <script>
+            
+            function checkLoginState() {
+                FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+                });
+            }
+            window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '334644112749247',
+                cookie     : true,
+                xfbml      : true,
+                version    : '{api-version}'
+            });
+                
+            FB.AppEvents.logPageView();   
+                
+            };
+        
+            (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));
+        </script>
+
     </body>
 </html>
 

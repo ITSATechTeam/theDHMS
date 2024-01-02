@@ -196,7 +196,7 @@ def activateEmail(request, user, to_email):
     recipient_list = [to_email, ]
     message = render_to_string("mailouts/account_verification_email.html", {
         'user': user.email,
-        'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
+        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
         "protocol": 'https' if request.is_secure() else 'http'
@@ -216,7 +216,8 @@ def notifyLoginEmail(request, user, to_email):
     message = render_to_string("mailouts/account_login_email.html", {
         'user': user.email,
         # 'domain': 'http://127.0.0.1:8000/',
-        'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
+        # 'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
+        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
         "protocol": 'https' if request.is_secure() else 'http'

@@ -24,6 +24,7 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password/password_reset_complete.html'), name='password_reset_complete'),
     # 
     # Google auth credentials
+    # path('', include('googleauthentication.urls')),
     path('accounts/', include('allauth.urls')),
     #
     path(f'{settings.AAD_CONFIG.django.auth_endpoints.prefix}/', include(msal_urls)),

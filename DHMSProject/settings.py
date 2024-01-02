@@ -35,7 +35,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # GOOGLE SITE ID
-SITE_ID=4
+SITE_ID=5
 
 
 INSTALLED_APPS = [
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
     # 
     # 'django_python3_ldap',
     'django_user_agents',
@@ -73,10 +74,72 @@ SOCIALACCOUNT_PROVIDERS = {
             "email"
         ],
         "AUTH_PARAMS" : {"access_type" : "online"}
-    }
+    },
+
+    'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email','public_profile', 'user_friends'],
+        'APP': {
+            'client_id': '334644112749247',
+            'secret': 'ca22f180cd84bd443451de696b89e1d5',
+        },
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: 'kr_KR',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.4'}
 }
 
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+
+# FB APP IS = 334644112749247
+# FB APP SECRET KEY = ca22f180cd84bd443451de696b89e1d5
+# DISPLAY NAME = Family DHMS - Test1
+
+#facebook
+SOCIAL_AUTH_FACEBOOK_KEY = '334644112749247'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET ='ca22f180cd84bd443451de696b89e1d5'
+
+
 # ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW ENDS HERE
+
+
+# SOCIALACCOUNT_PROVIDERS = \
+#     {'facebook':
+#        {'METHOD': 'oauth2',
+#         'SCOPE': ['email','public_profile', 'user_friends'],
+#         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+#         'FIELDS': [
+#             'id',
+#             'email',
+#             'name',
+#             'first_name',
+#             'last_name',
+#             'verified',
+#             'locale',
+#             'timezone',
+#             'link',
+#             'gender',
+#             'updated_time'],
+#         'EXCHANGE_TOKEN': True,
+#         'LOCALE_FUNC': lambda request: 'kr_KR',
+#         'VERIFIED_EMAIL': False,
+#         'VERSION': 'v2.4'}}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -239,8 +302,6 @@ AUTHENTICATION_BACKENDS = [
     # 
     'django_python3_ldap.auth.LDAPBackend',
 ]
-
-
 
 
 # AWS S3 Configuration starts here
