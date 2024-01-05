@@ -1,4 +1,5 @@
 {% load static %} 
+{% load pwa %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -17,7 +18,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 		<title>DHMS - Device Health Management System | ITSA Inventory System</title>
+        {% progressive_web_app_meta %}
 	</head>
+    <!DOCTYPE html>
 	<body>
 		<main class='js-scroll'>
             <div>
@@ -32,8 +35,9 @@
                         Introducing Device Health Management Service (DHMS), a comprehensive solution for efficient device management. Take control of your devices, enhance performance, and optimize processes for increased productivity.
                     </h3>
                     <div class='ctaHero'>
-                        <div class='signup'><a href={% url 'SignUpPage' %}><button>Sign Up</button></a></div>
-                        <div class='login'><a href={% url 'Login' %}><button>Log In to DHMS</button></a></div>
+                        <div class='signup'><a href={% url 'SignUpPage' %} target='_blank'><button>Sign Up</button></a></div>
+                        <div class='login'><a href={% url 'Login' %} target='_blank'><button>Admin Log In</button></a></div>
+                        <div class='login'><a href={% url 'StaffLogin' %} target='_blank'><button>Staff Login</button></a></div>
                     </div>
                 </div>
                 <div>
@@ -243,6 +247,14 @@
                     At IT Service Desk Africa, we value your privacy and are committed to protecting your personal information. Our privacy policy outlines how we collect, use, and safeguard the data you provide to us. By using our services, you agree to the terms and practices described in this policy. We encourage you to read the full privacy policy below to understand how we handle your information.
                 </p>
                 <a href='https://itservicedeskafrica.com/wp-content/uploads/2023/07/ITSA-POLICIES-1.pdf' target='_blank'><button>View Privacy Policy</button></a>
+            </div>
+        </div>
+        <div class='phonecallout'>
+            <div class='phonecallouttext'>
+                <p>Have an emergency, <br/>click to call support</p>
+            </div>
+            <div class='phonecall'>
+                <a href="tel:+23480-3566-8211"><img src={% static 'Home/img/phonecall.png' %} /></a>
             </div>
         </div>
         {% comment %} PRIVACY POLICY SECTION ENDS HERE {% endcomment %}

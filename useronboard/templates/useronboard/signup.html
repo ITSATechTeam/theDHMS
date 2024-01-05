@@ -1,6 +1,7 @@
 <!-- @format -->
 {% comment %} {% include 'generalonboard.html' %}  {% endcomment %}
 {% load static %} 
+{% load pwa %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 		<title>Register | ITSA Inventory System</title>
+        {% progressive_web_app_meta %}
 	</head>
 	<body>
 		<main>
@@ -70,18 +72,18 @@
                             </div>
                         </form>
                         {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
-                        <div class='googlesignin'>
-                            {% load socialaccount %}
-                            <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
-                                {% csrf_token %}
+                        {% load socialaccount %}
+                        <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
+                            {% csrf_token %}
+                            <div class='googlesignin'>
                                 <button type='submit' class='googlesigninner'>
                                     <div class='buttoninner'>
                                         <img src={% static 'signup/img/google.png' %} />
                                         <p>Sign Up With Google</p>
                                     </div>
                                 </button>
+                            </div>
                             </form>
-                        </div>
                         <p class='logininstead'>Have an account already? <a href={% url 'Login' %}>Sign In</a></p>
                     </div>
                 </div>

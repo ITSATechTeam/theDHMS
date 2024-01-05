@@ -1,6 +1,7 @@
 <!-- @format -->
 {% include 'general.html' %} 
 {% load static %} 
+{% load pwa %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -17,6 +18,7 @@
 		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 		<title>Admin Dashboard | ITSA Inventory System</title>
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+        {% progressive_web_app_meta %}
 	</head>
 	<div class='shadow'></div>	
 	{% if allSignupsForUpdatePopup %}

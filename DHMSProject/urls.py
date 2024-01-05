@@ -28,6 +28,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     #
     path(f'{settings.AAD_CONFIG.django.auth_endpoints.prefix}/', include(msal_urls)),
+    # PWA
+    path('', include("pwa.urls")),
 ]
 
 if settings.DEBUG:

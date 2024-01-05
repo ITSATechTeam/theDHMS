@@ -582,6 +582,19 @@ background: #0085b6;
     .addnewdevicebtn button{
         margin-right: 10px;
     }
+    
+    .shadow2{
+        position: fixed;
+        margin-left: 0px;
+        height: 100vh;
+        padding: 20px;
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 6;
+        transition: 0.5s ease-in-out;
+        display: none;
+    }
+    
 
     
     

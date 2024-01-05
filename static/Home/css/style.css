@@ -47,7 +47,7 @@ main{
 
 .ctaHero{
     display: flex;
-    width: 50%;
+    width: 70%;
     justify-content: space-between;
     margin-top: 30px;
 }
@@ -395,8 +395,99 @@ main{
 
 /* REPONSIVE IMAGES ACTIVATION AND DEACTIVATION ENDS HERE */
 
+.phonecallout{
+  position: fixed;
+  width: 28vw;
+  bottom: 80px;
+  right: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+}
+
+.showthis{
+  display: block;
+}
+
+
+.phonecallouttext{
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #2A66B0;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}
+
+
+.phonecall{
+  position: fixed;
+  bottom: 80px;
+  right: 50px;
+  background-color: white;
+  z-index: 100;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+}
+
+.phonecall img{
+  width: 60px;
+  padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* MOBILE RESPONSIVENESS STARTS HERE */
 @media screen and (max-width: 1000px) {
+  
+  .phonecallout{
+    position: fixed;
+    width: 90vw;
+    bottom: 80px;
+    right: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+  }
 
   /* DESKTOP RESPONSIVE IMAGES SETUP STARTS HERE */
   .DesktopResponsive img{
@@ -440,107 +531,107 @@ main{
     display: inline;
     justify-content: space-between;
     margin: auto;
-}
+  }
 
-.ctaHero{
-  display: flex;
-  width: 75%;
-  justify-content: space-between;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
+  .ctaHero{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 
-.heroSection h3{
-  font-size: 14px;
-  font-weight: 400;
-  margin-top: 30px;
-}
+  .heroSection h3{
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 30px;
+  }
 
-.dashboardFeature{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  align-self: stretch;
-  margin-bottom: 100px;
+  .dashboardFeature{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    margin-bottom: 100px;
 
-}
+  }
 
-.offerSectionOut{
-  display: inline;
-  margin: auto;
-  justify-content: space-around;
-  width: 100%;
-  margin-bottom: 40px;
-  padding-top: 20px;
-}
+  .offerSectionOut{
+    display: inline;
+    margin: auto;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 40px;
+    padding-top: 20px;
+  }
 
-.offerSectionInner{
-  padding: 10px;
-  background-color: white;
-  border-radius: 10px;
-  width: 320px;
-  transition: .7s ease-in-out;
-  margin-bottom: 30px;
-}
+  .offerSectionInner{
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px;
+    width: 320px;
+    transition: .7s ease-in-out;
+    margin-bottom: 30px;
+  }
 
-.testimonialsOut h2{
-  text-align: left;
-  margin-bottom: 50px;
-}
+  .testimonialsOut h2{
+    text-align: left;
+    margin-bottom: 50px;
+  }
 
-.userProfile{
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding-top: 30px;
-  bottom: 10px;
-}
+  .userProfile{
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 30px;
+    bottom: 10px;
+  }
 
-.testimonial{
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 30px;
-  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
-}
+  .testimonial{
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+  }
 
-.secondCTA p{
-  width: 100%;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 40px;
-  font-weight: 300;
-  font-size: 14px;
-}
+  .secondCTA p{
+    width: 100%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    font-weight: 300;
+    font-size: 14px;
+  }
 
-.secondCTABtns{
-  display: flex;
-  justify-content: space-around;
-  width: 280px;
-  margin: auto;
-}
+  .secondCTABtns{
+    display: flex;
+    justify-content: space-around;
+    width: 280px;
+    margin: auto;
+  }
 
-.secondCTA h1{
-  font-size: 32px;
-}
+  .secondCTA h1{
+    font-size: 32px;
+  }
 
-.privacy{
-  margin-top: 20px;
-  padding-right: 10px;
-  padding-left: 10px;
-  padding-top: 0px;
-  margin-bottom: 50px;
-}
+  .privacy{
+    margin-top: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 0px;
+    margin-bottom: 50px;
+  }
 
-.midPageSection{
-  margin: auto;
-  text-align: left;
-  margin-top: 100px;
-  width: 100%;
-}
+  .midPageSection{
+    margin: auto;
+    text-align: left;
+    margin-top: 100px;
+    width: 100%;
+  }
 
 
 

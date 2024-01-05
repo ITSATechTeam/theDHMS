@@ -95,27 +95,22 @@
                                 <p class='loginwithgfoption'>or sign in with</p>
 
                                 <div class='googlesignin'>
-                                    {% load socialaccount %}
-                                    <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
+                                    <form action="{% provider_login_url "facebook" method="js_sdk" %}?next=/member/dashboard/" method='POST'>
                                         {% csrf_token %}
                                         <button type='submit' class='googlesigninner'>
-                                            <img src={% static 'onboard/img/google.png' %} />
+                                            <img src={% static 'onboard/img/fb.png' %} />
                                         </button>
                                     </form>
-                                    <button>
-                                        {% comment %} <img src={% static 'onboard/img/facebook.png' %} /> {% endcomment %}
-                                    </button>
                                 </div>
 
                             </div>
                         </div>
                         <p class='logininstead'>Have an account already? <a href={% url 'UserLogin' %}>Sign In</a></p>
-                        <form action="{% provider_login_url "facebook" method="js_sdk" %}?next=/member/dashboard/" method='POST'>
+                        {% comment %} <form action="{% provider_login_url "facebook" method="js_sdk" %}?next=/member/dashboard/" method='POST'>
                             {% csrf_token %}
-                        {% comment %} <a href="{% provider_login_url "facebook" method="js_sdk" %}"> {% endcomment %}
                             <button  type='submit'>Signup with Facebook</button>
                         {% comment %} </a> {% endcomment %}
-                        </form>
+                        {% comment %} </form> {% endcomment %}
                     </div>
                 </div>
             </div>

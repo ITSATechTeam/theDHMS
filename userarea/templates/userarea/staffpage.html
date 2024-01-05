@@ -1,5 +1,6 @@
 <!-- @format -->
 {% include 'general.html' %} 
+{% load pwa %}
 {% load static %} 
 {% block content %}
 <!DOCTYPE html>
@@ -15,6 +16,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="build/css/intlTelInput.css">
 		<title>Staff Members | ITSA Inventory System</title>
+    {% progressive_web_app_meta %}
 	</head>
 	<div class='shadow1'></div>
 	<div class='shadowsso'></div>
@@ -530,4 +532,5 @@
     {% comment %} </div> {% endcomment %}
     <script src={% static 'staff/js/main.js' %}></script>
   </body>
-{% endblock %}
+</html>
+{% endblock content %}

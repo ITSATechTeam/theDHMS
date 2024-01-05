@@ -5,7 +5,51 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# PWA SETTINGS STARTS HERE
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, 'static/js/', 'serviceworker.js')
 
+# MANIFEST.JSON DETAILS
+PWA_APP_NAME = 'DHMS'
+PWA_APP_DESCRIPTION = "DHMS PWA"
+PWA_APP_THEME_COLOR = '#2A66B0'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+	{
+		'src': 'static/onboard/img/12by12icon.png',
+		'sizes': '48x48'
+	},
+	{
+		'src': 'static/onboard/img/72by72icon.png',
+		'sizes': '144x144'
+	},
+	{
+		'src': 'static/onboard/img/98by98icon.png',
+		'sizes': '196x196'
+	}
+]
+PWA_APP_ICONS_APPLE = [
+	{
+		'src': 'static/onboard/img/28by28appleicon.png',
+		'sizes': '27.5x27.5'
+	}
+]
+PWA_APP_SPLASH_SCREEN = [
+	{
+		'src': 'static/Home/img/dhmspwasplashscreen1.PNG',
+		'src': 'static/Home/img/dhmspwasplashscreendesktop.PNG',
+		# 'src': 'static/general/img/itsalogopng1.PNG',
+		'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+	}
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'
+
+# PWA SETTNGS ENDS HERE
 
 # AZURE AD ACTIVATION CODE STARTS HERE\
 from ms_identity_web.configuration import AADConfig
@@ -62,7 +106,8 @@ INSTALLED_APPS = [
     # 'django_python3_ldap',
     'django_user_agents',
     # 
-    'storages'
+    'storages',
+    'pwa'
 ]
 
 

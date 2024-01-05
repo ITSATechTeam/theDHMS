@@ -245,11 +245,10 @@ main{
     border-radius: 10px;
     width: 520px;
     margin-top: 20px;
-    align-items: center;
     color: #2A66B0;
     font-weight: bold;
     cursor: pointer;
-    padding-left: 100px;
+    /* padding-left: 100px; */
     text-align: center;
 }
 
@@ -281,7 +280,8 @@ button{
 
 .googlesignin button{
     background-color: transparent;
-    width: 530px;
+    width: 100%;
+    margin: auto;
     border-radius: 10px;
     padding-bottom: 10px;
 }

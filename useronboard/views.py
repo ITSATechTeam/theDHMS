@@ -45,7 +45,6 @@ def Home(request):
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def SignUpPage(request):
     if request.method == 'POST':
-    # if request.method == 'POST' and request.FILES:
         companyname = request.POST['companyname']
         email = request.POST['companymail']
         phonenumber = request.POST['phonenumber']
@@ -58,23 +57,19 @@ def SignUpPage(request):
         if not request.POST['companyname']:
             messages.success(request, 'Registration Failed: Enter Your Company Name')
             return redirect('SignUpPage')
-            messages.success(request, 'Registration Failed: Enter Your Company Name')
 
         if not request.POST['companymail']:
             messages.success(request, 'Registration Failed: Enter Your Company Email Address')
             return redirect('SignUpPage')
-            messages.success(request, 'Registration Failed: Enter Your Company Email Address')
         
         if not request.POST['phonenumber']:
             messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
             return redirect('SignUpPage')
-            messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
 
 
         if (password != rtpassword):
             messages.error(request, 'Passwords Do Not Match!')
             return redirect('SignUpPage')
-            messages.error(request, 'Passwords Do Not Match!')
 
         data = SignupForm.objects.filter(companyname=companyname)
         UserData = User.objects.filter(username=companyname)
@@ -93,6 +88,7 @@ def SignUpPage(request):
             form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             user.save(False)
+            # activateEmail(request, user, email)
             # try:
             #     activateEmail(request, user, email)
             # except:
@@ -127,7 +123,7 @@ def Login(request):
         if user is not None:
             login(request, user)
             try:
-                # notifyLoginEmail(request, user, companymail)
+                notifyLoginEmail(request, user, companymail)
                 pass
             except:
                 pass
@@ -194,16 +190,27 @@ def password_reset_request(request):
 def activateEmail(request, user, to_email):
     mail_subject = "Your Company registered on the Device Health Management System[DHMS] Platform with ITSA."
     recipient_list = [to_email, ]
-    message = render_to_string("mailouts/account_verification_email.html", {
-        'user': user.email,
-        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': account_activation_token.make_token(user),
-        "protocol": 'https' if request.is_secure() else 'http'
-    })
+    # message = f'Hi there, This is to confirm your registeration on the Device Health Management Platform, Your unique account ID is: { request.user.last_name }. We are glad to have you onboard. We hope you are as excited as we are for the whole new level of possibities you are about to unveil using the DHMS for your device management.Thanks again for trusting ITSA. Sincerely, ITSA Support Team', 
+    # message = render_to_string("mailouts/account_verification_email.html", 
+    # {
+    #     'user': user.email,
+    #     'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
+    #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+    #     'token': account_activation_token.make_token(user),
+    #     "protocol": 'https' if request.is_secure() else 'http'
+    # })
+    
+    # 
+    body = {
+        'Account ID': f'Your DHMS account ID: {request.user.last_name}',
+        'greet':  f'Hello {request.user},',
+        'message': render_to_string("mailouts/account_verification_email.html"),
+        # 'message': form.cleaned_data['message'],
+    }
+    message = '\n'.join(body.values())
+    # 
     email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
     if email:
-        # messages.success(request, 'A confimation email was sent to your inb')
         print('Sent a confirmation email')
     else:
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')

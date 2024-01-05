@@ -1281,6 +1281,7 @@ tr:nth-child(1) {
     .graphintrotext{
         background-color: white;
         padding: 20px;
+        overflow-y: scroll;
         border-radius: 10px;
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
         height: 270px;
@@ -1297,6 +1298,52 @@ tr:nth-child(1) {
         overflow-y: scroll;
         margin-bottom: 20px;
     }
+
+    .registerDevice{
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        padding: 25px;
+        position: fixed;
+        height: 80vh;
+        width: 100%;
+        overflow-y: scroll;
+        top: 20%;
+        left: 0%;
+        z-index: 7;
+        display: none;
+    }
+
+    .shadow{
+        position: fixed;
+        margin-left: 0px;
+        height: 100vh;
+        padding: 20px;
+        /* border-radius: 10px; */
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 6;
+        transition: 0.5s ease-in-out;
+        display: none;
+    }
+    
+    .completeDetailsPopup2{
+        width: 100%;
+    }
+    .uploaddevicepopup{
+        width: 100%;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        position: fixed;
+        left: 0%;
+        top: 20%;
+        background-color: white;
+        z-index: 7;
+        display: none;
+    }
+    
+    
     
     
 

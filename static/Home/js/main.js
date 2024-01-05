@@ -55,3 +55,15 @@ if(flashGeneral){
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE
+
+
+let phonecallouttext = document.querySelector('.phonecallouttext')
+window.addEventListener('load', () => {
+  phonecallouttext.style.display = 'block';
+
+})
+
+
+setInterval(() => {
+  phonecallouttext.style.display = 'none';
+}, 5000);
