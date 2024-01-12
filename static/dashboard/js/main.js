@@ -1,6 +1,6 @@
 const filtercategory = document.querySelector('.filtercategory')
 const filtercalendar = document.querySelector('.filtercalendar')
-const shadow = document.querySelector('.shadow')
+const shadow = document.querySelector('.shadow1')
 const filterbox1 = document.querySelector('.filterbox1')
 const filterbox2 = document.querySelector('.filterbox2')
 const closefilter = document.querySelector('.closefilter')

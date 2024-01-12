@@ -94,6 +94,7 @@ INSTALLED_APPS = [
     'django_countries',
     'staffapp.apps.StaffappConfig',
     'familydhmsapp.apps.FamilydhmsappConfig',
+    'dhmsadminboard.apps.DhmsadminboardConfig',
     # 
     
     'django.contrib.sites',
@@ -123,10 +124,11 @@ SOCIALACCOUNT_PROVIDERS = {
 
     'facebook':
        {'METHOD': 'oauth2',
-        'SCOPE': ['email','public_profile', 'user_friends'],
+        'SCOPE': ['email','public_profile'],
+        # 'SCOPE': ['email','public_profile', 'user_friends'],
         'APP': {
-            'client_id': '334644112749247',
-            'secret': 'ca22f180cd84bd443451de696b89e1d5',
+            'client_id': '2091141407903994',
+            'secret': '59dbe7831f34b6a5ba802a8231317683',
         },
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'FIELDS': [
@@ -142,12 +144,14 @@ SOCIALACCOUNT_PROVIDERS = {
             'gender',
             'updated_time'],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': lambda request: 'kr_KR',
+        'LOCALE_FUNC': 'path.to.callable',
         'VERIFIED_EMAIL': False,
-        'VERSION': 'v2.4'}
+        'VERSION': 'v13.0',
+        'GRAPH_API_URL': 'https://graph.facebook.com/v13.0',
+       }
 }
 
-
+SOCIALACCOUNT_AUTO_SIGNUP = False
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 
@@ -157,8 +161,8 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 # DISPLAY NAME = Family DHMS - Test1
 
 #facebook
-SOCIAL_AUTH_FACEBOOK_KEY = '334644112749247'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET ='ca22f180cd84bd443451de696b89e1d5'
+SOCIAL_AUTH_FACEBOOK_KEY = '2091141407903994'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET ='59dbe7831f34b6a5ba802a8231317683'
 
 
 # ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW ENDS HERE

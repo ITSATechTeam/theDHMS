@@ -83,20 +83,24 @@ def UserLogin(request):
         password = request.POST['password']
 
         findemailinrec = Familyregister.objects.filter(email=familyuser)
+        findemailinrecgen = User.objects.filter(email=familyuser)
+        print(findemailinrecgen)
         if findemailinrec:
-
             try:
                 user = User.objects.get(email=familyuser)
+                print(user)
                 if user:
                     userEmail = user.email
-                    # user = authenticate(request, username=user, password=password)
+                    # messages.error(request, 'The email address you entered is already registered on the DHMS. Please enter a unique email address.')
+                    # return redirect('UserLogin')
+
                 else:
-                    messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
+                    messages.error(request, 'The email address you entered is not registered. Please create an account to continueeee.')
                     return redirect('UserReg')
 
             except:
-                messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
-                return redirect('UserReg')
+                messages.error(request, 'An error occured during validation. Please try again.')
+                return redirect('UserLogin')
             
             user = authenticate(request, username=user, password=password)
 
@@ -111,7 +115,7 @@ def UserLogin(request):
                 messages.error(request, 'Login Failed: Please Try Again!!')
                 
         else:
-            messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
+            messages.error(request, 'The email address you entered is not registered. Please create an account to continue...')
             return redirect('UserReg')
 
     return render(request, 'familydhmsapp/loginpage.html')
@@ -317,7 +321,7 @@ def FamilyDHMSDashboard(request):
     data = [allLaptopDevicesCountMain, allDesktopDevicesCount]
     labels = ['Laptops', 'Desktops']
 
-    AllFaultyDevicesTrend = FaultyDevicesTrend.objects.all()
+    AllFaultyDevicesTrend = FaultyDevicesTrend.objects.filter(FamilyUniqueCode = request.user.last_name)
     JanDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Jan'))
     FebDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Feb'))
     MarDevices = FaultyDevicesTrend.objects.filter(Q(FamilyUniqueCode = request.user.last_name) & Q(month = 'Mar'))

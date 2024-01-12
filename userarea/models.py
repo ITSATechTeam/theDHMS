@@ -256,3 +256,20 @@ class StaffADList(models.Model):
     def __str__(self):
         return self.user.username
 
+
+
+class CompanyFaultyDevices(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    deviceID = models.CharField(max_length = 1500, null=True, blank = True)
+    month = models.CharField(max_length = 1500, null=True, blank = True)
+    year = models.CharField(max_length = 1500, null=True, blank = True)
+    CompanyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return f'{self.deviceID} got faulty in {self.month} and was reported by {self.user}'

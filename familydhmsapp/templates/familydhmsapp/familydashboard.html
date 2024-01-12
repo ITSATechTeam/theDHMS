@@ -765,17 +765,16 @@
 			});
 			AllMonthArray.push(dectelement.length);
 			AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
-			{% comment %} console.log(AllMonthArray) {% endcomment %}
+			console.log(AllMonthArray)
 
 			let resultSum = result.reduce((a, b) => a + b, 0)
 			let amountspenttotal = document.querySelector('.amountspenttotal a')
 			if (amountspenttotal){
 				amountspenttotal.innerText = resultSum.toLocaleString("en-US")
 			}
-			console.log(AllMonthArray)
+			{% comment %} console.log(AllMonthArray) {% endcomment %}
 			{% comment %}  {% endcomment %}
 
-			let AllMonthArray2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1]
 			var config = {
 				type: 'doughnut',
 				data: {
@@ -795,35 +794,36 @@
 				}
 				}
 				};
+
 			var config2 = {
-				type: 'line',
-				data: {
-					datasets: [{
-						data: AllMonthArray,
-						backgroundColor: [
-						'rgba(64, 100, 255, 0.39)',
-						'#2A66B0',
-						'rgba(64, 100, 255, 0.39)',
-						'#2A66B0',
-						'rgba(64, 100, 255, 0.39)',
-						'#2A66B0',
-						'rgba(64, 100, 255, 0.39)',
-						'#2A66B0',
-						'rgba(64, 100, 255, 0.39)',
-						'#2A66B0',
-						'rgba(64, 100, 255, 0.39)',
-						'#2A66B0' 
-					],
-					label: 'Number of Faulty Devices'
-					}],
-					labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
-				},
-				options: {
-					responsive: true,
-					legend: {
-					display: false
-				}
-				}
+					type: 'line',
+					data: {
+						datasets: [{
+							data: AllMonthArray,
+							backgroundColor: [
+							'rgba(64, 100, 255, 0.39)',
+							'#2A66B0',
+							'rgba(64, 100, 255, 0.39)',
+							'#2A66B0',
+							'rgba(64, 100, 255, 0.39)',
+							'#2A66B0',
+							'rgba(64, 100, 255, 0.39)',
+							'#2A66B0',
+							'rgba(64, 100, 255, 0.39)',
+							'#2A66B0',
+							'rgba(64, 100, 255, 0.39)',
+							'#2A66B0' 
+						],
+						label: 'Number of Faulty Devices'
+						}],
+						labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+					},
+					options: {
+						responsive: true,
+						legend: {
+						display: false
+						}
+					}
 				};
 
 			

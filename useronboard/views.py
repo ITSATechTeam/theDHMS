@@ -237,3 +237,8 @@ def notifyLoginEmail(request, user, to_email):
 
 
 # def sync_user_relations(user, ldap_attributes, *, connection=None, dn=None):
+
+
+# def LoginCanceled(request):
+#     messages.error(request, 'Sorry, an error occurred. Kindly try again')
+#     return redirect('SignUpPage')

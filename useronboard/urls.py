@@ -9,6 +9,7 @@ urlpatterns = [
     path('pre_signup/', views.PreSignUpPage, name="PreSignUpPage"),
     path('signup/', views.SignUpPage, name="SignUpPage"),
     path('login/', views.Login, name="Login"),
+    # path('login/cancelled/', views.LoginCanceled, name="LoginCanceled"),
     path('', views.Home, name="Home"),
 
     path("password_reset", views.password_reset_request, name="password_reset")

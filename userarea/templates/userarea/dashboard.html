@@ -20,7 +20,7 @@
 		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
         {% progressive_web_app_meta %}
 	</head>
-	<div class='shadow'></div>	
+	<div class='shadow1'></div>	
 	{% if allSignupsForUpdatePopup %}
 	{% else %}
 	<div class='shadowForPreReg'></div>
@@ -219,8 +219,8 @@
 						</div>
 						{% if allUploadedDevices %}
 						<div class='minipiechartlabel'>
-							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} />Laptop</div>
-							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} />Desktop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} />{{AllLaptopsCount}} Laptop</div>
+							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} /> {{AllDesktopsCount}}  Desktop</div>
 						</div>
 						{% else %}
 						<div class='emptymaintenance2'>
@@ -423,62 +423,62 @@
 		<div class='monthlyAmount'>
 			<div>
 				{% for JanDevices in JanDevices %}
-				<p class='JanDevices'>{{ JanDevices.devicecostofpurchase }}</p>
+				<p class='JanDevices'>{{ JanDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for FebDevices in FebDevices %}
-				<p class='FebDevices'>{{ FebDevices.devicecostofpurchase }}</p>
+				<p class='FebDevices'>{{ FebDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for MarDevices in MarDevices %}
-				<p class='MarDevices'>{{ MarDevices.devicecostofpurchase }}</p>
+				<p class='MarDevices'>{{ MarDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for AprDevices in AprDevices %}
-				<p class='AprDevices'>{{ AprDevices.devicecostofpurchase }}</p>
+				<p class='AprDevices'>{{ AprDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for MayDevices in MayDevices %}
-				<p class='MayDevices'>{{ MayDevices.devicecostofpurchase }}</p>
+				<p class='MayDevices'>{{ MayDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for JuneDevices in JuneDevices %}
-				<p class='JuneDevices'>{{ JuneDevices.devicecostofpurchase }}</p>
+				<p class='JuneDevices'>{{ JuneDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for JulyDevices in JulyDevices %}
-				<p class='JulyDevices'>{{ JulyDevices.devicecostofpurchase }}</p>
+				<p class='JulyDevices'>{{ JulyDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for AugDevices in AugDevices %}
-				<p class='AugDevices'>{{ AugDevices.devicecostofpurchase }}</p>
+				<p class='AugDevices'>{{ AugDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for SeptDevices in SeptDevices %}
-				<p class='SeptDevices'>{{ SeptDevices.devicecostofpurchase }}</p>
+				<p class='SeptDevices'>{{ SeptDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for OctDevices in OctDevices %}
-				<p class='OctDevices'>{{ OctDevices.devicecostofpurchase }}</p>
+				<p class='OctDevices'>{{ OctDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for NovDevices in NovDevices %}
-				<p class='NovDevices'>{{ NovDevices.devicecostofpurchase }}</p>
+				<p class='NovDevices'>{{ NovDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
 				{% for DecDevices in DecDevices %}
-				<p class='DecDevices'>{{ DecDevices.devicecostofpurchase }}</p>
+				<p class='DecDevices'>{{ DecDevices }}</p>
 				{% endfor %}
 			</div>
 		</div>
@@ -489,6 +489,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
 	<script>
+		{% comment %}  {% endcomment %}
+		
 		let AllMonthArray = [];
 		// JANUARY CALCULATION STARTS HERE
 		let janelement =[];
@@ -506,7 +508,7 @@
 			});
 			
 		});
-		AllMonthArray.push(janSum);
+		AllMonthArray.push(janelement.length);
 		// JANUARY CALCULATION ENDS HERE
 
 		// FEBRUARY CALCULATION STARTS HERE
@@ -525,7 +527,7 @@
 			});
 			
 		});
-		AllMonthArray.push(febSum);
+		AllMonthArray.push(febelement.length);
 		// FEBRUARY CALCULATION ENDS HERE
 
 		// MARCH CALCULATION STARTS HERE
@@ -544,7 +546,7 @@
 			});
 			
 		});
-		AllMonthArray.push(marSum);
+		AllMonthArray.push(marelement.length);
 		// MARCH CALCULATION ENDS HERE
 
 		// APRIL CALCULATION STARTS HERE
@@ -563,7 +565,7 @@
 			});
 			
 		});
-		AllMonthArray.push(aprSum);
+		AllMonthArray.push(aprelement.length);
 		// APRIL CALCULATION ENDS HERE
 
 		// MAY CALCULATION STARTS HERE
@@ -582,7 +584,7 @@
 			});
 			
 		});
-		AllMonthArray.push(maySum);
+		AllMonthArray.push(mayelement.length);
 		// MAY CALCULATION ENDS HERE
 
 
@@ -602,7 +604,7 @@
 			});
 			
 		});
-		AllMonthArray.push(JuneSum);
+		AllMonthArray.push(juneelement.length);
 		// JUNE CALCULATIONS ENDS HERE
 
 		// JULY CALCULATIONS STARTS HERE
@@ -621,7 +623,7 @@
 			});
 			
 		});
-		AllMonthArray.push(julySum);
+		AllMonthArray.push(julyelement.length);
 		// JULY CALCULATIONS ENDS HERE
 
 		// AUGUST CALCULATIONS STARTS HERE
@@ -640,7 +642,7 @@
 			});
 			
 		});
-		AllMonthArray.push(augSum);
+		AllMonthArray.push(augelement.length);
 		// AUGUST CALCULATIONS ENDS HERE
 
 		// SEPTEMBER CALCULATIONS STARTS HERE
@@ -659,7 +661,7 @@
 			});
 			
 		});
-		AllMonthArray.push(septSum);
+		AllMonthArray.push(septelement.length);
 		// SEPTEMBER CALCULATIONS ENDS HERE
 
 		// OCTOBER CALCULATIONS STARTS HERE
@@ -678,7 +680,7 @@
 			});
 			
 		});
-		AllMonthArray.push(octtSum);
+		AllMonthArray.push(octtelement.length);
 		// OCTOBER CALCULATIONS ENDS HERE
 
 		// NOVEMBER CALCULATIONS STARTS HERE
@@ -689,7 +691,7 @@
 		novtDevices.forEach(element => {
 		novtelementMain2 = element.innerText;
 			novtelement.push(novtelementMain2)
-			novtSum = novtelement.map( function(elt){ // assure the value can be converted into an integer
+			novtSum = novtelement.map(function(elt){ // assure the value can be converted into an integer
 			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
 			})
 			.reduce( function(a,b){ // sum all resulting numbers
@@ -697,7 +699,8 @@
 			});
 			
 		});
-		AllMonthArray.push(novtSum);
+		AllMonthArray.push(novtelement.length);
+		console.log(novtelement.length);
 		// NOVEMBER CALCULATIONS ENDS HERE
 
 		// DECEMBER CALCULATIONS STARTS HERE
@@ -715,9 +718,10 @@
 			return a+b
 			});				
 		});
-		AllMonthArray.push(dectSum);
+		AllMonthArray.push(dectelement.length);
 		AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
-
+		console.log(AllMonthArray)
+		
 		let resultSum = result.reduce((a, b) => a + b, 0)
 		let amountspenttotal = document.querySelector('.amountspenttotal a')
 		if (amountspenttotal){
@@ -747,7 +751,7 @@
 			}
 			};
 			
-		var config2 = {
+		{% comment %} var config2 = {
 			type: 'line',
 			data: {
 				datasets: [{
@@ -776,6 +780,39 @@
 				display: false
 			}
 			}
+			}; {% endcomment %}
+
+			
+
+			var config2 = {
+				type: 'line',
+				data: {
+					datasets: [{
+						data: AllMonthArray,
+						backgroundColor: [
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0',
+						'rgba(64, 100, 255, 0.39)',
+						'#2A66B0' 
+					],
+					label: 'Number of Faulty Devices'
+					}],
+					labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+				},
+				options: {
+					responsive: true,
+					legend: {
+					display: false
+					}
+				}
 			};
 
 		

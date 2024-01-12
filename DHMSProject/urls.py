@@ -18,6 +18,7 @@ urlpatterns = [
     path('staff/', include("staffapp.urls")),
     path('auth/', include("staffapp.urls")),
     path('familydhms/', include("familydhmsapp.urls")),
+    path('superadmin/', include("dhmsadminboard.urls")),
 
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name='password_reset_confirm'),
@@ -26,6 +27,7 @@ urlpatterns = [
     # Google auth credentials
     # path('', include('googleauthentication.urls')),
     path('accounts/', include('allauth.urls')),
+    # path('accounts/social/', include("useronboard.urls")),
     #
     path(f'{settings.AAD_CONFIG.django.auth_endpoints.prefix}/', include(msal_urls)),
     # PWA

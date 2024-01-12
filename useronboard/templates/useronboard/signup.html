@@ -48,23 +48,23 @@
 							{% csrf_token %}
                             <div class='formsection'>
                                 <p>Company Name</p>
-                                <input name='companyname' type='text' placeholder='Enter Company Name' />
+                                <input name='companyname' required type='text' placeholder='Enter Company Name' />
                             </div>
                             <div class='formsection'>
                                 <p>Email Address</p>
-                                <input name='companymail' type='text' placeholder='Enter Company Email Address' />
+                                <input name='companymail' required type='email' placeholder='Enter Company Email Address' />
                             </div>
                             <div class='formsection'>
                                 <p>Contact Phone Number</p>
-                                <input name='phonenumber' type='text' placeholder='Enter Company Phone Number' />
+                                <input name='phonenumber' required type='number' placeholder='Enter Company Phone Number' />
                             </div>
                             <div class='formsection'>
                                 <p>Password</p>
-                                <input name='password' type='password' placeholder='Enter A Password' />
+                                <input name='password' required type='password' placeholder='Enter A Password' />
                             </div>
                             <div class='formsection'>
                                 <p> Retype Password</p>
-                                <input name='rtpassword' type='password' placeholder='Enter Above Password Again' />
+                                <input name='rtpassword' required type='password' placeholder='Enter Above Password Again' />
                             </div>
 
                             <div class='formsubmitbtn'>
