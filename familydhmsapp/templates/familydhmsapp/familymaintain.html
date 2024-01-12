@@ -154,85 +154,34 @@
 					  <th class='topCheckBox'>
 						<input type='radio' />
 					  </th>
-					  <th>Device Name</th>
-					  <th>Serial NO</th>
-					  <th>Model</th>
-					  <th>Operating system</th>
-					  <th>Device Type</th>
-					  <th>Issue</th>
-					  <th>Status</th>
-					  <th>Request by</th>
+					  <th>Device ID</th>
+					  {% comment %} <th>Serial NO</th> {% endcomment %}
+					  {% comment %} <th>Model</th> {% endcomment %}
+					  {% comment %} <th>Operating system</th> {% endcomment %}
+					  <th>Maintenance Title</th>
+					  <th>Maintenance Desc.</th>
+					  <th>Maintenance ID</th>
+					  {% comment %} <th>Request by</th> {% endcomment %}
 					  <th></th>
 					</tr>
-					<tr>
-						<td>
-							<input type='radio' />
-						</td>
-						<td>NAME</td>
-						<td>111111</td>
-						<td>SSS</td>
-						<td>SSS</td>
-						<td>SSSS</td>
-						<td>SSS</td>
-						<td>SSSS</td>
-						<td>SSS</td>
-						<td class='actiondotsout'>
-							<div class='actionbtns2'>
-								<img src={% static 'familymaintain/img/actiondots.png' %} />
-							</div>
-							<div class='memberaction2'>
-								<div class='memberactioninner'>
-									<img src={% static 'familyinv/img/eye.png' %} />
-									<p>View Details</p>
-								</div>
-								<div class='memberactioninner'>
-									<img src={% static 'familyinv/img/edit.png' %} />
-									<p>Edit Member Details</p>
-								</div>
-								<div class='memberactioninner'>
-									<img src={% static 'familymaintain/img/x.png' %} />
-									<p>Cancel Request</p>
-								</div>
-								<div class='memberactioninner'>
-									<img src={% static 'familymaintain/img/checkgood.png' %} />
-									<p>Approve Request</p>
-								</div>
-							</div>
-						</td>
-					</tr>
-					{% for FamilyMemberReg in allfamilymembers %}
+					{% for AllFamilyMaintainanceReq in AllFamilyMaintainanceReq %}
 					<div class='item'>
 						<tr class='item'>
 							<td><input type='radio' /></td>
-							<td class={{ FamilyMemberReg.memberfullname }}>{{ FamilyMemberReg.memberfullname }}</td>
-							<td>{{ FamilyMemberReg.memberid }}</td>
-							<td class={{ FamilyMemberReg.memberemail }}>{{ FamilyMemberReg.memberemail }}</td>
+							<td>{{ AllFamilyMaintainanceReq.maintaindeviceID }}</td>
+							<td >{{ AllFamilyMaintainanceReq.maintainancetitle }}</td>
+							<td >{{ AllFamilyMaintainanceReq.maintainancedescription }}</td>
+							<td >{{ AllFamilyMaintainanceReq.maintainanceID }}</td>
 
-							<td>
+							{% comment %} <td>
 								{% for AllFamilyDevices in AllFamilyDevices %}
-								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
+								{% if AllFamilyDevices.deviceUserID == AllFamilyMaintainanceReq.memberid %}
 								<a href=''>{{ AllFamilyDevices.deviceid }}</a><br/>
 								{% endif %}
 								{% endfor %}
-							</td>
-							
-							<td>
-								{% for AllFamilyDevices in AllFamilyDevices %}
-								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
-								{{ AllFamilyDevices.devicetype }}<br/>
-								{% endif %}
-								{% endfor %}
-							</td>
-							
-							<td>
-								{% for AllFamilyDevices in AllFamilyDevices %}
-								{% if AllFamilyDevices.deviceUserID == FamilyMemberReg.memberid %}
-								<p class="{{ AllFamilyDevices.devicestatus }}">{{ AllFamilyDevices.devicestatus }}<br/></p>
-								{% endif %}
-								{% endfor %}
-							</td>
+							</td> {% endcomment %}
 
-							<td class='actiongensection'>
+							{% comment %} <td class='actiongensection'>
 								<div class='actionbtns'>
 									<img src={% static 'familymembers/img/action.png' %} />
 								</div>
@@ -254,7 +203,7 @@
 										<p>Make Admin</p>
 									</div>
 								</div>
-							</td>
+							</td> {% endcomment %}
 						</tr>
 					</div>
 					{% endfor %}

@@ -134,7 +134,7 @@ if (window.location.href.includes('familysupport')){
 
 let maintenanceIcon = document.querySelector('#maintenanceIcon')
 let maintenanceIcon1 = document.querySelector('#maintenanceIcon1')
-if (window.location.href.includes('familymaintain') || window.location.href.includes('maintenancedetails') || window.location.href.includes('editmaintenancerequest')){
+if (window.location.href.includes('familydevicemaintain') || window.location.href.includes('maintenancedetails') || window.location.href.includes('editmaintenancerequest')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.remove('active')

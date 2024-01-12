@@ -508,9 +508,9 @@ def FamilyInventory(request):
 
 
 def FamilyDeviceMaintenance(request):
-    # FamilyMaintainanceReq
-
-    return render(request, 'familydhmsapp/familymaintain.html')
+    AllFamilyMaintainanceReq = FamilyMaintainanceReq.objects.filter(user=request.user)
+    context = {'AllFamilyMaintainanceReq':AllFamilyMaintainanceReq}
+    return render(request, 'familydhmsapp/familymaintain.html', context)
 
 
 def FamilyAnalytics(request):
@@ -645,7 +645,7 @@ def FamilyDeviceDetails(request, deviceid):
             maintainancetitle = title, maintainancedescription = description, maintainanceID = uniqueMaintenanceID, FamilyUniqueCode = request.user.last_name)
             FamilyMaintainanceReqForm.save()
 
-            messages.success(request, "Maintenance request was created successfully. A support staff will attend to this request shortly")
+            messages.success(request, "Maintenance request was created successfully. A support staff will attend to this shortly.")
             return redirect('FamilyDeviceMaintenance')
 
         except:
