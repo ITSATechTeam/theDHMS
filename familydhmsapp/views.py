@@ -25,6 +25,7 @@ import platform
 os_name = platform.system()
 my_system = platform.uname()
 
+@login_required(login_url='UserLogin')
 def Famnavbar(request):
     return render(request, 'famgeneral.html')
 
@@ -507,20 +508,24 @@ def FamilyInventory(request):
     return render(request, 'familydhmsapp/familyinventory.html', context)
 
 
+@login_required(login_url='UserLogin')
 def FamilyDeviceMaintenance(request):
     AllFamilyMaintainanceReq = FamilyMaintainanceReq.objects.filter(user=request.user)
     context = {'AllFamilyMaintainanceReq':AllFamilyMaintainanceReq}
     return render(request, 'familydhmsapp/familymaintain.html', context)
 
 
+@login_required(login_url='UserLogin')
 def FamilyAnalytics(request):
     return render(request, 'familydhmsapp/familyanalytics.html')
 
 
+@login_required(login_url='UserLogin')
 def FamilySupport(request):
     return render(request, 'familydhmsapp/familysupport.html')
 
 
+@login_required(login_url='UserLogin')
 def FamilySettings(request):
     return render(request, 'familydhmsapp/familysettings.html')
 

@@ -349,7 +349,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',  
     # 
-    'django_python3_ldap.auth.LDAPBackend',
+    # 'django_python3_ldap.auth.LDAPBackend',
 ]
 
 
@@ -368,7 +368,7 @@ AWS_STORAGE_BUCKET_NAME = 'dhmsimages'
 
 AWS_S3_FILE_OVERWRITE = False
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # AWS S3 Configuration ends here
 
 

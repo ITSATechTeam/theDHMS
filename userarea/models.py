@@ -134,6 +134,11 @@ class uploadedDeviceData(models.Model):
     class Meta:
         ordering = ['-edited_at', '-created_at']
 
+    # def save(self):
+    #     # super(Article, self).save()
+    #     if self.mainfile:
+    #         mainfile.save(self.mainfile.path)
+
 
 
 class DeviceCountPerPage(models.Model):    

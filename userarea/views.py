@@ -358,7 +358,7 @@ def DeviceInventory(request):
         deviceip = request.POST['deviceip']
         devicestatus = request.POST['devicestatus']
         staffUserID = request.POST['staffUserID']
-        CompanyUniqueCode = request.POST['CompanyUniqueCode']
+        CompanyUniqueCode = request.user.last_name
         # CompanyUniqueCode = request.POST['CompanyUniqueCode']
         user = request.user
 
@@ -426,7 +426,7 @@ def DeviceInventory(request):
             messages.success(request, 'Device List Updated Failed! User Name Missing Login Again.')
             return redirect('DeviceInventory')
 
-        form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
+        form = uploadedDeviceData.objects.create(user = request.user, username = username, mainfile = filedata)
         obj = uploadedDeviceData.objects.all().first()
 
         with open(obj.mainfile.path, 'r') as f:
@@ -447,10 +447,10 @@ def DeviceInventory(request):
                     weekNumber = dateForWeekNumber.isocalendar().week
                     randomNumberForStaff = random.randint(1000, 99999)
                     StaffUniqueId = 'Staff-' + request.user.username + str(randomNumberForStaff)
-                    # ('Samsung·', 3501)
+                    # ('Samsung，', 3501)
                     uniqueId = 'Device-' + get_random_string(length=5)
                     # DeviceBrandProper = row[14] + '_' + str(randomNumber)
-                    # DeviceBrandProper = str(row[14] '·' get_random_string(length=5))
+                    # DeviceBrandProper = str(row[14] '，' get_random_string(length=5))
                     # print(DeviceBrandProper)
                     # print(len(row))
                     # if row[21] is not None and row[21] != '':
@@ -737,7 +737,7 @@ def ViewDeviceDetails(request, name):
         MaintainRequesterEmailAddress = request.POST['MaintainRequesterEmailAddress']
         MaintainDeviceUserDepartment = request.POST['MaintainDeviceUserDepartment']
         MaintainRequester = request.POST['MaintainRequester']
-        CompanyUniqueCode = request.POST['CompanyUniqueCode']
+        CompanyUniqueCode = request.user.last_name
         # currentMonth = request.POST['currentMonthName']
         MaintainRequestID = 'maintain' + '_' + str(randomNumber)
 
@@ -762,7 +762,7 @@ def ViewDeviceDetails(request, name):
         # check if any request is already filed for this device
         
 
-        form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = CompanyUniqueCode, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
+        form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = request.user.last_name, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
         MaintainDeviceIP = MaintainDeviceIP, MaintainType = MaintainType, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainDeviceType = MaintainDeviceType, MaintainDeviceUserID = MaintainDeviceUserID,
         MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
         currentMonth = month1, MaintainRequester = MaintainRequester, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
@@ -889,7 +889,7 @@ def StaffMembers(request):
         # staffADFormMain = StaffADForm(request.POST, request.FILES)
         # if staffADFormMain.is_valid():
         staff_csv_file = request.FILES.get('staff_csv_file', False)
-        CompanyUniqueCode = request.POST['CompanyUniqueCode']
+        CompanyUniqueCode = request.user.last_name
         username = request.POST['staffaduploader']
 
         if not request.FILES.get('staff_csv_file'):
@@ -908,7 +908,7 @@ def StaffMembers(request):
             messages.error(request, 'You uploaded the wrong File Format. Please use a CSV file instead.')
             return redirect('StaffMembers')
         
-        StaffADListForm = StaffADList(staff_csv_file = staff_csv_file, CompanyUniqueCode = CompanyUniqueCode, user = request.user)
+        StaffADListForm = StaffADList(staff_csv_file = staff_csv_file, CompanyUniqueCode = request.user.last_name, user = request.user)
 
         try:
             StaffADListForm.save()
@@ -976,7 +976,7 @@ def StaffDetails(request, id):
         deviceip = request.POST['deviceip']
         devicestatus = request.POST['devicestatus']
         staffUserID = allStaff.staffID
-        CompanyUniqueCode = request.POST['CompanyUniqueCode']
+        CompanyUniqueCode = request.user.last_name
         user = request.user
 
         if not request.POST['deviceusedepartment']:
@@ -1118,8 +1118,7 @@ def Dashboard(request):
             messages.success(request, 'Device List Updated Failed! User Name Missing Login Again.')
             return redirect('Dashboard')
 
-        form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
-        form.save()
+        form = uploadedDeviceData.objects.create(user = request.user, username = username, mainfile = filedata)
         randomNumber = random.randint(100, 9999)
         obj = uploadedDeviceData.objects.all().first()
 
@@ -1604,8 +1603,7 @@ def ScanNetwork(request):
             messages.success(request, 'Device List Updated Failed! User Name Missing Login Again.')
             return redirect('ScanNetwork')
 
-        form = uploadedDeviceData.objects.create(username = username, mainfile = filedata)
-        form.save()
+        form = uploadedDeviceData.objects.create(user = request.user, username = username, mainfile = filedata)
         obj = uploadedDeviceData.objects.all().first()
         randomNumber = random.randint(100, 9999)
 
