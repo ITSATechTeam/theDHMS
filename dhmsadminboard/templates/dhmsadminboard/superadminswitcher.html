@@ -1,0 +1,61 @@
+<!-- @format -->
+{% comment %} {% include 'generalonboard.html' %}  {% endcomment %}
+{% load static %} 
+{% load pwa %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'superadmin/css/switcherstyle.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Admin Switcher | ITSA Inventory System</title>
+        {% progressive_web_app_meta %}
+	</head>
+	<body>
+		<main>
+            <div>
+                <div>
+                    <img src={% static 'generalonboard/img/itsalogopng.png' %} /><br/><br/>
+                    <h5><strong>Select a product would you like to access?</strong></h5>
+                </div><br/><br/>
+
+                <div class="switchermain">
+                    <div class="switchermainin">
+                        <div>
+                            <img src={% static 'superadmin/img/orgdhmsside.png' %} />
+                            <div>
+                                <p><strong>DHMS</strong></p>
+                                <p>Manage and monitor all organization on DHMS</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button>Access DHMS</button>
+                        </div>
+                    </div>
+                    <div class="switchermainin">
+                        <div>
+                            <img src={% static 'superadmin/img/familydhmsside.png' %} />
+                            <div>
+                                <p><strong>Family DHMS</strong></p>
+                                <p>Manage and monitor all families onboarded on family DHMS</p>
+                            </div>
+                        </div>
+                        <div>
+                            <button>Access Family DHMS</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        <!-- <script src={% static 'login/js/main.js' %}></script> -->
+    </body>
+</html>
+
+{% endblock content %}

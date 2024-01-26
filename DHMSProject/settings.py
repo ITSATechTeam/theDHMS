@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,7 +51,7 @@ PWA_APP_LANG = 'en-US'
 
 # PWA SETTNGS ENDS HERE
 
-# AZURE AD ACTIVATION CODE STARTS HERE\
+# AZURE AD ACTIVATION CODE STARTS HERE
 from ms_identity_web.configuration import AADConfig
 from ms_identity_web import IdentityWebPython
 
@@ -201,13 +201,16 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django_auto_logout.middleware.auto_logout',
     # 
-    'django_user_agents.middleware.UserAgentMiddleware'
+    'django_user_agents.middleware.UserAgentMiddleware',
+    # 
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 
-MIDDLEWARE.append('ms_identity_web.django.middleware.MsalMiddleware')
+
 AAD_CONFIG = AADConfig.parse_json(file_path='aad.config.json')
 MS_IDENTITY_WEB = IdentityWebPython(AAD_CONFIG)
+MIDDLEWARE.append('ms_identity_web.django.middleware.MsalMiddleware')
 ERROR_TEMPLATE = 'auth/{}.html' 
 
 # SECURE_CROSS_ORIGIN_OPENER_POLICY = None
@@ -249,8 +252,9 @@ LOGIN_URL='/useronboard/login/'
 # LOGOUT_REDIRECT_URL = '/'
 # LOGIN_URL='/'
 
-WSGI_APPLICATION = 'DHMSProject.wsgi.application'
 
+# WSGI_APPLICATION = 'DHMSProject.wsgi.application'
+# WSGI_APPLICATION = 'wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

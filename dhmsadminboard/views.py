@@ -16,3 +16,10 @@ import json
 
 def SuperAdminAccess(request):
     return render(request, 'dhmsadminboard/superadminlogin.html')
+
+
+
+def SuperAdminSwitcher(request):
+    return render(request, 'dhmsadminboard/superadminswitcher.html')
+
+
