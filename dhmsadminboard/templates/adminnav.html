@@ -1,0 +1,249 @@
+{% load static %} 
+{% block content %}
+<body>
+    <nav>
+        <div class='desktoplogo'>
+            <img src={% static 'general/img/itsalogopng1.png' %} />
+        </div>
+        <div class='navBtnSelect'>
+            <select>
+                <option>                    
+                    <p>Org. DHMS</p>
+                </option>
+                <option>
+                    <p>Family DHMS</p>
+                </option>
+            </select>
+        </div>
+
+        <div class='responsivesection'>
+            <div class='responsivesection1'>
+                <img src={% static 'general/img/itsalogopng1.png' %} />            
+                <div class='hamburgerMain'>
+                    <a class="hamburger" href="#"><span></span></a>
+                </div>
+            </div>
+            <div class='responsivesection2'>
+                <div class='notifyout' >
+                    <img class='notify' src={% static 'general/img/notify.png' %} />
+                    <div class='NewNotifyCount2'></div>
+                </div>
+                <div class='notifysectioninner2'>
+                    {% if allSignUps.user == request.user %}
+                    <h4>{{ allSignUps.companyname }}</h4>
+                    {% else %}
+                    {{request.user}}
+                    {% endif %}
+                    <div class='profileimgsectiontext2'>
+                        <h1></h1>                        
+                        {% if allSignUps.user == request.user %}
+                        <p class='requestUser'>{{ allSignUps.companyname }}</p>
+                        {% else %}
+                        <p class='requestUser'>{{ request.user }}</p>
+                        {% endif %}
+                    </div>
+                    <img src={% static 'general/img/arrow-down.png' %} />
+                </div>
+            </div>
+        </div>
+
+        <div class='search'>
+            <form method='GET' action="{% url 'Searchresult' %}">
+                <input type='text' name='q' placeholder='Search Devices' />
+            </form>
+            <img class='searchIcon' src={% static 'general/img/searchicon.png' %} />
+        </div>
+        <div class='notifysection'>
+            <div class='notifyout' >
+                <img class='notify' src={% static 'general/img/notify.png' %} />
+                <div class='NewNotifyCount'></div>
+                {% comment %} <img class='notifyactive' src={% static 'general/img/notify-active.png' %} /> {% endcomment %}
+            </div>
+
+            {% comment %} NOTIFICATION TAB STARTS HERE {% endcomment %}
+            <div class='allNotificationTabElements'>
+                <div class='notifySectionPopupEdge'></div>
+                <div class='notifySectionPopuPOut'>
+                    <div class='notifySectionPopuP'>
+                        <div class='notifySectionPopuPInner'>
+                            <h3>Notification</h3>
+                            <div>
+                                <select>
+                                    <option>All</option>
+                                    <option>Unread</option>
+                                    <option>Read</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <img src={% static 'general/img/notification.png' %} />
+                        </div>
+                    </div>
+                    {% for AllMaintenanceRequests in AllMaintenanceRequests %}
+                    <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ >
+                        <div class='noticationSectionProper'>
+                            <div class='noticationSectionProperIn'>
+                                <h3>
+                                    {{AllMaintenanceRequests.MaintainRequester}} Just made a maintenance request with maintenance ID <a href= "/member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/" > <span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
+                                </h3>
+                                <p>{{AllMaintenanceRequests.created_at}}</p>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% comment %} NOTIFICATION TAB ENDS HERE {% endcomment %}
+            <div class='notifysectioninner'>                
+                <div class='profileimgsectiontext'>
+                    <h1></h1>
+                    
+                    {% if allSignUps.user == request.user %}
+                    <p class='requestUser'>{{ allSignUps.companyname }}</p>
+                    {% else %}
+                    <p class='requestUser'>{{ request.user }}</p>
+                    {% endif %}
+                </div>
+                <img src={% static 'general/img/arrow-down.png' %} />
+            </div>
+        </div>
+
+
+    </nav>
+    {% comment %} SIDE BAR STARTS HERE {% endcomment %}
+    <div class='sidebarsection'>
+        <a href={% url 'SuperAdminDashboard' %}>
+            <div class='sidebar dashboard'>
+                {% comment %} <img src={% static 'dashboard/img/dashboard.png' %} /> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path id='dashboardIcon' d="M15.8333 4.16667V5.83333H12.5V4.16667H15.8333ZM7.5 4.16667V9.16667H4.16667V4.16667H7.5ZM15.8333 10.8333V15.8333H12.5V10.8333H15.8333ZM7.5 14.1667V15.8333H4.16667V14.1667H7.5ZM17.5 2.5H10.8333V7.5H17.5V2.5ZM9.16667 2.5H2.5V10.8333H9.16667V2.5ZM17.5 9.16667H10.8333V17.5H17.5V9.16667ZM9.16667 12.5H2.5V17.5H9.16667V12.5Z" fill="#4F4F4F"/>
+                  </svg>
+                  {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path id='dashboardIconWhite' d="M15.8333 4.16667V5.83333H12.5V4.16667H15.8333ZM7.5 4.16667V9.16667H4.16667V4.16667H7.5ZM15.8333 10.8333V15.8333H12.5V10.8333H15.8333ZM7.5 14.1667V15.8333H4.16667V14.1667H7.5ZM17.5 2.5H10.8333V7.5H17.5V2.5ZM9.16667 2.5H2.5V10.8333H9.16667V2.5ZM17.5 9.16667H10.8333V17.5H17.5V9.16667ZM9.16667 12.5H2.5V17.5H9.16667V12.5Z" fill="#4F4F4F"/>
+                    </svg> {% endcomment %}
+                <p>Dashboard</p>
+            </div>
+        </a>
+        <a href={% url 'AllDevices' %}>
+            <div class='sidebar deviceinventory '>
+                {% comment %} <img src={% static 'general/img/device.png' %} /> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path id='deviceInventoryIcon' d="M16.6665 1.66699H3.33317C2.4165 1.66699 1.6665 2.41699 1.6665 3.33366V16.667C1.6665 17.5837 2.4165 18.3337 3.33317 18.3337H16.6665C17.5832 18.3337 18.3332 17.5837 18.3332 16.667V3.33366C18.3332 2.41699 17.5832 1.66699 16.6665 1.66699ZM16.6665 16.667H3.33317V3.33366H16.6665V16.667ZM14.9998 5.00033H10.8332C9.9165 5.00033 9.1665 5.75033 9.1665 6.66699V8.56699C8.6665 8.85866 8.33317 9.38366 8.33317 10.0003C8.33317 10.917 9.08317 11.667 9.99984 11.667C10.9165 11.667 11.6665 10.917 11.6665 10.0003C11.6665 9.38366 11.3332 8.85033 10.8332 8.56699V6.66699H13.3332V13.3337H6.6665V6.66699H8.33317V5.00033H4.99984V15.0003H14.9998V5.00033Z" fill="#4F4F4F"/>
+                </svg>
+                <p>Devices</p>
+            </div>
+        </a>
+        <a href={% url 'Organizations' %}>
+            <div class='sidebar staffmembers'>
+                {% comment %} <img src={% static 'general/img/userimg.png' %} /> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path id='staffMemberIcon' d="M16.6668 17.5V15.8333C16.6668 14.9493 16.3156 14.1014 15.6905 13.4763C15.0654 12.8512 14.2176 12.5 13.3335 12.5H6.66683C5.78277 12.5 4.93493 12.8512 4.30981 13.4763C3.68469 14.1014 3.3335 14.9493 3.3335 15.8333V17.5" />
+                    <path id='staffMemberIcon2' d="M9.99984 9.16667C11.8408 9.16667 13.3332 7.67428 13.3332 5.83333C13.3332 3.99238 11.8408 2.5 9.99984 2.5C8.15889 2.5 6.6665 3.99238 6.6665 5.83333C6.6665 7.67428 8.15889 9.16667 9.99984 9.16667Z" />
+                  </svg>
+                <p>Organization</p>
+            </div>
+        </a>
+        <a href={% url 'ITPartners' %}>
+            <div class='sidebar subadmin'>
+                {% comment %} <img src={% static 'general/img/subadmin.png' %} /> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="15" viewBox="0 0 18 15" fill="none">
+                    <path id='subadminIcon' d="M7.3333 6.99992C6.41663 6.99992 5.63191 6.67353 4.97913 6.02075C4.32635 5.36797 3.99996 4.58325 3.99996 3.66659C3.99996 2.74992 4.32635 1.9652 4.97913 1.31242C5.63191 0.659641 6.41663 0.333252 7.3333 0.333252C8.24996 0.333252 9.03468 0.659641 9.68746 1.31242C10.3402 1.9652 10.6666 2.74992 10.6666 3.66659C10.6666 4.58325 10.3402 5.36797 9.68746 6.02075C9.03468 6.67353 8.24996 6.99992 7.3333 6.99992ZM1.49996 13.6666C1.26385 13.6666 1.0658 13.5866 0.905795 13.4266C0.745795 13.2666 0.666073 13.0688 0.666629 12.8333V11.3333C0.666629 10.8749 0.784684 10.4444 1.0208 10.0416C1.25691 9.63881 1.5833 9.33325 1.99996 9.12492C2.7083 8.76381 3.50691 8.45825 4.3958 8.20825C5.28468 7.95825 6.26385 7.83325 7.3333 7.83325H7.62496C7.7083 7.83325 7.79163 7.84714 7.87496 7.87492C7.76385 8.12492 7.66996 8.38547 7.5933 8.65658C7.51663 8.9277 7.45774 9.20881 7.41663 9.49992H7.3333C6.34718 9.49992 5.46191 9.62492 4.67746 9.87492C3.89302 10.1249 3.25052 10.3749 2.74996 10.6249C2.62496 10.6944 2.52413 10.7916 2.44746 10.9166C2.3708 11.0416 2.33274 11.1805 2.3333 11.3333V11.9999H7.5833C7.66663 12.2916 7.77774 12.5799 7.91663 12.8649C8.05552 13.1499 8.2083 13.4171 8.37496 13.6666H1.49996ZM7.3333 5.33325C7.79163 5.33325 8.18413 5.16992 8.5108 4.84325C8.83746 4.51658 9.00052 4.12436 8.99996 3.66659C8.99996 3.20825 8.83663 2.81575 8.50996 2.48909C8.1833 2.16242 7.79107 1.99936 7.3333 1.99992C6.87496 1.99992 6.48246 2.16325 6.1558 2.48992C5.82913 2.81659 5.66607 3.20881 5.66663 3.66659C5.66663 4.12492 5.82996 4.51742 6.15663 4.84409C6.4833 5.17075 6.87552 5.33381 7.3333 5.33325ZM13.1666 11.9999C13.625 11.9999 14.0175 11.8366 14.3441 11.5099C14.6708 11.1833 14.8339 10.791 14.8333 10.3333C14.8333 9.87492 14.67 9.48242 14.3433 9.15575C14.0166 8.82909 13.6244 8.66603 13.1666 8.66658C12.7083 8.66658 12.3158 8.82992 11.9891 9.15659C11.6625 9.48325 11.4994 9.87547 11.5 10.3333C11.5 10.7916 11.6633 11.1841 11.99 11.5108C12.3166 11.8374 12.7089 12.0005 13.1666 11.9999ZM12.0833 13.2499C11.9166 13.1805 11.7602 13.1074 11.6141 13.0308C11.468 12.9541 11.3189 12.8605 11.1666 12.7499L10.2708 13.0208C10.1736 13.0485 10.0833 13.0449 9.99996 13.0099C9.91663 12.9749 9.84718 12.916 9.79163 12.8333L9.29163 11.9999C9.23607 11.9166 9.21885 11.8263 9.23996 11.7291C9.26107 11.6319 9.31302 11.5485 9.3958 11.4791L10.0833 10.8749C10.0555 10.6805 10.0416 10.4999 10.0416 10.3333C10.0416 10.1666 10.0555 9.98603 10.0833 9.79158L9.3958 9.18742C9.31246 9.11797 9.26052 9.03464 9.23996 8.93742C9.21941 8.8402 9.23663 8.74992 9.29163 8.66658L9.79163 7.83325C9.84718 7.74992 9.91663 7.69103 9.99996 7.65659C10.0833 7.62214 10.1736 7.61853 10.2708 7.64575L11.1666 7.91659C11.3194 7.80547 11.4689 7.71186 11.615 7.63575C11.7611 7.55964 11.9172 7.48659 12.0833 7.41658L12.2708 6.49992C12.2986 6.4027 12.3472 6.3227 12.4166 6.25992C12.4861 6.19714 12.5694 6.16603 12.6666 6.16658H13.6666C13.7639 6.16658 13.8472 6.19797 13.9166 6.26075C13.9861 6.32353 14.0347 6.40325 14.0625 6.49992L14.25 7.41658C14.4166 7.48603 14.573 7.56242 14.7191 7.64575C14.8652 7.72908 15.0144 7.83325 15.1666 7.95825L16.0416 7.64575C16.1389 7.60408 16.2327 7.60408 16.3233 7.64575C16.4139 7.68742 16.4866 7.74992 16.5416 7.83325L17.0416 8.70825C17.0972 8.79158 17.118 8.88186 17.1041 8.97908C17.0902 9.07631 17.0416 9.15964 16.9583 9.22908L16.25 9.83325C16.2777 9.99992 16.2916 10.1735 16.2916 10.3541C16.2916 10.5346 16.2777 10.7083 16.25 10.8749L16.9375 11.4791C17.0208 11.5485 17.073 11.6319 17.0941 11.7291C17.1152 11.8263 17.0977 11.9166 17.0416 11.9999L16.5416 12.8333C16.4861 12.9166 16.4166 12.9758 16.3333 13.0108C16.25 13.0458 16.1597 13.0491 16.0625 13.0208L15.1666 12.7499C15.0139 12.861 14.8647 12.9549 14.7191 13.0316C14.5736 13.1083 14.4172 13.181 14.25 13.2499L14.0625 14.1666C14.0347 14.2638 13.9861 14.3438 13.9166 14.4066C13.8472 14.4694 13.7639 14.5005 13.6666 14.4999H12.6666C12.5694 14.4999 12.4861 14.4688 12.4166 14.4066C12.3472 14.3444 12.2986 14.2644 12.2708 14.1666L12.0833 13.2499Z" fill="#4F4F4F"/>
+                </svg>
+                <p>Technical Partners</p>
+            </div>
+        </a>
+        <a href={% url 'SuperAdminReports' %}>
+            <div class='sidebar reports'>
+                {% comment %} <img src={% static 'general/img/reports.png' %} /> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path id='reportIcon' d="M3.33333 19.1663C3.11232 19.1663 2.90036 19.0785 2.74408 18.9223C2.5878 18.766 2.5 18.554 2.5 18.333V15.833C2.5 15.612 2.5878 15.4 2.74408 15.2438C2.90036 15.0875 3.11232 14.9997 3.33333 14.9997C3.55435 14.9997 3.76631 15.0875 3.92259 15.2438C4.07887 15.4 4.16667 15.612 4.16667 15.833V18.333C4.16667 18.554 4.07887 18.766 3.92259 18.9223C3.76631 19.0785 3.55435 19.1663 3.33333 19.1663ZM10.8333 18.333V12.4997C10.8333 12.2787 10.7455 12.0667 10.5893 11.9104C10.433 11.7541 10.221 11.6663 10 11.6663C9.77899 11.6663 9.56702 11.7541 9.41074 11.9104C9.25446 12.0667 9.16667 12.2787 9.16667 12.4997V18.333C9.16667 18.554 9.25446 18.766 9.41074 18.9223C9.56702 19.0785 9.77899 19.1663 10 19.1663C10.221 19.1663 10.433 19.0785 10.5893 18.9223C10.7455 18.766 10.8333 18.554 10.8333 18.333ZM16.6667 9.16634C16.4457 9.16634 16.2337 9.25414 16.0774 9.41042C15.9211 9.5667 15.8333 9.77866 15.8333 9.99967V18.333C15.8333 18.554 15.9211 18.766 16.0774 18.9223C16.2337 19.0785 16.4457 19.1663 16.6667 19.1663C16.8877 19.1663 17.0996 19.0785 17.2559 18.9223C17.4122 18.766 17.5 18.554 17.5 18.333V9.99967C17.5 9.77866 17.4122 9.5667 17.2559 9.41042C17.0996 9.25414 16.8877 9.16634 16.6667 9.16634ZM16.985 0.897174C16.8842 0.854928 16.776 0.833118 16.6667 0.833008H13.3333C13.1123 0.833008 12.9004 0.920805 12.7441 1.07709C12.5878 1.23337 12.5 1.44533 12.5 1.66634C12.5 1.88735 12.5878 2.09932 12.7441 2.2556C12.9004 2.41188 13.1123 2.49967 13.3333 2.49967H14.655L10 7.15467L7.25583 4.41051C7.09956 4.25428 6.88764 4.16652 6.66667 4.16652C6.4457 4.16652 6.23377 4.25428 6.0775 4.41051L2.74417 7.74384C2.59237 7.90101 2.50837 8.11151 2.51027 8.33001C2.51217 8.54851 2.59981 8.75752 2.75432 8.91202C2.90882 9.06653 3.11783 9.15417 3.33633 9.15607C3.55483 9.15797 3.76533 9.07397 3.9225 8.92217L6.66667 6.17801L9.41083 8.92217C9.56711 9.0784 9.77903 9.16616 10 9.16616C10.221 9.16616 10.4329 9.0784 10.5892 8.92217L15.8333 3.67801V4.99967C15.8333 5.22069 15.9211 5.43265 16.0774 5.58893C16.2337 5.74521 16.4457 5.83301 16.6667 5.83301C16.8877 5.83301 17.0996 5.74521 17.2559 5.58893C17.4122 5.43265 17.5 5.22069 17.5 4.99967V1.66634C17.4998 1.50158 17.4508 1.34058 17.3591 1.20368C17.2675 1.06677 17.1373 0.960112 16.985 0.897174Z" fill="#4F4F4F"/>
+                  </svg>
+                <p>Reports</p>
+            </div>
+        </a>
+        <a href={% url 'AdminMaintenance' %}>
+            <div class='sidebar support'>
+                {% comment %} <img src={% static 'general/img/help.png' %} /> {% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path id='supportIcon' d="M4.16667 4.16634H5.83333V4.99967C5.83333 5.91634 6.58333 6.66634 7.5 6.66634H12.5C13.4167 6.66634 14.1667 5.91634 14.1667 4.99967V4.16634H15.8333V8.33301H17.5V4.16634C17.5 3.24967 16.75 2.49967 15.8333 2.49967H12.35C12 1.53301 11.0833 0.833008 10 0.833008C8.91667 0.833008 8 1.53301 7.65 2.49967H4.16667C3.25 2.49967 2.5 3.24967 2.5 4.16634V15.833C2.5 16.7497 3.25 17.4997 4.16667 17.4997H9.16667V15.833H4.16667V4.16634ZM10 2.49967C10.4583 2.49967 10.8333 2.87467 10.8333 3.33301C10.8333 3.79134 10.4583 4.16634 10 4.16634C9.54167 4.16634 9.16667 3.79134 9.16667 3.33301C9.16667 2.87467 9.54167 2.49967 10 2.49967Z" fill="#4F4F4F"/>
+                    <path id='supportIcon1' d="M18.1252 10.2084C17.7836 9.86673 17.2169 9.86673 16.8752 10.2084L12.9252 14.1667L11.0419 12.2917C10.7002 11.9501 10.1419 11.9501 9.79189 12.2917C9.45023 12.6334 9.45023 13.2001 9.79189 13.5417L12.3336 16.0751C12.6586 16.4001 13.1836 16.4001 13.5086 16.0751L18.1169 11.4584C18.4669 11.1167 18.4669 10.5501 18.1252 10.2084Z" fill="#4F4F4F"/>
+                  </svg>
+                <p>Maintenance</p>
+            </div>
+        </a>
+        <a href={% url 'SuperAdminSettings' %}>
+            <div class='sidebar maintain'>
+                {% comment %} <img src={% static 'general/img/maintainance.png' %} />{% endcomment %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path id='maintenanceIcon' d="M5 8.75H8.75V10H5V8.75ZM5 3.75H12.5V5H5V3.75ZM5 6.25H12.5V7.5H5V6.25ZM5 15H8.75V16.25H5V15ZM18.75 15V13.75H17.4369C17.3563 13.3588 17.2009 12.9868 16.9794 12.6544L17.9106 11.7231L17.0269 10.8394L16.0956 11.7706C15.7632 11.5491 15.3912 11.3937 15 11.3131V10H13.75V11.3131C13.3588 11.3937 12.9868 11.5491 12.6544 11.7706L11.7231 10.8394L10.8394 11.7231L11.7706 12.6544C11.5491 12.9868 11.3937 13.3588 11.3131 13.75H10V15H11.3131C11.3937 15.3912 11.5491 15.7632 11.7706 16.0956L10.8394 17.0269L11.7231 17.9106L12.6544 16.9794C12.9868 17.2009 13.3588 17.3563 13.75 17.4369V18.75H15V17.4369C15.3912 17.3563 15.7632 17.2009 16.0956 16.9794L17.0269 17.9106L17.9106 17.0269L16.9794 16.0956C17.2009 15.7632 17.3563 15.3912 17.4369 15H18.75ZM14.375 16.25C14.0042 16.25 13.6416 16.14 13.3333 15.934C13.025 15.728 12.7846 15.4351 12.6427 15.0925C12.5008 14.7499 12.4637 14.3729 12.536 14.0092C12.6084 13.6455 12.787 13.3114 13.0492 13.0492C13.3114 12.787 13.6455 12.6084 14.0092 12.536C14.3729 12.4637 14.7499 12.5008 15.0925 12.6427C15.4351 12.7846 15.728 13.025 15.934 13.3333C16.14 13.6416 16.25 14.0042 16.25 14.375C16.2495 14.8721 16.0518 15.3488 15.7003 15.7003C15.3488 16.0518 14.8721 16.2495 14.375 16.25Z" fill="#4F4F4F"/>
+                    <path id='maintenanceIcon1' d="M8.75 18.75H3.75C3.41858 18.7497 3.10083 18.6179 2.86648 18.3835C2.63213 18.1492 2.50033 17.8314 2.5 17.5V2.5C2.50033 2.16858 2.63213 1.85083 2.86648 1.61648C3.10083 1.38213 3.41858 1.25033 3.75 1.25H13.75C14.0814 1.25033 14.3992 1.38213 14.6335 1.61648C14.8679 1.85083 14.9997 2.16858 15 2.5V8.75H13.75V2.5H3.75V17.5H8.75V18.75Z" fill="#4F4F4F"/>
+                </svg>
+                <p>Settings</p>
+            </div>
+        </a>
+        
+        
+        <a href={% url 'AdminLogout' %}>
+            <div class='sidebar logout'>
+                <svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                    <path id='logout1' d="M13.8335 14.1663L18.0002 9.99967L13.8335 5.83301" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path id='logout2' d="M18 10H8" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path id='logout3' d="M8 17.5H4.66667C4.22464 17.5 3.80072 17.3244 3.48816 17.0118C3.17559 16.6993 3 16.2754 3 15.8333V4.16667C3 3.72464 3.17559 3.30072 3.48816 2.98816C3.80072 2.67559 4.22464 2.5 4.66667 2.5H8" stroke="#4F4F4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p>Logout</p>
+                {% comment %} {{allSignUps.companyname}} {% endcomment %}
+            </div>
+        </a>
+    </div>
+    {% comment %} SIDE BAR ENDS HERE {% endcomment %}
+
+    
+
+    {% comment %} PROFILE BOX SECTION STARTS HERE {% endcomment %}
+    <div class='profileBox'>
+        <div class='profileBoxintro'>            
+            <div class="navpopupsection">
+                <div class="navpopupimg">
+                    <img src={% static 'general/img/itsalogo.PNG' %} />
+                </div>
+                <div>
+                    <h4>ITSA</h4>
+                    <p>Super admin</p>
+                </div>
+            </div>
+            <div class='closereguser1'>
+                <img src={% static 'dashboard/img/close.png' %} />
+            </div>
+        </div>
+        <hr/>
+        <ul>            
+            {% for allSignUps in allSignUps %}
+            {% if request.user.username == allSignUps.companyname %}
+            <a href= /member/profilepage/{{allSignUps.id}}/ >
+            <li>
+                <img src={% static 'dashboard/img/profile.png' %} />
+                <p>View Profile
+                </li>
+            </a>
+            {% endif %}
+            {% endfor %}
+            <a href ={% url 'password_reset' %} >
+            <li>
+                <img src={% static 'dashboard/img/lock.png' %} />
+                <p>Change Password
+            </li>
+            </a>
+            <hr/>
+            <a href={% url 'AdminLogout' %}>
+                <div class='logout2'>
+                    <li>
+                        <img src={% static 'dashboard/img/logout2.png' %} />
+                        <p>Log out</p>
+                    </li>
+                </div>
+            </a>
+        </ul>
+    </div>
+    {% comment %} PROFILE BOX SECTION ENDS HERE {% endcomment %}
+</body>
+{% endblock content %}
