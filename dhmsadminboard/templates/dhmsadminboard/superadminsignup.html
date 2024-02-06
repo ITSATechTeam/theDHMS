@@ -1,0 +1,332 @@
+<!-- @format -->
+{% comment %} {% include 'generalonboard.html' %}  {% endcomment %}
+{% load static %} 
+{% load pwa %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'signup/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'generalonboard/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Super Admin Register | ITSA Inventory System</title>
+        {% progressive_web_app_meta %}
+	</head>
+	<body>
+		<main>
+            <div class='sideimagesection'>
+                <div class='bckgImg'></div>
+                {% comment %} <img src={% static 'signup/img/signup2img.png' %} /> {% endcomment %}
+                <img src={% static 'superadmin/img/loginsideimg.png' %} />
+            </div>
+            <div>
+                <div class='nav'>
+                    <div class='registerform'>
+                        <div class='registerformimg'>
+                            <img src={% static 'generalonboard/img/itsalogopng.png' %} />
+                        </div>
+                        <h4>Create Super Admin Access</h4>
+                        <p>
+                            Add a super admin to grant full access to the super admin section or with the Organizational DHMS or Family DHMS.
+                        </p>
+				
+                        <div id="flash">
+                            {% if messages %} {% for message in messages %}
+                            <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                                <strong style="color: blue">{{ message }}</strong>
+                            </div>
+                            {% endfor %} {% endif %}
+                        </div>
+        
+                        <form method='POST'>
+							{% csrf_token %}
+                            <div class='formsection'>
+                                <p>First Name</p>
+                                <input name='firstname' required type='text' placeholder='Enter First Name' />
+                            </div>
+                            <div class='formsection'>
+                                <p>Last Name</p>
+                                <input name='lastname' required type='text' placeholder='Enter Last Name' />
+                            </div>
+                            <div class='formsection'>
+                                <p>Email Address</p>
+                                <input name='email' required type='email' placeholder='Enter Email Address' />
+                            </div>
+                            <div class='formsection'>
+                                <p>Grant Access Level</p>
+                                <select name="adminaccesslevel">
+                                    <option>--Select an application--</option>
+                                    <option value="ALLAPPS">Full Access (Org. DHMS and Family DHMS)</option>
+                                    <option value="ORGDHMS">Organizational DHMS</option>
+                                    <option value="FAMILYDHMS">Family DHMS</option>
+                                </select>
+                            </div>
+                            <div class='formsection'>
+                                <p>Create Password</p>
+                                <input name='password' required type='password' placeholder='Enter A Password' />
+                            </div>
+                            <div class='formsection'>
+                                <p> Retype Password Above</p>
+                                <input name='rtpassword' required type='password' placeholder='Enter Above Password Again' />
+                            </div>
+
+                            <div class='formsubmitbtn'>
+                                <button type='submit'>Sign Up</button>
+                            </div>
+                        </form>
+                        <p class='logininstead'>Have an admin account already? <a href={% url 'SuperAdminAccess' %}>Sign In</a></p><br/><br/>
+                    </div><br/><br/><br/>
+                </div>
+            </div>
+        </main>
+
+        
+	<script>
+		let AllMonthArray = [];
+		// JANUARY CALCULATION STARTS HERE
+		let janelement =[];
+		let janelementMain2;
+		let janSum;
+		let janDevices = document.querySelectorAll('.JanDevices')
+		janDevices.forEach(element => {
+		janelementMain2 = element.innerText;
+			janelement.push(janelementMain2)
+			janSum = janelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(janelement.length);
+		// JANUARY CALCULATION ENDS HERE
+
+		// FEBRUARY CALCULATION STARTS HERE
+		let febelement =[];
+		let febelementMain2;
+		let febSum;
+		let febDevices = document.querySelectorAll('.FebDevices')
+		febDevices.forEach(element => {
+		febelementMain2 = element.innerText;
+			febelement.push(febelementMain2)
+			febSum = febelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(febelement.length);
+		// FEBRUARY CALCULATION ENDS HERE
+
+		// MARCH CALCULATION STARTS HERE
+		let marelement =[];
+		let marelementMain2;
+		let marSum;
+		let marDevices = document.querySelectorAll('.MarDevices')
+		marDevices.forEach(element => {
+		marelementMain2 = element.innerText;
+			marelement.push(marelementMain2)
+			marSum = marelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(marelement.length);
+		// MARCH CALCULATION ENDS HERE
+
+		// APRIL CALCULATION STARTS HERE
+		let aprelement =[];
+		let aprelementMain2;
+		let aprSum;
+		let aprDevices = document.querySelectorAll('.AprDevices')
+		aprDevices.forEach(element => {
+		aprelementMain2 = element.innerText;
+			aprelement.push(aprelementMain2)
+			aprSum = aprelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(aprelement.length);
+		// APRIL CALCULATION ENDS HERE
+
+		// MAY CALCULATION STARTS HERE
+		let mayelement =[];
+		let mayelementMain2;
+		let maySum;
+		let mayDevices = document.querySelectorAll('.MayDevices')
+		mayDevices.forEach(element => {
+		mayelementMain2 = element.innerText;
+			mayelement.push(mayelementMain2)
+			maySum = mayelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(mayelement.length);
+		// MAY CALCULATION ENDS HERE
+
+
+		// JUNE CALCULATIONS STARTS HERE
+		let juneelement =[];
+		let juneelementMain2;
+		let JuneSum;
+		let JuneDevices = document.querySelectorAll('.JuneDevices')
+		JuneDevices.forEach(element => {
+		juneelementMain2 = element.innerText;
+		juneelement.push(juneelementMain2)
+			JuneSum = juneelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(juneelement.length);
+		// JUNE CALCULATIONS ENDS HERE
+
+		// JULY CALCULATIONS STARTS HERE
+		let julyelement =[];
+		let julyelementMain2;
+		let julySum;
+		let julyDevices = document.querySelectorAll('.JulyDevices')
+		julyDevices.forEach(element => {
+		julyelementMain2 = element.innerText;
+			julyelement.push(julyelementMain2)
+			julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(julyelement.length);
+		// JULY CALCULATIONS ENDS HERE
+
+		// AUGUST CALCULATIONS STARTS HERE
+		let augelement =[];
+		let augelementMain2;
+		let augSum;
+		let augDevices = document.querySelectorAll('.AugDevices')
+		augDevices.forEach(element => {
+		augelementMain2 = element.innerText;
+			augelement.push(augelementMain2)
+			augSum = augelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(augelement.length);
+		// AUGUST CALCULATIONS ENDS HERE
+
+		// SEPTEMBER CALCULATIONS STARTS HERE
+		let septelement =[];
+		let septelementMain2;
+		let septSum;
+		let septDevices = document.querySelectorAll('.septDevices')
+		septDevices.forEach(element => {
+		septelementMain2 = element.innerText;
+			septelement.push(septelementMain2)
+			septSum = septelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(septelement.length);
+		// SEPTEMBER CALCULATIONS ENDS HERE
+
+		// OCTOBER CALCULATIONS STARTS HERE
+		let octtelement =[];
+		let octtelementMain2;
+		let octtSum;
+		let octtDevices = document.querySelectorAll('.OctDevices')
+		octtDevices.forEach(element => {
+		octtelementMain2 = element.innerText;
+			octtelement.push(octtelementMain2)
+			octtSum = octtelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(octtelement.length);
+		// OCTOBER CALCULATIONS ENDS HERE
+
+		// NOVEMBER CALCULATIONS STARTS HERE
+		let novtelement =[];
+		let novtelementMain2;
+		let novtSum;
+		let novtDevices = document.querySelectorAll('.NovDevices')
+		novtDevices.forEach(element => {
+		novtelementMain2 = element.innerText;
+			novtelement.push(novtelementMain2)
+			novtSum = novtelement.map(function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(novtelement.length);
+		console.log(novtelement.length);
+		// NOVEMBER CALCULATIONS ENDS HERE
+
+		// DECEMBER CALCULATIONS STARTS HERE
+		let dectelement =[];
+		let dectelementMain2;
+		let dectSum;
+		let dectDevices = document.querySelectorAll('.DecDevices')
+		dectDevices.forEach(element => {
+		dectelementMain2 = element.innerText;
+			dectelement.push(dectelementMain2)
+			dectSum = dectelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});				
+		});
+		AllMonthArray.push(dectelement.length);
+		AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
+		console.log(AllMonthArray)
+		
+		let resultSum = result.reduce((a, b) => a + b, 0)
+		let amountspenttotal = document.querySelector('.amountspenttotal a')
+		if (amountspenttotal){
+			amountspenttotal.innerText = resultSum.toLocaleString("en-US")
+		}
+	</script>
+
+    </body>
+</html>
+
+{% endblock content %}

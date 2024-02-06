@@ -206,6 +206,15 @@ main{
     /* margin-top: 0px; */
 }
 
+.registerform select{
+    width: 70%;
+    height: 40px;
+    padding: 5px;
+    border: .7px solid rgb(179, 179, 179);
+    border-radius: 5px;
+    /* margin-top: 0px; */
+}
+
 .registerform p{
     font-size: .8rem;
     width: 70%;

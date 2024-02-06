@@ -5,6 +5,7 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .models import *
+from userarea.models import CompanyFaultyDevices
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
@@ -13,12 +14,69 @@ from django.db.models import Q
 import json
 from useronboard.models import SignupForm
 from userarea.models import DeviceRegisterUpload
+from django.utils.crypto import get_random_string
 
 # Create your views here.
 
 
 def AdminNavBar(request):
     return render(request, 'admingen.html')
+
+
+def SuperAdminAccessSignup(request):
+    if request.method == 'POST':
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        email = request.POST['email']
+        adminaccesslevel = request.POST['adminaccesslevel']
+        UniqueID = 'admin' + '-' +  get_random_string(length=10)
+        # address = request.POST['address']
+        password = request.POST['password']
+        rtpassword = request.POST['rtpassword']
+        
+        
+        if not request.POST['adminaccesslevel']:
+            messages.success(request, 'Registration Failed: Select an access level')
+            return redirect('SuperAdminAccessSignup')
+
+        if not request.POST['firstname']:
+            messages.success(request, 'Registration Failed: Enter A First name')
+            return redirect('SuperAdminAccessSignup')
+        
+        if not request.POST['lastname']:
+            messages.success(request, 'Registration Failed: Enter A Last name')
+
+
+        if (password != rtpassword):
+            messages.error(request, 'Passwords Do Not Match!')
+            return redirect('SuperAdminAccessSignup')
+
+        data = SuperAdminsModel.objects.filter(email=email)
+        # UserData = User.objects.filter(username=companyname)
+        UserDataCheckEmail = User.objects.filter(email=email)
+        if data:
+            messages.error(request, 'Sorry, Email Address Is Already Taken.')
+            return redirect('SuperAdminAccessSignup')
+
+        elif UserDataCheckEmail:
+            messages.error(request, 'Sorry, Email Address Is Already Taken, Please Use A Unique Email Address')
+            return redirect('SuperAdminAccessSignup')
+            
+        else:
+            form = SuperAdminsModel(firstname = firstname, lastname = lastname,  email=email, UniqueID = UniqueID, adminaccesslevel=adminaccesslevel, password=password)
+            user = User.objects.create_user(username = email, email=email, password=password, last_name=lastname, first_name=firstname)
+            form.save()
+            # login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            user.save()
+            # activateEmail(request, user, email)
+            # try:
+            #     activateEmail(request, user, email)
+            # except:
+            #     print('Registration mail was not sent successfully')
+            print('Admin registration was successfull. Login to continue')
+            return redirect('SuperAdminAccess')
+    return render(request, 'dhmsadminboard/superadminsignup.html')
+
 
 def SuperAdminAccess(request):
     next = ""
@@ -30,12 +88,19 @@ def SuperAdminAccess(request):
         password = request.POST['superadminpassword']
         try:
             user = User.objects.get(email=superadminmail)
+            useravailable = SuperAdminsModel.objects.get(email=superadminmail)
             if user:
                 userEmail = user.email
                 # print(user.email)
+            if useravailable:
+                pass
+            else:
+                messages.error(request, 'No admin account is tied to this email address.')
+                return redirect('SuperAdminAccess')
+                
         except:
-            messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
-            return redirect('SignUpPage')
+            messages.error(request, 'The email address or password is incorrect. Kindly confirm and try again.')
+            return redirect('SuperAdminAccess')
         
         user = authenticate(request, username=user, password=password)
         # LoginStatus.objects.create(user = user, email = superadminmail, status = 'Online')
@@ -70,6 +135,7 @@ def SuperAdminSwitcher(request):
     return render(request, 'dhmsadminboard/superadminswitcher.html')
 
 
+@login_required(login_url='SuperAdminAccess')
 def SuperAdminDashboard(request):
     AllCompany = SignupForm.objects.all()
     AllCompanyCount = AllCompany.count()
@@ -81,9 +147,48 @@ def SuperAdminDashboard(request):
     AllHealthyDevicesCount = AllHealthyDevices.count()
     AllMaintenanceRequest = DeviceRegisterUpload.objects.filter(devicestatus = 'Working')
     AllMaintenanceRequestCount = AllMaintenanceRequest.count()
+    # 
+    
+    JanDevices = CompanyFaultyDevices.objects.filter(month = 'Jan')
+    FebDevices = CompanyFaultyDevices.objects.filter(month = 'Feb')
+    MarDevices = CompanyFaultyDevices.objects.filter(month = 'Mar')
+    AprDevices = CompanyFaultyDevices.objects.filter(month = 'Apr')
+    MayDevices = CompanyFaultyDevices.objects.filter(month = 'May')
+    JunDevices = CompanyFaultyDevices.objects.filter(month = 'Jun')
+    JulDevices = CompanyFaultyDevices.objects.filter(month = 'Jul')
+    AugDevices = CompanyFaultyDevices.objects.filter(month = 'Aug')
+    SeptDevices = CompanyFaultyDevices.objects.filter(month = 'Sep')
+    OctDevices = CompanyFaultyDevices.objects.filter(month = 'Oct')
+    NovDevices = CompanyFaultyDevices.objects.filter(month = 'Nov')
+    DecDevices = CompanyFaultyDevices.objects.filter(month = 'Dec')
+    
+    # 
+    
+    # 
+    
+    JanHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jan'))
+    FebHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Feb'))
+    MarHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Mar'))
+    AprHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Apr'))
+    MayHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'May'))
+    JunHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jun'))
+    JulHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jul'))
+    AugHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Aug'))
+    SeptHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Sep'))
+    OctHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Oct'))
+    NovHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Nov'))
+    DecHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Dec'))
+    
+    # 
     context = {'AllCompanyCount':AllCompanyCount, 'AllCompany':AllCompany, 'AllDevicesCount':AllDevicesCount, 'AllDevices':AllDevices,
     'AllFaultyDevicesCount':AllFaultyDevicesCount, 'AllHealthyDevicesCount':AllHealthyDevicesCount, 'AllMaintenanceRequestCount':AllMaintenanceRequestCount,
-    
+    'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices,
+    'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
+    'AprDevices':AprDevices, 'MayDevices':MayDevices,'JunDevices':JunDevices, 'JulDevices':JulDevices,
+    # 
+    'JanHealthyDevices':JanHealthyDevices, 'FebHealthyDevices':FebHealthyDevices, 'AugHealthyDevices':AugHealthyDevices, 'SeptHealthyDevices':SeptHealthyDevices,
+    'OctHealthyDevices':OctHealthyDevices, 'NovHealthyDevices':NovHealthyDevices, 'DecHealthyDevices':DecHealthyDevices, 'MarHealthyDevices':MarHealthyDevices, 
+    'AprHealthyDevices':AprHealthyDevices, 'MayHealthyDevices':MayHealthyDevices,'JunHealthyDevices':JunHealthyDevices, 'JulHealthyDevices':JulHealthyDevices,
     }
     return render(request, 'dhmsadminboard/itsadashboard.html', context)
 
@@ -112,10 +217,11 @@ def Organizations(request):
     return render(request, 'dhmsadminboard/organizations.html')
 
 
-
 def AdminLogout(request):
     logout(request)
     messages.success(request, 'Logout Successful')
     return redirect('SuperAdminAccess')
+
+
 
 
