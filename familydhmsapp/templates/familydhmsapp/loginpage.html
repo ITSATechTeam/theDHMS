@@ -70,13 +70,12 @@
                             <div class='googlesignin'>
                                 <div class='googlesigninforms'>
                                     <div>
-                                        <form action="{% provider_login_url "facebook" %}?next=/familydhms/" method='POST'>
+                                        {% comment %} <form action="{% provider_login_url "facebook" %}?next=/familydhms/" method='POST'>
                                             {% csrf_token %}
                                             <button type='submit'>
-                                                {% comment %} <p>Signin with FB</p> {% endcomment %}
                                                 <img src={% static 'onboard/img/fb.png' %} />
                                             </button>
-                                        </form>
+                                        </form> {% endcomment %}
                                     </div>
                                     <div>
                                         <form action="{% provider_login_url 'google' %}?next=/familydhms/" method='POST'>

@@ -1,0 +1,190 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main{
+    padding-top: 100px;
+    padding-left: 240px;
+}
+
+.emptyorgsectionmainimg img{
+    width: 200px;
+    margin-bottom: 20px;
+}
+
+.emptyorgsection{
+    background-color: white;
+    text-align: center;
+    margin-top: 8%;
+    display: none;
+}
+
+.orgsectionintro span{
+    background-color: #2A66B0;
+    padding: 2px 5px;
+    font-weight: bold;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.orgsectionintroinner{
+    display: flex;
+    align-items: center;
+}
+
+
+.orgsectionintroinner span{
+    margin-left: 4px;
+    margin-bottom: 3px;
+}
+
+.orgsectionintro{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
+.addorgbtn button{
+    background-color: #2A66B0;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+
+/* .deviceherecount{
+    font-weight: bold;
+    font-size: 1.3rem;
+    background-color: #2A66B0;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+
+    .main{
+        padding-top: 120px;
+        padding-left: 5px;
+    }
+
+    .orgsectionintro{
+        display: inline;
+        justify-content: space-between;
+        padding-right: 20px;
+        margin-bottom: 50px;
+    }.searchdashboardsection{
+        display: none;
+    }
+
+    .showdeviceuploadpopup button{
+        margin-right: 10px;
+        width: 100px;
+    }
+
+    .maintop{
+        width: 150%;
+        padding-right: 0px;
+    }
+    
+    .maintopbtns button{
+        margin-left: 0px;
+        width: 180px;
+    }
+    
+    .searchsidebtns button{
+        margin-left: 0px;
+        width: 180px;
+        height: 40px;
+    }
+    .scannetworkbtn button p{
+        margin-top: 10px;
+    }
+    .sectionintro{
+        display: flex;
+        justify-content: space-between;
+        width: 100vw;
+        overflow-x: scroll;
+        /* margin-right: 50px; */
+    }/* SUB TOP SECTION STARTS HERE */
+
+    .introbox{
+        margin-right: 10px;
+    }
+
+    .addnewdevicebtn button{
+        margin-right: 10px;
+    }
+    
+    .shadow2{
+        position: fixed;
+        margin-left: 0px;
+        height: 100vh;
+        padding: 20px;
+        width: 100vw;
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 6;
+        transition: 0.5s ease-in-out;
+        display: none;
+    }
+    
+    
+    
+    
+    
+
+}

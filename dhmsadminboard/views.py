@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .models import *
 from userarea.models import CompanyFaultyDevices
+from useronboard.models import SignupForm
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
@@ -13,7 +14,7 @@ from datetime import date
 from django.db.models import Q
 import json
 from useronboard.models import SignupForm
-from userarea.models import DeviceRegisterUpload
+from userarea.models import *
 from django.utils.crypto import get_random_string
 
 # Create your views here.
@@ -214,7 +215,13 @@ def SuperAdminSettings(request):
 
 
 def Organizations(request):
-    return render(request, 'dhmsadminboard/organizations.html')
+    AllOrganizations = SignupForm.objects.all()
+    AllDevices = DeviceRegisterUpload.objects.all()
+    AllStaffMembers = StaffDataSet.objects.all()
+    AllOrganizationsCount = AllOrganizations.count()
+    
+    context = {'AllOrganizations':AllOrganizations, 'AllOrganizationsCount':AllOrganizationsCount, 'AllDevices':AllDevices, 'AllStaffMembers':AllStaffMembers}
+    return render(request, 'dhmsadminboard/organizations.html', context)
 
 
 def AdminLogout(request):
