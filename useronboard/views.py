@@ -41,14 +41,14 @@ def Home(request):
     return render(request, 'useronboard/home.html')
 
 
-    
+
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def SignUpPage(request):
     if request.method == 'POST':
         companyname = request.POST['companyname']
         email = request.POST['companymail']
         phonenumber = request.POST['phonenumber']
-        companyUniqueID = companyname + '-' + email
+        companyUniqueID = (companyname+'-'+email).replace(" ", "")
         # address = request.POST['address']
         password = request.POST['password']
         rtpassword = request.POST['rtpassword']
@@ -123,7 +123,7 @@ def Login(request):
         if user is not None:
             login(request, user)
             try:
-                notifyLoginEmail(request, user, companymail)
+                # notifyLoginEmail(request, user, companymail)
                 pass
             except:
                 pass

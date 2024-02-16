@@ -25,7 +25,8 @@
 		<div class='main'>
 			<div class='maintop'>
 				<div>
-					<h1><strong class='greetuser'></strong> {{request.user}},</h1>
+					<h1><strong class='greetuseradmin'></strong> {{request.user.first_name}},</h1>
+					{% comment %} {{LatestCompanyDate1.created_at}}  {% endcomment %}
 					<h5>Manage and monitor all organizations onboarded on DHMS.</h5>
 				</div><br/>
 				
@@ -111,13 +112,13 @@
 						<div class='graphintrotextInner'>
 							<div>
 								<h4>Devices status trends</h4>
-								<h5>Gain insights on all devices</h5>
+								<h5>Gain insights on faulty & healthy devices</h5>
 							</div>
 	
 							<div class='graphdate'>
 								<img src={% static 'dashboard/img/calendar2.png' %} />
 								<select>
-									<option>2023</option>
+									<option>2024</option>
 								</select>
 							</div>
 						</div>
@@ -138,7 +139,7 @@
 						{% comment %} <h5>Gain insights on faulty devices over time</h5> {% endcomment %}
 						<div class='deviceInvetorySectionIn'>
 							<table>
-								{% if allUploadedDevices %}
+								{% if AllDevices %}
 								<tr>
 								{% comment %} <th>ID</th> {% endcomment %}
 								{% comment %} <th>Brand</th> {% endcomment %}
@@ -150,27 +151,27 @@
 								<th>Department/Unit</th>
 								{% comment %} <th>Date Uploaded</th> {% endcomment %}
 								</tr>
-								{% for allUploadedDevices in allUploadedDevices %}
+								{% for AllDevices in AllDevices %}
 								<tr>
 									{% comment %} <td class='link'>
-										<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.deviceid }}</a></strong>
+										<strong><a href= /member/viewdevicedetails/{{AllDevices.deviceid}}/ >{{ AllDevices.deviceid }}</a></strong>
 									</td> {% endcomment %}
-									{% comment %} <td>{{ allUploadedDevices.devicebrand }}</td> {% endcomment %}
+									{% comment %} <td>{{ AllDevices.devicebrand }}</td> {% endcomment %}
 									<td class='link'>
-										<strong><a href= /member/viewdevicedetails/{{allUploadedDevices.deviceid}}/ >{{ allUploadedDevices.devicetype }}</a></strong>
+										<strong><a href= /member/viewdevicedetails/{{AllDevices.deviceid}}/ >{{ AllDevices.devicetype }}</a></strong>
 									</td>
-									<td>{{ allUploadedDevices.devicemacaddress }}</td>
+									<td>{{ AllDevices.devicemacaddress }}</td>
 									<td class='link enterStaffUser'>
 											{% for AllStaffMembers in AllStaffMembers %}
-											{% if AllStaffMembers.StaffID == allUploadedDevices.staffUserID %}
+											{% if AllStaffMembers.StaffID == AllDevices.staffUserID %}
 											<strong><a href= /member/staffdetails/{{ AllStaffMembers.id }}/  >{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }}</a></strong>
 											{% endif %}
 											{% endfor %}
 									</td>
-									<td>{{ allUploadedDevices.devicedepreciationrate }}</td>
-									<td class={{ allUploadedDevices.devicestatus }}>{{ allUploadedDevices.devicestatus }}</td>
-									<td>{{ allUploadedDevices.deviceusedepartment }}</td>
-									{% comment %} <td>{{ allUploadedDevices.created_at }}</td> {% endcomment %}
+									<td>{{ AllDevices.devicedepreciationrate }}</td>
+									<td class={{ AllDevices.devicestatus }}>{{ AllDevices.devicestatus }}</td>
+									<td>{{ AllDevices.deviceusedepartment }}</td>
+									{% comment %} <td>{{ AllDevices.created_at }}</td> {% endcomment %}
 								</tr>
 								{% endfor %}
 								{% else %}
@@ -180,10 +181,10 @@
 									</div><br/>
 									<h2>No device added</h2><br/>
 									<h4>
-										You have no devices in your inventory. Add new <br/> devices with the Add Device button, or upload a CSV file.
+										No organization has on boarded devices yet.
 									</h4><br/><br/>
 				
-									<div class='heroTopButtons emptydevinvBTNS'>
+									{% comment %} <div class='heroTopButtons emptydevinvBTNS'>
 										<div class='scannetworkbtn2 showdeviceuploadpopup'>
 											<button>
 												<img src={% static 'dashboard/img/scannetwork.png' %} />
@@ -195,7 +196,7 @@
 												<img src={% static 'dashboard/img/add.png' %} />
 												<p>Add New Device</p>
 											</button>
-										</div>
+										</div> {% endcomment %}
 									</div>
 								</div>
 								{% endif %}
@@ -206,19 +207,58 @@
 				</div>
 				<div>
 					<div class='devicetypesummary'>
-						<h4>New organizations</h4><br/>				
-						<div class='deviceschartout'>
-							<div class='deviceschartimgmain'>
-								<div id="container">
-									<canvas id="pie-chart"></canvas>
+						<div class='maintenanceRequestSectioninner'>
+							<h4>New organizations</h4>
+							<h4 class='link'><a href={% url 'Organizations' %}>See All</a></h4>
+						</div><br/>
+						<br/>
+						{% if LatestCompanyDate1.companyname %}
+						<div class='latestcomplist'>
+							<div class='latestcomplistinner'>
+								<div class='dashboardStaffDP'></div>
+								<div class='latestcomplistinner2'>
+									<h4 class='companyname'>{{LatestCompanyDate1.companyname}}</h4>
+									<p>{{LatestCompanyDate1.created_at}}</p>	
 								</div>
 							</div>
+							<h5> {{LatestCompanyDataCount}} Devices</h5>	
 						</div>
-						{% if allUploadedDevices %}
-						<div class='minipiechartlabel'>
-							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/laptops.png' %} />{{AllLaptopsCount}} Laptop</div>
-							<div class='minipiechartlabelinner'> <img src={% static 'dashboard/img/desktops.png' %} /> {{AllDesktopsCount}}  Desktop</div>
+
+						<div class='latestcomplist'>
+							<div class='latestcomplistinner'>
+								<div class='dashboardStaffDP'></div>
+								<div class='latestcomplistinner2'>
+									<h4 class='companyname'>{{SecondLatestDevData1.companyname}}</h4>
+									<p>{{SecondLatestDevData1.created_at}}</p>	
+								</div>
+							</div>
+							<h5> {{SecondLatestDevDataCount}} Devices</h5>	
 						</div>
+						{% if ThirdLatestDevData1.companyname %}
+						<div class='latestcomplist'>
+							<div class='latestcomplistinner'>
+								<div class='dashboardStaffDP'></div>
+								<div class='latestcomplistinner2'>
+									<h4 class='companyname'>{{ThirdLatestDevData1.companyname}}</h4>
+									<p>{{ThirdLatestDevData1.created_at}}</p>	
+								</div>
+							</div>
+							<h5> {{ThirdLatestDevDataCount}} Devices</h5>	
+						</div>
+						{% endif %}
+						
+						{% if FouthLatestDevData1.companyname %}
+						<div class='latestcomplist'>
+							<div class='latestcomplistinner'>
+								<div class='dashboardStaffDP'></div>
+								<div class='latestcomplistinner2'>
+									<h4 class='companyname'>{{FouthLatestDevData1.companyname}}</h4>
+									<p>{{FouthLatestDevData1.created_at}}</p>	
+								</div>
+							</div>
+							<h5> {{FouthLatestDevDataCount}} Devices</h5>	
+						</div>
+						{% endif %}
 						{% else %}
 						<div class='emptymaintenance2'>
 							<h5>Organizations are yet to onboard on DHMS </h5>
@@ -233,14 +273,24 @@
 							<h4 class='link'><a href={% url 'AdminMaintenance' %}>See All</a></h4>
 						</div><br/>
 						<div class='maintenanceRequestSectionmain'>
-							{% if FirstThreeMaintenanceRequest %}
-							{% for FirstThreeMaintenanceRequest in FirstThreeMaintenanceRequest %}
+							{% if LatestMaintenanceReqs %}
+							{% for LatestMaintenanceReqs in LatestMaintenanceReqs %}
 								<div class='staffListSection'>
 									<div class='dashboardStaffDP'></div>
 									<div class='staffnamesectionOut'>
-										<h3 class='staffnamesection maintenanceType'>{{ FirstThreeMaintenanceRequest.MaintainType }}</h3>
-										<h5> By {{ FirstThreeMaintenanceRequest.MaintainRequester }}</a></h5><br/>									
-										<a href= "/member/maintenancedetails/{{FirstThreeMaintenanceRequest.MaintainRequestID}}/ "><h5 class='maintenanceStatus'><div class='maintainancedot'></div><p class='maintenanceStatusMain'>{{ FirstThreeMaintenanceRequest.MaintainStatus }}</p></h5><br/></a>
+										<h4 class='staffnamesection maintenanceType companyname'>{{ LatestMaintenanceReqs.MaintainType }}</h4>
+										<p> By {{ LatestMaintenanceReqs.MaintainRequester }}</a></p><br/>									
+										<a href= "/member/maintenancedetails/{{LatestMaintenanceReqs.MaintainRequestID}}/ ">
+											<h5 class='maintenanceStatus'>
+												<div class='maintainancedot'>
+
+												</div>
+												<p class='maintenanceStatusMain'>
+													{{ LatestMaintenanceReqs.MaintainStatus }}
+												</p>
+											</h5>
+											<br/>
+										</a>
 									</div>
 								</div>
 							{% endfor %}
@@ -252,6 +302,7 @@
 							{% endif %}
 						</div>
 					</div>
+
 					{% comment %} LATEST STAFF MINI LIST STARTS HERE {% endcomment %}
 					<div class='maintenanceRequestSection'>
 						<div class='maintenanceRequestSectioninner'>
@@ -259,18 +310,23 @@
 							<h4 class='link'><a href={% url 'Organizations' %}>See all</a></h4>
 						</div><br/>
 						<div class='maintenanceRequestSectionmain'>
-							{% if FirstStaffMembers %}
-							{% for FirstStaffMembers in FirstStaffMembers %}
+							{% if TopFourStaffMembers %}
+							{% for TopFourStaffMembers in TopFourStaffMembers %}
 							<div class='staffListSection'>
 								<div class='dashboardStaffDP'></div>
 								<div class='staffnamesectionOut'>
-									{% if FirstStaffMembers.staff_lastname %}
-									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }} {{ FirstStaffMembers.staff_lastname }}</h3>
+									{% if TopFourStaffMembers.staff_lastname %}
+									<h3 class='staffnamesection companyname'>{{ TopFourStaffMembers.staff_firstname }} {{ TopFourStaffMembers.staff_lastname }}</h3>
 									{% else %}
-									<h3 class='staffnamesection'>{{ FirstStaffMembers.staff_firstname }}</h3>
+									<h3 class='staffnamesection companyname'>{{ TopFourStaffMembers.staff_firstname }}</h3>
 									{% endif %}
-									<h5 >Staff ID: <a href= /member/staffdetails/{{ FirstStaffMembers.id }}/  >{{ FirstStaffMembers.StaffID }}</a></h5><br/>
-									<h5 class='staffIdSection hideThis'> {{ FirstStaffMembers.StaffID }}</h5><br/>
+									{% comment %} <h5 >Staff ID: <a href= /member/staffdetails/{{ TopFourStaffMembers.id }}/  >{{ TopFourStaffMembers.StaffID }}</a></h5><br/> {% endcomment %}
+									{% for AllCompany in AllCompany %}
+									{% if AllCompany.companyUniqueID == TopFourStaffMembers.CompanyUniqueCode %}
+									<h5 >Company: <a href="/superadmin/organizations/{{ AllCompany.companyUniqueID }}/"  > {{AllCompany.companyname}}</a></h5><br/>
+									{% endif %}
+									{% endfor %}
+									<h5 class='staffIdSection hideThis'> {{ TopFourStaffMembers.StaffID }}</h5><br/>
 								</div>
 							</div>
 							{% endfor %}
@@ -487,13 +543,13 @@
 				{% endfor %}
 			</div>
 			<div>
-				{% for JuneHealthyDevices in JuneHealthyDevices %}
-				<p class='JuneHealthyDevices'>{{ JuneHealthyDevices }}</p>
+				{% for JunHealthyDevices in JunHealthyDevices %}
+				<p class='JunHealthyDevices'>{{ JunHealthyDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
-				{% for JulyHealthyDevices in JulyHealthyDevices %}
-				<p class='JulyHealthyDevices'>{{ JulyHealthyDevices }}</p>
+				{% for JulHealthyDevices in JulHealthyDevices %}
+				<p class='JulHealthyDevices'>{{ JulHealthyDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
@@ -524,7 +580,7 @@
 		</div>
 		{% comment %} AMOUNT OF HEALTHY DEVICES PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
 
-	<script src={% static 'dashboard/js/main.js' %}></script>
+	<script src={% static 'dashboard/js/admindash.js' %}></script>
 	{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
@@ -871,8 +927,8 @@
 		let juneHealthyelement =[];
 		let juneHealthyelementMain2;
 		let JuneHealthySum;
-		let JuneHealthyDevices = document.querySelectorAll('.JuneHealthyDevices')
-		JuneHealthyDevices.forEach(element => {
+		let JunHealthyDevices = document.querySelectorAll('.JunHealthyDevices')
+		JunHealthyDevices.forEach(element => {
 		juneHealthyelementMain2 = element.innerText;
 		juneHealthyelement.push(juneHealthyelementMain2)
 			JuneHealthySum = juneHealthyelement.map( function(elt){ // assure the value can be converted into an integer
@@ -890,8 +946,8 @@
 		let julyHealthyelement =[];
 		let julyHealthyelementMain2;
 		let julyHealthySum;
-		let julyHealthyDevices = document.querySelectorAll('.JulyHealthyDevices')
-		julyHealthyDevices.forEach(element => {
+		let JulHealthyDevices = document.querySelectorAll('.JulHealthyDevices')
+		JulHealthyDevices.forEach(element => {
 		julyHealthyelementMain2 = element.innerText;
 			julyHealthyelement.push(julyHealthyelementMain2)
 			julyHealthySum = julyHealthyelement.map( function(elt){ // assure the value can be converted into an integer
@@ -1027,12 +1083,15 @@
 				   data: AllHealthyMonthArray, 
 				   type: 'line',     
 				   borderColor:"green",                                         
-				  }, { 
-				   label: 'On maintenance', 
-				   data: [15, 43, 68, 28, 15, 5, 27,65], 
-				   type: 'line',     
-				   borderColor:"#F2994A"                                         
 				  }, 
+				  
+				  {% comment %} { 
+					label: 'On maintenance', 
+					data: [15, 43, 68, 28, 15, 5, 27,65], 
+					type: 'line',     
+					borderColor:"#F2994A"                                         
+				   },  {% endcomment %}
+
 				  { 
 				   type:'line', 
 				   data: AllMonthArray, 

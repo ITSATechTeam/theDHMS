@@ -9,6 +9,9 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'adminpages/css/organizations.css' %} />
+		<link rel="stylesheet" href={% static 'adminpages/css/maintenance.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,8 +25,334 @@
 	</head>
 	<div class='shadow1'></div>	
 	<body class='body'>
-        <div class="main"></div>
-	<script src={% static 'dashboard/js/main.js' %}></script>
+        <div class="main">
+			<div class='maintop'>
+				<div>
+					<h1>Maintenance Requests</h1>
+					{% comment %} {{LatestCompanyDate1.created_at}}  {% endcomment %}
+					<h5>Track and monitor maintenance request from all users.</h5>
+				</div><br/>
+				
+				<div id="flash flashmessage">
+					{% if messages %} {% for message in messages %}
+					<div class="alert alert-{{ message.tags}} m-0" role="alert">
+						<strong>{{ message }}</strong>
+						{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+					</div>
+					{% endfor %} {% endif %}
+				</div>
+			</div>
+			{% comment %} ALL DEVICES DETAILS LIST SECTION STARTS HERE {% endcomment %}
+			<div class='introdetailssection'>
+				<div class='introdetailsbar allusers'>
+					<img src={% static 'adminpages/img/maintainblue.png' %} />
+					{% if AllMaintenanceRequestCount  %}
+					<h1>{{ AllMaintenanceRequestCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Maintenance Requests</p>
+				</div>
+				
+				<div class='introdetailsbar healthydevices'>
+					<img src={% static 'adminpages/img/maintaingreen.png' %} />
+					{% if CompletedMaintenanceRequestCount  %}
+					<h1>{{ CompletedMaintenanceRequestCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Completed Requests</p>
+				</div>
+				<div class='introdetailsbar alldevices'>
+					<img src={% static 'adminpages/img/maintaingrey.png' %} />
+					{% if PendingMaintenanceRequestCount  %}
+					<h1>{{ PendingMaintenanceRequestCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Pending Requests</p>
+				</div>
+				<div class='introdetailsbar faultydevices'>
+					<img src={% static 'adminpages/img/maintainred.png' %} />
+					{% if CancelledMaintenanceRequestCount  %}
+					<h1>{{ CancelledMaintenanceRequestCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Cancelled Requests</p>
+				</div>
+				<div class='introdetailsbar onmaintenance'>
+					<img src={% static 'dashboard/img/onmaintenance.png' %} />
+					{% if OngoingMaintenanceRequestCount  %}
+					<h1>{{ OngoingMaintenanceRequestCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Ongoing Requests</p>
+				</div>
+			</div>
+			{% comment %} ALL DEVICES DETAILS LIST SECTION ENDS HERE {% endcomment %}
+
+			
+			<!-- ORGANIZATION AVAILABLE STATE STARTS HERE -->
+			<div>
+				{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
+				<div class='deviceinventorymaintop'>
+					<div class='searchdashboardsection'>
+						<div class='searchdashboard'>
+							<form method='GET' action="{% url 'Searchresult' %}">
+								<input type='text' name='q' placeholder='Search Devices' />
+							</form>
+							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+						</div>
+						
+						<div class='filteroutter'>
+							<div class='filter filtercategory'>
+								<img src={% static 'inventory/img/filter.png' %} />
+								<p>Filter by Category</p>
+							</div>
+						</div>
+						
+						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+						<div class='filterbox filterbox1'>
+							<h2>Filter by</h2>
+							<div class='closefilter'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									
+									<p>Device Category</p>
+									<select name='q'>
+										<option value = 'AllCategory'>All</option>
+										<option value='Desktop'>Desktop</option>
+										<option value='Laptop'>Laptop</option>
+										<option value='Printer'>Printer</option>
+										<option value='Scanner'>Scanner</option>
+										<option value='OtherDevices'>Other Devices</option>
+									</select>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					{% comment %} <div class='searchsidebtns'>
+						<div class='scannetworkbtn'>
+							<a href={% url 'ScanNetwork' %}><button>
+								<img src={% static 'maintenance/img/export.png' %} />
+								<p>Export CSV</p>
+							</button></a>
+						</div>
+					</div> {% endcomment %}
+				</div>
+				{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}					
+				<div>
+					<div class='devinvetable'>
+						<table  id="paginated-list" >
+							<tr>
+							{% comment %} <th class='topCheckBox'>
+								<input type='radio' />
+							</th> {% endcomment %}
+							<th>Date Submitted</th>
+							<th>Requester</th>
+							<th>Device ID</th>
+							<th>Maintenance Type</th>
+							<th>Priority</th>
+							<th>Status</th>
+							<th>Action</th>
+							</tr>
+							{% for AllMaintenanceRequest in AllMaintenanceRequest %}
+							<div class='item'>
+								<tr class='item'>
+									{% comment %} <td class='sectionCheckBox'>
+										<input class='sectionCheckBoxinput' type='radio' value={{ AllMaintenanceRequest.deviceid }} />
+									</td> {% endcomment %}
+									<td>{{ AllMaintenanceRequest.created_at }}</td>
+									<td class='deviceherecountin'>
+										{% for AllCompany in AllCompany %}
+										{% if AllMaintenanceRequest.CompanyUniqueCode == AllCompany.companyUniqueID  %}
+										<div> <strong>{{AllMaintenanceRequest.MaintainRequester}}</strong> of  <a href= "/superadmin/organizations/{{AllCompany.companyUniqueID}}/" >{{AllCompany.companyname}}</a> </div>
+										{% endif %}
+										{% endfor %}
+									</td>
+									<td>{{ AllMaintenanceRequest.MaintainDeviceID }}</td>
+									<td>{{ AllMaintenanceRequest.MaintainType }}</td>
+
+									<td class='staffherecountin'>0</td>
+
+									<td>{{ AllMaintenanceRequest.MaintainStatus }}</td>
+									<td>
+										<div class='actionbtns'>
+											<img src={% static 'adminpages/img/dotsvertical.png' %} />	
+										</div>
+										<div class='actionbtnsmain'>
+											<a href=  "/superadmin/organizations/{{ AllOrganizations.companyUniqueID }}/" ><div class='actionbtnsmainin'>
+												<img src={% static 'adminpages/img/dashboard.png' %} />
+												<p>View Details</p>
+											</div></a>
+											{% comment %} <div class='actionbtnsmainin'>
+												<img src={% static 'adminpages/img/delete.PNG' %}/>
+												<p>Remove Organizations</p>
+											</div> {% endcomment %}
+										</div>
+									</td>
+								</tr>
+							</div>
+							{% endfor %}
+						</table>
+					</div>
+					<div class='pagesdetailsseection'>
+						<div class='perpagecount'>
+							<div>
+								<div class='selectedNumber'>
+									<p>{{ numberOfDevicesPerPage }}</p>
+									<img src={% static 'inventory/img/selectnav.png' %} />
+								</div>
+								<div class='selectPerPageCountBox'>
+									<div class='selectPerPageCountBoxintro'>
+										<h4>Select number of items to display per page</h4>
+										<img src={% static 'inventory/img/close.png' %} />
+									</div>
+									<hr/>
+									<form method='POST'>
+										{% csrf_token %}
+										<div class='numofitemsperpageout'>
+												<select class='numofitemsperpage' name='numofitemsperpage'>
+													<option value='1'>1</option>
+													<option value='2'>2</option>
+													<option value='3'>3</option>
+													<option value='4'>4</option>
+													<option value='5'>5</option>
+													<option value='6'>6</option>
+													<option value='7'>7</option>
+													<option value='8'>8</option>
+													<option value='9'>9</option>
+													<option value='10'>10</option>
+												</select>
+											<button type='submit'>Activate</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div>
+								<p>items per page</p>
+							</div>
+						</div>
+						<div class='perpagecount2'>
+							1-<span>{{ numberOfDevicesPerPage }}</span> items of <i>{{ AllMaintenanceRequestCount }}</i>
+						</div>
+						<div id="pagination-numbers">
+		
+						</div>
+
+						<div class='pages'>
+							<div id="pagination-numbers"></div>
+							{% comment %} <div>Total of <span class='pageNumberCount'>10</span> page(s)</div> {% endcomment %}
+							<div class='navigation'>
+								<img class='navLeft' id='prev-button' src={% static 'inventory/img/left.png' %} />
+								<img id="next-button" src={% static 'inventory/img/right.png' %} />
+							</div>
+						</div>
+					</div>
+					{% comment %} BOTTOM SELECTION OPTIONS DISPLAY STARTS HERE {% endcomment %}
+					<div class='detailsTabOut'>
+						<div class='detailsTab'>
+							<div class='detailsTabCount'>
+								{% comment %} <img class='detailsTabInner' src={% static 'maintenance/img/close.png' %} /> {% endcomment %}
+								<div class='detailsTabCountInnner'>
+									<strong>  </strong>Request(s) Selected
+								</div>
+							</div>
+							<div class='detailsTabOtherOptions'>
+								{% comment %} <a href = /member/maintenancedetails/{{}} > {% endcomment %}
+								<form method='GET'>
+									{% csrf_token %}
+									<div class='idforedit'>
+										<input name='idforeditmain' hidden />
+									</div>
+									<div class='detailsTabInner detailsTabInnerEdit'>
+										<button type='submit'>
+											<img src={% static 'maintenance/img/edit.png' %} />
+											Edit
+										</button>
+									</div>
+								</form>
+								<div class='notSelectionDelete'>
+									<form method='GET'>
+										{% csrf_token %}
+										<div class='deviceToDelete'>
+											<input name='deviceToDelete' hidden />
+										</div>
+										<div class='detailsTabInner'>
+											<button>
+												<img src={% static 'maintenance/img/delete.png' %} />
+												Delete
+											</button>
+										</div>
+									</form>
+								</div>
+
+								{% comment %} GENERAL SELECTION DELETE BUTTON STARTS HERE {% endcomment %}
+								<div class='detailsTabInner generalSelectionDelete'>
+									<a href = /member/alldevicedelete/ >
+										<button>
+											<img src={% static 'maintenance/img/delete.png' %} />
+											Delete
+										</button>
+									</a>
+								</div>
+								{% comment %} GENERAL SELECTION DELETE BUTTON ENDS HERE {% endcomment %}
+								<form method = 'GET'>
+									{% csrf_token %}
+									<div class='viewdetailsdetails'>
+										<input hidden name='viewdetailsdetails' />
+									</div>
+									<div class='detailsTabInner detailsTabInnerViewDetails'>
+										<button type='submit'>
+											<img src={% static 'maintenance/img/details.png' %} />
+											View Details
+										</button>
+									</div>
+								</form>
+								<div class='notSelectionExport'>
+									<form method='GET'>
+										{% csrf_token %}
+										<div class='ExportDataHere'>
+											<input name='dataToExport' hidden />
+										</div>
+											<div class='detailsTabInner'>
+												<img src={% static 'maintenance/img/export2.png' %} />
+												<button type='submit'>Export</button>
+											</div>
+									</form>
+								</div>
+
+								{% comment %} GENRAL SELCTION EXPORT BUTTON STARTS HERE {% endcomment %}
+								<div class='detailsTabInner generalSelectionExport'>
+									<a href = /member/exportdevices/  >
+										<img src={% static 'maintenance/img/export2.png' %} />
+										<button type='submit'>Export</button>
+									</a>
+								</div>
+								{% comment %} GENERAL SELECTION EXPORT BUTTON ENDS HERE {% endcomment %}
+
+								{% comment %} <a href= /member/exportmaintenance/ >
+									<div class='detailsTabInner'>
+										<img src={% static 'maintenance/img/export2.png' %} />
+										Export
+									</div>
+								</a> {% endcomment %}
+							</div>
+						</div>
+					</div>
+					{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
+				</div>
+			</div>
+			<!-- ORGANIZATION AVAILABLE STATE ENDS HERE -->
+
+		</div>
+	{% comment %} <script src={% static 'dashboard/js/main.js' %}></script> {% endcomment %}
+	<script src={% static 'adminpages/js/organization.js' %}></script>
     </body>
 </html>
 {% endblock content %}

@@ -114,7 +114,7 @@ def SuperAdminAccess(request):
             except:
                 pass
             if next == "":
-                return redirect('SuperAdminDashboard')
+                return redirect('SuperAdminSwitcher')
             else:
                 return HttpResponseRedirect(next)
                 
@@ -132,6 +132,7 @@ def SuperAdminAccess(request):
     return render(request, 'dhmsadminboard/superadminlogin.html')
 
 
+@login_required(login_url='SuperAdminAccess')
 def SuperAdminSwitcher(request):
     return render(request, 'dhmsadminboard/superadminswitcher.html')
 
@@ -146,8 +147,45 @@ def SuperAdminDashboard(request):
     AllFaultyDevicesCount = AllFaultyDevices.count()
     AllHealthyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Working')
     AllHealthyDevicesCount = AllHealthyDevices.count()
-    AllMaintenanceRequest = DeviceRegisterUpload.objects.filter(devicestatus = 'Working')
+    print('AllHealthyDevicesCount')
+    # print(AllHealthyDevicesCount)
+    AllMaintenanceRequest = MaintenanceRequest.objects.all()
     AllMaintenanceRequestCount = AllMaintenanceRequest.count()
+    TopFourStaffMembers = StaffDataSet.objects.all()[:4]
+    
+    AllCompanyForData = SignupForm.objects.all()    
+    LatestCompanyData = AllCompanyForData[0:1].values_list('companyUniqueID', flat=True)
+    LatestCompanyDate1 = SignupForm.objects.get(companyUniqueID = LatestCompanyData)
+    LatestCompanyDataCount = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = LatestCompanyData).count()
+    
+    SecondLatestDevData = AllCompanyForData[1:2].values_list('companyUniqueID', flat=True)
+    SecondLatestDevData1 = SignupForm.objects.get(companyUniqueID = SecondLatestDevData)
+    SecondLatestDevDataCount = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = SecondLatestDevData).count()
+    
+    ThirdLatestDevData = AllCompanyForData[2:3].values_list('companyUniqueID', flat=True)
+    if ThirdLatestDevData:
+        ThirdLatestDevData1 = SignupForm.objects.get(companyUniqueID = ThirdLatestDevData)
+        ThirdLatestDevDataCount = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = ThirdLatestDevData).count()
+    else:
+        ThirdLatestDevData1 = 'None Device'
+        ThirdLatestDevDataCount = 0
+    
+    FouthLatestDevData = AllCompanyForData[3:4].values_list('companyUniqueID', flat=True)
+    if FouthLatestDevData:
+        FouthLatestDevData1 = SignupForm.objects.get(companyUniqueID = FouthLatestDevData)
+        FouthLatestDevDataCount = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = FouthLatestDevData).count()
+    else:
+        FouthLatestDevData1 = 'None Device'
+        FouthLatestDevDataCount = 0
+        
+    
+    LatestMaintenanceReqs = MaintenanceRequest.objects.all()[0:4]
+    
+    
+    # FifthLatestDevData = AllCompanyForData[4:5].values_list('companyUniqueID', flat=True)
+    # FifthLatestDevData1 = SignupForm.objects.get(companyUniqueID = FifthLatestDevData)
+    # FifthLatestDevDataCount = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = FifthLatestDevData).count()
+    
     # 
     
     JanDevices = CompanyFaultyDevices.objects.filter(month = 'Jan')
@@ -168,6 +206,7 @@ def SuperAdminDashboard(request):
     # 
     
     JanHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jan'))
+    # print(JanHealthyDevices.count())
     FebHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Feb'))
     MarHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Mar'))
     AprHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Apr'))
@@ -177,8 +216,10 @@ def SuperAdminDashboard(request):
     AugHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Aug'))
     SeptHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Sep'))
     OctHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Oct'))
+    print('Healthy Devices')
     NovHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Nov'))
     DecHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Dec'))
+    print(DecHealthyDevices.count())
     
     # 
     context = {'AllCompanyCount':AllCompanyCount, 'AllCompany':AllCompany, 'AllDevicesCount':AllDevicesCount, 'AllDevices':AllDevices,
@@ -190,16 +231,52 @@ def SuperAdminDashboard(request):
     'JanHealthyDevices':JanHealthyDevices, 'FebHealthyDevices':FebHealthyDevices, 'AugHealthyDevices':AugHealthyDevices, 'SeptHealthyDevices':SeptHealthyDevices,
     'OctHealthyDevices':OctHealthyDevices, 'NovHealthyDevices':NovHealthyDevices, 'DecHealthyDevices':DecHealthyDevices, 'MarHealthyDevices':MarHealthyDevices, 
     'AprHealthyDevices':AprHealthyDevices, 'MayHealthyDevices':MayHealthyDevices,'JunHealthyDevices':JunHealthyDevices, 'JulHealthyDevices':JulHealthyDevices,
+    'LatestCompanyData':LatestCompanyData, 'LatestCompanyDate1':LatestCompanyDate1, 'LatestCompanyDataCount':LatestCompanyDataCount,
+    'SecondLatestDevDataCount':SecondLatestDevDataCount, 'ThirdLatestDevData1':ThirdLatestDevData1, 'ThirdLatestDevDataCount':ThirdLatestDevDataCount,
+    'FouthLatestDevData1':FouthLatestDevData1, 'FouthLatestDevDataCount':FouthLatestDevDataCount, 'LatestMaintenanceReqs':LatestMaintenanceReqs,
+    'FouthLatestDevDataCount':FouthLatestDevDataCount, 'SecondLatestDevData1':SecondLatestDevData1, 'TopFourStaffMembers':TopFourStaffMembers,
     }
     return render(request, 'dhmsadminboard/itsadashboard.html', context)
 
 
 def AllDevices(request):
-    return render(request, 'dhmsadminboard/devices.html')
+    AllDevices = DeviceRegisterUpload.objects.all()
+    AllOrgs = SignupForm.objects.all()
+    AllDevicesCount = AllDevices.count()
+    AllFaultyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Faulty')
+    AllFaultyDevicesCount = AllFaultyDevices.count()
+    AllHealthyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Working')
+    AllHealthyDevicesCount = AllHealthyDevices.count()
+    AllMaintenanceRequest = MaintenanceRequest.objects.all()
+    AllMaintenanceRequestCount = AllMaintenanceRequest.count()
+    AllOrgFaultyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Faulty')
+    AllOrgCriticalDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Critical')
+    AllOrgCriticalDevicesCount =AllOrgCriticalDevices.count()
+    AllOrgFaultyDevicesCount = AllOrgFaultyDevices.count()
+    AllOrgFaultyDevicesCountMain = int(AllOrgFaultyDevicesCount) + int(AllOrgCriticalDevicesCount)
+    context = {'AllDevicesCount':AllDevicesCount, 'AllFaultyDevicesCount':AllFaultyDevicesCount, 'AllHealthyDevicesCount':AllHealthyDevicesCount,
+               'AllMaintenanceRequestCount':AllMaintenanceRequestCount, 'AllOrgFaultyDevicesCountMain':AllOrgFaultyDevicesCountMain,
+               'AllDevices':AllDevices, 'AllOrgs':AllOrgs}
+    return render(request, 'dhmsadminboard/devices.html', context)
 
 
 def AdminMaintenance(request):
-    return render(request, 'dhmsadminboard/superadminmaint.html')
+    AllMaintenanceRequest = MaintenanceRequest.objects.all()
+    AllCompany = SignupForm.objects.all()
+    AllMaintenanceRequestCount = AllMaintenanceRequest.count()
+    PendingMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainStatus = 'Pending')
+    PendingMaintenanceRequestCount = PendingMaintenanceRequest.count()
+    CompletedMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainStatus = 'Completed')
+    CompletedMaintenanceRequestCount = CompletedMaintenanceRequest.count()
+    CancelledMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainStatus = 'Cancelled')
+    CancelledMaintenanceRequestCount = CancelledMaintenanceRequest.count()
+    OngoingMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainStatus = 'Ongoing')
+    OngoingMaintenanceRequestCount = OngoingMaintenanceRequest.count()
+    context = {'AllMaintenanceRequest':AllMaintenanceRequest, 'AllMaintenanceRequestCount':AllMaintenanceRequestCount, 'PendingMaintenanceRequestCount':PendingMaintenanceRequestCount,
+               'CompletedMaintenanceRequestCount':CompletedMaintenanceRequestCount, 'CancelledMaintenanceRequestCount':CancelledMaintenanceRequestCount,
+               'OngoingMaintenanceRequestCount':OngoingMaintenanceRequestCount, 'AllCompany':AllCompany
+               }
+    return render(request, 'dhmsadminboard/superadminmaint.html', context)
 
 
 def ITPartners(request):
@@ -214,12 +291,36 @@ def SuperAdminSettings(request):
     return render(request, 'dhmsadminboard/supersettings.html')
 
 
+
+def OrganizationsDetails(request, pk):
+    SelectedOrg = SignupForm.objects.get(companyUniqueID = pk)
+    AllOrgDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = pk)
+    AllOrgDevicesCount = AllOrgDevices.count()
+    AllOrgStaff = StaffDataSet.objects.filter(CompanyUniqueCode = pk)
+    AllOrgStaffCount = AllOrgStaff.count()    
+    AllOrgHealthyDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = pk) & Q(devicestatus = 'Working'))
+    AllOrgHealthyDevicesCount = AllOrgHealthyDevices.count()
+    AllOrgFaultyDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = pk) & Q(devicestatus = 'Faulty'))
+    AllOrgCriticalDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = pk) & Q(devicestatus = 'Critical'))
+    AllOrgCriticalDevicesCount =AllOrgCriticalDevices.count()
+    AllOrgFaultyDevicesCount = AllOrgFaultyDevices.count()
+    AllOrgFaultyDevicesCountMain = int(AllOrgFaultyDevicesCount) + int(AllOrgCriticalDevicesCount)
+    
+    AllOrgMainteDevices = MaintenanceRequest.objects.filter(CompanyUniqueCode = pk)
+    AllOrgMainteDevicesCount =AllOrgMainteDevices.count()
+    
+    context = {'SelectedOrg':SelectedOrg, 'AllOrgDevices':AllOrgDevices, 'AllOrgDevicesCount':AllOrgDevicesCount, 
+            'AllOrgStaffCount':AllOrgStaffCount, 'AllOrgStaff':AllOrgStaff, 'AllOrgHealthyDevicesCount':AllOrgHealthyDevicesCount,
+            'AllOrgFaultyDevicesCountMain':AllOrgFaultyDevicesCountMain, 'AllOrgMainteDevicesCount':AllOrgMainteDevicesCount}
+    return render(request, 'dhmsadminboard/superorgdetails.html', context)
+
+
+
 def Organizations(request):
     AllOrganizations = SignupForm.objects.all()
     AllDevices = DeviceRegisterUpload.objects.all()
     AllStaffMembers = StaffDataSet.objects.all()
-    AllOrganizationsCount = AllOrganizations.count()
-    
+    AllOrganizationsCount = AllOrganizations.count()    
     context = {'AllOrganizations':AllOrganizations, 'AllOrganizationsCount':AllOrganizationsCount, 'AllDevices':AllDevices, 'AllStaffMembers':AllStaffMembers}
     return render(request, 'dhmsadminboard/organizations.html', context)
 
@@ -228,6 +329,10 @@ def AdminLogout(request):
     logout(request)
     messages.success(request, 'Logout Successful')
     return redirect('SuperAdminAccess')
+
+
+
+
 
 
 

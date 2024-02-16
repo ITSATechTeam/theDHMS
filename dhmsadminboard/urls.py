@@ -15,6 +15,7 @@ urlpatterns = [
     path('adminsettings/', views.SuperAdminSettings, name="SuperAdminSettings"),
     path('organizations/', views.Organizations, name="Organizations"),
     path('adminlogout/', views.AdminLogout, name="AdminLogout"),
+    path('organizations/<str:pk>/', views.OrganizationsDetails, name="OrganizationsDetails"),
 ]
 
 

@@ -117,102 +117,112 @@ dashboard.addEventListener('click', () => {
 })
 if (window.location.href.includes('dashboard')){
     dashboard.classList.add('active')
+    dashboardIcon.style.fill='white'
 }
 
-dashboard.addEventListener('mouseover', () => {
-    dashboardIcon.style.fill='white'
-})
+// dashboard.addEventListener('mouseover', () => {
+//     dashboardIcon.style.fill='white'
+// })
 
-dashboard.addEventListener('mouseout', () => {
-    dashboardIcon.style.fill='#4F4F4F'
-})
+// dashboard.addEventListener('mouseout', () => {
+//     dashboardIcon.style.fill='#4F4F4F'
+// })
 
 
 
+let subadminIcon = document.querySelector('#subadminIcon')
 if (window.location.href.includes('subadmin')){
     subadmin.classList.add('active')
-}
-let subadminIcon = document.querySelector('#subadminIcon')
-subadmin.addEventListener('mouseover', () => {
     subadminIcon.style.fill='white'
-})
-subadmin.addEventListener('mouseout', () => {
-    subadminIcon.style.fill='#4F4F4F'
-})
+}
+// subadmin.addEventListener('mouseover', () => {
+//     subadminIcon.style.fill='white'
+// })
+// subadmin.addEventListener('mouseout', () => {
+//     subadminIcon.style.fill='#4F4F4F'
+// })
 
 
 
 
+let deviceInventoryIcon = document.querySelector('#deviceInventoryIcon')
 if (window.location.href.includes('devicesinventory') || window.location.href.includes('editdevice') || window.location.href.includes('viewdevicedetails') ){
     dashboard.classList.remove('active')
     deviceinventory.classList.add('active')
-    dashboardIcon.style.fill='#4F4F4F'
-}
-let deviceInventoryIcon = document.querySelector('#deviceInventoryIcon')
-deviceinventory.addEventListener('mouseover', () => {
     deviceInventoryIcon.style.fill='white'
-})
-deviceinventory.addEventListener('mouseout', () => {
-    deviceInventoryIcon.style.fill='#4F4F4F'
-})
+}
+// deviceinventory.addEventListener('mouseover', () => {
+//     deviceInventoryIcon.style.fill='white'
+// })
+// deviceinventory.addEventListener('mouseout', () => {
+//     deviceInventoryIcon.style.fill='#4F4F4F'
+// })
 
 
 
+let staffMemberIcon = document.querySelector('#staffMemberIcon')
+let staffMemberIcon2 = document.querySelector('#staffMemberIcon2')
 if (window.location.href.includes('staffmembers') || window.location.href.includes('staffdetails')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.add('active')
-}
-let staffMemberIcon = document.querySelector('#staffMemberIcon')
-let staffMemberIcon2 = document.querySelector('#staffMemberIcon2')
-staffmembers.addEventListener('mouseover', () => {
+
     staffMemberIcon.style.fill='white'
     staffMemberIcon2.style.fill='white'
-})
-staffmembers.addEventListener('mouseout', () => {
-    staffMemberIcon.style.fill='#4F4F4F'
-    staffMemberIcon2.style.fill='#4F4F4F'
-})
+}
+// staffmembers.addEventListener('mouseover', () => {
+//     staffMemberIcon.style.fill='white'
+//     staffMemberIcon2.style.fill='white'
+// })
+// staffmembers.addEventListener('mouseout', () => {
+//     staffMemberIcon.style.fill='#4F4F4F'
+//     staffMemberIcon2.style.fill='#4F4F4F'
+// })
 
 
 
+let reportIcon = document.querySelector('#reportIcon')
 if (window.location.href.includes('reports')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.remove('active')
     reports.classList.add('active')
-}
-let reportIcon = document.querySelector('#reportIcon')
-reports.addEventListener('mouseover', () => {
     reportIcon.style.fill='white'
-})
-reports.addEventListener('mouseout', () => {
-    reportIcon.style.fill='#4F4F4F'
-})
+}
+// reports.addEventListener('mouseover', () => {
+//     reportIcon.style.fill='white'
+// })
+// reports.addEventListener('mouseout', () => {
+//     reportIcon.style.fill='#4F4F4F'
+// })
 
 
 
+let supportIcon = document.querySelector('#supportIcon')
+let supportIcon1 = document.querySelector('#supportIcon1')
 if (window.location.href.includes('support')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
     staffmembers.classList.remove('active')
     reports.classList.remove('active')
     support.classList.add('active')
-}
-// supportIcon supportIcon1
-let supportIcon = document.querySelector('#supportIcon')
-let supportIcon1 = document.querySelector('#supportIcon1')
-support.addEventListener('mouseover', () => {
     supportIcon.style.fill='white'
     supportIcon1.style.fill='white'
-})
-support.addEventListener('mouseout', () => {
-    supportIcon.style.fill='#4F4F4F'
-    supportIcon1.style.fill='#4F4F4F'
-})
+}
+// supportIcon supportIcon1
+// support.addEventListener('mouseover', () => {
+//     supportIcon.style.fill='white'
+//     supportIcon1.style.fill='white'
+// })
+// support.addEventListener('mouseout', () => {
+//     supportIcon.style.fill='#4F4F4F'
+//     supportIcon1.style.fill='#4F4F4F'
+// })
 
 
 
+let maintenanceIcon = document.querySelector('#maintenanceIcon')
+let maintenanceIcon1 = document.querySelector('#maintenanceIcon1')
 if (window.location.href.includes('maintain') || window.location.href.includes('maintenancedetails') || window.location.href.includes('editmaintenancerequest')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
@@ -220,21 +230,22 @@ if (window.location.href.includes('maintain') || window.location.href.includes('
     support.classList.remove('active')
     reports.classList.remove('active')
     maintain.classList.add('active')
-}
-let maintenanceIcon = document.querySelector('#maintenanceIcon')
-let maintenanceIcon1 = document.querySelector('#maintenanceIcon1')
-maintain.addEventListener('mouseover', () => {
     maintenanceIcon.style.fill='white'
     maintenanceIcon1.style.fill='white'
-})
-maintain.addEventListener('mouseout', () => {
-    maintenanceIcon.style.fill='#4F4F4F'
-    maintenanceIcon1.style.fill='#4F4F4F'
-})
+}
+// maintain.addEventListener('mouseover', () => {
+//     maintenanceIcon.style.fill='white'
+//     maintenanceIcon1.style.fill='white'
+// })
+// maintain.addEventListener('mouseout', () => {
+//     maintenanceIcon.style.fill='#4F4F4F'
+//     maintenanceIcon1.style.fill='#4F4F4F'
+// })
 
 
 
 
+let settingsIcon = document.querySelector('#settingsIcon')
 if (window.location.href.includes('setting')){
     dashboard.classList.remove('active')
     deviceinventory.classList.remove('active')
@@ -243,14 +254,14 @@ if (window.location.href.includes('setting')){
     reports.classList.remove('active')
     maintain.classList.remove('active')
     settings.classList.add('active')
-}
-let settingsIcon = document.querySelector('#settingsIcon')
-settings.addEventListener('mouseover', () => {
     settingsIcon.style.fill='white'
-})
-settings.addEventListener('mouseout', () => {
-    settingsIcon.style.fill='#4F4F4F'
-})
+}
+// settings.addEventListener('mouseover', () => {
+//     settingsIcon.style.fill='white'
+// })
+// settings.addEventListener('mouseout', () => {
+//     settingsIcon.style.fill='#4F4F4F'
+// })
 
 
 

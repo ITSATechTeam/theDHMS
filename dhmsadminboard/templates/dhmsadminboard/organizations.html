@@ -31,10 +31,10 @@
 					<h5>Manage and monitor all organizations onboarded on DHMS</h5>
 				</div>
 				<div class="addorgbtn">
-					<button>
+					{% comment %} <button>
 						<img src={% static 'adminpages/img/add.png' %}  />
 						Add Organization
-					</button>
+					</button> {% endcomment %}
 				</div>
 			</div>
 			{% if AllOrganizations %}
@@ -80,23 +80,23 @@
 							</div>
 						</div>
 					</div>
-					<div class='searchsidebtns'>
+					{% comment %} <div class='searchsidebtns'>
 						<div class='scannetworkbtn'>
 							<a href={% url 'ScanNetwork' %}><button>
 								<img src={% static 'maintenance/img/export.png' %} />
 								<p>Export CSV</p>
 							</button></a>
 						</div>
-					</div>
+					</div> {% endcomment %}
 				</div>
 				{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}					
 				<div>
 					<div class='devinvetable'>
 						<table  id="paginated-list" >
 							<tr>
-							<th class='topCheckBox'>
+							{% comment %} <th class='topCheckBox'>
 								<input type='radio' />
-							</th>
+							</th> {% endcomment %}
 							<th>Organization</th>
 							<th>ID</th>
 							<th>Location</th>
@@ -108,9 +108,9 @@
 							{% for AllOrganizations in AllOrganizations %}
 							<div class='item'>
 								<tr class='item'>
-									<td class='sectionCheckBox'>
+									{% comment %} <td class='sectionCheckBox'>
 										<input class='sectionCheckBoxinput' type='radio' value={{ AllOrganizations.deviceid }} />
-									</td>
+									</td> {% endcomment %}
 									<td>{{ AllOrganizations.companyname }}</td>
 									<td class='orgidentity'>{{ AllOrganizations.companyUniqueID }}</td>
 									<td>{{ AllOrganizations.city }}</td>
@@ -130,14 +130,20 @@
 										{% endif %}
 										{% endfor %}
 									</td>
-
 									<td>{{ AllOrganizations.created_at }}</td>
 									<td>
 										<div class='actionbtns'>
-											<div class='testbox'></div>
-											<button class='editDeviceData'><a href=/member/editdevice/{{ AllOrganizations.deviceid }}/ ><img src={% static 'dashboard/img/edit.png' %} /></a></button>
-											<input hidden name='IdRequest' value={{ AllOrganizations.id }} />
-											<button><a href= /member/deletedevice/{{ AllOrganizations.id }}/ ><img src={% static 'dashboard/img/delete.png' %} /></a></button>									
+											<img src={% static 'adminpages/img/dotsvertical.png' %} />	
+										</div>
+										<div class='actionbtnsmain'>
+											<a href=  "/superadmin/organizations/{{ AllOrganizations.companyUniqueID }}/" ><div class='actionbtnsmainin'>
+												<img src={% static 'adminpages/img/dashboard.png' %} />
+												<p>View Details</p>
+											</div></a>
+											<div class='actionbtnsmainin'>
+												<img src={% static 'adminpages/img/delete.png' %} />
+												<p>Remove Organizations</p>
+											</div>
 										</div>
 									</td>
 								</tr>
@@ -302,7 +308,8 @@
 					<img src={% static 'adminpages/img/emptyorg.png' %}  />
 					<h2>Oops! No Organizations yet</h2>
 					<p>
-						Organizations are yet to onboard on DHMS. You <br/>can start by adding a new organization to get<br/> started.
+						Organizations are yet to onboard on DHMS.
+						{% comment %} Organizations are yet to onboard on DHMS. You <br/>can start by adding a new organization to get<br/> started. {% endcomment %}
 					</p>
 				</div>
 				<div class="addorgbtn">

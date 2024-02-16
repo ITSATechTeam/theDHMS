@@ -1,0 +1,43 @@
+
+
+.orgsectionintroinner img{
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+
+.introdetailsbar{
+    padding: 20px;
+    height: 85px;
+    width: 200px;
+    margin-right: 10px;
+    border-radius: 10px;
+    align-items: center;
+    transition: .4s ease-in-out;
+}
+
+.orgadminoptions{
+    display: flex;
+    width: 300px;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: -13px;
+}
+
+
+.orgadminoptions h4:hover{
+    color: #2A66B0;
+    cursor: pointer;
+}
+
+.activeorgadminoptions{
+    color: #2A66B0;
+    cursor: pointer;
+}
+
+
+.stafftableorg{
+    display: none;
+}
+
+

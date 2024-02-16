@@ -365,13 +365,13 @@ body{
 }
 
 
-.shadow{
+.shadow1{
     position: fixed;
-    margin-left: 220px;
+    margin-left: 0px;
     height: 140%;
     padding: 20px;
     /* border-radius: 10px; */
-    width: 90%;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.233);
     z-index: 6;
     transition: 0.5s ease-in-out;
@@ -1215,8 +1215,6 @@ tr:nth-child(1) {
     margin-top: -100px;
     margin-bottom: 100px;
 }
-
-
 
 
 

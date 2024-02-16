@@ -206,6 +206,15 @@ main{
     /* margin-top: 0px; */
 }
 
+.registerform select{
+    width: 70%;
+    height: 40px;
+    padding: 5px;
+    border: .7px solid rgb(179, 179, 179);
+    border-radius: 5px;
+    /* margin-top: 0px; */
+}
+
 .registerform p{
     font-size: .8rem;
     width: 70%;
@@ -245,11 +254,10 @@ main{
     border-radius: 10px;
     width: 520px;
     margin-top: 20px;
-    align-items: center;
     color: #2A66B0;
     font-weight: bold;
     cursor: pointer;
-    padding-left: 100px;
+    /* padding-left: 100px; */
     text-align: center;
 }
 
@@ -281,7 +289,8 @@ button{
 
 .googlesignin button{
     background-color: transparent;
-    width: 530px;
+    width: 100%;
+    margin: auto;
     border-radius: 10px;
     padding-bottom: 10px;
 }

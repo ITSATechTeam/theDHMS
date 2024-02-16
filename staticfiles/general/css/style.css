@@ -358,9 +358,10 @@ nav button{
 #overlay{
     height:100%;
     width:100%;
-    background:rgba(0, 0, 0, 1);
+    background: #2A66B0;
     position:fixed;
     left:0;
+    z-index: 99;
     top:0;
 }
 

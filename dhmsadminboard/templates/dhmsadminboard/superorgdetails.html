@@ -1,0 +1,481 @@
+<!-- @format -->
+{% include 'admingen.html' %} 
+{% load static %} 
+{% load pwa %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'adminpages/css/organizations.css' %} />
+		<link rel="stylesheet" href={% static 'adminpages/css/superdevdetails.css' %} />
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Organizations | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+        {% progressive_web_app_meta %}
+	</head>
+	<div class='shadoworg'></div>
+	<body class='body'>
+        <div class="main">
+            <h5> <a href={% url 'Organizations' %}>Organization</a> > View Details </h5><br/>
+			<div class="orgsectionintro">
+				<div>
+					<div class="orgsectionintroinner">
+                        <h1> 
+                            {{SelectedOrg.companyname}}.                             
+                        </h1> 
+                        <img src={% static 'adminpages/img/dropdown.png' %} /> 
+                    </div>
+				</div>
+			</div>
+
+            <div class='orgdetialsbox'>
+                <div class='orgboxclosefilter'>
+                    <img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+                </div><br/><br/>
+                <h3>Organization Information</h3><br/>
+                <div>
+                    <h4>Company bio:</h4>
+                    <div class='orgdatamain'>                        
+                        <div class='orgdatain'>
+                            <div>
+                                <img src={% static 'adminpages/img/orgname.png' %} />                            
+                            </div>
+                            <div>
+                                <h5>Company name</h5>
+                                <h4>{{SelectedOrg.companyname}}</h4>
+                            </div>
+                        </div>
+                        <div class='orgdatain'>
+                            <div>
+                                <img src={% static 'adminpages/img/orglocation.png' %} />                            
+                            </div>
+                            <div>
+                                <h5>Company address</h5>
+                                <h4>{{SelectedOrg.city}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div><br />
+                <div>
+                    <h4>Contact Information:</h4>
+                    <div class='orgdatamain'>                        
+                        <div class='orgdatain'>
+                            <div>
+                                <img src={% static 'adminpages/img/orgemail.png' %} />                            
+                            </div>
+                            <div>
+                                <h5>Email</h5>
+                                <h4 class='orgemail'>{{SelectedOrg.email}}</h4>
+                            </div>
+                        </div>
+                        <div class='orgdatain'>
+                            <div>
+                                <img src={% static 'adminpages/img/orgphone.png' %} />                            
+                            </div>
+                            <div>
+                                <h5>Phone number</h5>
+                                <h4>{{SelectedOrg.phone}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <br/><br/>
+                
+			{% comment %} ALL DEVICES DETAILS LIST SECTION STARTS HERE {% endcomment %}
+			<div class='introdetailssection'>
+				<div class='introdetailsbar alldevices'>
+					<img src={% static 'dashboard/img/alldevices.png' %} />
+					{% if AllOrgDevicesCount  %}
+					<h1>{{ AllOrgDevicesCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Devices</p>
+				</div>
+				<div class='introdetailsbar allusers'>
+					<img src={% static 'dashboard/img/allusers.png' %} />
+					{% if AllOrgStaffCount  %}
+					<h1>{{ AllOrgStaffCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Staff Members</p>
+				</div>
+				<div class='introdetailsbar faultydevices'>
+					<img src={% static 'dashboard/img/faultydevices.png' %} />
+					{% if AllOrgFaultyDevicesCountMain  %}
+					<h1>{{ AllOrgFaultyDevicesCountMain }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Faulty Devices</p>
+				</div>
+				<div class='introdetailsbar healthydevices'>
+					<img src={% static 'dashboard/img/healthydevices.png' %} />
+					{% if AllOrgHealthyDevicesCount  %}
+					<h1>{{ AllOrgHealthyDevicesCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>Healthy Devices</p>
+				</div>
+				<div class='introdetailsbar onmaintenance'>
+					<img src={% static 'dashboard/img/onmaintenance.png' %} />
+					{% if AllOrgMainteDevicesCount  %}
+					<h1>{{ AllOrgMainteDevicesCount }}</h1>
+					{% else %}
+					<h1>0</h1>
+					{% endif %}
+					<p>On Maintenance</p>
+				</div>
+			</div>
+			{% comment %} ALL DEVICES DETAILS LIST SECTION ENDS HERE {% endcomment %}
+            <div>
+                <div class='orgadminoptions'>
+                    <h4 class='activeorgadminoptions deviceslistpop'>Devices</h4>
+                    <h4 class='staffmemberspop'>Staff Members</h4>
+                    <h4 class='activitylogpop'>Activity Log</h4>
+                </div>
+                {% comment %} <hr/> {% endcomment %}
+            </div>
+			<div>
+				{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
+				<div class='deviceinventorymaintop'>
+					<div class='searchdashboardsection'>
+						<div class='searchdashboard'>
+							<form method='GET' action="{% url 'Searchresult' %}">
+								<input type='text' name='q' placeholder='Search Devices' />
+							</form>
+							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+						</div>
+						
+						<div class='filteroutter'>
+							<div class='filter filtercategory'>
+								<img src={% static 'inventory/img/filter.png' %} />
+								<p>Filter by Category</p>
+							</div>
+						</div>
+						
+						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
+						<div class='filterbox filterbox1'>
+							<h2>Filter by</h2>
+							<div class='closefilter'>
+								<img src={% static 'dashboard/img/close.png' %} title='Close Filter' />
+							</div>
+							<div>
+								<form method='GET' action={% url 'Searchresult' %}>
+									
+									<p>Device Category</p>
+									<select name='q'>
+										<option value = 'AllCategory'>All</option>
+										<option value='Desktop'>Desktop</option>
+										<option value='Laptop'>Laptop</option>
+										<option value='Printer'>Printer</option>
+										<option value='Scanner'>Scanner</option>
+										<option value='OtherDevices'>Other Devices</option>
+									</select>
+									<button type='submit'>Filter</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class='searchsidebtns'>
+						<div class='scannetworkbtn'>
+							<a href={% url 'ScanNetwork' %}><button>
+								<img src={% static 'maintenance/img/export.png' %} />
+								<p>Export CSV</p>
+							</button></a>
+						</div>
+					</div>
+				</div>
+				{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
+
+			    <!-- DEVICES AVAILABLE FOR ORGANIZATION STARTS HERE -->	
+				<div class='devinvetorg'>
+					<div class='devinvetable'>
+						<table  id="paginated-list" >
+							<tr>
+							{% comment %} <th class='topCheckBox'>
+								<input type='radio' />
+							</th> {% endcomment %}
+							<th>Devices</th>
+							<th>Device ID</th>
+							<th>Device Type</th>
+							<th>Device IP</th>
+							<th>Device MAC. ID</th>
+							<th>Device Assi. User</th>
+							<th>Device Status</th>
+							<th>Action</th>
+							</tr>
+							{% for AllOrgDevices in AllOrgDevices %}
+							<div class='item'>
+								<tr class='item'>
+									{% comment %} <td class='sectionCheckBox'>
+										<input class='sectionCheckBoxinput' type='radio' value={{ AllOrgDevices.deviceid }} />
+									</td> {% endcomment %}
+									<td>{{ AllOrgDevices.devicename }}</td>
+									<td>{{ AllOrgDevices.deviceid }}</td>
+									<td>{{ AllOrgDevices.devicetype }}</td>
+									<td>{{ AllOrgDevices.deviceip }}</td>
+									<td>{{ AllOrgDevices.devicemacaddress }}</td>
+									<td>
+                                        {% comment %} {{ AllOrgDevices.staffUserID }} {% endcomment %}
+                                        {% if AllOrgDevices.staffUserID == 'None' %}
+                                        {{ AllOrgDevices.staffUserID }}
+                                        {% else %}
+                                        {% for AllOrgStaff in AllOrgStaff %}
+                                        {% if AllOrgStaff.StaffID == AllOrgDevices.staffUserID %}
+                                        {{ AllOrgStaff.staff_firstname }} {{ AllOrgStaff.staff_lastname }}
+                                        {% endif %}
+                                        {% endfor %}
+                                        {% endif %}
+                                    </td>
+									<td>{{ AllOrgDevices.devicestatus }}</td>
+									<td>
+										<div class='actionbtns'>
+											<img src={% static 'adminpages/img/dotsvertical.png' %} />	
+										</div>
+										<div class='actionbtnsmain'>
+											<div class='actionbtnsmainin'>
+												<img src={% static 'adminpages/img/dashboard.png' %} />
+												<p>View Details</p>
+											</div>
+										</div>
+                                        <div class='devicedetialsproper'>
+                                            <img src={% static 'adminpages/img/close.png' %} />
+                                            <div class='devicedetialsproperinner'>
+                                                <h3>Device Details</h3><br/>
+                                                <h4>Device Name: <strong>{{ AllOrgDevices.devicename }}</strong></h4>
+                                                <h4>Device ID: <strong>{{ AllOrgDevices.deviceid }}</strong></h4>
+                                                <h4>Device Type: <strong>{{ AllOrgDevices.devicetype }}</strong></h4>
+                                                <h4>Device Location: <strong>{{ AllOrgDevices.devicelocation }}</strong></h4>
+                                                <h4>Staff assigned to: <strong>
+                                                    {% if AllOrgDevices.staffUserID == 'None' %}
+                                                    {{ AllOrgDevices.staffUserID }}
+                                                    {% else %}
+                                                    {% for AllOrgStaff in AllOrgStaff %}
+                                                    {% if AllOrgStaff.StaffID == AllOrgDevices.staffUserID %}
+                                                    {{ AllOrgStaff.staff_firstname }} {{ AllOrgStaff.staff_lastname }}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% endif %}
+                                                </strong></h4>
+                                                <h4>Device Status: <strong>{{ AllOrgDevices.devicestatus }}</strong></h4>
+                                            </div>
+                                        </div>
+									</td>
+								</tr>
+							</div>
+							{% endfor %}
+						</table>
+					</div>
+					<div class='pagesdetailsseection'>
+						<div class='perpagecount'>
+							<div>
+								<div class='selectedNumber'>
+									<p>{{ numberOfDevicesPerPage }}</p>
+									<img src={% static 'inventory/img/selectnav.png' %} />
+								</div>
+								<div class='selectPerPageCountBox'>
+									<div class='selectPerPageCountBoxintro'>
+										<h4>Select number of items to display per page</h4>
+										<img src={% static 'inventory/img/close.png' %} />
+									</div>
+									<hr/>
+									<form method='POST'>
+										{% csrf_token %}
+										<div class='numofitemsperpageout'>
+												<select class='numofitemsperpage' name='numofitemsperpage'>
+													<option value='1'>1</option>
+													<option value='2'>2</option>
+													<option value='3'>3</option>
+													<option value='4'>4</option>
+													<option value='5'>5</option>
+													<option value='6'>6</option>
+													<option value='7'>7</option>
+													<option value='8'>8</option>
+													<option value='9'>9</option>
+													<option value='10'>10</option>
+												</select>
+											<button type='submit'>Activate</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div>
+								<p>items per page</p>
+							</div>
+						</div>
+						<div class='perpagecount2'>
+							1-<span>{{ numberOfDevicesPerPage }}</span> items of <i>{{ AllOrganizationsCount }}</i>
+						</div>
+						<div id="pagination-numbers">
+		
+						</div>
+
+						<div class='pages'>
+							<div id="pagination-numbers"></div>
+							<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
+							<div class='navigation'>
+								<img class='navLeft' id='prev-button' src={% static 'inventory/img/left.png' %} />
+								<img id="next-button" src={% static 'inventory/img/right.png' %} />
+							</div>
+						</div>
+					</div>
+				</div>
+                <!-- DEVICES AVAILABLE FOR ORGANIZATION ENDS HERE -->
+
+			    <!-- STAFF MEMBERS AVAILABLE FOR ORGANIZATION STARTS HERE -->	
+				<div class='stafftableorg'>
+					<div class='devinvetable'>
+						<table  id="paginated-list" >
+							<tr>
+							{% comment %} <th class='topCheckBox'>
+								<input type='radio' />
+							</th> {% endcomment %}
+							<th>Staff</th>
+							<th>Staff ID</th>
+							<th>Email</th>
+							<th>Phone</th>
+							<th>Assigned Device(s)</th>
+							<th>Action</th>
+							</tr>
+							{% for AllOrgStaff in AllOrgStaff %}
+							<div class='item'>
+								<tr class='item'>
+									{% comment %} <td class='sectionCheckBox'>
+										<input class='sectionCheckBoxinput' type='radio' value={{ AllOrgStaff.deviceid }} />
+									</td> {% endcomment %}
+									<td>{{ AllOrgStaff.staff_firstname }} {{ AllOrgStaff.staff_lastname }}</td>
+									<td>{{ AllOrgStaff.StaffID }}</td>
+									<td>{{ AllOrgStaff.staff_email }}</td>
+									<td>{{ AllOrgStaff.staff_phonenumber }}</td>
+									<td>
+                                        {% for AllOrgDevices in AllOrgDevices %}
+                                        {% if AllOrgDevices.staffUserID == AllOrgStaff.StaffID %}
+                                        <strong> 
+                                                {{ AllOrgDevices.deviceid }}
+                                        </strong><br/>
+                                        {% endif %}
+                                        {% endfor %}
+                                    </td>
+									<td>
+										<div class='actionbtns'>
+											<img src={% static 'adminpages/img/dotsvertical.png' %} />	
+										</div>
+										<div class='actionbtnsmain'>
+											<div class='actionbtnsmainin'>
+												<img src={% static 'adminpages/img/dashboard.png' %} />
+												<p>View Details</p>
+											</div>
+										</div>
+                                        <div class='devicedetialsproper'>
+                                            <img src={% static 'adminpages/img/close.png' %} />
+                                            <div class='devicedetialsproperinner'>
+                                                <h3>Staff Details</h3><br/>
+                                                <h4>Staff Name: <strong>{{ AllOrgStaff.staff_firstname }} {{ AllOrgStaff.staff_lastname }}</strong></h4>
+                                                <h4>Staff ID: <strong>{{ AllOrgStaff.StaffID }}</strong></h4>
+                                                <h4>Device Email: <strong>{{ AllOrgStaff.staff_email }}</strong></h4>
+                                                <h4>Device Phone: <strong>{{ AllOrgStaff.staff_phonenumber }}</strong></h4>
+                                                <h4>Staff Department: <strong>{{ AllOrgStaff.staff_role }}</strong></h4>
+                                                <h4>Staff Location: <strong>{{ AllOrgStaff.staff_location }}</strong></h4>
+                                                <h4>Staff Device(s): <strong>
+                                                    {% for AllOrgDevices in AllOrgDevices %}
+                                                    {% if AllOrgStaff.StaffID == AllOrgDevices.staffUserID %}
+                                                    <strong> 
+                                                            {{ AllOrgDevices.deviceid }}
+                                                    </strong><br/>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </strong></h4>
+                                            </div>
+                                        </div>
+									</td>
+								</tr>
+							</div>
+							{% endfor %}
+						</table>
+					</div>
+					<div class='pagesdetailsseection'>
+						<div class='perpagecount'>
+							<div>
+								<div class='selectedNumber'>
+									<p>{{ numberOfDevicesPerPage }}</p>
+									<img src={% static 'inventory/img/selectnav.png' %} />
+								</div>
+								<div class='selectPerPageCountBox'>
+									<div class='selectPerPageCountBoxintro'>
+										<h4>Select number of items to display per page</h4>
+										<img src={% static 'inventory/img/close.png' %} />
+									</div>
+									<hr/>
+									<form method='POST'>
+										{% csrf_token %}
+										<div class='numofitemsperpageout'>
+												<select class='numofitemsperpage' name='numofitemsperpage'>
+													<option value='1'>1</option>
+													<option value='2'>2</option>
+													<option value='3'>3</option>
+													<option value='4'>4</option>
+													<option value='5'>5</option>
+													<option value='6'>6</option>
+													<option value='7'>7</option>
+													<option value='8'>8</option>
+													<option value='9'>9</option>
+													<option value='10'>10</option>
+												</select>
+											<button type='submit'>Activate</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							<div>
+								<p>items per page</p>
+							</div>
+						</div>
+						<div class='perpagecount2'>
+							1-<span>{{ numberOfDevicesPerPage }}</span> items of <i>{{ AllOrganizationsCount }}</i>
+						</div>
+						<div id="pagination-numbers">
+		
+						</div>
+
+						<div class='pages'>
+							<div id="pagination-numbers"></div>
+							<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
+							<div class='navigation'>
+								<img class='navLeft' id='prev-button' src={% static 'inventory/img/left.png' %} />
+								<img id="next-button" src={% static 'inventory/img/right.png' %} />
+							</div>
+						</div>
+					</div>
+				</div>
+                <!-- STAFF MEMBERS AVAILABLE FOR ORGANIZATION ENDS HERE -->
+                {% comment %} ACTIVITY LOG SECTION STARTS HERE {% endcomment %}
+                <div class='activitylogsection'>
+                    <br/>
+                    <h2>Your Staff Activity Logs</h2>
+                </div>
+                {% comment %} ACTIVITY LOG SECTION ENDS HERE {% endcomment %}
+			</div>
+
+		</div>
+	<script src={% static 'dashboard/js/main.js' %}></script>
+	<script src={% static 'adminpages/js/organization.js' %}></script>
+    </body>
+</html>
+{% endblock content %}
+
+

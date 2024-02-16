@@ -1,6 +1,28 @@
+// CUSTOM GREETING SETUP STARTS HERE
+var myDate = new Date();
+var hrs = myDate.getHours();
+
+var greet;
+
+if (hrs < 12)
+  greet = 'Good Morning';
+else if (hrs >= 12 && hrs <= 16)
+greet = 'Good Afternoon';
+else if (hrs >= 16 && hrs <= 20)
+greet = 'Good Evening';
+else if (hrs >= 21 && hrs <= 24)
+greet = 'You should be in bed now';
+
+document.querySelector('.greetuser').innerHTML = greet;
+
+// CUSTOM GREETING SETUP ENDS HERE
+
+
+
+
 const filtercategory = document.querySelector('.filtercategory')
 const filtercalendar = document.querySelector('.filtercalendar')
-const shadow = document.querySelector('.shadow')
+const shadow = document.querySelector('.shadow1')
 const filterbox1 = document.querySelector('.filterbox1')
 const filterbox2 = document.querySelector('.filterbox2')
 const closefilter = document.querySelector('.closefilter')
@@ -77,10 +99,12 @@ let addnewdevicebtn = document.querySelector('.addnewdevicebtn')
 let registerDevice = document.querySelector('.registerDevice')
 let closeaddnewdeviceopoup = document.querySelector('.closeaddnewdeviceopoup')
 
-addnewdevicebtn.addEventListener('click', () => {
-    registerDevice.style.display = 'block'
-    shadow.style.display = 'block'
-})
+if (addnewdevicebtn){
+    addnewdevicebtn.addEventListener('click', () => {
+        registerDevice.style.display = 'block'
+        shadow.style.display = 'block'
+    })
+}
 closeaddnewdeviceopoup.addEventListener('click', () => {
     registerDevice.style.display = 'none'
     shadow.style.display = 'none'
@@ -213,9 +237,7 @@ staffIdSection.forEach((e)=>{
 
 //   FILL SHAPE WITH FIRST LETTER FUNCTIONALITY STARTS HERE
 let staffnamesection = document.querySelectorAll('.staffnamesection')
-console.log(staffnamesection)
 staffnamesection.forEach((e) => {
-    console.log(e)
     e.parentElement.previousElementSibling.innerHTML = Array.from(e.innerHTML)[0]
 })
 
@@ -247,24 +269,7 @@ maintenanceType.forEach((e) => {
 })
 
 
-// CUSTOM GREETING SETUP STARTS HERE
-var myDate = new Date();
-var hrs = myDate.getHours();
 
-var greet;
-
-if (hrs < 12)
-  greet = 'Good Morning';
-else if (hrs >= 12 && hrs <= 16)
-greet = 'Good Afternoon';
-else if (hrs >= 16 && hrs <= 20)
-greet = 'Good Evening';
-else if (hrs >= 21 && hrs <= 24)
-greet = 'You should be in bed now';
-
-document.querySelector('.greetuser').innerHTML = greet;
-
-// CUSTOM GREETING SETUP ENDS HERE
 
 
 

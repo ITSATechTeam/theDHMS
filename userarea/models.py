@@ -121,7 +121,7 @@ class DeviceRegisterUpload(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.CompanyUniqueCode} {self.devicename} {self.deviceid} {self.staffUserID}'
+        return f'{self.CompanyUniqueCode} {self.devicename} {self.registeredMonth} {self.devicestatus}'
 
 
 class uploadedDeviceData(models.Model):
@@ -144,7 +144,7 @@ class uploadedDeviceData(models.Model):
 class DeviceCountPerPage(models.Model):    
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     # count = models.IntegerField(default = 10)
-    count = models.CharField(max_length= 10, default = 10)
+    count = models.CharField(max_length= 10, default = '5')
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
