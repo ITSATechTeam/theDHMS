@@ -1324,14 +1324,15 @@ def Dashboard(request):
         # SAVE FAULTY OR CRITICAL DEVICES 
         if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
             CompanyFaultyDevicesForm = CompanyFaultyDevices(user = request.user, deviceID = uniqueId, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = request.user.last_name)
-
+            CompanyFaultyDevicesForm.save()             
+        
+        
         try:
             SaveDeviceProper.save()
-            CompanyFaultyDevicesForm.save()
             messages.success(request, 'Device uploaded successfully')
             return redirect('Dashboard')
         except:
-            messages.error(request, 'Device uploaded failed. Please Try again.')
+            messages.error('Device uploaded failed. Please Try again.')
             redirect('Dashboard')
 
 

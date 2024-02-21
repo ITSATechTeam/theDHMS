@@ -2,7 +2,6 @@
 {% load static %} 
 {% block content %}
 {% load socialaccount %}
-{% comment %} {% providers_media_js %} {% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -159,6 +158,7 @@
             fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         </script>
+        {% providers_media_js %}
 
     </body>
 </html>

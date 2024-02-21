@@ -80,7 +80,7 @@
                     {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
                     <div class='googlesignin'>
                         {% load socialaccount %}
-                        <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
+                        <form action="{% provider_login_url 'google' %}" method='POST'>
                             {% csrf_token %}
                             <button type='submit' class='googlesigninner'>
                                 <div class='buttoninner'>

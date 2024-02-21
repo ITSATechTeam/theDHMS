@@ -27,6 +27,8 @@ urlpatterns = [
     # Google auth credentials
     # path('', include('googleauthentication.urls')),
     path('accounts/', include('allauth.urls')),
+    # path('accounts/', include('allauth.socialaccount.urls')),
+    # path('account/', include('django.contrib.auth.urls')),
     # path('accounts/social/', include("useronboard.urls")),
     #
     path(f'{settings.AAD_CONFIG.django.auth_endpoints.prefix}/', include(msal_urls)),

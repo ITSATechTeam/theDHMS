@@ -1,0 +1,81 @@
+<!-- @format -->
+{% comment %} {% include 'generalonboard.html' %}  {% endcomment %}
+{% load static %} 
+{% load pwa %}
+{% load socialaccount %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'signup/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'generalonboard/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Google Access | ITSA Inventory System</title>
+        {% progressive_web_app_meta %}
+	</head>
+	<body>
+		<!--<img href={% static 'general/img/itsalogo.PNG' %} /> -->
+        
+        <div class=" w-[50%] m-auto border  rounded-lg">
+          <h4 class=" text-center bg-gray-100 h-[52px] "> <span class="font-bold text-3xl ">DHMS Google Signin Auth.</span></h4></br>
+          <h3 class=" text-center bg-gray-100 h-[52px] "> <span class="font-bold text-3xl ">Create Your Account</span>
+          </h3>
+        
+          <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+            <div class="justify-center mx-3">
+              {% csrf_token %}
+              <div class="w-full border my-3 rounded-lg">
+                {{ form.username }}
+              </div>
+        
+              <div class="w-full border my-3 rounded-lg">
+                {{ form.email }}
+              </div>
+        
+        
+              <div class="w-full border my-3 rounded-lg">
+                {{ form.password1 }}
+              </div>
+        
+              <div class="w-full border my-3 rounded-lg">
+                {{ form.password2 }}
+              </div>
+             
+              {% if redirect_field_value %}
+              <input type="text" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+              {% endif %}
+              <button type="submit" class=" bg-blue-700 text-white rounded-lg w-[100%] my-3 p-2">
+                  Continue
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="w-full text-center mb-3">
+		<img href={% static 'general/img/itsalogo.PNG' %} /> 
+          <p>Already have an account? Then please <a class="text-blue-600" href="{% url 'Login' %}">sign in</a>, or <a class="text-blue-600" href="{% url 'SignUpPage' %}">Sign up here</a></p>
+          <!--<p>Already have an account? Then please <a class="text-blue-600" href="{{ login_url }}">sign in</a>.</p>-->
+        </div>
+        {% endblock content %}
+        
+        <style>
+          #id_username,
+          #id_email,
+          #id_password1,
+          #id_password2 {
+            width: 100%;
+            height: 40px;
+            border-radius: 6px;
+            outline: none;
+            padding: 0 12px 0 12px;
+            font-size: medium;
+        
+          }
+        </style>
+    </body>
+

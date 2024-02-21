@@ -203,7 +203,7 @@ MIDDLEWARE = [
     # 
     'django_user_agents.middleware.UserAgentMiddleware',
     # 
-    # 'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 
@@ -222,13 +222,14 @@ AUTO_LOGOUT = {
 }
 
 
+
 ROOT_URLCONF = 'DHMSProject.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates'
+            BASE_DIR / 'Templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

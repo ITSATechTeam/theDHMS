@@ -1,0 +1,88 @@
+{% comment %} {% include 'blog/index.html'%} {% endcomment %}
+
+
+<!-- @format -->
+{% comment %} {% include 'generalonboard.html' %}  {% endcomment %}
+{% load static %} 
+{% load pwa %}
+{% load socialaccount %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'signup/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'generalonboard/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Google Access | ITSA Inventory System</title>
+        {% progressive_web_app_meta %}
+	</head>
+	<body>
+		<main>
+            <div class='sideimagesection'>
+                <div class='bckgImg'></div>
+                {% comment %} <img src={% static 'signup/img/signup2img.png' %} /> {% endcomment %}
+                <img src={% static 'signup/img/signupimg2.png' %} />
+            </div>
+            <div>
+                <div class='nav'>
+                    <div class='registerform'>
+                        <div class='registerformimg'>
+                            <img src={% static 'generalonboard/img/itsalogopng.png' %} />
+                        </div>
+                        <h4>Create Account..</h4>
+                        <p>
+                            Optimize your device performance with our device health management system, Sign up now and never miss a beat.
+                        </p>
+				
+                        <div id="flash">
+                            {% if messages %} {% for message in messages %}
+                            <div class="alert alert-{{ message.tags}} m-0" role="alert">
+                                <strong style="color: blue">{{ message }}</strong>
+                            </div>
+                            {% endfor %} {% endif %}
+                        </div>
+        
+                        
+                        <div>
+                            <h5 class="my-3">You are about to use a third party authentication!
+                            </h5>
+                            <form method="post">
+                                <div class="justify-center mx-3">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-red-200 my-3 rounded-lg w-[100%] p-2">Continue</button>
+                                </div>
+                            </form>
+                        </div>
+                        <br/><br/>
+                        <p class='logininstead'>Have an account already? <a href={% url 'Login' %}>Sign In</a></p>
+                        <br/><br/>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
+
+{% endblock content %}
+
+{% comment %} {% block content %}
+<div class="m-auto w-[50%] m-auto border  rounded-lg">
+    <h1 class="text-center bg-gray-100 h-[52px] font-bold text-3xl">Sign In</h1>
+
+
+    <h2 class="text-center my-3">You are about to use third party authentication!
+    </h2>
+    <form method="post">
+        <div class="justify-center mx-3">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-200 my-3 rounded-lg w-[100%] p-2">Continue</button>
+        </div>
+    </form>
+    {% endblock %}
+</div> {% endcomment %}
