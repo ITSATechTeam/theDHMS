@@ -247,16 +247,16 @@ def FamilyDHMSDashboard(request):
         devicelocation_Self = request.POST['devicelocation_Self']
         Deviceyearofpurchase_Self = request.POST['Deviceyearofpurchase_Self']
 
-        uniqueId = 'Family_Device-'  + get_random_string(length=8)
+        uniqueId = 'Family_Device-'+ get_random_string(length=8)
         dateForWeekNumber = datetime.today()
         
-        if not request.POST['DeviceName_Self']:
-            messages.error(request, "Device uploaded failed. Kindly try again.")
-            return redirect('FamilyDHMSDashboard')
+        # if not request.POST['DeviceName_Self']:
+        #     messages.error(request, "Device uploaded failed. Kindly try again.")
+        #     return redirect('FamilyDHMSDashboard')
         
-        if not request.POST['devicestatus']:
-            messages.error(request, "Device uploaded failed. Kindly Provide Your Device Health Status.")
-            return redirect('FamilyDHMSDashboard')
+        # if not request.POST['devicestatus']:
+        #     messages.error(request, "Device uploaded failed. Kindly Provide Your Device Health Status.")
+        #     return redirect('FamilyDHMSDashboard')
         
         if request.POST['Deviceyearofpurchase_Self']:
             depreciateRate = 2023 - int(request.POST['Deviceyearofpurchase_Self'])
@@ -274,7 +274,7 @@ def FamilyDHMSDashboard(request):
             else:
                 depreciateRateReal_self = 'Nil'
         else:
-            depreciateRateReal_self = 'Nil'
+            depreciateRateReal_self = '0%'
 
         try:
             if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
@@ -303,10 +303,15 @@ def FamilyDHMSDashboard(request):
     allFamilyDeviceReg = FamilyDeviceReg.objects.filter(user = request.user)
     allFamilyDeviceRegCount = allFamilyDeviceReg.count()
     
+    AllMaintenanceReqs = FamilyMaintainanceReq.objects.filter(user = request.user)
+    AllMaintenanceReqsCount = AllMaintenanceReqs.count()
+    
     AllFaultyDevices = FamilyDeviceReg.objects.filter(Q(user = request.user) & Q(devicestatus = 'Faulty'))
     AllFaultyDevicesCount = AllFaultyDevices.count()
+    
     AllCriticalDevices = FamilyDeviceReg.objects.filter(Q(user = request.user) & Q(devicestatus = 'Critical'))
     AllCriticalDevicesCount = AllCriticalDevices.count()
+    
     AllFaultyAndCritialDevices = AllFaultyDevicesCount + AllCriticalDevicesCount
     AllWorkingDevices = FamilyDeviceReg.objects.filter(Q(user = request.user) & Q(devicestatus = 'Working'))
     AllWorkingDevicesCount = AllWorkingDevices.count()
@@ -343,6 +348,7 @@ def FamilyDHMSDashboard(request):
 
 
     context = {
+    'AllMaintenanceReqsCount':AllMaintenanceReqsCount,
     'DeviceType':device_type,
     'BrowserType':browser_type, 
     'BrowserVersion':browser_version, 
@@ -473,7 +479,7 @@ def FamilyInventory(request):
                 FamilyDeviceRegForm = FamilyDeviceReg(user = Reqfamilyadmin, devicestatus = devicestatus, devicetype = devicetype, devicebrand = devicebrand, deviceOS = deviceOS,
                 deviceyearofpurchase = deviceyearofpurchase, devicelocation = devicelocation, devicename = devicename, devicemacaddress = devicemacaddress,
                 deviceipaddress = deviceipaddress, FamilyUniqueCode = FamilyUniqueCode, devicedepreciationrate = depreciateRateReal, deviceid = uniqueId,
-                savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceImageOne = device_images)            
+                savetimedata = today.strftime("%B %d, %Y"), registeredMonth = today.strftime("%b"), weekNumberSaved = weekNumber, deviceImageOne = deviceimage)            
                 FamilyDeviceRegForm.save()
                 FaultyDevicesTrendForm.save()
                 messages.error(request, "Device registered successfully.")
@@ -534,6 +540,7 @@ def FamilyMembers(request):
     if request.method == 'POST' and 'email' in request.POST:
         fullname = request.POST['fullname']
         email = request.POST['email']
+        memberphone = request.POST['memberphone']
         memberid = 'FM-'  + get_random_string(length=5)
 
         if not request.POST['fullname']:
@@ -544,10 +551,15 @@ def FamilyMembers(request):
             messages.error(request, 'Registration Failed: Kindly provide an email address for this family member.')
             return redirect('FamilyMembers')
 
+        if not request.POST['memberphone']:
+            messages.error(request, 'Registration Failed: Kindly provide an phone number for this family member.')
+            return redirect('FamilyMembers')
+
         checkemail = User.objects.filter(email = request.POST['email'])
         checkfullname = User.objects.filter(first_name = request.POST['fullname'])
         checkfamilyemail = FamilyMemberReg.objects.filter(memberemail = request.POST['email'])
         checkfamilyfullname = FamilyMemberReg.objects.filter(memberfullname = request.POST['fullname'])
+        checkfamilyPhoneNumber = FamilyMemberReg.objects.filter(memberphone = request.POST['memberphone'])
         if (checkemail):
             messages.error(request, 'Registration Failed: Email address is already registered to an existing user.')
             return redirect('FamilyMembers')
@@ -564,7 +576,11 @@ def FamilyMembers(request):
             messages.error(request, 'Registration Failed: Full name is already registered to an existing user.')
             return redirect('FamilyMembers')
 
-        familymemberform = FamilyMemberReg(user = request.user, memberfullname = fullname, memberemail = email, memberid = memberid, familyid = request.user.last_name)
+        if (checkfamilyPhoneNumber):
+            messages.error(request, 'Registration Failed: Phone Number is already registered to an existing user.')
+            return redirect('FamilyMembers')
+
+        familymemberform = FamilyMemberReg(user = request.user, memberfullname = fullname, memberemail = email, memberid = memberid, memberphone = memberphone, familyid = request.user.last_name)
 
         try:
             familymemberform.save()

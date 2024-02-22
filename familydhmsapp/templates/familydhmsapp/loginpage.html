@@ -68,11 +68,11 @@
                         <div><br/>
                             {% load socialaccount %}
                             <p class='loginwithgfoption'>or log in with</p>
-                            <a href="{% provider_login_url 'google' %}">Sign in with Google</a>
+                            {% comment %} <a href="{% provider_login_url 'google' %}">Sign in with Google</a> {% endcomment %}
                             <div class='googlesignin'>
                                 <div class='googlesigninforms'>
                                     <div>
-                                        <form action="{% provider_login_url "facebook" %}?next=/member/dashboard/" method='POST'>
+                                        {% comment %} <form action="{% provider_login_url "facebook" %}?next=/member/dashboard/" method='POST'> {% endcomment %}
                                             {% csrf_token %}
                                             <button type='submit'>
                                                 {% comment %} <p>Signin with FB</p> {% endcomment %}
@@ -80,7 +80,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <div>
+                                    {% comment %} <div>
                                         <form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>
                                             {% csrf_token %}
                                             <button type='submit' class='googlesigninner'>
@@ -89,7 +89,7 @@
                                                 </div>
                                             </button>
                                         </form>
-                                    </div>
+                                    </div> {% endcomment %}
                                 </div>
                             </div>
                         </div>

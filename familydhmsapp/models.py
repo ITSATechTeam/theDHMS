@@ -31,6 +31,7 @@ class FamilyMemberReg(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     memberfullname = models.CharField(max_length = 1500, null=True, blank = True)
     memberemail = models.EmailField(max_length = 1500, null=True, blank = True)
+    memberphone = models.CharField(max_length = 1500, null=True, blank = True)
     memberid = models.CharField(max_length = 1500, null=True, blank = True)
     familyid = models.CharField(max_length = 1500, null=True, blank = True)
 

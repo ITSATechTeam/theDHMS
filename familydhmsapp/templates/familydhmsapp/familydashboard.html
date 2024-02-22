@@ -9,6 +9,7 @@
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'famgeneral/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'familyinv/css/style.css' %} /> {% endcomment %}
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -103,8 +104,8 @@
 						<div class='introdetailsbar onmaintenance'>
 							<img src={% static 'familydashboard/img/maintenance.png' %} />
 							<div>
-								{% if AllMaintenancesCount  %}
-								<h1>{{ AllMaintenancesCount }}</h1>
+								{% if AllMaintenanceReqsCount  %}
+								<h1>{{ AllMaintenanceReqsCount }}</h1>
 								{% else %}
 								<h1>0</h1>
 								{% endif %}
@@ -134,7 +135,7 @@
 							<div class='graphdate'>
 								<img src={% static 'dashboard/img/calendar2.png' %} />
 								<select>
-									<option>2023</option>
+									<option>2024</option>
 								</select>
 							</div>
 						</div>
@@ -309,108 +310,133 @@
 			{% comment %} ENDS OF GRAPH FOR FAULTY DEVICES BY THE MONTH {% endcomment %}			
 		</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
-		<div class='registerDevice'>
-			<form method = 'POST'>
-				{% csrf_token %}
+		<div class='registerDevice registerDeviceinv'>
+			<form method = 'POST' enctype="multipart/form-data" >
+				{% csrf_token %}			
 				<div class='registerDeviceIntro'>
 					<div>
 						<h1>Add New Device</h1>
 					</div><br/><br/><br/><br/>
-					<div class='closeaddnewdeviceopoup'>
+					<div class='closedevpopdeviceopoup'>
 						<img src={% static 'dashboard/img/close2.png' %} />
 					</div>
 				</div>
-				<div>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Select device type</p> {% endcomment %}
-						<select required name='devicetype'>
-							<option>Select Device Kind</option>
-							<option value='Laptop'>Laptop</option>
-							<option value='Desktop'>Desktop</option>
-						</select>
-					</div><br/>
-					{% comment %} <input required name='deviceusedepartment' type='text' placeholder='Device Department' /><br/><br/> {% endcomment %}
-
-					<input required name='devicebrand' type='text' placeholder='Device Brand(eg: HP, Dell)' /><br/><br/>
-
-					<input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/>
-					
-					<select name='devicestatus'>
-						<option value='Working'>--Select Device Status--</option>
-						<option value='Working'>Working</option>
-						<option value='Faulty'>Faulty</option>
-						<option value='Critical'>Critical</option>
-					</select><br/><br/>
-
-					<input required name='deviceyearofpurchase' type='number' placeholder='Device Year Of Purchase eg: 2023' />
-
-					<input required name='FamilyUniqueCode' type='text' hidden value={{ request.user.email }} /><br/><br/>
-					{% comment %} <input name='FamilyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
-
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device Name</p> {% endcomment %}
-						<input required name='devicename' type='text'placeholder='Device Name' />
-					</div><br/>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device MAC ID</p> {% endcomment %}
-						<input required name='devicemacaddress' type='text'placeholder=' MAC Address (XX:XX:XX:XX:XX)' />
-					</div><br/>
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device IP Address</p> {% endcomment %}
-						<input required name='deviceip' type='text'placeholder='Device IP Address' />
-					</div><br/>
-					
-					<div class='adddevicedashboard'>
-						{% comment %} <p>Device Location</p> {% endcomment %}
-						<input required name='devicelocation' type='text'placeholder='Device Location' />
-						<input type='text' name='familyadmin' value={{request.user}} hidden />
+				<div class='registerDeviceinvinner'>
+					<div>
+						<h4>Upload pictures of device (optional): <h4>
+							<div>
+								<div class='uploaddevicepopup'>
+									<form method = 'POST' enctype="multipart/form-data">
+										{% comment %} {% csrf_token %} {% endcomment %}
+										<div>
+											<label for="images" class="drop-container">
+												<img src={% static 'familyinv/img/addgrey.png' %} />
+												{% comment %} <input type='text' hidden name='username' value = {{request.user}}  />
+												<input type='text' hidden name='savetimedata' class='sendsavetimedata'  /> {% endcomment %}
+												<div class="drop-title span"><h5>Click To Select Picture</h5></div>
+												{% comment %} or {% endcomment %}
+												<input accept="image/*" name='device_images' type="file" id="imagesdash">
+											</label>
+										</div>
+										{% comment %} PREVIEW OF UPLOADED IMAGE SETUP STARTS HERE {% endcomment %}
+										<div>											
+											<img id="previewimagedash" src="#" alt="your device's image" />
+										</div>
+										{% comment %} PREVIEW OF UPLOADED IMAGE SETUP ENDS HERE {% endcomment %}
+										{% comment %} <button type='submit'>Upload</button> {% endcomment %}
+									{% comment %} </form> {% endcomment %}
+								</div>
+	
+							</div>
 					</div>
-				</div><br/>
-				<hr/><br/>
-				<h4>Assign Device To A Family Member(Optional)</h4><br/>
-
-				<select name="deviceUserID" class="player-dropdown">
-					<option value='None'>--Select A Family Member--</option>
-					{% for allfamilymembers in allfamilymembers %}
-						<option value="{{ allfamilymembers.memberid}}">{{ allfamilymembers.memberfullname }} [{{ allfamilymembers.memberid}}]</option>
-					{% endfor %}
-				</select><br/><br/>
-
-				<button type='submit'>Register Device</button>
+					<div>
+						<div>
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Select device type</p> {% endcomment %}
+								<select required name='devicetype'>
+									<option>--Select Device Kind--</option>
+									<option value='Laptop'>Laptop</option>
+									<option value='Desktop'>Desktop</option>
+								</select>
+							</div><br/>
+							{% comment %} <input required name='deviceusedepartment' type='text' placeholder='Device Department' /><br/><br/> {% endcomment %}
+	
+							{% comment %} <input required name='devicebrand' type='text' placeholder='Device Brand(eg: HP, Dell)' /><br/><br/> {% endcomment %}							
+							<select required name='devicebrand'>
+								<option>--Select Device Brand--</option>
+								<option value='Dell'>Dell</option>
+								<option value='HP'>HP</option>
+								<option value='Samsung'>Samsung</option>
+								<option value='Toshiba'>Toshiba</option>
+								<option value='Acer'>Acer</option>
+								<option value='Not Listed'>Not listed</option>
+							</select><br/><br/> 
+	
+							{% comment %} <input required name='deviceos' type='text' placeholder='Device Operating System' /><br/><br/> {% endcomment %}
+							<select name='deviceos'>
+								<option>--Select Device Operating System--</option>
+								<option value='Windows OS'>Windows OS</option>
+								<option value='Mac OS'>Mac OS</option>
+								<option value='Linux Os'>Linux Os</option>
+							</select><br/><br/>
+							
+							<select name='devicestatus'>
+								<option>--Select Device Status--</option>
+								<option value='Working'>Working</option>
+								<option value='Faulty'>Faulty</option>
+								<option value='Critical'>Critical</option>
+							</select><br/><br/>
+	
+							{% comment %} <input required name='deviceyearofpurchase' type='number' placeholder='Device Year Of Purchase eg: 2024' /> {% endcomment %}
+							
+							<select name='deviceyearofpurchase'>
+								<option>--Select Device Year Of Purchase--</option>
+								<option value='2024'>2024</option>
+								<option value='2023'>2023</option>
+								<option value='2022'>2022</option>
+								<option value='2021'>2021</option>
+								<option value='2020'>2020</option>
+								<option value='2019'>older</option>
+							</select><br/><br/>
+	
+							<input required name='FamilyUniqueCode' type='text' hidden value={{ request.user.email }} />
+							{% comment %} <input name='FamilyUniqueCode' type='text' hidden value={{ request.user.last_name }} /><br/><br/> {% endcomment %}
+	
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device Name</p> {% endcomment %}
+								<input required name='devicename' type='text'placeholder='Device Name' />
+							</div><br/>
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device MAC ID</p> {% endcomment %}
+								<input required name='devicemacaddress' type='text'placeholder=' MAC Address (XX:XX:XX:XX:XX)' />
+							</div><br/>
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device IP Address</p> {% endcomment %}
+								<input required name='deviceip' type='text'placeholder='Device IP Address' />
+							</div><br/>
+							
+							<div class='adddevicedashboard'>
+								{% comment %} <p>Device Location</p> {% endcomment %}
+								<input required name='devicelocation' type='text'placeholder='Device Location' />
+								<input type='text' name='familyadmin' value={{request.user}} hidden />
+							</div>
+						</div><br/>
+						<hr/><br/>
+						<h4>Assign Device To A Family Member(Optional)</h4><br/>		
+						<select name="deviceUserID" class="player-dropdown">
+							<option value='None'>--Select A Family Member--</option>
+							{% for allfamilymembers in allfamilymembers %}
+								<option value="{{ allfamilymembers.memberid}}">{{ allfamilymembers.memberfullname }} [{{ allfamilymembers.memberid}}]</option>
+							{% endfor %}
+						</select><br/><br/>
+	
+						<button type='submit'>Register Device</button>
+					</div>
+				</div>
 			</form>
 		</div>
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION ENDS HERE {% endcomment %}
 
-		{% comment %} POP UP FOR DEVICE UPLOAD STARTS HERE {% endcomment %}
-		<div class='uploaddevicepopup'>
-			<div class='uploaddevicepopupintro'>
-				<h1>Upload A CSV File</h1>
-				<div class='uploaddevicepopupintroclose'>
-					<img src={% static 'dashboard/img/close2.png' %} />
-				</div>
-			</div>
-			<ul class='uploadguides'>
-				<li><p>To upload your list of devices, simply select click on the 'Upload' box below to select a CSV file.</p></l1>
-				{% comment %} <li>Please use <strong><a href={% url 'downloadSampleCSVHeaders' %}>this CSV File </a></strong>format as a guide</l1> {% endcomment %}
-				<li><p>Please use <strong><a href={% url 'downloadSampleFile' %}> this CSV File </a></strong>format as a guide</p></l1>
-				<li><p>Please note that the important field in the sample CSV file above are asterisked</p></l1>
-			</ul><br/>
-			<form method = 'POST' enctype="multipart/form-data" >
-				{% csrf_token %}
-				<div>
-					<label for="images" class="drop-container">
-						<img src={% static 'dashboard/img/csv.png' %} />
-						<input type='text' hidden name='username' value = {{request.user}}  />
-						<input type='text' hidden name='savetimedata' class='sendsavetimedata'  />
-						<span class="drop-title">Click To Select File</span>
-						{% comment %} or {% endcomment %}
-						<input  name='csv_file' type="file" id="images" required>
-						</label>
-				</div>
-				<button type='submit'>Upload</button>
-			</form>
-		</div>
-		{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}
 
 		{% comment %} REGISTER MY DEVICE POP STARTS HERE {% endcomment %}
 		<div class='regmydevicepopup'>
@@ -524,6 +550,7 @@
 			</div>
 		</div>
 		{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
+		{% comment %} <script src={% static 'familyinv/js/main.js' %}></script> {% endcomment %}
 
 		<script src={% static 'familydashboard/js/familydashboard.js' %}></script>
 		{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}

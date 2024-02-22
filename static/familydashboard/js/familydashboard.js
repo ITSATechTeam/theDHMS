@@ -76,15 +76,29 @@ filtercalendar.addEventListener('click', () =>{
 let addnewdevicebtn = document.querySelector('.addnewdevicebtn')
 let registerDevice = document.querySelector('.registerDevice')
 let closeaddnewdeviceopoup = document.querySelector('.closeaddnewdeviceopoup')
+let closedevpopdeviceopoup = document.querySelector('.closedevpopdeviceopoup')
 
 addnewdevicebtn.addEventListener('click', () => {
     registerDevice.style.display = 'block'
     shadow.style.display = 'block'
 })
-closeaddnewdeviceopoup.addEventListener('click', () => {
+
+if(closeaddnewdeviceopoup){
+    closeaddnewdeviceopoup.addEventListener('click', () => {
+        registerDevice.style.display = 'none'
+        shadow.style.display = 'none'
+    })
+}
+closedevpopdeviceopoup.addEventListener('click', () => {
+    console.log('clicked')
     registerDevice.style.display = 'none'
     shadow.style.display = 'none'
 })
+
+// if(closedevpopdeviceopoup){
+
+//     })
+// }
 // ADD DEVICE POPUP ENDS HERE
 
 
@@ -159,7 +173,10 @@ let date =  new Date().getFullYear();
 
 // send main savetimedata pack to db
 const savetimedata = document.querySelector('.sendsavetimedata');
-savetimedata.value = 'currentWeek is week '+ weekNumber +' and this month is ' + currentMonth +' and this year is year '+ date 
+if(savetimedata){
+    savetimedata.value = 'currentWeek is week '+ weekNumber +' and this month is ' + currentMonth +' and this year is year '+ date 
+
+}
 
 // // completeDetailsPopup SETUP ENDS HERE
 
@@ -248,6 +265,19 @@ document.querySelector('.greetuser').innerHTML = greet;
 
 
 
+
+// PREVIEW UPLOADED IMAGE FUNCTIONALITY STARTS HERE
+let previewimagedash = document.querySelector('#previewimagedash')
+let imagesdash = document.querySelector('#imagesdash')
+
+imagesdash.onchange = () => {
+    const [file] = imagesdash.files
+    if (file) {
+        previewimagedash.style.display = 'block'
+        previewimagedash.src = URL.createObjectURL(file)
+    }
+}
+// PREVIEW UPLOADED IMAGE FUNCTIONALITY ENDS HERE
 
 
 

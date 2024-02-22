@@ -6,6 +6,16 @@
 }
 
 
+.registerDeviceinvinner{
+    display: grid;
+    grid-template-columns: 40% 50%;
+    justify-content: space-between;
+}
+
+
+.registerDeviceinv{
+    display: none;
+}
 
 .pageerrortext{
     text-align: center;
@@ -107,7 +117,13 @@ body{
     display: flex;
     width: 100%;
     padding-right: 0px;
+    height: 120px;
+    padding-top: 10px;
     justify-content: space-between
+}
+
+.introdetailssection::-webkit-scrollbar{
+    display: none;
 }
 
 
@@ -717,9 +733,8 @@ tr:nth-child(1) {
     cursor: pointer;
 }
 
-
 .registerDevice{
-    width: 350px;
+    width: 750px;
     border-radius: 10px;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -728,9 +743,8 @@ tr:nth-child(1) {
     height: 80vh;
     overflow-y: scroll;
     top: 10%;
-    left: 40%;
-    z-index: 7;
-    display: none;
+    left: 25%;
+    z-index: 11;
 }
 
 .registerDevice form{
@@ -868,19 +882,28 @@ select{
 }
 
 
-.uploaddevicepopup{
-    width: 500px;
-    padding: 40px;
+
+
+.uploaddevicepopup2{
+    width: 100%;
+    padding: 10px 0px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
-    position: fixed;
-    left: 40%;
+    box-shadow: none;
+    position: relative;
+    left: 0%;
     top: 10%;
     background-color: white;
     z-index: 7;
-    display: none;
+    display: block;
 }
 
+
+#previewimagedash{
+    display: none;
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+}
 
 
 .profileimgproper img{
@@ -1131,6 +1154,10 @@ select{
     overflow: scroll;
 }
 
+.devicetypesummary::-webkit-scrollbar{
+    display: none;
+}
+
 .postherosectionB{
     margin-top: 0px;
 }
@@ -1153,6 +1180,10 @@ select{
     border-radius: 10px;
     height: 30px;
 }
+
+/* .container2::-webkit-scrollbar{
+    display: none;
+} */
 
 .deviceInvetorySection{
     width: 100%;
@@ -1526,13 +1557,12 @@ select{
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
         background-color: white;
         padding: 25px;
-        position: absolute;
+        position: fixed;
         height: 80vh;
         overflow-y: scroll;
         top: 10%;
         left: 0%;
-        z-index: 10;
-        display: none;
+        z-index: 11;
     }
 
     .registerDevice form{
@@ -1582,6 +1612,14 @@ select{
         /* text-align: center; */
         display: none;
     }
+
+    
+    .registerDeviceinvinner{
+        display: grid;
+        grid-template-columns: 100%;
+        justify-content: space-between;
+    }
+    
 
     
 

@@ -159,6 +159,7 @@
 					  <th>Name</th>
 					  <th>Member ID</th>
 					  <th>Email</th>
+					  <th>Phone Number</th>
 					  <th>Assigned Device ID(s)</th>
 					  <th>Device Type(s)</th>
 					  <th>Device Status(s)</th>
@@ -171,6 +172,7 @@
 							<td class={{ FamilyMemberReg.memberfullname }}>{{ FamilyMemberReg.memberfullname }}</td>
 							<td>{{ FamilyMemberReg.memberid }}</td>
 							<td class={{ FamilyMemberReg.memberemail }}>{{ FamilyMemberReg.memberemail }}</td>
+							<td class={{ FamilyMemberReg.memberphone }}>{{ FamilyMemberReg.memberphone }}</td>
 
 							<td>
 								{% for AllFamilyDevices in AllFamilyDevices %}
@@ -258,6 +260,9 @@
 					{% csrf_token %}
 					<label for='fullname'>Full Name</label><br/>
 					<input id='fullname' name='fullname' type='text' required placeholder='John Doe' /><br/><br/>
+					
+					<label for='memberphone'>Phone Number</label><br/>
+					<input id='memberphone' name='memberphone' type='number' required placeholder='Enter Phone Number' /><br/><br/>
 
 					<label for='email'>Email Address</label><br/>
 					<input id='email' name='email' type='email' required placeholder='johndoe@gmail.com' /><br/><br/>
