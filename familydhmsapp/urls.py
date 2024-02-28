@@ -10,6 +10,7 @@ urlpatterns = [
     path('familyinventory', views.FamilyInventory, name="FamilyInventory"),
     path('familysupport', views.FamilySupport, name="FamilySupport"),
     path('familydevicemaintain', views.FamilyDeviceMaintenance, name="FamilyDeviceMaintenance"),
+    path('familydevicemaintain/editmaintenancereq/<str:pk>/', views.EditFamilyMaintenanceRequest, name="EditFamilyMaintenanceRequest"),
     path('familyanalytics', views.FamilyAnalytics, name="FamilyAnalytics"),
     path('familymember', views.FamilyMembers, name="FamilyMembers"),
     path('familysettings', views.FamilySettings, name="FamilySettings"),

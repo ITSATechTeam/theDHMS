@@ -19,6 +19,67 @@
 }
 
 
+.Pending{
+    background-color: #FBF2CE;
+    border-radius: 10px;
+    padding: 5px;
+    width: 60px;
+    font-weight: bold;
+}
+
+
+.Ongoing{
+    background-color: #2a66b06b;
+    border-radius: 10px;
+    padding: 5px;
+    width: 60px;
+    font-weight: bold;
+}
+
+.Completed{
+    background-color: #C7F6CC;
+    border-radius: 10px;
+    padding: 5px;
+    width: 90px;
+    font-weight: bold;
+}
+
+.addsubadmindata{
+    text-align: left;
+}
+
+.addsubadmindata strong{
+    text-align: center;
+}
+
+
+.addsubadminmain img{
+    text-align: center;
+}
+
+
+.mainfamilymemberslistsection::-webkit-scrollbar{
+    display: none;
+}
+
+.mainfamilymemberslistsection{
+    margin-top: 20px;
+}
+
+
+table::-webkit-progress-bar{
+    display: none;
+}
+
+
+.Cancelled{
+    background-color: rgba(255, 0, 0, 0.185);
+    border-radius: 10px;
+    padding: 5px;
+    width: 90px;
+    font-weight: bold;
+}
+
 .memberaction2{
     position: absolute;
     right: 40px;
@@ -31,3 +92,59 @@
     display: none;
     z-index: 10;
 }
+
+.editmaintenancerequest button{
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+}
+
+.selectmaintenancebox select{
+    width: 300px;
+}
+
+.editmaintenancerequest h3{
+    padding-bottom: 10px;
+}
+.editmaintenancerequest h4{
+    padding-bottom: 5px;
+}
+
+.selectmaintenancebutton{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+    .selectmaintenancebox select{
+        width: 90%;
+    }
+
+}
+

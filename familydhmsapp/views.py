@@ -9,6 +9,7 @@ from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from datetime import datetime
 from datetime import date
+from .forms import UpdateFamilyMaintainanceReq
 from django.db.models import Q
 import json
 
@@ -121,7 +122,7 @@ def UserLogin(request):
 
     return render(request, 'familydhmsapp/loginpage.html')
 
-import requests
+# import requests
 @login_required(login_url='UserLogin')
 def FamilyDHMSDashboard(request):
     # GET DEVICE INFO
@@ -522,6 +523,22 @@ def FamilyDeviceMaintenance(request):
 
 
 @login_required(login_url='UserLogin')
+def EditFamilyMaintenanceRequest(request, pk):
+    selectedmaintain = FamilyMaintainanceReq.objects.get(id=pk)
+    form = UpdateFamilyMaintainanceReq(request.POST or None, instance = selectedmaintain)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Maintenance status updated successfully')
+            return redirect('FamilyDeviceMaintenance')
+        else:
+            messages.error(request, 'Error updating maintenance request')
+            return redirect('FamilyDeviceMaintenance')
+    context = {'form':form, 'selectedmaintain':selectedmaintain}
+    return render(request, 'familydhmsapp/editfamilymaintain.html', context)
+
+
+@login_required(login_url='UserLogin')
 def FamilyAnalytics(request):
     return render(request, 'familydhmsapp/familyanalytics.html')
 
@@ -662,7 +679,7 @@ def FamilyDeviceDetails(request, deviceid):
             uniqueMaintenanceID = 'Maintainance -'  + get_random_string(length=5)
             title = request.POST['title']
             description = request.POST['details']
-            FamilyMaintainanceReqForm = FamilyMaintainanceReq(maintaindeviceID = curretdevice.deviceid, user = request.user,
+            FamilyMaintainanceReqForm = FamilyMaintainanceReq(maintaindeviceID = curretdevice.deviceid, user = request.user, maintainanceRequester = request.user,
             maintainancetitle = title, maintainancedescription = description, maintainanceID = uniqueMaintenanceID, FamilyUniqueCode = request.user.last_name)
             FamilyMaintainanceReqForm.save()
 

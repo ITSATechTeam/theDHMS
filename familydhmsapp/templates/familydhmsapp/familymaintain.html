@@ -32,12 +32,12 @@
 					<h1>Maintenance</h1>
 					<h4>Have your devices fixed with zero hassles</h4>
 				</div>
-				<div class='familymemberintrobtn'>
+				{% comment %} <div class='familymemberintrobtn'>
 					<button>
 						<img src={% static 'familymembers/img/add.png' %} />
 						Request Maintenance
 					</button>
-				</div>
+				</div> {% endcomment %}
 			</div>
 				
 			<div id="flash" class='flashmessage'>
@@ -67,8 +67,7 @@
 				{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
 				<div class='deviceinventorymaintop'>
 					<div class='searchdashboardsection'>
-						<div class='searchdashboard'>
-							{% comment %} <form method='GET' action="{% url 'Searchresult' %}"> {% endcomment %}
+						{% comment %} <div class='searchdashboard'>
 							<form>
 								<input type='text' name='q' placeholder='Search Devices' />
 							</form>
@@ -80,11 +79,7 @@
 								<img src={% static 'familymembers/img/filter.png' %} />
 								<p>Filter by Category</p>
 							</div>
-							{% comment %} <div class='filter filtercategory filter2'>
-								<img src={% static 'inventory/img/filter.png' %} />
-								<p>Filter by Device Status</p>
-							</div> {% endcomment %}
-						</div>
+						</div> {% endcomment %}
 						
 						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
 						<div class='filterbox filterbox1'>
@@ -131,18 +126,12 @@
 						</div> {% endcomment %}
 					</div>
 					<div class='searchsidebtns'>
-						{% comment %} <div class='uploaddevicecsv showdeviceuploadpopup'>
-							<button>
-								<img src={% static 'dashboard/img/uploaddevice.png' %} />
-								<p>Upload</p>
-							</button>
-						</div> {% endcomment %}
 						<div class='scannetworkbtn'>
 							<a>
-								<button class='scannetworkbtn'>
+								{% comment %} <button class='scannetworkbtn'>
 									<img src={% static 'familymembers/img/export.png' %} />
 									<p>Export</p>
-								</button>
+								</button> {% endcomment %}
 							</a>
 						</div>
 					</div>
@@ -155,13 +144,12 @@
 						<input type='radio' />
 					  </th>
 					  <th>Device ID</th>
-					  {% comment %} <th>Serial NO</th> {% endcomment %}
-					  {% comment %} <th>Model</th> {% endcomment %}
-					  {% comment %} <th>Operating system</th> {% endcomment %}
 					  <th>Maintenance Title</th>
 					  <th>Maintenance Desc.</th>
 					  <th>Maintenance ID</th>
-					  {% comment %} <th>Request by</th> {% endcomment %}
+					  <th>Maintenance Status</th>
+					  <th>Requested By</th>
+					  <th>Action</th>
 					  <th></th>
 					</tr>
 					{% for AllFamilyMaintainanceReq in AllFamilyMaintainanceReq %}
@@ -169,19 +157,13 @@
 						<tr class='item'>
 							<td><input type='radio' /></td>
 							<td>{{ AllFamilyMaintainanceReq.maintaindeviceID }}</td>
-							<td >{{ AllFamilyMaintainanceReq.maintainancetitle }}</td>
-							<td >{{ AllFamilyMaintainanceReq.maintainancedescription }}</td>
-							<td >{{ AllFamilyMaintainanceReq.maintainanceID }}</td>
+							<td>{{ AllFamilyMaintainanceReq.maintainancetitle }}</td>
+							<td>{{ AllFamilyMaintainanceReq.maintainancedescription }}</td>
+							<td>{{ AllFamilyMaintainanceReq.maintainanceID }}</td>
+							<td><p class="{{ AllFamilyMaintainanceReq.MaintainStatus }}">{{ AllFamilyMaintainanceReq.MaintainStatus }}<p></td>
+							<td>{{ AllFamilyMaintainanceReq.maintainanceRequester }}</td>
 
-							{% comment %} <td>
-								{% for AllFamilyDevices in AllFamilyDevices %}
-								{% if AllFamilyDevices.deviceUserID == AllFamilyMaintainanceReq.memberid %}
-								<a href=''>{{ AllFamilyDevices.deviceid }}</a><br/>
-								{% endif %}
-								{% endfor %}
-							</td> {% endcomment %}
-
-							{% comment %} <td class='actiongensection'>
+							<td class='actiongensection'>
 								<div class='actionbtns'>
 									<img src={% static 'familymembers/img/action.png' %} />
 								</div>
@@ -190,20 +172,27 @@
 										<img src={% static 'familyinv/img/eye.png' %} />
 										<p>View Details</p>
 									</div>
-									<div class='memberactioninner'>
+									<a href= "/familydhms/familydevicemaintain/editmaintenancereq/{{ AllFamilyMaintainanceReq.id }}" ><div class='memberactioninner'>
 										<img src={% static 'familyinv/img/edit.png' %} />
-										<p>Edit Member Details</p>
-									</div>
-									<div class='memberactioninner'>
-										<img src={% static 'familyinv/img/bin.png' %} />
-										<p>Remove Member</p>
-									</div>
-									<div class='memberactioninner'>
-										<img src={% static 'familyinv/img/admin.png' %} />
-										<p>Make Admin</p>
-									</div>
+										<p>Edit Maintenance Status</p>
+									</div></a>
 								</div>
-							</td> {% endcomment %}
+								<div class='addsubadmin'>
+									<div class='addsubadminclosebtn'>
+										<img src={% static 'familymembers/img/x.png' %} />
+									</div>
+									<div class='addsubadminmain'>
+										<img src={% static 'familymaintain/img/maintaindevice.png' %} />
+									</div><br/><br/>
+									<h3><strong>Maintenance Request Details</strong><h3>
+									<div class='addsubadmindata'>
+										<h4>Maintenance Request ID: <strong>{{AllFamilyMaintainanceReq.maintainanceID}}</strong></h4>
+										<h4>Device ID: <strong>{{AllFamilyMaintainanceReq.maintaindeviceID }}</strong></h4>
+										<h4>Requested By: <strong>{{AllFamilyMaintainanceReq.maintainanceRequester}}</strong></h4>
+										<h4>Date Requested: <strong>{{AllFamilyMaintainanceReq.created_at}}</strong></h4>
+									</div>									
+								</div>
+							</td>
 						</tr>
 					</div>
 					{% endfor %}
@@ -211,7 +200,8 @@
 			</div>
 			{% comment %} MAIN SECTION ENDS IMMEDIATELY BELOW {% endcomment %}
         </main>
-		<script src={% static 'familymaintain/js/familymaintain.js' %}></script>
+		{% comment %} <script src={% static 'familymaintain/js/familymaintain.js' %}></script> {% endcomment %}
+		<script src={% static 'familymembers/js/familymembers.js' %}></script>
     </body>
 </html>
 {% endblock content %}

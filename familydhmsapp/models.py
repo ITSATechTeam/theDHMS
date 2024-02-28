@@ -11,6 +11,14 @@ DEVICE_HEALTH_STATUS = (
     ("Critical", "Critical"),
 )
 
+
+MAINTAINANCE_STATUS_CHOICE = (
+    ("Completed", "Completed"),
+    ("Cancelled", "Cancelled"),
+    ("Ongoing", "Ongoing"),
+    ("Pending", "Pending"),
+)
+
 class Familyregister(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     email = models.EmailField(max_length= 200, null=True, blank = True)
@@ -118,7 +126,9 @@ class FamilyMaintainanceReq(models.Model):
     maintainancetitle = models.CharField(max_length= 200, null=True, blank = True)
     maintainancedescription = models.CharField(max_length= 200, null=True, blank = True)
     maintainanceID = models.CharField(max_length= 200, null=True, blank = True)
+    maintainanceRequester = models.CharField(max_length= 200, null=True, blank = True)
     FamilyUniqueCode = models.CharField(max_length = 130, null=True, blank = True)
+    MaintainStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_STATUS_CHOICE, default = 'Pending', null=True, blank = True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)

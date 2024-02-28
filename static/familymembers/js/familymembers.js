@@ -4,15 +4,21 @@ let addfampopup = document.querySelector('.addfampopup')
 let shadow = document.querySelector('.shadow')
 let addfampopupheadclosebtn = document.querySelector('.addfampopupheadclosebtn')
 
-familymemberintrobtn.addEventListener('click', () => {
-    addfampopup.style.display = 'block'
-    shadow.style.display = 'block'
-})
+if (familymemberintrobtn){
+    familymemberintrobtn.addEventListener('click', () => {
+        addfampopup.style.display = 'block'
+        shadow.style.display = 'block'
+    })
+}
 
-addfampopupheadclosebtn.addEventListener('click', () => {
-    addfampopup.style.display = 'none'
-    shadow.style.display = 'none'
-})
+
+if(addfampopupheadclosebtn){
+    addfampopupheadclosebtn.addEventListener('click', () => {
+        addfampopup.style.display = 'none'
+        shadow.style.display = 'none'
+    })
+
+}
 
 // HANDLE FLASH MESSAGES ON FAMILY MEMBER AREA STARTS HERE
 let flashfammember = document.querySelector('.alert')

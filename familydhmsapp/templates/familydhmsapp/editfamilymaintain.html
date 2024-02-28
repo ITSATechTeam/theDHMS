@@ -1,0 +1,81 @@
+<!-- @format -->
+{% include 'famgeneral.html' %} 
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familymembers/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familymaintain/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Edit Maintenance Request | DHMS Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<div class='shadow'></div>	
+	{% if allSignupsForUpdatePopup %}
+	{% else %}
+	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
+	{% endif %}
+	<body class='body'>
+		<div class='main'>
+			<div class='familymemberintro'>
+				<div>
+					<h1>Edit Maintenance Request Status</h1>
+					<h4>Have your devices fixed with zero hassles</h4>
+				</div>
+			</div>
+				
+			<div id="flash" class='flashmessage'>
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong>{{ message }}</strong>
+					{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+			{% comment %} EMPTY STATE STARTS HERE {% endcomment %}
+			
+			<div class='editmaintenancerequest'>
+				<div class='addsubadminclosebtn'>
+					<img src={% static 'familymembers/img/x.png' %} />
+				</div>
+				<div class='addsubadminmain'>
+					<img src={% static 'familymaintain/img/maintaindevice.png' %} />
+				</div><br/><br/>
+				<h3>Maintenance Details<h3>
+				<h4>Maintenance Title: <strong>{{ selectedmaintain.maintainancetitle }}</strong></h4>
+				<h4>Maintenance Description: <strong>{{ selectedmaintain.maintainancedescription }}</strong> </h4>
+				<h4>Maintenance ID: <strong>{{ selectedmaintain.maintaindeviceID }}</strong> </h4>
+				<h4>Maintenance Reqeusted By: <strong>{{ selectedmaintain.maintainanceRequester }}</strong> </h4>
+				<h4>Current Maintenance Status: <strong>{{ selectedmaintain.MaintainStatus }}</strong> </h4>
+				<form method='POST'>
+					{% csrf_token %}
+					<div class='selectmaintenancebox'>
+						<h4>Update Status: <strong>{{form.MaintainStatus}}</strong></h4>
+					</div>
+					<div class='selectmaintenancebutton'>
+						<a href= {% url 'FamilyDeviceMaintenance' %} ><h4>Cancel</h4></a>
+						<a class='addsubadminbtns2' href= "familysubadmin/{{FamilyMemberReg.id}}/" ><button name='submit'><h4>Update</h4></button></a>
+					</div>
+				</form><br/></br>
+			</div>
+			{% comment %} MAIN SECTION ENDS IMMEDIATELY BELOW {% endcomment %}
+        </main>
+		{% comment %} <script src={% static 'familymaintain/js/familymaintain.js' %}></script> {% endcomment %}
+		<script src={% static 'familymembers/js/familymembers.js' %}></script>
+    </body>
+</html>
+{% endblock content %}
+
+
+
+

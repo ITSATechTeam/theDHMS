@@ -8,6 +8,7 @@
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'familydashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'familydashboard/css/supportstyle.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,8 +25,44 @@
 	{% comment %} <div class='shadowForPreReg'></div> {% endcomment %}
 	{% endif %}
 	<body class='body'>
-		<div class='main'>
-        </main>
+		<div class='main'>			
+			<div class='familymemberintro'>
+				<div>
+					<h1>How can we help?</h1>
+					<h4>Having any difficulties? We’ve got you covered.</h4>
+				</div>
+			</div>
+			<div class='searchdashboard'>
+				<div class='searchdashboardinner'>
+					<form>
+						<input type='text' name='q' placeholder='Search Support Question' />
+					</form>
+					<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
+				</div>
+			</div>
+			<div class='supportboxout'>
+				<div class='supportbox'>
+					<img src={% static 'familydashboard/img/supporttrack.png' %} />
+					<h4>I want to track my device repairs</h4>
+				</div>
+				<div class='supportbox'>
+					<img src={% static 'familydashboard/img/supportfamily.png' %} />
+					<h4>I want parental control over my kid(s)’ devices</h4>
+				</div>
+				<div class='supportbox supportbox3'>
+					<img src={% static 'familydashboard/img/supportrepair.png' %} />
+					<h4>I want instant service to fix my device</h4>
+				</div>
+			</div>
+
+			<div class='supportcontactus'>
+				<h4>You want something else?</h4>
+				<h5>You have no worries at all. <a href="mailto:franklin.i@itservicedeskafrica.com">Contact Us.</a></h5>
+			</div>
+
+		<a href='tel:+23480-3566-8211'><div class='supportcall'>
+			<img src={% static 'familydashboard/img/supportcallicon.png' %} />
+		</div></a>
     </body>
 </html>
 {% endblock content %}
