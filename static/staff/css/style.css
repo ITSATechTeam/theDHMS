@@ -16,6 +16,20 @@ body{
     width: 98%;
 }
 
+.staffcountout{
+    align-items: center;
+}
+
+.staffcount{
+    background-color: #EAF0F7;
+    font-size: 1.5rem;
+    padding: 3px 5px;
+    color: #2A66B0;
+    font-weight: bold;
+    margin-left: 5px;
+    border-radius: 10px;
+}
+
 
 .flash {
     color: #2A66B0;
@@ -99,7 +113,7 @@ body{
     top: 10%;
     height: 85%;
     overflow-y: scroll;
-    margin-left: 45%;
+    margin-left: 25%;
     background-color: white;
     padding: 17px;
     border-radius: 10px;
@@ -109,6 +123,40 @@ body{
     transition: 0.5s ease-in-out;
     display: none;
 }
+
+.staffemptystatesection{
+    text-align: center;
+    padding: 10px;
+}
+
+.staffemptystatesection img {
+    width: 280px;
+    margin: 10px;
+}
+
+.staffemptystatesectionbtn img{
+    width: 10px;
+    margin: 0px;
+    margin-right: 5px;
+}
+
+.staffemptystatesectionbtn button{
+    background-color: #2A66B0;
+    display: flex;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    align-items: center;
+    margin: auto;
+    padding: 0px 10px;
+    font-weight: 500;
+    font-size: 1.3rem;
+}
+
+.staffemptystatesectionbtn p{
+    margin-top: 10px;
+}
+
 
 .regsiteruser p{
     font-size: 1.4rem;
@@ -176,11 +224,11 @@ body{
 
 .shadow1{
     position: fixed;
-    margin-left: 220px;
+    margin-left: 0px;
     height: 140%;
     padding: 20px;
     /* border-radius: 10px; */
-    width: 90%;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.233);
     z-index: 6;
     transition: 0.5s ease-in-out;

@@ -24,8 +24,9 @@
 		<div class='main'>
 			<div class='maintop'>
 				<div>
-					<h1>Registered Staff</h1>
-					<h5>You have <span>{{ staffCount }}</span> registered staff members.</h5>
+					<h1 class='staffcountout'>Staff Members<span class='staffcount'>{{ staffCount }}</span></h1>
+					{% comment %} <h5>You have <span>{{ staffCount }}</span> registered staff members.</h5> {% endcomment %}
+					<h5>Manage all staff members and their assigned devices.</h5>
 				</div>
 				
 				<div id="flash">
@@ -39,12 +40,12 @@
 			</div>
       <div class='staffsearch'>
           <div class='searchdashboardout'>
-              <div class='searchdashboard'>
+              {% comment %} <div class='searchdashboard'>
                 <form method='GET' action="{% url 'Searchresult' %}">
                     <input type='text' name='q' placeholder='Search Staff' />
                 </form>
                   <img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
-              </div>
+              </div> {% endcomment %}
               
           {% comment %} <div class='filter filtercategory'>
             <img src={% static 'inventory/img/filter.png' %} />
@@ -78,6 +79,7 @@
           </div>
       </div>
       {% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+      {% if staffMembers %}
       <div class='staffpagetable'>
         <table>
           <tr>
@@ -188,6 +190,24 @@
         </div>
       </div>
     </div>
+    {% else %}
+    <div class='staffemptystatesection'>
+      <div>
+        <img src={% static 'staffgeneral/img/staffemptystate.png' %} />
+        <h4>No staff members added yet?</h4>
+        <h5>Add your first staff member</h5>
+        <div class='staffemptystatesectionbtn'>
+          <button>
+              <img src={% static 'dashboard/img/add.png' %} />
+              <p>Add New Staff</p>
+          </button>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+
+
     <div class='regsiteruser'>
         <div class='adduserintro'>
             <h1>Add New User</h1>
