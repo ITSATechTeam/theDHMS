@@ -60,6 +60,7 @@
 					</h5> {% endcomment %}
 				</div>
 			</div>
+			{% if allMaintains %}
 			<div>
 				<div class='maintainReqMainOut'>
 					<div class='maintainReqMain'>
@@ -91,6 +92,8 @@
 					</div>
 				</div>
 			</div>
+
+
 			<div>
 			{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
 			<div class='deviceinventorymaintop'>
@@ -362,6 +365,22 @@
 				</div>
 				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
 			</div>
+
+			{% else %}
+			
+            <div class='maintenanceemptystate'>
+                <img class='addSubadminMainIMG' src={% static 'subadmin/img/subadmin.png' %} />
+                <h4>No sub Admins have been assigned. </h4>
+					<h5>Click Add Sub Admin to assign a sub-Admin</h5>
+                <a href={% url 'DeviceInventory' %}><div class='addSubadminMainBTN'>
+                    <img src={% static 'subadmin/img/add.png' %} />
+                    <button>Request Maintenance</button>
+                </div>
+            </div></a>
+
+			{% endif %}
+
+
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
         </div>
 		{% comment %} MAIN ENDS HERE {% endcomment %}

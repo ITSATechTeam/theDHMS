@@ -20,6 +20,23 @@ body{
     font-size: 1.4rem;
 }
 
+.maintenanceemptystate{
+    text-align: center;
+}
+
+.maintenanceemptystate img{
+    margin: 20px;
+}
+
+.maintenanceemptystate button{
+    background-color:#2A66B0;
+    color: white;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+}
+
 
 .subIntroSection{
     display: flex;

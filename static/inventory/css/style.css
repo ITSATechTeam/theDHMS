@@ -48,10 +48,10 @@ body{
 
 .shadow2{
     position: fixed;
-    margin-left: 220px;
+    margin-left: 0px;
     height: 140%;
     padding: 20px;
-    width: 90%;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.233);
     z-index: 6;
     transition: 0.5s ease-in-out;
@@ -536,9 +536,38 @@ background: #0085b6;
     overflow-x: scroll;
 }
 
+.devinvemptystate{
+    text-align: center;
+}
+
+.devinvemptystate img{
+    margin-bottom: 20px;
+}
+
+.devinvemptystatebtn button{
+    background-color: #2A66B0;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 2px 10px;
+    color: white;
+    padding-top: 5px;
+    margin: auto;
+    display: flex;
+}
+
+.devinvemptystatebtn p{    
+    margin-top: 3px;
+}
 
 
+.devinvemptystatebtn img{
+    margin-right: 10px;
+    margin-bottom: 0px;
+    margin-top: 5px;
 
+}
 
 
 

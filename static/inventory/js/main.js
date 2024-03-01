@@ -1,10 +1,16 @@
 // ADD DEVICE POPUP STARTS HERE
 let addnewdevicebtn = document.querySelector('.addnewdevicebtn')
+let devinvemptystatebtn = document.querySelector('.devinvemptystatebtn')
 let registerDevice = document.querySelector('.registerDevice')
 let shadow = document.querySelector('.shadow2')
 let closeaddnewdeviceopoup = document.querySelector('.closeaddnewdeviceopoup')
 
 addnewdevicebtn.addEventListener('click', () => {
+    registerDevice.style.display = 'block'
+    shadow.style.display = 'block'
+})
+
+devinvemptystatebtn.addEventListener('click', () => {
     registerDevice.style.display = 'block'
     shadow.style.display = 'block'
 })

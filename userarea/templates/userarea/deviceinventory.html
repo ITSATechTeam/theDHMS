@@ -55,6 +55,7 @@
 					</a>
 				</div>
 			</div>
+			{% if allUploadedDevices %}
 			{% comment %} SUBTOP SECTION STARTS HERE {% endcomment %}
 			<div class='sectionintro'>
 				<div class='introbox'>
@@ -418,6 +419,20 @@
 				</div>
 				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
 			</div>
+			{% else %}
+				<div class='devinvemptystate'>
+					<img  src={% static 'inventory/img/Character.png' %}/>
+					<h4>No Device Registered Yet</h4>
+					<h5>Onboard Organizational Devices, In Order To Request & Track Maintenance</h5>
+					<div class='devinvemptystatebtn'>
+						<button>
+							<img src={% static 'dashboard/img/add.png' %} />
+							<p>Add New Device</p>
+						</button>
+					</div>
+				</div>
+			{% endif %}
+
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
 		<div class='registerDevice'>
 			<form method = 'POST'>
