@@ -98,7 +98,11 @@ INSTALLED_APPS = [
     'staffapp.apps.StaffappConfig',
     'familydhmsapp.apps.FamilydhmsappConfig',
     'dhmsadminboard.apps.DhmsadminboardConfig',
-    # 
+    'dhmsapiapp.apps.DhmsapiappConfig',
+    # 'DMHSAPI.apps.DhmsapiConfig',
+    'rest_framework',
+    
+    #  
     
     'django.contrib.sites',
     'allauth',
@@ -113,6 +117,7 @@ INSTALLED_APPS = [
     'storages',
     'pwa'
 ]
+
 
 
 # # IF I WAS TO USE DIFFERENT PROVIDES, I'LL LIST SIMILAR CODE BELOW FOR THAT PROVIDER.
@@ -178,6 +183,23 @@ AUTHENTICATION_BACKENDS = [
     # 
     # 'django_python3_ldap.auth.LDAPBackend',
 ]
+
+# REST_FRAMEWORK = {
+#     # Use Django's standard `django.contrib.auth` permissions,
+#     # or allow read-only access for unauthenticated users.
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+#     ]
+# }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
+}
 
 
 SOCIALACCOUNT_AUTO_SIGNUP = False

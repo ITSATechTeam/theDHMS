@@ -5,7 +5,6 @@ from . import views
 urlpatterns = [
     path('nav/', views.NavBar, name="NavBar"),
     path('dashboard/', views.Dashboard, name="Dashboard"),
-    # path('uploaddevices/', views.UploadDevices, name="UploadDevices"),
     path('devicesinventory/', views.DeviceInventory, name="DeviceInventory"),
     path('savedevice/', views.SaveDevice, name="SaveDevice"),
     path('staffmembers/', views.StaffMembers, name="StaffMembers"),

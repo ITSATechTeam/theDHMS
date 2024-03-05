@@ -11,6 +11,7 @@ msal_urls = MsalViews(settings.MS_IDENTITY_WEB).url_patterns()
 # path(f'{settings.AAD_CONFIG.django.auth_endpoints.prefix}/', include(msal_urls)),
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("useronboard.urls")),
@@ -19,6 +20,7 @@ urlpatterns = [
     path('auth/', include("staffapp.urls")),
     path('familydhms/', include("familydhmsapp.urls")),
     path('superadmin/', include("dhmsadminboard.urls")),
+    path('api/', include("dhmsapiapp.urls")),
 
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name='password_reset_confirm'),
@@ -35,6 +37,7 @@ urlpatterns = [
     # PWA
     path('', include("pwa.urls")),
 ]
+
 
 if settings.DEBUG:
      urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

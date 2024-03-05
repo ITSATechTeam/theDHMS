@@ -27,7 +27,7 @@ class SignupForm(models.Model):
     companyname = models.CharField(max_length=200, null=True, blank=True)
     companyUniqueID = models.CharField(max_length=200, null=True, blank=True)
     email = models.EmailField(max_length=200, null=True, blank=True)
-    phone = models.CharField(max_length=200, null=True, blank=True)
+    phone = models.IntegerField(null=True, blank=True)
     city = models.CharField(max_length=200, null=True, blank=True)
     country = models.CharField(max_length=200, null=True, blank=True)
     password = models.CharField(max_length=200, null=True, blank=True)
