@@ -124,56 +124,6 @@
             </div>
             {% comment %} MID PAGE SECTION ENDS HERE {% endcomment %}
         </main>
-        {% comment %} OFFERS SECTION STARTS HERE {% endcomment %}
-        <div class='offerSection scroll-element js-scroll slide-left'>
-            <img class='ucurve' src={% static 'Home/img/u_curve.png' %} />
-            <div class='offerSectionOut'>
-                <div class='offerSectionInner'>
-                    <h4>Enterprise Package</h4>
-                    <div class='offerproper'>
-                        <img src={% static 'Home/img/enterprice_package.png' %} />
-                        <p>1 – 50 Desktops or Laptops</p>
-                    </div>
-                    <div class='offerproperCost'>
-                        <p><strong>N3,000</strong>/Month</p>
-                    </div>
-                </div>
-                <div class='offerSectionInner'>
-                    <h4>SME Package</h4>
-                    <div class='offerproper'>
-                        <img src={% static 'Home/img/sme_package.png' %} />
-                        <p>50+ to 200 Desktops or Laptops</p>
-                    </div>
-                    <div class='offerproperCost'>
-                        <p><strong>N2,500</strong>/Month</p>
-                    </div>
-                </div>
-            </div>
-            <div class='offerSectionOut'>
-                <div class='offerSectionInner'>
-                    <h4>Optimum Package</h4>
-                    <div class='offerproper'>
-                        <img src={% static 'Home/img/optimum_package.png' %} />
-                        <p>500+ Desktops or Laptops</p>
-                    </div>
-                    <div class='offerproperCost'>
-                        <p><strong>N1,000</strong>/Month</p>
-                    </div>
-                </div>
-                <div class='offerSectionInner'>
-                    <h4>MSME Package</h4>
-                    <div class='offerproper'>
-                        <img src={% static 'Home/img/MSME_Package.png' %} />
-                        <p>200+ to 500 Desktops or Laptops</p>
-                    </div>
-                    <div class='offerproperCost'>
-                        <p><strong>N2,000</strong>/Month</p>
-                    </div>
-                </div>
-            </div>
-            <img class='ncurve' src={% static 'Home/img/n_curve.png' %} />
-        </div>
-        {% comment %} OFFERS SECTION ENDS HERE {% endcomment %}
         {% comment %} TESTIMONIAL SECTION STARTS HERE {% endcomment %}
         <main>
             <div class='testimonialsOut scroll-element js-scroll slide-right'>
@@ -225,6 +175,82 @@
             </div>
         </main>
         {% comment %} TESTIMONIAL SECTION ENDS HERE {% endcomment %}
+        {% comment %} OFFERS SECTION STARTS HERE {% endcomment %}
+        <div class='offerSection scroll-element js-scroll slide-left'>
+            <div class='plansintrosection'>
+                <img src={% static 'home/img/dhmscirclesmall.png' %} />
+                <h3>DHMS Subscription Plans</h3>
+            </div>
+            <img class='ucurve' src={% static 'Home/img/u_curve.png' %} />
+            <div class='offerSectionOut'>
+                <div class='offerSectionInner'>
+                    {% comment %} <h4>Organization Package</h4> {% endcomment %}
+                    <div>
+                        <img src={% static 'Home/img/orgdhms.png' %} />
+                    </div>
+                    {% comment %} <div class='offerproper'>
+                        <img src={% static 'Home/img/enterprice_package.png' %} />
+                        <p>1 – 50 Desktops or Laptops</p>
+                    </div>
+                    <div class='offerproperCost'>
+                        <p><strong>N3,000</strong>/Month</p>
+                    </div> {% endcomment %}
+                </div>
+                <div class='offerSectionInner'>
+                    {% comment %} <h4>Family Package</h4> {% endcomment %}
+                    <div>
+                        <img src={% static 'Home/img/familydhms.png' %} />
+                    </div>
+                    {% comment %} <div class='offerproper'>
+                        <img src={% static 'Home/img/sme_package.png' %} />
+                        <p>50+ to 200 Desktops or Laptops</p>
+                    </div>
+                    <div class='offerproperCost'>
+                        <p><strong>N2,500</strong>/Month</p>
+                    </div> {% endcomment %}
+                </div>
+                <div class='offerSectionInner'>
+                    {% comment %} <h4>Student Package</h4> {% endcomment %}
+                    <div>
+                        <img src={% static 'Home/img/studentdhms.png' %} />
+                    </div>
+                    {% comment %} <div class='offerproper'>
+                        <img src={% static 'Home/img/optimum_package.png' %} />
+                        <p>500+ Desktops or Laptops</p>
+                    </div>
+                    <div class='offerproperCost'>
+                        <p><strong>N1,000</strong>/Month</p>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            <div class='offerSectionOut'>
+                <div class='offerSectionInner'>
+                    {% comment %} <h4>Student Package</h4> {% endcomment %}
+                    {% comment %} <div>
+                        <img src={% static 'Home/img/orgdhms.png' %} />
+                    </div> {% endcomment %}
+                    {% comment %} <div class='offerproper'>
+                        <img src={% static 'Home/img/optimum_package.png' %} />
+                        <p>500+ Desktops or Laptops</p>
+                    </div>
+                    <div class='offerproperCost'>
+                        <p><strong>N1,000</strong>/Month</p>
+                    </div> {% endcomment %}
+                </div>
+                {% comment %} <div class='offerSectionInner'>
+                    <h4>MSME Package</h4>
+                    <div class='offerproper'>
+                        <img src={% static 'Home/img/MSME_Package.png' %} />
+                        <p>200+ to 500 Desktops or Laptops</p>
+                    </div>
+                    <div class='offerproperCost'>
+                        <p><strong>N2,000</strong>/Month</p>
+                    </div>
+                </div> {% endcomment %}
+            </div>
+            <img class='ncurve' src={% static 'Home/img/n_curve.png' %} />
+        </div>
+        {% comment %} OFFERS SECTION ENDS HERE {% endcomment %}
         {% comment %} SECOND CTA BOX STARTS HERE {% endcomment %}
         <div class='secondCTA scroll-element js-scroll slide-right'>
             <h1>

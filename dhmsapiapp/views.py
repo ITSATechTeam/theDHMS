@@ -40,7 +40,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['GET'])
 # @permission_classes((permissions.AllowAny,))
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def All_Organization(request):
     AllUser = SignupForm.objects.all()
     serializer = RegisterSerializer(AllUser, many=True)
@@ -256,7 +256,64 @@ def View_Org_All_Devices(request, UniqueID):
         })
 
 
+@api_view(['GET'])
+def View_Org_Staff(request, UniqueID):
+    if request.method == 'GET':
+        print(UniqueID)
+        FindOrgStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = UniqueID)
+        if FindOrgStaffMembers:
+            serializer = StaffDataSetSerializer(FindOrgStaffMembers, many=True)
+            if serializer:
+                return Response({
+                    "status":200,
+                    "message": "Staff members found",
+                    "data": serializer.data
+                })
+            else: 
+                return Response({
+                    "status":400,
+                    "message": "Staff members not found for this user",
+                })
+        
+        return Response({
+            "status": 400,
+            "message": "An error occured. Unique ID does not exist."
+        })
+    
+    return Response({
+        "status": 200,
+        "message": "Welcome back."
+    })
 
+
+
+@api_view(['GET'])
+def View_All_Staff(request):
+    if request.method == 'GET':
+        FindOrgStaffMembers = StaffDataSet.objects.all()
+        if FindOrgStaffMembers:
+            serializer = StaffDataSetSerializer(FindOrgStaffMembers, many=True)
+            if serializer:
+                return Response({
+                    "status":200,
+                    "message": "Staff members found",
+                    "data": serializer.data
+                })
+            else: 
+                return Response({
+                    "status":400,
+                    "message": "Staff members not found for this user",
+                })
+        
+        return Response({
+            "status": 400,
+            "message": "An error occured."
+        })
+    
+    # return Response({
+    #     "status": 200,
+    #     "message": "Welcome back."
+    # })
 
 
 

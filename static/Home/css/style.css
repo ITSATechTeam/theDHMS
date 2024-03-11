@@ -107,7 +107,7 @@ main{
 
 /* offerSection STARTS HERE */
 .offerSection{
-    background-color: #2A66B0;
+    /* background-color: #2A66B0; */
     padding: 20px;
     /* margin-bottom: 30px; */
     position: relative;
@@ -117,11 +117,14 @@ main{
     display: flex;
     margin: auto;
     justify-content: space-around;
-    width: 60%;
+    width: 100%;
     margin-bottom: 40px;
     padding-top: 20px;
 }
 
+.plansintrosection{
+  text-align: center;
+}
 
 .offerproper img{
     width: 20px;
@@ -559,7 +562,7 @@ main{
   }
 
   .offerSectionOut{
-    display: inline;
+    display: flex;
     margin: auto;
     justify-content: space-around;
     width: 100%;
@@ -569,7 +572,7 @@ main{
 
   .offerSectionInner{
     padding: 10px;
-    background-color: white;
+    /* background-color: white; */
     border-radius: 10px;
     width: 320px;
     transition: .7s ease-in-out;

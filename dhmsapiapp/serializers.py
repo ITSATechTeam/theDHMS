@@ -33,3 +33,9 @@ class AllDevicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = DeviceRegisterUpload
         fields = '__all__'
+
+
+class StaffDataSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= StaffDataSet
+        fields = '__all__'
