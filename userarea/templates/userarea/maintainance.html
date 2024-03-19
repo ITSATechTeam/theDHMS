@@ -60,7 +60,7 @@
 					</h5> {% endcomment %}
 				</div>
 			</div>
-			{% if allMaintains %}
+			{% if AllMaintenanceRequests %}
 			<div>
 				<div class='maintainReqMainOut'>
 					<div class='maintainReqMain'>
@@ -370,8 +370,8 @@
 			
             <div class='maintenanceemptystate'>
                 <img class='addSubadminMainIMG' src={% static 'subadmin/img/subadmin.png' %} />
-                <h4>No sub Admins have been assigned. </h4>
-					<h5>Click Add Sub Admin to assign a sub-Admin</h5>
+                <h4>No maintenance request has been submitted. </h4>
+					<h5>Click here to view all devices</h5>
                 <a href={% url 'DeviceInventory' %}><div class='addSubadminMainBTN'>
                     <img src={% static 'subadmin/img/add.png' %} />
                     <button>Request Maintenance</button>

@@ -10,10 +10,13 @@ addnewdevicebtn.addEventListener('click', () => {
     shadow.style.display = 'block'
 })
 
-devinvemptystatebtn.addEventListener('click', () => {
-    registerDevice.style.display = 'block'
-    shadow.style.display = 'block'
-})
+
+if(devinvemptystatebtn){
+  devinvemptystatebtn.addEventListener('click', () => {
+      registerDevice.style.display = 'block'
+      shadow.style.display = 'block'
+  })
+}
 
 closeaddnewdeviceopoup.addEventListener('click', () => {
     registerDevice.style.display = 'none'

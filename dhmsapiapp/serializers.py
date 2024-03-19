@@ -39,3 +39,6 @@ class StaffDataSetSerializer(serializers.ModelSerializer):
     class Meta:
         model= StaffDataSet
         fields = '__all__'
+        # fields = ['StaffID', 'staff_firstname', 'staff_lastname', 'staff_phonenumber',
+        #           'staff_email', 'staff_role', 'staff_location', 'CompanyUniqueCode']
+        

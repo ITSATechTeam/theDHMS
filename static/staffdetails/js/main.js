@@ -38,7 +38,7 @@ closeaddnewdeviceopoup.addEventListener('click', () => {
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashStaffDetails = document.querySelector('.alert strong')
+let flashStaffDetails = document.querySelector('#flash')
 if(flashStaffDetails){
     console.log('flashStaffDetails around')
     setTimeout(() => {

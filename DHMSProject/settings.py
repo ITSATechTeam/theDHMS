@@ -75,7 +75,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = True
 
 # ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -101,6 +101,7 @@ INSTALLED_APPS = [
     'dhmsapiapp.apps.DhmsapiappConfig',
     # 'DMHSAPI.apps.DhmsapiConfig',
     'rest_framework',
+    'rest_framework.authtoken',
     
     #  
     
@@ -195,11 +196,15 @@ AUTHENTICATION_BACKENDS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     ],
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
     # ],
 }
+
+# TOKEN_EXPIRED_AFTER_SECONDS = 86400
+
 
 
 SOCIALACCOUNT_AUTO_SIGNUP = False

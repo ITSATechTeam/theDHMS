@@ -80,7 +80,7 @@ deviceinfotab.addEventListener('click', () => {
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashDevDetails = document.querySelector('.alert strong')
+let flashDevDetails = document.querySelector('#flash')
 if(flashDevDetails){
     console.log('flashDevDetails around')
     setTimeout(() => {

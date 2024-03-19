@@ -4,24 +4,31 @@ const staffemptystatesectionbtn = document.querySelector('.staffemptystatesectio
 const closereguser = document.querySelector('.closereguser');
 const shadow1 = document.querySelector('.shadow1');
 
-addstaffbtn.addEventListener('click', () => {
-	registerstaffbox.style.display = 'block';
-	shadow1.style.display = 'block';
-})
 
-staffemptystatesectionbtn.addEventListener('click', () => {
-	registerstaffbox.style.display = 'block';
-	shadow1.style.display = 'block';
-})
+if(addstaffbtn){
+    addstaffbtn.addEventListener('click', () => {
+        registerstaffbox.style.display = 'block';
+        shadow1.style.display = 'block';
+    })
+}
 
-closereguser.addEventListener('click', () => {
-	registerstaffbox.style.display = 'none';
-	shadow1.style.display = 'none';
-})
+if(staffemptystatesectionbtn){
+    staffemptystatesectionbtn.addEventListener('click', () => {
+        registerstaffbox.style.display = 'block';
+        shadow1.style.display = 'block';
+    })
+}
+
+if (closereguser){
+    closereguser.addEventListener('click', () => {
+        registerstaffbox.style.display = 'none';
+        shadow1.style.display = 'none';
+    })
+}
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashStaff = document.querySelector('.alert strong')
+let flashStaff = document.querySelector('#flash')
 if(flashStaff){
     console.log('flashStaff around')
     setTimeout(() => {

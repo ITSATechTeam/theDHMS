@@ -14,10 +14,15 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.contrib.auth import authenticate
-from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import login, logout, authenticate
-
+import random
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.authtoken.models import Token
+from datetime import timedelta
+from django.utils import timezone
+from django.conf import settings
 
 
 #   implement my customization of token claim when displaying user data I create a custome view for it as below:
@@ -40,7 +45,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(['GET'])
 # @permission_classes((permissions.AllowAny,))
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def All_Organization(request):
     AllUser = SignupForm.objects.all()
     serializer = RegisterSerializer(AllUser, many=True)
@@ -80,12 +85,26 @@ def User_Login(request):
                 })
             else:
                 user = authenticate(request, username=CheckUserUsername, password=password)
+                token, created = Token.objects.get_or_create(user=user)
+                # try:
+                #     # token = Token.objects.create(user=user)
+                #     token, created = Token.objects.get_or_create(user=user)
+
+                # except Token.DoesNotExist:
+                #     token = Token.objects.create(user=user)
+                    
+                # is_expired, token = token_expire_handler(token)     # The implementation will be described further
+                # user_serialized = UserSerializer(user)                  
+                    
+                print(token.key)
+                print(request.user)
                 if user is not None:
                     print('login successful')
                     login(request, user)
                     return Response({
                         'status':200,
                         'message': 'Login Successfull',
+                        "Token": token.key
                     })
                 else:
                     return Response({
@@ -102,27 +121,28 @@ def User_Login(request):
     
 
 @api_view(['POST', 'GET'])
-def User_Logout(request, pk):
-    if request.method == 'GET':
-        # csrf_token = request.COOKIES['csrftoken']
-        userToLogout = LogoutSerializer(data = int(pk))
-        if userToLogout:
-            # SelectedUser = SignupForm.objects.get(id=pk)
-            logout(request)
-            return Response({
-                "status": 200,
-                "message": "Logout successfull"
-            })
-        else:
-            return Response({
-                "status": 400,
-                "message": "This user not find"
-            })
-            
+def User_Logout(request):
+    # request.user.auth_token.delete()
+    logout(request)
     return Response({
         "status": 200,
-        "message": "User Logout page"
+        "message": "Logout successfull"
     })
+        # csrf_token = request.COOKIES['csrftoken']
+        # userToLogout = LogoutSerializer(data = int(pk))
+        # if userToLogout:
+            # # SelectedUser = SignupForm.objects.get(id=pk)
+            # logout(request)
+            # return Response({
+            #     "status": 200,
+            #     "message": "Logout successfull"
+            # })
+        # else:
+        #     return Response({
+        #         "status": 400,
+        #         "message": "This user not find"
+        #     })
+
     
 
 @api_view(['POST', 'GET'])
@@ -187,16 +207,20 @@ def Register_Org(request):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def Org_Profile(request, pk):
+# @permission_classes([IsAuthenticated])
+def Org_Profile(request):
     if request.method == 'GET':        
-        OrgProper = SignupForm.objects.get(id = pk)
+        OrgProperMain = request.user.username
+        print(OrgProperMain)
+        print(request.user)
+        OrgProper = SignupForm.objects.get(companyname = OrgProperMain)
+        print(OrgProper)
         if OrgProper:            
             serializer = RegisterSerializer(OrgProper, many = False)
             print(serializer)
             return Response({
                 "status": 200,
-                "message": "Organization profile details not found.",
+                "message": "Organization profile details found.",
                 "data": serializer.data
             })
             
@@ -257,6 +281,7 @@ def View_Org_All_Devices(request, UniqueID):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def View_Org_Staff(request, UniqueID):
     if request.method == 'GET':
         print(UniqueID)
@@ -284,7 +309,6 @@ def View_Org_Staff(request, UniqueID):
         "status": 200,
         "message": "Welcome back."
     })
-
 
 
 @api_view(['GET'])
@@ -316,6 +340,76 @@ def View_All_Staff(request):
     # })
 
 
+# import requests
+@api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
+# @csrf_exempt
+def Register_Staff(request):
+    randomNumberForStaff = random.randint(1000, 99999)
+    StaffUniqueId = 'Staff-'+ request.user.username + str(randomNumberForStaff)
+    if request.method == 'POST':
+        print(request.user.last_name)
+        if request.user.last_name:
+            serializer = StaffDataSetSerializer(data = request.data, many=False)
+            if serializer.is_valid():
+                staff_firstname = serializer.data['staff_firstname']
+                staff_lastname = serializer.data['staff_lastname']
+                staff_phonenumber = serializer.data['staff_phonenumber']
+                staff_email = serializer.data['staff_email']
+                staff_location = serializer.data['staff_location']
+                # companyUniqueID2 = serializer.data['staff_companyID']
+                companyUniqueID = request.user.last_name
+                staff_role = serializer.data['staff_role']
+                StaffID = StaffUniqueId                
+
+                form = StaffDataSet(CompanyUniqueCode=companyUniqueID, staff_firstname = staff_firstname, staff_lastname = staff_lastname,
+                staff_phonenumber = staff_phonenumber,  staff_email =  staff_email, staff_location = staff_location, staff_role=staff_role,
+                StaffID=StaffID)          
+                form.save()
+                return Response({
+                    "status" : 200, 
+                    "message" : "Staff members registered successfully",
+                    "Data": serializer.data
+                    })               
+            
+            else:
+                return Response({
+                    "status" : 400, 
+                    "message" : "Request is invalid",
+                    "error": serializer.error_messages
+                    })   
+            
+        else:
+            return Response({
+                "status" : 400, 
+                "message" : "The company is not regcognized"
+                })                
+            
+    return Response({
+        "status":200, 
+        "message":"Welcome to the staff registeration section of this API"
+        })
 
 
+# TOKEN CONFIGS STARTS HERE
+#this return left time
+def expires_in(token):
+    time_elapsed = timezone.now() - token.created
+    left_time = timedelta(seconds = settings.TOKEN_EXPIRED_AFTER_SECONDS) - time_elapsed
+    return left_time
 
+# token checker if token expired or not
+def is_token_expired(token):
+    return expires_in(token) < timedelta(seconds = 0)
+
+# if token is expired new token will be established
+# If token is expired then it will be removed
+# and new one with different key will be created
+def token_expire_handler(token):
+    is_expired = is_token_expired(token)
+    if is_expired:
+        token.delete()
+        token = Token.objects.create(user = token.user)
+    return is_expired, token
+
+# TOKEN CONFIGS ENDS HERE

@@ -392,7 +392,7 @@ uploaddevicepopupintroclose.addEventListener('click', () => {
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashScan = document.querySelector('.alert strong')
+let flashScan = document.querySelector('#flash')
 if(flashScan){
     console.log('flashScan around')
     setTimeout(() => {

@@ -19,7 +19,7 @@ selectElement.addEventListener('click', () => {
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashReport = document.querySelector('.alert strong')
+let flashReport = document.querySelector('#flash')
 if(flashReport){
     console.log('flashReport around')
     setTimeout(() => {

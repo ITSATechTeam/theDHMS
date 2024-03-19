@@ -36,7 +36,7 @@ console.log('running')
 
 
 // // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-// let flashStaffDash = document.querySelector('.alert strong')
+// let flashStaffDash = document.querySelector('#flash')
 // if(flashStaffDash){
 //     console.log('flashStaffDash around')
 //     setTimeout(() => {

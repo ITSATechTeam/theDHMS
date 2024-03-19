@@ -1,6 +1,6 @@
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashSignup = document.querySelector('.alert strong')
+let flashSignup = document.querySelector('#flash')
 if(flashSignup){
     console.log('flashSignup around')
     setTimeout(() => {

@@ -1,6 +1,6 @@
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashEditDev = document.querySelector('.alert strong')
+let flashEditDev = document.querySelector('#flash')
 if(flashEditDev){
     console.log('flashEditDev around')
     setTimeout(() => {

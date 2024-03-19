@@ -51,7 +51,7 @@ let formsubmitbtn = document.querySelector('.formsubmitbtn')
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashEditProfile = document.querySelector('.alert strong')
+let flashEditProfile = document.querySelector('#flash')
 if(flashEditProfile){
     console.log('flashEditProfile around')
     setTimeout(() => {

@@ -275,7 +275,7 @@ def StaffMaintainance(request):
     return render(request, 'staffapp/staffmaintainance.html', context)
 
 
-@ms_identity_web.login_required
+# @ms_identity_web.login_required
 def StaffMaintainanceDetails(request, name):
     if request.method == 'POST' and 'addedComment' in request.POST:
         addedComentMain = request.POST['addedComment']

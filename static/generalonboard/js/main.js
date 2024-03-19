@@ -1,6 +1,6 @@
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashGen = document.querySelector('.alert strong')
+let flashGen = document.querySelector('#flash')
 if(flashGen){
     console.log('flashGen around')
     setTimeout(() => {

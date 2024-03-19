@@ -20,7 +20,9 @@ eyeicon2.addEventListener("click", function(){
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashLogin = document.querySelector('.alert strong')
+// let flashLogin = document.querySelector('.alert strong')
+let flashLogin = document.querySelector('#flash')
+
 if(flashLogin){
     console.log('flashLogin around')
     setTimeout(() => {

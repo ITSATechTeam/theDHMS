@@ -21,7 +21,7 @@ if(addfampopupheadclosebtn){
 }
 
 // HANDLE FLASH MESSAGES ON FAMILY MEMBER AREA STARTS HERE
-let flashfammember = document.querySelector('.alert')
+let flashfammember = document.querySelector('#flash')
 if (flashfammember){
     setInterval(() => {
         flashfammember.style.display = 'none'

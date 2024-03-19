@@ -99,7 +99,7 @@ profileimgsectiontext.innerHTML = firstAlphabet
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashStaffGeneral = document.querySelector('.alert strong')
+let flashStaffGeneral = document.querySelector('#flash')
 if(flashStaffGeneral){
     console.log('flashStaffGeneral around')
     setTimeout(() => {

@@ -109,11 +109,12 @@ body{
 
 /* REGISTER USER SECTION STARTS HERE */
 .regsiteruser{
-    position: absolute;
+    position: fixed;
     top: 10%;
     height: 85%;
     overflow-y: scroll;
-    margin-left: 25%;
+    margin-left: 45%;
+    /* margin: auto; */
     background-color: white;
     padding: 17px;
     border-radius: 10px;
@@ -421,10 +422,10 @@ table a{
 
 .shadowsso{
     position: fixed;
-    margin-left: 220px;
+    margin-left: 0px;
     height: 140%;
     padding: 20px;
-    width: 90%;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.233);
     z-index: 6;
     transition: 0.5s ease-in-out;

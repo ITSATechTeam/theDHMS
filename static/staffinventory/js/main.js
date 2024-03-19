@@ -1,6 +1,6 @@
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashStaffInven = document.querySelector('.alert strong')
+let flashStaffInven = document.querySelector('#flash')
 if(flashStaffInven){
     console.log('flashStaffInven around')
     setTimeout(() => {

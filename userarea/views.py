@@ -1757,25 +1757,27 @@ def DeleteDevice(request, pk):
 
     messages.success(request, 'Device Successfully Deleted!')
     return redirect('DeviceInventory')
-    messages.success(request, 'Device Successfully Deleted!')
-    return render(request, 'userarea/deviceinventory.html')
+    # return render(request, 'userarea/deviceinventory.html')
 
 
 def AllDeviceDelete(request):
     AllDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     messages.error(request, 'All devices have been deleted successfully!')
-    AllDevices.delete()
+    # AllDevices.delete()
     return redirect('DeviceInventory')
 
 
 
 def DeleteStaff(request, pk):
+    staffToDeleteEmail = StaffDataSet.objects.get(id=pk).staff_email
+    getStaffUser = User.objects.get(username = staffToDeleteEmail)
+    print(staffToDeleteEmail)
     staffToDelete = StaffDataSet.objects.get(id=pk)
     staffToDelete.delete()
+    getStaffUser.delete()
     messages.success(request, 'Staff Details Successfully Deleted!')
     return redirect('StaffMembers')
-    messages.success(request, 'Device Successfully Deleted!')
-    return render(request, 'userarea/deviceinventory.html')
+    # return render(request, 'userarea/deviceinventory.html')
 
 
 
