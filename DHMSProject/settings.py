@@ -99,6 +99,7 @@ INSTALLED_APPS = [
     'familydhmsapp.apps.FamilydhmsappConfig',
     'dhmsadminboard.apps.DhmsadminboardConfig',
     'dhmsapiapp.apps.DhmsapiappConfig',
+    'aichat.apps.AichatConfig',
     # 'DMHSAPI.apps.DhmsapiConfig',
     'rest_framework',
     'rest_framework.authtoken',
@@ -230,7 +231,7 @@ MIDDLEWARE = [
     # 
     'django_user_agents.middleware.UserAgentMiddleware',
     # 
-    # 'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware'
 ]
 
 

@@ -80,15 +80,6 @@
                     {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
                     <div class='googlesignin'>
                         {% load socialaccount %}
-                        <form action="{% provider_login_url 'google' %}" method='POST'>
-                            {% csrf_token %}
-                            <button type='submit' class='googlesigninner'>
-                                <div class='buttoninner'>
-                                    <img src={% static 'signup/img/google.png' %} />
-                                    <p>Login With Google</p>
-                                </div>
-                            </button>
-                        </form>
                     </div>
                     <div class='logininstead'>
                         <h8>Don't Have An Account Yet? <a href={% url 'SignUpPage' %}>Sign Up</a></h8>

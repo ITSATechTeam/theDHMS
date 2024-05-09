@@ -9,6 +9,7 @@
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'staffdashboard/css/style.css' %} />
 		{% comment %} <link rel="stylesheet" href={% static 'maintenance/css/style.css' %} /> {% endcomment %}
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
@@ -170,7 +171,7 @@
 			</div>
 			{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
 			{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
-			<div>
+			<div class='deviceInvetorySection'>
 				<table  id="paginated-list" >
 					<tr>
 					  {% comment %} <th class='topCheckBox'>

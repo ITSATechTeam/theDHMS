@@ -9,14 +9,14 @@ SUPER_ADMIN_ACCESS = (
 )
 
 
-class SuperAdminsModel(models.Model):    
+class SuperAdminsModel(models.Model):
     # user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     # count = models.IntegerField(default = 10)
-    email = models.EmailField(max_length= 300, default = 300)
-    firstname = models.CharField(max_length= 300, default = 300)
-    lastname = models.CharField(max_length= 300, default = 300)
-    UniqueID = models.CharField(max_length= 300, default = 300)
-    password = models.CharField(max_length= 300, default = 300)
+    email = models.EmailField(max_length= 300)
+    firstname = models.CharField(max_length= 300)
+    lastname = models.CharField(max_length= 300)
+    UniqueID = models.CharField(max_length= 300)
+    password = models.CharField(max_length= 300)
     adminaccesslevel = models.CharField(max_length= 300,choices = SUPER_ADMIN_ACCESS, default = 'ORGDHMS', null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)

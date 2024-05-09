@@ -62,22 +62,24 @@
 			<div class='midBodysection'>
 				{% comment %} DEVICE MINIMAL INFO STARTS HERE {% endcomment %}
 				<div>
-					<div class='requestdataset'>
-						<div class='blue'>
-							<img src={% static 'staffdashboard/img/devices.png' %} />
-							<h3>{{ RegisteredDevicesCount }}</h3>
-							<p>Assigned Device(s)</p>
-						</div>
-						<div class='red'>
-							<img src={% static 'staffdashboard/img/request.png' %} />
-							<h3>{{ MaintenanceRequestsCount }}</h3>
-							<p>Maintenance Reqeust(s)</p>
-						</div>
-						<div class='yellow'>
-							<img src={% static 'staffdashboard/img/pending.png' %} />
-							<h3>{{ MaintenanceRequestsPendingCount }}</h3>
-							<p>Ongoing Maintenance(s)</p>
-							
+					<div class='introdetailssection'>
+						<div class='requestdataset'>
+							<div class='blue introdetailsbar2'>
+								<img src={% static 'staffdashboard/img/devices.png' %} />
+								<h3>{{ RegisteredDevicesCount }}</h3>
+								<p>Assigned Device(s)</p>
+							</div>
+							<div class='red introdetailsbar2'>
+								<img src={% static 'staffdashboard/img/request.png' %} />
+								<h3>{{ MaintenanceRequestsCount }}</h3>
+								<p>Maintenance Reqeust(s)</p>
+							</div>
+							<div class='yellow introdetailsbar2'>
+								<img src={% static 'staffdashboard/img/pending.png' %} />
+								<h3>{{ MaintenanceRequestsPendingCount }}</h3>
+								<p>Ongoing Maintenance(s)</p>
+								
+							</div>
 						</div>
 					</div>
 					<div class='monthlymaintenance'>
@@ -124,7 +126,7 @@
 				</div>
 				{% comment %} ACTIVITY SECTION ENDS HERE {% endcomment %}
 			</div>{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
-			<div>
+			<div class='deviceInvetorySection'>
 				<table>
 					<h2>Assigned Devices</h2>
 					<tr>

@@ -1,6 +1,8 @@
 # from site import USER_BASE
 from django.urls import reverse
 from django.contrib import messages
+
+from aichat.models import AIChat_Room
 from .models import *
 from useronboard.models import LoginStatus
 from .forms import *
@@ -54,6 +56,13 @@ os_name = platform.system()
 
 @login_required(login_url='Login')
 def NavBar(request):
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     allSignUps = SignupForm.objects.filter(user = request.user)
     context = {'allSignUps': allSignUps, 'AllMaintenanceRequests':AllMaintenanceRequests}
@@ -117,6 +126,13 @@ def Support(request):
     allProfileImages = UserProfileImage.objects.all().first
     allUsers = User.objects.all()
     allSignUps = SignupForm.objects.all()
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/support.html', context)
@@ -194,6 +210,15 @@ def Maintainance(request):
         currentDevice = MaintenanceRequest.objects.get(MaintainRequestID = idforedit).MaintainRequestID
         return redirect('EditMaintenenceRequest', name = currentDevice )
 
+
+    
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
 
 
     # allMaintainsByStaff = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name or request.user.last_name)
@@ -640,6 +665,16 @@ def DeviceInventory(request):
     if request.method == 'POST' and 'deviceyearofpurchase' in request.POST:
         return redirect('SaveDevice')
 
+
+    
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
+        
     # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
     allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     AllStaffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
@@ -769,6 +804,17 @@ def ViewDeviceDetails(request, name):
 
         form.save()
         return redirect('Maintainance')
+    
+    
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
+        
+
     currentDeviceList = DeviceRegisterUpload.objects.get(Q(deviceid = name)  & Q(user = request.user))
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'name':name, 'currentDeviceList':currentDeviceList}
@@ -919,6 +965,16 @@ def StaffMembers(request):
             return redirect('StaffMembers')
 
 
+    
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
+
+
     staffMembers = StaffDataSet.objects.filter(CompanyUniqueCode = request.user.last_name)
     allDevices = DeviceRegisterUpload.objects.all()
     allUploadedDevices = DeviceRegisterUpload.objects.all()
@@ -1020,6 +1076,15 @@ def StaffDetails(request, id):
             messages.error(request, 'Device uploaded failed. Please Try again.')
             return redirect('DeviceInventory')
 
+
+    
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
 
     # allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
     # form = UpdateDeviceUser(request.POST or None, instance = allUploadedDevicesNotAssigned)
@@ -1335,7 +1400,14 @@ def Dashboard(request):
             messages.error('Device uploaded failed. Please Try again.')
             redirect('Dashboard')
 
-
+    
+    if request.method == 'POST' and 'startAISession' in request.POST:
+        print('clicked nowww')
+        uniqueId = 'AI_Chat-' + get_random_string(length=5)
+        createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
+        createAIChat_Room.save()
+        if createAIChat_Room:
+            return redirect('AiChatPage')
     
     allDevicesMonthPre = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
     AllCompanyFaultyDevices = CompanyFaultyDevices.objects.filter(CompanyUniqueCode = request.user.last_name)

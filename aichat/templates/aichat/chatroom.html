@@ -1,0 +1,87 @@
+{% include 'general.html' %} 
+<!DOCTYPE html>
+{% load static %} 
+
+{% block content %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href={% static 'famgeneral/img/itsalogo.PNG' %}> 
+    <link rel="stylesheet" href={% static 'aichat/css/aichatstyle.css' %} />
+    <link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+    <title>Chat Room</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <script>
+        $(document).ready(function(){
+        
+        setInterval(function(){
+            $.ajax({
+                type: 'GET',
+                url : 'getprompt/{{latestRoomIDMain}}',
+                success: function(response){
+                    $("#display").empty();
+                    for (var key in response.messages)
+                    {
+                        var temp="<br/><div class='checkuser'>"+response.messages[key].userID+"</div></div><div class='container darker'><b>"+response.messages[key].prompts+"</b><span class='date'>"+response.messages[key].created_at+"</span></div><br/><br/><br/>";
+                        $("#display").append(temp);
+                    }
+                },
+                error: function(response){
+                    console.log('An error occured')
+                }
+            });
+        },1000);
+        })
+    </script>
+
+
+    <main>                
+        <h1>Ask our AI</h1>
+        <h5>Ask any tech or device maintenance question to gain an expert perspective of AI Perspective.</h5>
+        <p>NOTE: Previous conversations will be unavailable as soon as you exit this page</p>
+        {% comment %} <h2>{{latestRoomIDMain}} - ITSA AI</h2> {% endcomment %}
+
+        <div id="display"></div>
+        <div id="display2"></div>      
+            <form id='post-form'>
+                {% csrf_token %}
+                <input type="hidden" name="username" id="username" />
+                <input type="hidden" name="chatroomID" id="chatroomID" value={{latestRoomIDMain}} />
+                
+            <div class='formhere'>  
+                <input type="text" placeholder='Enter your query...' name="message" required  id="message" width="100px" />
+                <input type="submit" value="Ask" />
+            </div>
+            </form><br/><br/>
+    </main>
+    
+    <script type="text/javascript">
+        $(document).on('submit', '#post-form', function(e){
+            e.preventDefault();
+            
+            $.ajax({
+                type:'POST',
+                url: 'sendprompt',
+            data:{
+                username:$('#username').val(),
+                chatroomID:$('#chatroomID').val(),
+                message:$('#message').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        },
+        success: function(data){
+            console.log('submitted')
+            {% comment %} alert(data) {% endcomment %}
+            }
+        });
+        document.getElementById('message').value = ''
+        });
+    </script>
+    <script src={% static 'aichat\js\aichatjs.js' %}></script>
+</body>
+</html>
+{% endblock content %}
+

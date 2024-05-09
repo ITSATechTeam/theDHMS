@@ -44,10 +44,20 @@
             <img class='searchIcon' src={% static 'general/img/searchicon.png' %} />
         </div>
         <div class='navBtn'>
-            <a href='https://itservicedeskafrica.com/home/' target='_blank'><button>
+            <form method='POST'>
+                {% csrf_token %}
+                <input name='startAISession'type='hidden'  />
+                <button type='submit'>
+                    <img src={% static 'general\img\aiicon.png' %} />
+                    Ask Our AI</button>
+            </form>
+        </div>
+        {% comment %} <div class='navBtn'>
+            <a href='https://itservicedeskafrica.com/home/' target='_blank'>
+                <button>
                 <p>Visit ITSA Website</p>
             </button></a>
-        </div>
+        </div> {% endcomment %}
         <div class='notifysection'>
             <div class='notifyout' >
                 <img class='notify' src={% static 'general/img/notify.png' %} />
@@ -185,6 +195,16 @@
                 <p>Settings</p>
             </div>
         </a>
+        
+        <div class='navBtnmobile'>
+            <form method='POST'>
+                {% csrf_token %}
+                <input name='startAISession'type='hidden'  />
+                <button type='submit'>
+                    {% comment %} <img src={% static 'general\img\aiicon.png' %} /> {% endcomment %}
+                    Ask Our AI</button>
+            </form>
+        </div>
         
         
         <a href={% url 'Logout' %}>

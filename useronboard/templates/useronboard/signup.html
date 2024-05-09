@@ -75,16 +75,6 @@
                         {% load socialaccount %}
                         <!--<a href="{% provider_login_url 'google' %}">Sign in with Google</a>-->
                             <!--{% csrf_token %}-->
-                            <a href="{% provider_login_url 'google' %}">
-                                <div class='googlesignin'>
-                                    <button type='submit' class='googlesigninner'>
-                                        <div class='buttoninner'>
-                                            <img src={% static 'signup/img/google.png' %} />
-                                            Sign in with Google</a>
-                                        </div>
-                                    </button>
-                                </div>
-                            </a>
                         <!--<form action="{% provider_login_url 'google' %}?next=/member/dashboard/" method='POST'>-->
                         <!--    {% csrf_token %}-->
                         <!--    <div class='googlesignin'>-->

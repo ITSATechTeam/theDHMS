@@ -32,7 +32,7 @@ if time_now.hour == 24 :
 
 # @login_required(login_url='Login')
 def StaffNavBar(request):
-    return render(request, 'staffapp/staffgeneral.html')
+    return render(request, 'staffgeneral.html')
 
 
 @login_required(login_url='StaffLogin')

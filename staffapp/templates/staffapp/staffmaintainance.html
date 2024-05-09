@@ -10,6 +10,7 @@
 		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'maintenance/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'staffdashboard/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,7 +150,7 @@
 			{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
 			</div>
 			{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
-			<div>
+			<div class='deviceInvetorySection'>
 				<table  id="paginated-list" >
 					<tr>
 						{% comment %} <th class='topCheckBox'>
