@@ -108,6 +108,7 @@ def StaffLogout(request):
     return redirect('StaffLogin')
 
 # @ms_identity_web.login_required
+@login_required(login_url='StaffLogin')
 def StaffDeviceInventory(request):
     MaintenanceRequests = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username).count()
     RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email)

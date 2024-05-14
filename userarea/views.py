@@ -57,7 +57,6 @@ os_name = platform.system()
 @login_required(login_url='Login')
 def NavBar(request):
     if request.method == 'POST' and 'startAISession' in request.POST:
-        print('clicked nowww')
         uniqueId = 'AI_Chat-' + get_random_string(length=5)
         createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
         createAIChat_Room.save()
@@ -342,6 +341,9 @@ def Settings(request):
 
 @login_required(login_url='Login')
 def DeviceInventory(request):
+    today = date.today()
+    dateForWeekNumber = datetime.today()
+    weekNumber = dateForWeekNumber.isocalendar().week
     if request.method == 'POST' and 'deviceusedepartment' in request.POST:
         uniqueId = 'Device-' + get_random_string(length=5)
         if request.POST['devicebrand']:
@@ -422,6 +424,12 @@ def DeviceInventory(request):
             deviceyearofpurchase=deviceyearofpurchase, user=user, devicedepreciationrate=depreciateRateReal,
             deviceid=uniqueId
         )
+
+        # SAVE FAULTY OR CRITICAL DEVICES 
+        if request.POST['devicestatus'] == 'Faulty' or request.POST['devicestatus'] == 'Critical':
+            CompanyFaultyDevicesForm = CompanyFaultyDevices(user = request.user, deviceID = uniqueId, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = request.user.last_name)
+            CompanyFaultyDevicesForm.save()  
+        
 
         try:
             SaveDeviceProper.save()
@@ -878,10 +886,7 @@ def EditDevice(request, deviceid):
 
 @login_required(login_url='Login')
 def StaffMembers(request):
-    randomNumberForStaff = random.randint(1000, 99999)
-    StaffUniqueId = 'Staff-' + request.user.username + str(randomNumberForStaff)
     if request.method == 'POST' and 'staff_firstname' in request.POST:
-        StaffID = StaffUniqueId
         staff_firstname = request.POST['staff_firstname']
         staff_lastname = request.POST['staff_lastname']
         staff_email = request.POST['staff_email']
@@ -890,6 +895,9 @@ def StaffMembers(request):
         staff_location = request.POST['staff_location']
         CompanyUniqueCode = request.POST['CompanyUniqueCode']
         user = request.user
+        randomNumberForStaff = random.randint(1, 99999999)
+        StaffUniqueId = 'Staff-' + request.POST['staff_email'] + str(randomNumberForStaff)
+        StaffID = StaffUniqueId
 
         if not request.POST['staff_phonenumber']:
             messages.error(request, 'Staff registration failed: Please provide a phone number for this staff.')
@@ -995,7 +1003,7 @@ def StaffDetails(request, id):
     if request.method == 'POST' and 'deviceusedepartment' in request.POST and 'deviceToAssign' not in request.POST:
         uniqueId = 'Device-' + get_random_string(length=5)
         if request.POST['devicebrand']:
-            randomNumber = random.randint(100, 9999)
+            randomNumber = random.randint(1, 99999)
             DeviceBrandProper = request.POST['devicebrand']+ '_' + str(randomNumber)
         else: 
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Brand.")

@@ -44,16 +44,28 @@
 						</div>
 						{% endfor %} {% endif %}
 					</div>
-					
-					<div class='scannetworkbtn'>
+				</div>
+			</div><br/><br/>
+			
+			<div class='supportbodysection'>
+				<div class='supportbodysectionsvg'>
+					<img src={% static 'staff/img/amico.png' %} />
+				</div>
+				<div class='scannetworkbtnbutton'>
+					<div class='scannetworkbtn'>				
 						<button>
 							<img src={% static 'maintenance/img/support.png' %} />
-							<p>Contact ITSA Support</p>
+							<a href='mailto:ikechukwu.o@itservicedeskafrica.com'><p>Contact ITSA Support</p></a>
+						</button>
+					</div>
+					<div class='scannetworkbtn'>				
+						<button>
+							<img src={% static 'maintenance/img/support.png' %} />
+							<a href="tel:+23480-3566-8211"><p>Click to Call Support</p></a>
 						</button>
 					</div>
 				</div>
-			</div><br/><br/>
-			<hr/>
+			</div>
 		<script src={% static 'maintenance/js/maintainrequestdetails.js' %}></script>
     </body>
 </html>

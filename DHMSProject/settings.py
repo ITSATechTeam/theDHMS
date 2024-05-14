@@ -74,6 +74,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # DEBUG = False
 DEBUG = True
 
+CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
+
+
 # ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 ALLOWED_HOSTS = ['*']
 

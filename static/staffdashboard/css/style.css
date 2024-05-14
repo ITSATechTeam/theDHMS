@@ -266,6 +266,10 @@ body{
     overflow-y: scroll;
 }
 
+.recenttab::-webkit-scrollbar{
+    display: none;
+}
+
 
 /* recenttab ends here */
 
@@ -448,6 +452,37 @@ tr:nth-child(1) {
     /* display: none; */
 }
 
+.staffemptystatedashboard{
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 10px;
+    border-radius: 10px;
+    background-color: white;
+    text-align: center;
+    padding: 50px;
+}
+
+.staffemptystaterecent img{
+    width: 150px;
+    margin: auto;
+}
+
+.staffemptystaterecent{
+    text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -601,6 +636,21 @@ tr:nth-child(1) {
     .maintainReqBtn{
         margin-top: 20px;
     }
+
+        
+    .requestmaintainbtn{
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+
+    .requestmaintainbtn button{
+        width: 70%;
+    }
+
+    .staffemptystatedashboard img, .staffemptystaterecent img{
+        width: 200px;
+    }
+
             
     
     

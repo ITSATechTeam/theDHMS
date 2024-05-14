@@ -53,6 +53,8 @@
 					</a> {% endcomment %}
 				</div>
 			</div>
+
+			{% if RegisteredDevices %}
 			{% comment %} SUBTOP SECTION STARTS HERE {% endcomment %}
 			<div class='sectionintro'>
 				<div class='introbox'>
@@ -113,7 +115,7 @@
 						</form>
 						<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
 					</div>
-					<div class='filteroutter'>
+					{% comment %} <div class='filteroutter'>
 						<div class='filter filtercategory'>
 							<img src={% static 'inventory/img/filter.png' %} />
 							<p>Filter by Category</p>
@@ -122,8 +124,7 @@
 							<img src={% static 'inventory/img/filter.png' %} />
 							<p>Filter by Device Status</p>
 						</div>
-					</div>
-					
+					</div> {% endcomment %}					
 						{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
 						<div class='filterbox filterbox1'>
 							<h2>Filter by</h2>
@@ -367,6 +368,13 @@
 				</div>
 				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY ENDS HERE {% endcomment %}
 			</div>
+			{% else %}
+			<div class='emptystate'>
+				<img src={% static 'staff/img/cuate2.png' %} /><br/><br/>
+				<h4>No device available in your inventory for now</h4>
+			</div>
+			{% endif %}
+
 		{% comment %} UPLOAD/REGISTER A DEVICE SECTION STARTS HERE {% endcomment %}
 		<div class='registerDevice'>
 			<form method = 'POST'>

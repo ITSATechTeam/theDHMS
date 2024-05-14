@@ -485,7 +485,10 @@ table a{
     cursor: pointer;
 }
 
-
+.staffpagetable{
+    overflow-x: scroll;
+    width: 100%;
+}
 
 
 

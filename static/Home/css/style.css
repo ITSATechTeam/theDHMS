@@ -562,21 +562,21 @@ main{
   }
 
   .offerSectionOut{
-    display: flex;
-    margin: auto;
+    display: inline;
     justify-content: space-around;
-    width: 100%;
+    width: 100vw;
     margin-bottom: 40px;
     padding-top: 20px;
   }
 
   .offerSectionInner{
     padding: 10px;
-    /* background-color: white; */
     border-radius: 10px;
     width: 320px;
+    margin: auto;
     transition: .7s ease-in-out;
     margin-bottom: 30px;
+    object-fit: contain;
   }
 
   .testimonialsOut h2{

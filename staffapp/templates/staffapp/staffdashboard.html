@@ -53,15 +53,15 @@
 					
 					<a href = {% url 'StaffMaintainance' %} >
 						<div class='maintainReqBtn'>
-							<img src={% static 'staffgeneral/img/add.png' %} />
-							New Maintenance Request
+							{% comment %} <img src={% static 'staffgeneral/img/add.png' %} /> {% endcomment %}
+							View All Maintenance Request
 						</div>
 					</a>
 				</div>
 			</div>
 			<div class='midBodysection'>
-				{% comment %} DEVICE MINIMAL INFO STARTS HERE {% endcomment %}
 				<div>
+					{% comment %} DEVICE MINIMAL INFO STARTS HERE {% endcomment %}
 					<div class='introdetailssection'>
 						<div class='requestdataset'>
 							<div class='blue introdetailsbar2'>
@@ -82,15 +82,16 @@
 							</div>
 						</div>
 					</div>
+					{% comment %} DEVICE MINIMAL INFO ENDS HERE {% endcomment %}
+					{% comment %} Maintenance request tracker graph starts here {% endcomment %}
+					{% if RegisteredDevicesCount %}
 					<div class='monthlymaintenance'>
 						<div class='monthlymaintenanceinner'>
 							<h3>Monthly Maintenance</h3>
-							{% comment %} {{request.user.username}} {% endcomment %}
-							{% comment %} {{MayMaintainReqs}} {% endcomment %}
 							<div class='monthlymaintenancedate'>
 								<img src={% static 'staffdashboard/img/Calendar.png' %} />
 								<select>
-									<option>2023</option>
+									<option>2024</option>
 								</select>
 							</div>
 						</div>
@@ -104,11 +105,18 @@
 							</div>
 						</div>
 					</div>
+					{% else %}
+					<div class='staffemptystatedashboard'>
+						<img src={% static 'staff/img//cuate.png' %} /><br/><br/>
+						<h4>No device has been assigned to you yet</h4>
+					</div>
+					{% endif %}
+					{% comment %} Maintenance request tracker graph ends here {% endcomment %}
 				</div>
-				{% comment %} DEVICE MINIMAL INFO ENDS HERE {% endcomment %}
 				{% comment %} ACTIVITY SECTION STARTS HERE {% endcomment %}
 				<div class='recenttab'>
 					<h3>Recent Activity</h3><br/><br/>
+					{% if RegisteredDevices %}
 					{% for MaintenanceRequests in MaintenanceRequests %}	
 					<div>
 						<h4> You created a maintenance request with maintenance ID:<a href ="/staff/staffmaintenancdetail/{{MaintenanceRequests.MaintainRequestID}}/" ><strong> {{MaintenanceRequests.MaintainRequestID}}.</strong></a></h4>
@@ -121,11 +129,18 @@
 						<h4>A new device with <strong>Device ID: {{ RegisteredDevices.deviceid }}</strong> was assigned to you</h4>
 						<p>{{ RegisteredDevices.created_at }}</p>
 					</div>
-					<hr/><br/>
+					<br/>
 					{% endfor %}
+					{% else %}
+					<div class='staffemptystaterecent'>
+						<img src={% static 'staff/img//cuate2.png' %} /><br/><br/>
+						<h4>No recent activity on record</h4>
+					</div>
+					{% endif %}
 				</div>
 				{% comment %} ACTIVITY SECTION ENDS HERE {% endcomment %}
 			</div>{% comment %} DEVICES INVENTORY TABLE {% endcomment %}
+			{% if staffemptystatedashboard %}
 			<div class='deviceInvetorySection'>
 				<table>
 					<h2>Assigned Devices</h2>
@@ -162,6 +177,8 @@
 					{% endfor %}
 				</table>
 			</div>
+			{% else %}
+			{% endif %}
 			{% comment %} DEVICE INVENTORY LIST SECTION ENDS HERE {% endcomment %}
 		</div>
 
