@@ -35,7 +35,7 @@
                     <div class='maintainRequestCount'>
                         <p>{{AllSubAdminModelCount}}</p>
                     </div>
-                    <div class=''><h4>Activity Log</h4></div>
+                    {% comment %} <div class=''><h4>Activity Log</h4></div> {% endcomment %}
                 </div>
                 <hr/> 
             </div>            
@@ -51,10 +51,10 @@
             <h5>Manage your sub Admins with ease.</h5>
             {% comment %} PROMPT TO ADD SUB ADMIN ON FIRST INSTANCE STARTS HERE {% endcomment %}
             <div class='addSubadminMain'>
-                <img class='addSubadminMainIMG' src={% static 'subadmin/img/subadmin.png' %} />
+                <img class='addSubadminMainIMG' src={% static 'subadmin/img/subadmin.png' %} /><br/>
                 <h4>
                     No sub Admins have been assigned. Click<br/> Add Sub Admin to assign a sub-Admin
-                </h4>
+                </h4><br/>
                 <div class='addSubadminMainBTN'>
                     <img src={% static 'subadmin/img/add.png' %} />
                     <p>Add Sub Admin</p>
@@ -74,7 +74,7 @@
                     <div class='filter filtercategory'>
                         <img src={% static 'inventory/img/filter.png' %} />
                         <p>Filter</p>
-                    </div>                    
+                    </div>
                     {% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
                     <div class='filterbox filterbox1'>
                         <h2>Filter by</h2>
@@ -114,16 +114,6 @@
                     </div>
                 </div>
                 <div class='midSearchSubadminSection2'>
-                    <div>
-                        <a href = >
-                            <div class=' showdeviceuploadpopup'>
-                                <button>
-                                    <img src={% static 'maintenance/img/export.png' %} />
-                                    <p>Export</p>
-                                </button>
-                            </div>
-                        </a>
-                    </div>
 					<div class='scannetworkbtn'>
                         <button class='scannetworkbtnBTNMain'>
                             <img src={% static 'subadmin/img/add.png' %} />
@@ -221,17 +211,17 @@
                 </div>
                 <div>
                     <h3>Assign Sub Admin role</h3>
-                    <h5>Assign one or multiple staff members to the Sub Admin role. One Staff per department</h5>
-                    <div class='searchdashboard'>
+                    <h5>Assign one or multiple staff members to the Sub Admin role</h5><br/>
+                    {% comment %} <div class='searchdashboard'>
                         <form method='GET' action="{% url 'Searchresult' %}">
                             <input type='text' name='q' placeholder='Search Staff' />
                         </form>
                         <img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
-                    </div>
+                    </div><br/> {% endcomment %}
                     {% comment %} LIST OF ALL STAFF MEMBERS {% endcomment %}
                     <div class='listOfStaff'>
                         {% for AllStaffMembers in AllStaffMembers %}
-                        {% if AllStaffMembers.CompanyUniqueCode == request.user.email %}
+                        {% if AllStaffMembers.CompanyUniqueCode == request.user.last_name %}
                         <div class='addSubAdminPopUpList '>
                             <div>
                                 <h3>{{ AllStaffMembers.staff_firstname }} {{ AllStaffMembers.staff_lastname }} </h3>
@@ -244,7 +234,7 @@
                         {% endfor %}
                     </div>
                     <div class='listOfStaffBtn'>
-                        <div onclick= {window.location.reload()} class='listOfStaffBtnCancel'><h4>Cancel</h4></div>
+                        <div onclick= {window.location.reload()} class='listOfStaffBtnCancel'><h4>Refresh</h4></div>
                         <form method='POST' class='allSubAdminArrForm'>
                             {% csrf_token %}
                             <input name='allSubAdminArr' hidden class='allSubAdmin' />

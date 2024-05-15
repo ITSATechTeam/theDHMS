@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class='responsivesection2'>
-                <div class='notifyout' >
+                <div class='notifyout mobileviewnotify' >
                     <img class='notify' src={% static 'general/img/notify.png' %} />
                     <div class='NewNotifyCount2'></div>
                 </div>
@@ -32,7 +32,7 @@
                         <p class='requestUser'>{{ request.user }}</p>
                         {% endif %}
                     </div>
-                    <img src={% static 'general/img/arrow-down.png' %} />
+                    {% comment %} <img src={% static 'general/img/arrow-down.png' %} /> {% endcomment %}
                 </div>
             </div>
         </div>
@@ -52,14 +52,8 @@
                     Ask Our AI</button>
             </form>
         </div>
-        {% comment %} <div class='navBtn'>
-            <a href='https://itservicedeskafrica.com/home/' target='_blank'>
-                <button>
-                <p>Visit ITSA Website</p>
-            </button></a>
-        </div> {% endcomment %}
         <div class='notifysection'>
-            <div class='notifyout' >
+            <div class='notifyout desktopviewnotify' >
                 <img class='notify' src={% static 'general/img/notify.png' %} />
                 <div class='NewNotifyCount'></div>
                 {% comment %} <img class='notifyactive' src={% static 'general/img/notify-active.png' %} /> {% endcomment %}
@@ -67,34 +61,36 @@
 
             {% comment %} NOTIFICATION TAB STARTS HERE {% endcomment %}
             <div class='allNotificationTabElements'>
-                <div class='notifySectionPopupEdge'></div>
                 <div class='notifySectionPopuPOut'>
                     <div class='notifySectionPopuP'>
                         <div class='notifySectionPopuPInner'>
-                            <h3>Notification</h3>
-                            <div>
+                            <h3>All Notification</h3>
+                            {% comment %} <div>
                                 <select>
                                     <option>All</option>
                                     <option>Unread</option>
                                     <option>Read</option>
                                 </select>
-                            </div>
+                            </div> {% endcomment %}
                         </div>
                         <div>
-                            <img src={% static 'general/img/notification.png' %} />
+                            {% comment %} <img src={% static 'general/img/notification.png' %} /> {% endcomment %}
                         </div>
                     </div>
                     {% for AllMaintenanceRequests in AllMaintenanceRequests %}
-                    <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ >
-                        <div class='noticationSectionProper'>
-                            <div class='noticationSectionProperIn'>
-                                <h3>
-                                    {{AllMaintenanceRequests.MaintainRequester}} Just made a maintenance request with maintenance ID <a href= "/member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/" > <span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
-                                </h3>
-                                <p>{{AllMaintenanceRequests.created_at}}</p>
+                    <div class='noticationSectionProperIn'>
+                        {% comment %} <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ > {% endcomment %}
+                            <div class='noticationSectionProper'>
+                                <div>
+                                    <p class='notificationproper'>
+                                        {{AllMaintenanceRequests.MaintainRequester}} Just made a maintenance request with maintenance ID: <a href= "/member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/" > <span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
+                                    </p>
+                                    <p>{{AllMaintenanceRequests.created_at}}</p>
+                                </div>
+                                <hr/>
                             </div>
-                        </div>
-                    </a>
+                        {% comment %} </a> {% endcomment %}
+                    </div>
                     {% endfor %}
                 </div>
             </div>

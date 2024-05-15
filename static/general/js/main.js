@@ -313,19 +313,33 @@ if(profileimgsectiontext2){
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE
 
 // DISPLAY AND HIDE NOTIFICATION TAB
-let notifyout = document.querySelector('.notifyout')
+let desktopviewnotify = document.querySelector('.desktopviewnotify')
+let mobileviewnotify = document.querySelector('.mobileviewnotify')
 let allNotificationTabElements = document.querySelector('.allNotificationTabElements')
+// desktopviewnotify.style.display = 'none'
+desktopviewnotify.addEventListener('click', () => {
+    if (allNotificationTabElements.style.display == 'block') {
+        allNotificationTabElements.style.display = 'none'
+    }else{
+        allNotificationTabElements.style.display = 'block'
+    }
+})
 
-notifyout.addEventListener('mouseover', () => {
-    allNotificationTabElements.style.display = 'block'
+mobileviewnotify.addEventListener('click', () => {
+    if (allNotificationTabElements.style.display == 'block') {
+        allNotificationTabElements.style.display = 'none'
+    }else{
+        allNotificationTabElements.style.display = 'block'
+    }
 })
 
 
-document.addEventListener("click", (e) => {
-    if (allNotificationTabElements.style.display == 'block') {
-        allNotificationTabElements.style.display = 'none'
-    }
-  });
+
+// document.addEventListener("click", (e) => {
+//     if (allNotificationTabElements.style.display = 'block') {
+//         allNotificationTabElements.style.display = 'none'
+//     }
+//   });
 
 
 // time for disappearing notifications

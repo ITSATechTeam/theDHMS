@@ -20,8 +20,17 @@ from datetime import date
 import json
 # import winapps
 import random
+import string
 import time
 import os
+
+def generate_password(length, count):
+    passwords = []
+    for i in range(count):
+        password = ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(length))
+        passwords.append(password)
+    return passwords
+    # generate_password(10, 1)
 
 # FIND ALL INSTALLED APPS TRIAL STARTS HERE
 # importing the module
@@ -103,7 +112,7 @@ def Reports(request):
     DecDevices = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(registeredMonth = 'Dec'))
     DecDevices1 = DecDevices.count()
 
-    Amounts = ['100,000', '200,000', '300,000', '400,000', '500,000']
+    # Amounts = ['100,000', '200,000', '300,000', '400,000', '500,000']
 
     data = [JanDevices1, FebDevices1, MarDevices1, AprDevices1, MayDevices1, JuneDevices1, JulyDevices1, AugDevices1, SeptDevices1, OctDevices1, NovDevices1, DecDevices1]
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -135,6 +144,7 @@ def Support(request):
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/support.html', context)
+
 
 
 @login_required(login_url='Login')
@@ -337,6 +347,8 @@ def Settings(request):
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allUsers':allUsers, 'allProfileImages':allProfileImages}
     return render(request, 'userarea/settings.html', context)
+
+
 
 
 @login_required(login_url='Login')
@@ -895,8 +907,10 @@ def StaffMembers(request):
         staff_location = request.POST['staff_location']
         CompanyUniqueCode = request.POST['CompanyUniqueCode']
         user = request.user
+        username = request.user.username
         randomNumberForStaff = random.randint(1, 99999999)
-        StaffUniqueId = 'Staff-' + request.POST['staff_email'] + str(randomNumberForStaff)
+        # StaffUniqueId = 'Staff-' + request.POST['staff_email'] + str(randomNumberForStaff)
+        StaffUniqueId = 'Staff-' + username + str(generate_password(10, 1))
         StaffID = StaffUniqueId
 
         if not request.POST['staff_phonenumber']:

@@ -7,8 +7,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
-		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
-		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} /> {% endcomment %}
 		<link rel="stylesheet" href={% static 'report/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
@@ -59,68 +59,27 @@
 				</div>
 				{% comment %} Maintenance Summary section area starts here {% endcomment %}
 				<div class='sectionslabels'>
-					<div class='sectionslabelsheaders'>
-						{% comment %} <h4>Maintenance Summary</h4> {% endcomment %}
+					{% comment %} <div class='sectionslabelsheaders'>
 						<h4>Financial Report</h4>
 					</div>
-					<hr/>
-					{% comment %} Hardware purchase information STARTS HERE {% endcomment %}
-					<div class='hardwarePurchaseSection'>
-						<h3>Hardware purchase information</h3>
-						<div class='purchaseChoice'>
-							<div>
-								<select id='select1'>
-									<option value='NumberOfDevices' class='NumberOfDevices'>Number of Devices Purchased</option>
-									<option value='AmountForDevices' class='AmountForDevices'>Amount Spent on Hardware Purchase</option>
-								</select>
-							</div>
-							<div>
-								<select>
-									<option>2023</option>
-									{% comment %} <option>2022</option> {% endcomment %}
-								</select>
-							</div>
-						</div>
-						{% comment %} hardware purchase graph starts here {% endcomment %}
-						<div class='container hardwareNumber'>							
-							<div id="container">
-								<canvas id="layanan"></canvas>
-							</div>
-						</div>
-						{% comment %} hardware purchase graph ends here {% endcomment %}
-
-						{% comment %} hardware purchase amount graph starts here {% endcomment %}
-						<div class='container hardwarePrices'>
-							<div id="container">
-								<canvas id="layanan_subbagian"></canvas>
-							</div>
-						</div> 
-						{% comment %} hardware purchase amount graph ends here {% endcomment %}
-					</div>
-					{% comment %} Hardware purchase information ENDS HERE {% endcomment %}
+					<hr/> {% endcomment %}
 					<div class='devicesTableSection'>
 						<div class='sectionslabelsheaders'>
-							<h4>Table Of Purchase</h4>
-							<h4>List Of Devices By Department</h4>
+							{% comment %} <h4>Table Of Purchase</h4>  {% endcomment %}
+							<h4>List Of Hardwares Purchased Recently</h4>
 						</div>
 						<hr/>
 						<h5>View details of all hardware devices purchased</h5>
 						{% comment %} SEARCH SECTION STARTS HERE {% endcomment %}
 						<div class='deviceinventorymaintop'>
 							<div class='searchdashboardsection'>
-								<div class='searchdashboard'>
-									<form method='GET' action="{% url 'Searchresult' %}">
-										<input type='text' name='q' placeholder='Search Devices' />
-									</form>
-									<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
-								</div>
 								
-								<div class='filteroutter'>
+								{% comment %} <div class='filteroutter'>
 									<div class='filter filtercategory'>
 										<img src={% static 'inventory/img/filter.png' %} />
 										<p>Filter</p>
 									</div>
-								</div>
+								</div> {% endcomment %}
 								
 								{% comment %} FILTER DATA ENTRY CATEGORY SELECTION STARTS HERE {% endcomment %}
 								<div class='filterbox filterbox1'>
@@ -169,13 +128,13 @@
 								{% comment %} FILTER BY DEVICE STATUS ENDS HERE {% endcomment %}
 							</div>
 							<div class='searchsidebtns'>
-								<div class='scannetworkbtn'>
+								{% comment %} <div class='scannetworkbtn'>
 									<a href={% url 'ScanNetwork' %}>
 										<button>
 										<img src={% static 'report/img/export.png' %} />
 										<p>Export</p>
 									</button></a>
-								</div>
+								</div> {% endcomment %}
 							</div>
 						</div>
 						{% comment %} SEARCH SECTION ENDS HERE {% endcomment %}
@@ -225,6 +184,34 @@
 				</div>
 				{% comment %} Maintenance Summary section area ends here {% endcomment %}
 			</div>
+			
+			{% comment %} Hardware purchase information STARTS HERE {% endcomment %}
+			<div class='hardwarePurchaseSection'>
+				<h3>Graphical Repr. of Hardware Purchase</h3>
+				{% comment %} <div class='purchaseChoice'>
+					<div>
+						<select id='select1'>
+							<option value='NumberOfDevices' class='NumberOfDevices'>Number of Devices Purchased</option>
+							<option value='AmountForDevices' class='AmountForDevices'>Amount Spent on Hardware Purchase</option>
+						</select>
+					</div>
+					<div>
+						<select>
+							<option>2024</option>
+						</select>
+					</div>
+				</div> {% endcomment %}
+				{% comment %} hardware purchase graph starts here {% endcomment %}
+				<div class='container hardwareNumber'>							
+					<div id="container">
+						<canvas id="layanan"></canvas>
+					</div>
+				</div>
+				{% comment %} hardware purchase graph ends here {% endcomment %}
+
+				{% comment %} hardware purchase amount graphi here {% endcomment %}
+			</div>
+			{% comment %} Hardware purchase information ENDS HERE {% endcomment %}
 			{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS STARTS HERE {% endcomment %}
 			<div class='monthlyAmount'>
 				<div>
@@ -591,7 +578,7 @@
 				};
 				var myDoughnutChart_2 = new Chart(ctx_2, {
 					type: 'line',
-					data: data_2,
+					data: data,
 					options: {
 						responsive: true,
 						legend: {
