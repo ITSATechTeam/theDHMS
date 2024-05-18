@@ -86,7 +86,7 @@ const closereguser1 = document.querySelector('.closereguser1')
 
 notifysectioninner.addEventListener('click', () => {
     profileBox.style.display = 'block'
-    console.log('clicked!')
+    // console.log('clicked!')
 })
 
 

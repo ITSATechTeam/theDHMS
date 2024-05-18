@@ -80,15 +80,13 @@
                     {% for AllMaintenanceRequests in AllMaintenanceRequests %}
                     <div class='noticationSectionProperIn'>
                         {% comment %} <a href= /member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/ > {% endcomment %}
-                            <div class='noticationSectionProper'>
-                                <div>
-                                    <p class='notificationproper'>
-                                        {{AllMaintenanceRequests.MaintainRequester}} Just made a maintenance request with maintenance ID: <a href= "/member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/" > <span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
-                                    </p>
-                                    <p>{{AllMaintenanceRequests.created_at}}</p>
-                                </div>
-                                <hr/>
-                            </div>
+                        <div>
+                            <p class='notificationproper'>
+                                {{AllMaintenanceRequests.MaintainRequester}} Just made a maintenance request with maintenance ID: <a href= "/member/maintenancedetails/{{AllMaintenanceRequests.MaintainRequestID}}/" > <span>{{AllMaintenanceRequests.MaintainRequestID}}</span> </a>
+                            </p>
+                            <p>{{AllMaintenanceRequests.created_at}}</p>
+                        </div>
+                        <hr/>
                         {% comment %} </a> {% endcomment %}
                     </div>
                     {% endfor %}

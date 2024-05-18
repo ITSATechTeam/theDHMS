@@ -7,8 +7,8 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
-		{% comment %} <link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
-		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} /> {% endcomment %}
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'report/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		
@@ -186,8 +186,8 @@
 			</div>
 			
 			{% comment %} Hardware purchase information STARTS HERE {% endcomment %}
-			<div class='hardwarePurchaseSection'>
-				<h3>Graphical Repr. of Hardware Purchase</h3>
+			{% comment %} <div class='hardwarePurchaseSection'> {% endcomment %}
+				{% comment %} <h3>Graphical Repr. of Hardware Purchase</h3> {% endcomment %}
 				{% comment %} <div class='purchaseChoice'>
 					<div>
 						<select id='select1'>
@@ -204,13 +204,13 @@
 				{% comment %} hardware purchase graph starts here {% endcomment %}
 				<div class='container hardwareNumber'>							
 					<div id="container">
-						<canvas id="layanan"></canvas>
+						{% comment %} <canvas id="layanan"></canvas> {% endcomment %}
 					</div>
 				</div>
 				{% comment %} hardware purchase graph ends here {% endcomment %}
 
 				{% comment %} hardware purchase amount graphi here {% endcomment %}
-			</div>
+			{% comment %} </div> {% endcomment %}
 			{% comment %} Hardware purchase information ENDS HERE {% endcomment %}
 			{% comment %} AMOUNT SPENT PER MONTH CALCULATIONS STARTS HERE {% endcomment %}
 			<div class='monthlyAmount'>
