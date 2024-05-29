@@ -31,10 +31,10 @@ hr{
     align-items: center;
     justify-content: space-between;
 }
-
+/* 
 .scannetworkbtn{
     margin-right: -20px;
-}
+} */
 
 .devicedetailssection h3{
     color: #2A66B0;
@@ -71,7 +71,7 @@ hr{
     height: 50px;
     margin-right: 10px;
 }
-
+/* 
 .scannetworkbtn button{
     background-color: #2A66B0;
     color: white;
@@ -81,7 +81,7 @@ hr{
 
 .scannetworkbtn img{
     margin-right: 10px;
-}
+} */
 
 .maintainReqMain:hover{
     transform: scale(1.06);
@@ -266,4 +266,60 @@ hr{
 
 .commentsSectionInner a{
     color: rgb(82, 81, 81);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+
+    .main{
+        padding-top: 10px;
+        padding-left: 5px;
+    }
+
+    .subIntroSection button{ 
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
+    .subIntroSectioninner{
+        display: inline;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .devicedetailssection{
+        display: inline;
+        justify-content: space-between;
+    }
+
 }

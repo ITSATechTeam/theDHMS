@@ -49,10 +49,8 @@
 
 
 .devicedetailstoptab1Inner {
-    /* background-color: blue; */
     width: 400px;
     position: relative;
-    /* display: none; */
 }
 
 .devicedetailstoptab1Inner strong{
@@ -138,6 +136,8 @@
     transition: 0.5s ease-in-out;
     display: none;
 }
+
+
 .devicebrand{
     display: none;
 }
@@ -151,3 +151,39 @@
 
 
 /* AllmaintenanceRequests ENDS HERE */
+
+@media only screen and (max-width: 1202px){
+    .shadow2{
+        position: fixed;
+        margin-left: 0px;
+        height: 100vh;
+        padding: 20px;
+        /* border-radius: 10px; */
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.233);
+        z-index: 20;
+        transition: 0.5s ease-in-out;
+        display: none;
+    }
+    
+    .maintenancereq{
+        /* background-color: red; */
+        width: 100vw;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: white;
+        z-index: 10;
+        position: absolute;
+        top: 30%;
+        left: 0%;
+        display: none;
+    }
+
+    .devicedetailstoptab1Inner{
+        width: 100%;
+        overflow: scroll;
+    }
+    
+}
+

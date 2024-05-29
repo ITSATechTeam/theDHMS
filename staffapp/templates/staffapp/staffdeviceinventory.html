@@ -180,7 +180,7 @@
 					  </th> {% endcomment %}
 					  <th>ID</th>
 					  <th>Brand</th>
-					  <th>MAC ID</th>
+					  <th class='hideonmobile'>MAC ID</th>
 					  <th>Category</th>
 					  <th>User</th>
 					  <th>Status</th>
@@ -199,7 +199,7 @@
 							<td class='devicebrandName'>
 								<p>{{ RegisteredDevices.devicebrand }}</p>
 							</td>
-							<td>{{ RegisteredDevices.devicemacaddress }}</td>
+							<td class='hideonmobile'>{{ RegisteredDevices.devicemacaddress }}</td>
 							<td>{{ RegisteredDevices.devicetype }}</td>
 							<td><a href=''>{{ RegisteredDevices.deviceuser }}</a></td>
 							<td class={{ RegisteredDevices.devicestatus }}>{{ RegisteredDevices.devicestatus }}</td>

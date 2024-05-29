@@ -454,6 +454,17 @@ body{
         display: inline;
         text-align: center;
     }
+
+    .MaintenanceSelectSectionInner{
+        margin-top: 10px;
+    }
+
+    
+    .supportbodysectionsvg img {
+        width: 200px;
+        margin: auto;
+        margin-bottom: 20px;
+    }
     
     
     

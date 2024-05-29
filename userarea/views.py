@@ -18,7 +18,7 @@ from useronboard.models import SignupForm, UserProfileImage
 from datetime import datetime
 from datetime import date
 import json
-# import winapps
+import winapps
 import random
 import string
 import time
@@ -1931,7 +1931,7 @@ import subprocess
 #         debian_apps = subprocess.check_output(debian_cmd, shell=True, universal_newlines=True)
 
 #         # Check for Red Hat-based systems (e.g., CentOS)
-#         redhat_cmd = "rpm -qa"
+#         redhat_cmd = "rpm -qa"wi
 #         redhat_apps = subprocess.check_output(redhat_cmd, shell=True, universal_newlines=True)
 
 #         # Combine the lists and remove duplicates
@@ -1967,6 +1967,8 @@ def AllInstalledSoftwares(request):
         RawListOfAppName = RawListOfApp[6:]
     context = {'item':RawListOfAppName, 'allSignUps':allSignUps}
     return render(request, 'userarea/allinstalledapp.html', context)
+
+
 
 # Franklin-franklin.i@itservicedeskafrica.com
 def UpdateCompanyDetails(request, email, name):
@@ -2133,3 +2135,7 @@ def SampleFileForStaffAD(request):
     writer.writerow(['Jane Doe', 'jane.d@itservicedeskafrica.com'])
     writer.writerow(['John Doe', 'john.d@itservicedeskafrica.com'])
     return response
+
+
+def errorpagevisist(request):
+    return render(request, '404.html')

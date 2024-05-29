@@ -1,42 +1,63 @@
+<!-- @format -->
+{% include 'general.html' %} 
 {% load static %} 
+{% load pwa %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
 
-{% comment %} {% for allProfileImages2 in allProfileImages2 %}
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Admin Dashboard | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+        {% progressive_web_app_meta %}
+	</head>
+  <body>
+		<div class='main'>
+    {% if allSignupsForUpdatePopup %}
+    {% else %}
+    {% endif %}
+    <body class='body'>
 
-{{ allProfileImages2.userReg }}<br/>
-{% if allProfileImages2.profilepicture %}
-<img src={{ allProfileImages2.profilepicture.url }} width='50px' height='50px' />
-<br/>
-{%  endif%}
+  {% comment %} {% for item in item %}
+  {{item.name}} {{item.version}} {{item.install_date}}
+  <br/>
+  {% endfor %} {% endcomment %}
 
-{% endfor %} {% endcomment %}
-
-{% for item in item %}
-{{item.name}} {{item.version}} {{item.install_date}}
-<br/>
-{% endfor %}
-
-{% comment %} INSTALLED APP TABLE STARTS HERE {% endcomment %}
-<div>
-    <table>
-        <tr>
-          <th>App Name</th>
-          <th>App Version</th>
-          <th>App Installation Date</th>
-          {% comment %} <th>Action</th> {% endcomment %}
-        </tr>
-        {% for item in item %}
-        <tr>
-          <td>{{item.name}}</td>
-          <td>{{item.version}}</td>
-          <td>{{item.install_date}}</td>
-          {% comment %} <td>
-            <div class='actionbtns'>
-                <img src={% static 'dashboard/img/edit.png' %} />
-                <img src={% static 'dashboard/img/delete.png' %} />
-            </div>
-          </td> {% endcomment %}
-        </tr>
-        {% endfor %}
-    </table>
+  {% comment %} INSTALLED APP TABLE STARTS HERE {% endcomment %}
+  <div>
+      <table>
+          <tr>
+            <th>App Name</th>
+            <th>App Version</th>
+            <th>App Installation Date</th>
+            {% comment %} <th>Action</th> {% endcomment %}
+          </tr>
+          {% for item in item %}
+          <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.version}}</td>
+            <td>{{item.install_date}}</td>
+            {% comment %} <td>
+              <div class='actionbtns'>
+                  <img src={% static 'dashboard/img/edit.png' %} />
+                  <img src={% static 'dashboard/img/delete.png' %} />
+              </div>
+            </td> {% endcomment %}
+          </tr>
+          {% endfor %}
+      </table>
+  </div>
+  {% comment %} INSTALLED APP TABLE ENDS HERE {% endcomment %}
 </div>
-{% comment %} INSTALLED APP TABLE ENDS HERE {% endcomment %}
+</body>
+</html>
+{% endblock content %}

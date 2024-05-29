@@ -118,11 +118,13 @@ let uploaddevicepopup = document.querySelector('.uploaddevicepopup')
 let showdeviceuploadpopup = document.querySelector('.showdeviceuploadpopup')
 
 
+if (showdeviceuploadpopup){
+    showdeviceuploadpopup.addEventListener('click', () => {
+        uploaddevicepopup.style.display = 'block'
+        shadow.style.display = 'block';
+    })
 
-showdeviceuploadpopup.addEventListener('click', () => {
-    uploaddevicepopup.style.display = 'block'
-    shadow.style.display = 'block';
-})
+}
 
 
 if(uploaddevicepopupintroclose){

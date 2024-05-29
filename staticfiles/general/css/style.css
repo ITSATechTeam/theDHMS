@@ -34,10 +34,13 @@ nav{
 
 .profileBox{
     display: none;
+    margin: 10px;
+    position: fixed;
 }
 
 .profileBoxintro{
     display: flex;
+    /* position: fixed; */
     align-items: top;
     justify-content: space-between;
 }
@@ -135,9 +138,9 @@ input:focus{
 }
 
 nav button{
-    background-color: #2A66B0;
+    background-color: #EED0D0;
     border: none;
-    color: white;
+    color: black;
     align-items: center;
     width: 150px;
     font-size: 1.4rem;
@@ -145,6 +148,12 @@ nav button{
     padding: 8px 5px 5px 5px;
     border-radius: 8px;
     font-weight: bold;
+}
+
+.navBtn img{
+    width: 20px;
+    margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 .notifyout{
@@ -243,13 +252,24 @@ nav button{
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
     position: fixed;
     padding: 20px;
-    margin-left: -270px;
     width: 400px;
-    margin-top: 60px;
+    margin: 10px;
+    margin-top: 62px;
+    right: 0;
+    top: 0;
+    border-radius: 10px;
     z-index: 20;
-    height: 100%;
+    height: 70%;
     padding-bottom: 30px;
     overflow-y: scroll;
+}
+
+.notificationproper a p{
+    color: black;
+}
+
+.notifySectionPopuPOut::-webkit-scrollbar{
+    display: none;
 }
 
 
@@ -272,7 +292,7 @@ nav button{
     color: #2A66B0;
 }
 .noticationSectionProperIn{
-    height: 100%;
+    height: 100px;
     width: 100%;
     padding: 5px;
     font-size: 1.5rem;
@@ -397,6 +417,43 @@ nav button{
 }
 
 
+.navBtnmobile button{
+    display: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -411,6 +468,22 @@ nav button{
     }
     .responsivesection{
         display: block;
+    }
+
+    
+    .navBtnmobile button{
+        display: block;
+        background-color: #EED0D0;
+        border: none;
+        color: black;
+        align-items: center;
+        margin-top: 40px;
+        width: 150px;
+        font-size: 1rem;
+        height: 40px;
+        padding: 8px 5px 5px 5px;
+        border-radius: 8px;
+        font-weight: bold;
     }
 
     .search{
@@ -457,6 +530,15 @@ nav button{
         display: none;
         background-color: white;
     }
+
+    
+.notifySectionPopuPOut{
+    background-color: white;
+    width: 90%;
+    margin: 5px;
+    left: 0;
+    margin-top: 110px;
+}
     
     .showMenu{
         display: block;

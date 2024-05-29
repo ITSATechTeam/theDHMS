@@ -21,7 +21,6 @@ from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
-
 # RESET PASSWORD IMPORTS ENDS HERE
 
 
@@ -40,9 +39,14 @@ def PreSignUpPage(request):
 
 def Home(request):
     return render(request, 'useronboard/home.html')
+    
+    
+def csrf_failure(request, reason=""):
+    return render(request, 'useronboard/403_csrf.html')
 
 
 
+    
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def SignUpPage(request):
     if request.method == 'POST':
@@ -100,16 +104,8 @@ def SignUpPage(request):
     return render(request, 'useronboard/signup.html')
 
 
-def csrf_failure(request, reason=""):
-    return render(request, 'useronboard/403_csrf.html')
-
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def Login(request):
-    # csrftoken = Cookies.get('csrftoken')
-    # print(csrftoken)
-    # if csrftoken:
-    #     return redirect('SignUpPage')
-         
     next = ""
     if request.GET:  
         next = request.GET['next']
@@ -120,8 +116,17 @@ def Login(request):
         try:
             user = User.objects.get(email=companymail)
             if user:
-                userEmail = user.email
-                # print(user.email)
+                pass
+            else:
+                messages.error(request, 'An error occured, please try again.')
+                return redirect('Login') 
+                
+            isacompany = SignupForm.objects.get(email = companymail)
+            if isacompany:
+                 pass
+            else:
+                messages.error(request, 'You are not allowed to use an Administrator account at this time, kindly contact support.')
+                return redirect('Login') 
         except:
             messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
             return redirect('SignUpPage')
@@ -132,19 +137,14 @@ def Login(request):
         if user is not None:
             login(request, user)
             try:
-                # notifyLoginEmail(request, user, companymail)
-                pass
+                notifyLoginEmail(request, user, companymail)
             except:
-                pass
+                print('error sending login notification email to user')
             if next == "":
                 return redirect('Dashboard')
             else:
                 return HttpResponseRedirect(next)
                 
-            # try:
-            #     notifyLoginEmail(request, user, companymail)
-            # except:
-            #     pass
             return redirect('Dashboard')
 
         else:
@@ -233,7 +233,7 @@ def notifyLoginEmail(request, user, to_email):
         'user': user.email,
         # 'domain': 'http://127.0.0.1:8000/',
         # 'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
-        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
+        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'https://dhms.itservicedeskafrica.com/',
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': account_activation_token.make_token(user),
         "protocol": 'https' if request.is_secure() else 'http'
@@ -246,8 +246,3 @@ def notifyLoginEmail(request, user, to_email):
 
 
 # def sync_user_relations(user, ldap_attributes, *, connection=None, dn=None):
-
-
-# def LoginCanceled(request):
-#     messages.error(request, 'Sorry, an error occurred. Kindly try again')
-#     return redirect('SignUpPage')

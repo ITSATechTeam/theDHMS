@@ -234,6 +234,10 @@ nav button{
 }
 
 
+.logoutmobile{
+    display: none;
+}
+
 
 
 
@@ -383,7 +387,8 @@ nav button{
     .notifysectioninner2{
         align-items: center;
         display: flex;
-        padding: 8px    }
+        padding: 0px    
+    }
 
     .notifysectioninner2 p{
         margin-top: 13px;
@@ -391,7 +396,8 @@ nav button{
 
     .notifysectioninner2 img{
         margin-right: 0px;
-        margin-left: 5px;
+        margin-left: 0px;
+        display: none;
     }
     
     
@@ -442,4 +448,15 @@ nav button{
     .hamburgerMain{
         margin-top: 0px;
     }
+
+    .logoutmobile{
+        display: block;
+    }
+
+    .hideonmobile{
+        display: none;
+    }
+    
+    
+    
 }

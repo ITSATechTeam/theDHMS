@@ -42,6 +42,7 @@ urlpatterns = [
     path('subadmin/', views.SubAdmin, name="SubAdmin"),
     path('deletesubadmin/<str:pk>/', views.DeletSubAdmin, name="DeletSubAdmin"),
     path('sample_staffad_file/', views.SampleFileForStaffAD, name="SampleFileForStaffAD"),
+    path('errorpagevisist/', views.errorpagevisist, name="errorpagevisist"),
 ]
 
 

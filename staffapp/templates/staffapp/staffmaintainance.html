@@ -103,10 +103,10 @@
 							</form>
 							<img class='searchicon' src={% static 'dashboard/img/searchicon.png' %} />
 						</div>
-						<div class='filter filtercategory'>
+						{% comment %} <div class='filter filtercategory'>
 							<img src={% static 'inventory/img/filter.png' %} />
 							<p>Filter</p>
-						</div>
+						</div> {% endcomment %}
 						
 							{% comment %} FILTER DATA ENTRY CATEGORY SELECTION {% endcomment %}
 							<div class='filterbox filterbox1'>
@@ -145,7 +145,7 @@
 						<div class='scannetworkbtn'>
 							<button>
 								<img src={% static 'maintenance/img/support.png' %} />
-								<p>Contact ITSA Support</p>
+								<a href='mailto:ikechukwu.o@itservicedeskafrica.com'><p>Contact ITSA Support</p></a>
 							</button>
 						</div>
 					</div>
@@ -196,7 +196,7 @@
 					{% endfor %}
 				</table>
 				<hr/>
-				<div class='pagesdetailsseection'>
+				{% comment %} <div class='pagesdetailsseection'>
 					<div class='perpagecount'>
 						<div>
 							<div class='selectedNumber'>
@@ -239,16 +239,6 @@
 					<div id="pagination-numbers">
 		
 					</div>
-
-					<div class='pages'>
-						{% comment %} <div>
-							<select>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-							</select>
-						</div> {% endcomment %}
 						
 						<div id="pagination-numbers"></div>
 						<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
@@ -257,7 +247,7 @@
 							<img id="next-button" src={% static 'inventory/img/right.png' %} />
 						</div>
 					</div>
-				</div>
+				</div> {% endcomment %}
 				{% comment %} BOTTOM SELECTION OPTIONS DISPLAY STARTS HERE {% endcomment %}
 				<div class='detailsTabOut'>
 					<div class='detailsTab'>

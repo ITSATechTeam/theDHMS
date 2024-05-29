@@ -20,6 +20,23 @@ body{
     font-size: 1.4rem;
 }
 
+.maintenanceemptystate{
+    text-align: center;
+}
+
+.maintenanceemptystate img{
+    margin: 20px;
+}
+
+.maintenanceemptystate button{
+    background-color:#2A66B0;
+    color: white;
+    font-size: 1.3rem;
+    border-radius: 5px;
+    border: none;
+    padding: 5px 10px;
+}
+
 
 .subIntroSection{
     display: flex;
@@ -112,12 +129,27 @@ body{
 .scannetworkbtn button{
     background-color: #2A66B0;
     color: white;
-    width: 100%;
+    width:200px;
     height: 50px;
+}
+
+.scannetworkbtn button a{
+    color: white;
+}
+
+.scannetworkbtnbutton{
+    display: flex;
+    justify-content: space-around;
 }
 
 .scannetworkbtn img{
     margin-right: 10px;
+}
+
+.supportbodysectionsvg img {
+    width: 400px;
+    margin: auto;
+    margin-bottom: 20px;
 }
 
 .maintainReqMain:hover{
@@ -308,10 +340,79 @@ body{
     border-radius: 10px;
     cursor: pointer;
 }
-
-
-
 /* viewdetails ON STAFF PAGE ENDS HERE */
+
+
+.maintenancepageemptystate{
+    text-align: center;
+
+}
+
+
+.maintenancepageemptystate img{
+    width: 300px;
+    margin-bottom: 30px;
+}
+
+.supportbodysection{
+    text-align: center;
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -347,6 +448,22 @@ body{
     .maintaintable{
         width: 100%;
         overflow-x: scroll;
+    }
+
+    .scannetworkbtnbutton{
+        display: inline;
+        text-align: center;
+    }
+
+    .MaintenanceSelectSectionInner{
+        margin-top: 10px;
+    }
+
+    
+    .supportbodysectionsvg img {
+        width: 200px;
+        margin: auto;
+        margin-bottom: 20px;
     }
     
     

@@ -102,11 +102,11 @@
 
 .shadowSubAdmin{
     position: fixed;
-    margin-left: 220px;
+    margin-left: 0px;
     height: 140%;
     padding: 20px;
     /* border-radius: 10px; */
-    width: 90%;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.233);
     z-index: 6;
     transition: 0.5s ease-in-out;
@@ -127,6 +127,10 @@
     top: 50px;
     left: 40%;
     z-index: 10;
+    display: none;
+}
+
+.addSubAdminPopUp::-webkit-scrollbar{
     display: none;
 }
 
@@ -251,6 +255,30 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1202px){
+    
+.addSubAdminPopUp{
+    width: 100%;
+    height: 80%;
+    position: fixed;
+    top: 150px;
+    left: 0%;
+}
+}
 
 
 

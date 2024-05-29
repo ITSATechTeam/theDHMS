@@ -95,11 +95,24 @@ profileimgsectiontext.innerHTML = firstAlphabet
 // PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE
 
 
+// PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP STARTS HERE FOR MOBILE
+let requestUser2 = document.querySelector('.requestUser').innerHTML
+let profileimgsectiontext2 = document.querySelector('.profileimgsectiontext2 h1')
+let firstAlphabet2;
+// console.log('requestUser2')
+for (let i = 0; i < requestUser2.length; i++) {
+    firstAlphabet2 = requestUser2[0];
+}
+profileimgsectiontext2.innerHTML = firstAlphabet2
+
+// PICK FIRST ALPHABET FROM USER NAME TO USE AS A DP ENDS HERE FOR MOBILE
+
+
 
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashStaffGeneral = document.querySelector('.alert strong')
+let flashStaffGeneral = document.querySelector('#flash')
 if(flashStaffGeneral){
     console.log('flashStaffGeneral around')
     setTimeout(() => {
@@ -107,3 +120,20 @@ if(flashStaffGeneral){
     }, 5000);
 }
 // HANDLE FLASH MESSAGES ON DASHBOARD ENDS HERE
+
+
+// HAMBURGER MENU STARTS HERE
+let hamburger = document.querySelector('.hamburger')
+
+hamburger.addEventListener('click' , () => {
+    hamburger.classList.toggle("hamburgeractive");
+  });
+
+
+let userSectionResponsiveOut = document.querySelector('.userSectionResponsiveOut')
+let hamburgerMain = document.querySelector('.hamburgerMain')
+let sidebarsection = document.querySelector('.sidebarsection')
+
+hamburgerMain.addEventListener('click', () => {
+    sidebarsection.classList.toggle('showMenu')
+})

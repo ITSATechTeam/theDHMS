@@ -49,10 +49,8 @@
 
 
 .devicedetailstoptab1Inner {
-    /* background-color: blue; */
     width: 400px;
     position: relative;
-    /* display: none; */
 }
 
 .devicedetailstoptab1Inner strong{
@@ -163,7 +161,7 @@
         /* border-radius: 10px; */
         width: 100%;
         background-color: rgba(0, 0, 0, 0.233);
-        z-index: 20;
+        z-index: 6;
         transition: 0.5s ease-in-out;
         display: none;
     }
@@ -180,6 +178,11 @@
         top: 30%;
         left: 0%;
         display: none;
+    }
+
+    .devicedetailstoptab1Inner{
+        width: 100%;
+        overflow: scroll;
     }
     
 }

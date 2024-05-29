@@ -10,8 +10,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+# from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+# from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.contrib.auth import authenticate
 # from rest_framework_simplejwt.tokens import RefreshToken
@@ -26,20 +26,20 @@ from django.conf import settings
 
 
 #   implement my customization of token claim when displaying user data I create a custome view for it as below:
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
+# class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+#     @classmethod
+#     def get_token(cls, user):
+#         token = super().get_token(user)
 
-        # Add custom claims
-        token['username'] = user.username
-        token['email'] = user.email
-        # ...
+#         # Add custom claims
+#         token['username'] = user.username
+#         token['email'] = user.email
+#         # ...
 
-        return token
+#         return token
     
-class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+# class MyTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = MyTokenObtainPairSerializer
 
 
 
@@ -50,7 +50,6 @@ def All_Organization(request):
     AllUser = SignupForm.objects.all()
     serializer = RegisterSerializer(AllUser, many=True)
     return Response(serializer.data)
-
 
 
 # import requests
@@ -96,15 +95,17 @@ def User_Login(request):
                 # is_expired, token = token_expire_handler(token)     # The implementation will be described further
                 # user_serialized = UserSerializer(user)                  
                     
-                print(token.key)
-                print(request.user)
                 if user is not None:
-                    print('login successful')
+                    # print('login successful')
                     login(request, user)
+                    # After successful login, retrieve the session ID
+                    session_id = request.session.session_key
+                    # print(session_id)
                     return Response({
                         'status':200,
                         'message': 'Login Successfull',
-                        "Token": token.key
+                        "Token": token.key,
+                        "SessionID": session_id
                     })
                 else:
                     return Response({
@@ -120,7 +121,8 @@ def User_Login(request):
     })
     
 
-@api_view(['POST', 'GET'])
+
+@api_view(['GET'])
 def User_Logout(request):
     # request.user.auth_token.delete()
     logout(request)
@@ -211,31 +213,32 @@ def Register_Org(request):
 def Org_Profile(request):
     if request.method == 'GET':        
         OrgProperMain = request.user.username
-        print(OrgProperMain)
-        print(request.user)
-        OrgProper = SignupForm.objects.get(companyname = OrgProperMain)
-        print(OrgProper)
-        if OrgProper:            
-            serializer = RegisterSerializer(OrgProper, many = False)
-            print(serializer)
-            return Response({
-                "status": 200,
-                "message": "Organization profile details found.",
-                "data": serializer.data
-            })
+        if OrgProperMain:
+            print(OrgProperMain)
+            print(request.user)
+            OrgProper = SignupForm.objects.get(companyname = OrgProperMain)
+            print(OrgProper)
+            if OrgProper:            
+                serializer = RegisterSerializer(OrgProper, many = False)
+                print(serializer)
+                return Response({
+                    "status": 200,
+                    "message": "Organization profile details found.",
+                    "data": serializer.data
+                })
+                
+            else:
+                return Response({
+                    "status": 400,
+                    "message": "Organization profile details not found.",
+                    "error": serializer.error_messages
+                })
+                
             
-        else:
-            return Response({
-                "status": 400,
-                "message": "Organization profile details not found.",
-                "error": serializer.error_messages
-            })
-            
-        
-        # return Response({
-        #     "status": 200,
-        #     "message": "Welcome to the organizational profile view page.",
-        # })
+        return Response({
+            "status": 400,
+            "message": "You are not logged in. Login to view your profile details",
+        })
 
 
 @api_view(['GET'])

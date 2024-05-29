@@ -71,8 +71,7 @@ from ms_identity_web import IdentityWebPython
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-DEBUG = True
+# DEBUG = str(os.getenv('DEBUG'))
 
 CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
 
@@ -103,7 +102,6 @@ INSTALLED_APPS = [
     'dhmsadminboard.apps.DhmsadminboardConfig',
     'dhmsapiapp.apps.DhmsapiappConfig',
     'aichat.apps.AichatConfig',
-    # 'DMHSAPI.apps.DhmsapiConfig',
     'rest_framework',
     'rest_framework.authtoken',
     

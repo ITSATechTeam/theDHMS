@@ -34,14 +34,14 @@ let generalSelectionExport = document.querySelector('.generalSelectionExport')
 
 topCheckBox.addEventListener('change', () => {
     if (topCheckBox.checked === true){
-        console.log('topCheckBox is checked true now')
+        // console.log('topCheckBox is checked true now')
         notSelectionDelete.style.display = 'none'
         notSelectionExport.style.display = 'none'
         // 
         generalSelectionDelete.style.display = 'block';
         generalSelectionExport.style.display = 'block';
     }else{
-        console.log('topCheckBox is NOT checked true now')
+        // console.log('topCheckBox is NOT checked true now')
         notSelectionDelete.style.display = 'block'
         notSelectionExport.style.display = 'block'
         // 
@@ -65,7 +65,7 @@ function checkBoxFunctions(each){
             let eValue = e.innerHTML
             if(eValue.includes(each.value)){
                 DataArray.push(eValue);
-                console.log(DataArray)
+                // console.log(DataArray)
                 return DataArray, 
                 ExportDataHere.value = DataArray, 
                 idforedit.value = DataArray, 
@@ -97,7 +97,7 @@ function checkBoxFunctions(each){
             topCheckBox.checked = false;
         } else if (trueBoxes = maintenanceReqeustCount){
             topCheckBox.checked = true;
-            console.log("all boxes are checked 'true' now");
+            // console.log("all boxes are checked 'true' now");
             notSelectionDelete.style.display = 'none'
             notSelectionExport.style.display = 'none'
             // 
@@ -179,9 +179,9 @@ let sectionToReplace = document.querySelector('.sectionToReplace')
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashMaintainmaintain = document.querySelector('.alert strong')
+let flashMaintainmaintain = document.querySelector('#flash')
 if(flashMaintainmaintain){
-    console.log('flashMaintainmaintain around')
+    // console.log('flashMaintainmaintain around')
     setTimeout(() => {
         flashMaintainmaintain.style.display = 'none'
     }, 5000);
