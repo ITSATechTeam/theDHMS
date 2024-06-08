@@ -18,7 +18,7 @@ from useronboard.models import SignupForm, UserProfileImage
 from datetime import datetime
 from datetime import date
 import json
-import winapps
+# import winapps
 import random
 import string
 import time

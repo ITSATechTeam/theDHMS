@@ -86,6 +86,13 @@ if(flashfamilyonboard){
 }
 
 
+// Validate input filed for text
+const fullnameinput = document.querySelector('#fullname');
+fullnameinput.addEventListener('keydown', function(event){
+  if((/\d/g).test(event.key)) event.preventDefault();
+})
+
+
 
 
 

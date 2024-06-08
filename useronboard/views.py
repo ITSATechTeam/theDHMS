@@ -56,7 +56,7 @@ def SignUpPage(request):
         companyUniqueID = (companyname+'-'+email).replace(" ", "")
         # address = request.POST['address']
         password = request.POST['password']
-        rtpassword = request.POST['rtpassword']
+        # rtpassword = request.POST['rtpassword']
         
         
         if not request.POST['companyname']:
@@ -72,9 +72,9 @@ def SignUpPage(request):
             return redirect('SignUpPage')
 
 
-        if (password != rtpassword):
-            messages.error(request, 'Passwords Do Not Match!')
-            return redirect('SignUpPage')
+        # if (password != rtpassword):
+        #     messages.error(request, 'Passwords Do Not Match!')
+        #     return redirect('SignUpPage')
 
         data = SignupForm.objects.filter(companyname=companyname)
         UserData = User.objects.filter(username=companyname)
@@ -88,7 +88,7 @@ def SignUpPage(request):
             return redirect('SignUpPage')
             
         else:
-            form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password, repassword=rtpassword)
+            form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password)
             user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
             form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')

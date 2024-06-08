@@ -172,9 +172,6 @@ main{
     margin: auto;
 }
 
-/* .googlesignin img{
-    width: 20px;
-} */
 
 form{
     width: 100%;
@@ -230,27 +227,6 @@ form{
 
 }
 
-.googlesignin {
-    border: none;
-    height: 40px;
-    display: flex;
-    background-color: #E1E7FC;
-    border: none;
-    border-radius: 10px;
-    width: 100%;
-    margin-top: 20px;
-    align-items: center;
-    color: #2A66B0;
-    /* font-weight: bold; */
-    cursor: pointer;
-}
-
-.googlesignin button{
-    background-color: transparent;
-    width: 100%;
-    border-radius: 10px;
-    padding-bottom: 10px;
-}
 
 
 .buttoninner{
@@ -270,31 +246,25 @@ button{
 }
 
 
-.googlesignin img{
-    /* margin-left: 40px; */
-    width: 120px;
-    /* margin: auto; */
-    /* margin-bottom: 100px; */
-    background-color: transparent;
+.googlesignin1 img{
+    width: 40px;
+}
+
+.googlesignin1{
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.googlesignin1 p{
+    width: 100%;
+    text-align: center;
 }
 
 .buttoninner img{
     width: 20px;
 }
 
-.googlesigninner{
-    width: 100%;
-    align-items: center;
-    margin: auto;
-    height: 40px;
-    display: flex;
-    /* background-color: red; */
-}
-
-.googlesigninner p{
-    margin-top: 20px;
-    margin-left: -16px;
-}
 
 .logininstead{
     width: 100%;

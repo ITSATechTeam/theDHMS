@@ -1,0 +1,438 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Poppins;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+
+.flash {
+    color: #2A66B0;
+    font-size: 1.4rem;
+}
+
+
+main{
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #F7F7FB; */
+    padding-right: 100px;
+    padding-left: 50px;
+}
+
+.mainimg img{
+    width: 600px;
+}
+
+.sidenote{
+    width: 500px;
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.sidenote h1{
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidenote-p{
+    font-size: .8rem;
+    width: 400px;
+    margin-left: 30px;
+}
+
+.sidenote button{
+    display: flex;
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 230px;
+    justify-content: space-around;
+    font-size: 1rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 40px;
+
+}
+.sidenote button p{
+    margin-top: 10px;
+}
+
+.box{
+    position: fixed;
+    top: 70px;
+    right: 0px;
+    z-index: 1;
+    height: 100px;
+}
+.box img{
+    height: 400px;
+    z-index: -2;
+}
+
+
+/* GENERAL NAV BAR EDITS STARTS HERE */
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;    
+    font-family: 'Poppins', sans-serif;
+}
+
+
+nav img{
+    width: 200px;
+    background-color: white;
+    margin: auto;
+}
+/* GENERAL NAV BAR EDITS ENDS HERE */
+
+/* FOOTER STARST HERE */
+
+.footer{
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+/* MAIN BODY EDITS STARTS HERE */
+main{
+    display: grid;
+    grid-template-columns: 30% 70%;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+}
+
+.sideimagesection{
+    background-color: #2A66B0;
+    /* height: 100vh; */
+    width: 40%;
+    /* padding: 30px; */
+    /* position: fixed; */
+    top: 0;
+    text-align: center;
+    align-items: center;
+    z-index: 3;
+    position: fixed;
+    height: 100vh;
+    /* width: 100vw; */
+}
+
+
+.sideimagesection img{
+    /* height: 100%; */
+    width: 100%;
+}
+
+.bckgImg{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    /* background-color: #2a66b023; */
+}
+
+
+/* MAIN BODY EDITS ENDS HERE */
+
+/* FORM SECTION STARTS HERE*/
+
+
+.nav{
+    background-color: white;
+    padding: 5px;
+    width: 60%;
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2)   ; */
+    z-index: 1;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 70px;
+}
+
+
+.nav img{
+    width: 200px;
+    background-color: white;
+    margin: auto;
+}
+
+
+.registerform img{
+    margin-left: -5px;
+}
+
+.registerformimg{
+    width: 100;
+    padding: 0px;
+    margin-bottom: 30px;
+    /* background-color: red; */
+    /* box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2)  */
+}
+
+
+.registerform{
+    /* background-color: red; */
+    padding: 10px;
+    margin: auto;
+    /* margin-top: 70px; */
+    /* margin-left: 60px; */
+}
+
+.registerform .passwordinput input{
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    border: .7px solid rgb(179, 179, 179);
+    border-radius: 5px;
+    /* margin-top: 0px; */
+}
+
+.registerform input{
+    width: 100%;
+    height: 40px;
+    padding: 5px;
+    border: .7px solid rgb(179, 179, 179);
+    border-radius: 5px;
+    /* margin-top: 0px; */
+}
+
+.registerform select{
+    width: 70%;
+    height: 40px;
+    padding: 5px;
+    border: .7px solid rgb(179, 179, 179);
+    border-radius: 5px;
+    /* margin-top: 0px; */
+}
+
+.registerform p{
+    font-size: .8rem;
+    width: 70%;
+}
+
+.formsection{
+    margin-top: 20px;
+}
+
+.formsection p{
+    margin-bottom: 1px;
+    font-weight: bold;
+}
+
+.formsubmitbtn button{
+    background-color: #2A66B0;
+    border: none;
+    color: white;
+    align-items: center;
+    width: 70%;
+    font-size: 1rem;
+    height: 40px;
+    padding: 6px 5px 5px 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: auto;
+    margin-top: 40px;
+
+}
+
+
+button{
+    border: none;
+}
+
+
+.googlesignin2 img{
+    width: 40px;
+}
+
+
+.googlesignin2 {
+    width: 100%;
+    text-align: center;
+}
+
+.googlesignin2 p{
+    width: 100%;
+    text-align: center;
+}
+
+.googlesignin {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+.buttoninner{
+    width: 200px;
+    display: flex;
+    margin-bottom: 10px;
+    margin: auto;
+    /* background-color: red; */
+    align-items: center;
+    height:45px;
+    font-weight: bold;
+}
+
+
+
+.logininstead{
+    margin: auto;
+    margin-top: 10px;
+    margin-left: 20%;
+}
+
+input:focus{
+    outline: none;
+}
+
+
+.logininstead a{
+    color: #2A66B0;
+    font-weight: bold;
+}
+
+
+.pageformsection{
+    background-color: white;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 30px;
+    margin: 10px;
+    width: 70%;
+    
+}
+
+
+
+
+
+
+
+
+
+
+/* FORM SECTION ENDS HERE*/
+
+
+
+
+@media only screen and (max-width: 1202px){
+    .sideimagesection{
+        display: none;
+    }
+    .sideimagesection img{
+        display: none;
+    }
+
+    .registerform{
+        padding: 10px;
+        margin-left: 0;
+        /* background-color: red; */
+        margin-top: 0%;
+        width: 100%;
+    }
+
+    .navmain {
+        padding: 5px;
+        padding-left: 0%;
+        width: 100%;
+        z-index: 1;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: 70px;
+    }
+
+    main{
+        padding-top: 0px;
+        display: inline;
+        align-items: center;
+        justify-content: space-between;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+    /* FORM SECTION STARTS HERE*/
+    .nav{
+        width: 100%;
+        height: 100%;
+        margin-top: 0px;
+        padding-top: 0px;
+    }
+    .registerform input{
+        width: 100%;
+    }
+    .registerform p{
+        font-size: .8rem;
+        width: 100%;
+    }
+
+        
+    .formsubmitbtn button{
+        width: 100%;
+    }
+    .googlesignin {
+        width: 100%;
+    }
+    .googlesigninner p{
+        margin-top: 16px;
+        margin-left: 0px;
+    }
+    
+    .googlesignin button{
+        background-color: transparent;
+        width: 100%;
+        /* background-color: red; */
+        /* margin-left: 20px; */
+    }
+    .logininstead{
+        margin: auto;
+        margin-top: 50px;
+        margin-left: 0%;
+        margin-bottom: 200px;
+    }
+    
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

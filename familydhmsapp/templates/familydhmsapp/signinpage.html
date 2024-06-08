@@ -58,7 +58,7 @@
 
                             <div class='passwordinput'>
                                 <label for='password'>Password</label><br/>
-                                <input id='password' name='password' class='password' required type='password' placeholder='*****' /><br/><br/>
+                                <input id='password' name='password' maxlength=15 class='password' required type='password' placeholder='*****' /><br/><br/>
                                 <div class='pwdeye eye'>
                                     <img src={% static 'onboard/img/eyeshow.png' %} />
                                 </div>
@@ -91,7 +91,7 @@
                         </form>
                         <div>
                             <div><br/>
-                                <p class='loginwithgfoption'>or sign in with</p>
+                                {% comment %} <p class='loginwithgfoption'>or sign in with</p> {% endcomment %}
 
                                 <div class='googlesignin'>
                                     <div class='googlesignin'>
@@ -104,7 +104,7 @@
                                                     </button>
                                                 </form> {% endcomment %}
                                             </div>
-                                            <div>
+                                            {% comment %} <div>
                                                 <form action="{% provider_login_url 'google' %}?next=/familydhms/" method='POST'>
                                                     {% csrf_token %}
                                                     <button type='submit' class='googlesigninner'>
@@ -113,7 +113,7 @@
                                                         </div>
                                                     </button>
                                                 </form>
-                                            </div>
+                                            </div> {% endcomment %}
                                         </div>
                                     </div>
                                 </div>

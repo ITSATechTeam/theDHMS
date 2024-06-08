@@ -72,6 +72,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = str(os.getenv('DEBUG'))
+DEBUG = True
 
 CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
 
@@ -82,6 +83,12 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+
+# SECURE_HSTS_SECONDS = 518400
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # GOOGLE SITE ID
 SITE_ID=5
@@ -234,7 +241,8 @@ MIDDLEWARE = [
     # 
     'django_user_agents.middleware.UserAgentMiddleware',
     # 
-    'allauth.account.middleware.AccountMiddleware'
+    'allauth.account.middleware.AccountMiddleware',
+    # 'csp.middleware.CSPMiddleware'
 ]
 
 
@@ -378,7 +386,7 @@ EMAIL_USE_TLS = True
 
 # AWS S3 Configuration starts here
 AWS_ACCESS_KEY_ID = "AKIAQRVIHB6EPQLTI3SL"
-AWS_SECRET_ACCESS_KEY = "ZLCrN68pLrtK+/wvMD+g15p8aFsjRYD7OzxdkLhA"
+AWS_SECRET_ACCESS_KEY = str(os.getenv('AWS_SECRET_ACCESS_KEY'))
 
 # Your app endpoint
 # AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')  
@@ -398,91 +406,49 @@ AWS_S3_FILE_OVERWRITE = False
 
 
 
+# CSP SECURITY CODE IMPLEMENTATION STARTS HERE
 
-# # LDAP SETTINGS RECOMMENDATION STARTS HERE
-# # The URL of the LDAP server(s).  List multiple servers for high availability ServerPool connection.
-# LDAP_AUTH_URL = ["ldap://localhost:389"]
+# uri to report policy violations
+# uri to report policy violations
+CSP_REPORT_URI = '<add your reporting uri>'
 
-# # Initiate TLS on connection.
-# LDAP_AUTH_USE_TLS = False
+# default source as self
+CSP_DEFAULT_SRC = ("'self', 'STATIC_URL'", )
+# CSP_DEFAULT_SRC = ("'self'", )
 
-# # Specify which TLS version to use (Python 3.10 requires TLSv1 or higher)
-# import ssl
-# LDAP_AUTH_TLS_VERSION = ssl.PROTOCOL_TLSv1_2
+# style from our domain and bootstrapcdn
+# CSP_STYLE_SRC = ("'self'", 
+# 	"stackpath.bootstrapcdn.com")
 
-# # The LDAP search base for looking up users.
-# LDAP_AUTH_SEARCH_BASE = "ou=people,dc=example,dc=com"
+# scripts from our domain and other domains
+CSP_SCRIPT_SRC = ("'self'", 
+	"www.google-analytics.com", 
+	"ssl.google-analytics.com", 
+	# "cdn.ampproject.org", 
+	"www.googletagservices.com", 
+	# "pagead2.googlesyndication.com"
+    )
 
-# # The LDAP class that represents a user.
-# LDAP_AUTH_OBJECT_CLASS = "inetOrgPerson"
+# images from our domain and other domains
+CSP_IMG_SRC = ("'self'", 
+	# "www.google-analytics.com", 
+	# "raw.githubusercontent.com", 
+	# "googleads.g.doubleclick.net"
+    )
 
-# # User model fields mapped to the LDAP
-# # attributes that represent them.
-# # LDAP_AUTH_USER_FIELDS = {
-# #     "username": "uid",
-# #     "first_name": "givenName",
-# #     "last_name": "sn",
-# #     "email": "mail",
-# # }
-
-# # Depending on how your Active Directory server is configured, the following additional settings 
-# # may match your server better than the defaults used by django-python3-ldap:
-
-# LDAP_AUTH_USER_FIELDS = {
-#     "username": "sAMAccountName",
-#     "first_name": "givenName",
-#     "last_name": "sn",
-#     "email": "mail",
-# }
-
-# LDAP_AUTH_OBJECT_CLASS = "user"
+# loading manifest, workers, frames, etc
+CSP_FONT_SRC = ("'self'", )
+CSP_CONNECT_SRC = ("'self'", 
+	# "www.google-analytics.com"
+      )
+CSP_OBJECT_SRC = ("'self'", )
+CSP_BASE_URI = ("'self'", )
+CSP_FRAME_ANCESTORS = ("'self'", )
+CSP_FORM_ACTION = ("'self'", )
+CSP_INCLUDE_NONCE_IN = ('script-src', )
+CSP_MANIFEST_SRC = ("'self'", )
+CSP_WORKER_SRC = ("'self'", )
+CSP_MEDIA_SRC = ("'self'", )
 
 
-
-# # A tuple of django model fields used to uniquely identify a user.
-# LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
-
-# # Path to a callable that takes a dict of {model_field_name: value},
-# # returning a dict of clean model data.
-# # Use this to customize how data loaded from LDAP is saved to the User model.
-# LDAP_AUTH_CLEAN_USER_DATA = "django_python3_ldap.utils.clean_user_data"
-
-# # Path to a callable that takes a user model, a dict of {ldap_field_name: [value]}
-# # a LDAP connection object (to allow further lookups), and saves any additional
-# # user relationships based on the LDAP data.
-# # Use this to customize how data loaded from LDAP is saved to User model relations.
-# # For customizing non-related User model fields, use LDAP_AUTH_CLEAN_USER_DATA.
-# LDAP_AUTH_SYNC_USER_RELATIONS = "django_python3_ldap.utils.sync_user_relations"
-
-# # Path to a callable that takes a dict of {ldap_field_name: value},
-# # returning a list of [ldap_search_filter]. The search filters will then be AND'd
-# # together when creating the final search filter.
-# LDAP_AUTH_FORMAT_SEARCH_FILTERS = "django_python3_ldap.utils.format_search_filters"
-
-# # Path to a callable that takes a dict of {model_field_name: value}, and returns
-# # a string of the username to bind to the LDAP server.
-# # Use this to support different types of LDAP server.
-# # LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_openldap"
-# # for MS AD
-# LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_active_directory"
-
-# # Sets the login domain for Active Directory users.
-# # LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = None
-# # for MS AD
-# LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = "DOMAIN"
-
-# # For user-principal-name formats (e.g. “user@domain.com”):
-# LDAP_AUTH_FORMAT_USERNAME = "django_python3_ldap.utils.format_username_active_directory_principal"
-# LDAP_AUTH_ACTIVE_DIRECTORY_DOMAIN = "domain.com"
-
-# # The LDAP username and password of a user for querying the LDAP database for user
-# # details. If None, then the authenticated user will be used for querying, and
-# # the `ldap_sync_users`, `ldap_clean_users` commands will perform an anonymous query.
-# LDAP_AUTH_CONNECTION_USERNAME = None
-# LDAP_AUTH_CONNECTION_PASSWORD = None
-
-# # Set connection/receive timeouts (in seconds) on the underlying `ldap3` library.
-# LDAP_AUTH_CONNECT_TIMEOUT = None
-# LDAP_AUTH_RECEIVE_TIMEOUT = None
-
-# # 
+# CSP SECURITY CODE IMPLEMENTATION ENDS HERE
