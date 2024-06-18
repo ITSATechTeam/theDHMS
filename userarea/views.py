@@ -17,6 +17,9 @@ from django.db.models import Q
 from useronboard.models import SignupForm, UserProfileImage
 from datetime import datetime
 from datetime import date
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 import json
 # import winapps
 import random
@@ -776,8 +779,10 @@ def SaveDevice(request):
 # VIEW DEVICE DETAILS PAGE
 def ViewDeviceDetails(request, name):
     randomNumber = random.randint(10, 9999)
+    today = date.today()
     if request.method == 'POST' and 'MaintainStatus' in request.POST:
         MaintainStatus = request.POST['MaintainStatus']
+        MaintainPriorityStatus = request.POST['MaintainPriorityStatus']
         MaintainDeviceType = request.POST['MaintainDeviceType']
         MaintainType = request.POST['MaintainType']
         MaintainRequestDescription = request.POST['MaintainRequestDescription']
@@ -819,15 +824,34 @@ def ViewDeviceDetails(request, name):
 
         form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = request.user.last_name, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
         MaintainDeviceIP = MaintainDeviceIP, MaintainType = MaintainType, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainDeviceType = MaintainDeviceType, MaintainDeviceUserID = MaintainDeviceUserID,
-        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
+        MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus, MaintainPriorityStatus=MaintainPriorityStatus,
         currentMonth = month1, MaintainRequester = MaintainRequester, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
-
         form.save()
+        
+        # SAVE FAULTY OR CRITICAL DEVICES 
+        CompanyFaultyDevicesForm = CompanyFaultyDevices(user = request.user, deviceID = MaintainDeviceID, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = CompanyUniqueCode)
+        CompanyFaultyDevicesForm.save()
+
+        # myCompanyEmailAddress = User.objects.filter(last_name = CompanyUniqueCode).values_list('email', flat=True).first()
+        # myCompanyName = User.objects.filter(last_name = CompanyUniqueCode).values_list('username', flat=True).first()
+        # maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName, MaintainRequester, MaintainPriorityStatus, MaintainDeviceMAC, MaintainType, MaintainRequestDescription)
+
+           
+
+        try:
+            # find my company mail address
+            myCompanyEmailAddress = User.objects.filter(last_name = CompanyUniqueCode).values_list('email', flat=True).first()
+            myCompanyName = User.objects.filter(last_name = CompanyUniqueCode).values_list('username', flat=True).first()
+            maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName, MaintainRequester, MaintainPriorityStatus, MaintainDeviceMAC, MaintainType, MaintainRequestDescription)
+        except: 
+            print(request, "An error occured while trying to send maintenance notification")
+        
+        messages.success(request, 'Maintenance request was placed successfully.')
         return redirect('Maintainance')
     
     
     if request.method == 'POST' and 'startAISession' in request.POST:
-        print('clicked nowww')
+        # print('clicked nowww')
         uniqueId = 'AI_Chat-' + get_random_string(length=5)
         createAIChat_Room = AIChat_Room.objects.create(uniqueId = uniqueId, companyID = request.user.last_name)
         createAIChat_Room.save()
@@ -1530,8 +1554,8 @@ def EditStaff(request, staffid):
 
 
 def Logout(request):
-    MainLoginStatus = LoginStatus.objects.filter(email = request.user.last_name)
-    MainLoginStatus.delete()
+    # MainLoginStatus = LoginStatus.objects.filter(email = request.user.last_name)
+    # MainLoginStatus.delete()
     logout(request)
     messages.success(request, 'Logout Successful')
     return redirect('Login')
@@ -2139,3 +2163,41 @@ def SampleFileForStaffAD(request):
 
 def errorpagevisist(request):
     return render(request, '404.html')
+
+
+
+
+
+def maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName, MaintainRequester, MaintainPriorityStatus, MaintainDeviceMAC, MaintainType, MaintainRequestDescription):
+    recipient_list = [myCompanyEmailAddress, 'franklin.i@itservicedeskafrica.com']
+    if (MaintainPriorityStatus == 'Low'):         
+        ResponseTime = 'Five (5) Business Days'
+    elif (MaintainPriorityStatus == 'Medium'):         
+        ResponseTime = 'Fourty Eight (48) Working Hours'
+    elif (MaintainPriorityStatus == 'High'):         
+        ResponseTime = 'Eight (8) Wordking Hours'
+
+    context = {'myCompanyName':myCompanyName, 'ResponseTime':ResponseTime, 'MaintainRequester':MaintainRequester, 'MaintainPriorityStatus':MaintainPriorityStatus, 'MaintainDeviceMAC':MaintainDeviceMAC, 'MaintainType':MaintainType, 'MaintainRequestDescription':MaintainRequestDescription}
+    html_message = render_to_string("mailouts/adminmaintenancereqmail.html", context=context)
+    plain_message = strip_tags(html_message)
+
+    message = EmailMultiAlternatives(
+        subject = "ADMIN REQUEST DEVICE MAINTENANCE ALERT - DHMS.", 
+        body = plain_message,
+        from_email = 'dhmsinventoryapp@gmail.com',
+        to= recipient_list
+        )
+
+    message.attach_alternative(html_message, "text/html")
+    message.send()
+
+    if message:
+        print('Sent a confirmation email')
+    else:
+        messages.error(request, f'Problem sending email to {myCompanyEmailAddress}, check if you typed it correctly')
+
+
+
+
+
+

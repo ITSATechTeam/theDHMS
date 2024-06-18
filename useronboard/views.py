@@ -9,6 +9,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .forms import *
 from .tokens import account_activation_token
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
+from django.template.loader import render_to_string
 
 # RESET PASSWORD IMPORTS STARTS HERE
 from django.core.mail import send_mail, BadHeaderError
@@ -93,11 +96,11 @@ def SignUpPage(request):
             form.save()
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             user.save(False)
-            # activateEmail(request, user, email)
-            # try:
-            #     activateEmail(request, user, email)
-            # except:
-            #     print('Registration mail was not sent successfully')
+            activateEmail(request, user, email, companyname)
+            try:
+                activateEmail(request, user, email)
+            except:
+                print('Registration mail was not sent successfully')
             return redirect('Dashboard')
 
             # return redirect('Login')
@@ -137,7 +140,8 @@ def Login(request):
         if user is not None:
             login(request, user)
             try:
-                notifyLoginEmail(request, user, companymail)
+                myCompanyName = User.objects.filter(email = companymail).values_list('username', flat=True).first()
+                notifyLoginEmail(request, user, companymail, myCompanyName)
             except:
                 print('error sending login notification email to user')
             if next == "":
@@ -196,53 +200,52 @@ def password_reset_request(request):
 
 
 # SEND EMAIL AFTER REGISTRATION
-def activateEmail(request, user, to_email):
-    mail_subject = "Your Company registered on the Device Health Management System[DHMS] Platform with ITSA."
-    recipient_list = [to_email, ]
-    # message = f'Hi there, This is to confirm your registeration on the Device Health Management Platform, Your unique account ID is: { request.user.last_name }. We are glad to have you onboard. We hope you are as excited as we are for the whole new level of possibities you are about to unveil using the DHMS for your device management.Thanks again for trusting ITSA. Sincerely, ITSA Support Team', 
-    # message = render_to_string("mailouts/account_verification_email.html", 
-    # {
-    #     'user': user.email,
-    #     'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
-    #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-    #     'token': account_activation_token.make_token(user),
-    #     "protocol": 'https' if request.is_secure() else 'http'
-    # })
-    
-    # 
-    body = {
-        'Account ID': f'Your DHMS account ID: {request.user.last_name}',
-        'greet':  f'Hello {request.user},',
-        'message': render_to_string("mailouts/account_verification_email.html"),
-        # 'message': form.cleaned_data['message'],
-    }
-    message = '\n'.join(body.values())
-    # 
-    email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
-    if email:
-        print('Sent a confirmation email')
+def activateEmail(request, user, to_email, companyname):
+    recipient_list = [to_email, ] 
+
+    context = {'companyname':companyname}
+    html_message = render_to_string("mailouts/account_verification_email.html", context=context)
+    plain_message = strip_tags(html_message)
+
+    message = EmailMultiAlternatives(
+        subject = "Your Company registered on the Device Health Management System[DHMS].", 
+        body = plain_message,
+        from_email = 'dhmsinventoryapp@gmail.com',
+        to= recipient_list
+        )
+
+    message.attach_alternative(html_message, "text/html")
+    message.send()
+
+    if message:
+        print('Sent a login notification email')
     else:
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
 
 
 
-def notifyLoginEmail(request, user, to_email):
-    mail_subject = "Someone logged into your DHMS account."
+
+def notifyLoginEmail(request, user, to_email, myCompanyName):
     recipient_list = [to_email, ]
-    message = render_to_string("mailouts/account_login_email.html", {
-        'user': user.email,
-        # 'domain': 'http://127.0.0.1:8000/',
-        # 'domain': get_current_site(request).domain if request.is_secure() else 'http://127.0.0.1:8000/',
-        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'https://dhms.itservicedeskafrica.com/',
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': account_activation_token.make_token(user),
-        "protocol": 'https' if request.is_secure() else 'http'
-    })
-    email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
-    if email:
-        print('Email sent')
+
+    context = {'myCompanyName':myCompanyName}
+    html_message = render_to_string("mailouts/account_login_email.html", context=context)
+    plain_message = strip_tags(html_message)
+
+    message = EmailMultiAlternatives(
+        subject = "Your DHMS Account Has Been Accessed.", 
+        body = plain_message,
+        from_email = 'dhmsinventoryapp@gmail.com',
+        to= recipient_list
+        )
+
+    message.attach_alternative(html_message, "text/html")
+    message.send()
+
+    if message:
+        print('Sent a login notification email')
     else:
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
 
 
-# def sync_user_relations(user, ldap_attributes, *, connection=None, dn=None):
+# def sync_user_relations(us

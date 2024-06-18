@@ -117,7 +117,7 @@
             <td>{{ staffMembers.staff_phonenumber }}</td>
             <td>{{ staffMembers.staff_email }}</td>
             {% comment %} <td><a href="mailto={{ staffMembers.deviceuseremail }}">{{ staffMembers.deviceuseremail }}</a></td> {% endcomment %}
-            <td><p>{{ staffMembers.StaffID }}</p></td>
+            <td><p class="copyreferallink2">Click to copy ID<br/> </p><input type="hidden" value="{{ staffMembers.StaffID }}" /><input type="hidden" value="{{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }}" /></td>
             <td><p>{{ staffMembers.staff_role }}</p></td>
             <td class='staffassigneddevice'>
               {% comment %} <a href=''>{{ staffMembers.staffDevice }}</a> {% endcomment %}

@@ -167,6 +167,7 @@
 						<th>Reported By</th>
 						<th>Maintenance Type</th>
 						<th>Maintenance Status</th>
+						<th>Maintenance Priority</th>
 						<th>Action</th>
 					</tr>
 					{% for allMaintains in allMaintains %}
@@ -186,6 +187,7 @@
 							<td>{{ allMaintains.MaintainRequester }}</td>
 							<td>{{ allMaintains.MaintainType }}</td>
 							<td class={{ allMaintains.MaintainStatus }}>{{ allMaintains.MaintainStatus }}</td>
+							<td>{{ allMaintains.MaintainPriorityStatus }}</td>
 							<td class='downarrow'>
 								<a href= /staff/staffmaintenancdetail/{{ allMaintains.MaintainRequestID }}/ >
 									<p class='viewdetails'>View Details</p>

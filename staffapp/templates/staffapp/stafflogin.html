@@ -29,7 +29,9 @@
                     <img src={% static 'generalonboard/img/itsalogopng.png' %} />
                 </div>
                     <div class='registerform'>
-                        <h4>Welcome to the Staff Login Portal!</h4><br/>
+                        <h4>
+                            Welcome to the Staff Login Portal!
+                        </h4><br/>
                             <h6>
                                 Enter your registered email and StaffID to access your account. If you don't know your registered details, contact your company's IT Admin for assistance. 
                                 <br/><br/>
@@ -72,23 +74,17 @@
                                     <input type='checkbox' />
                                     <p>Remember me</p>
                                 </div>
-                                <!--<a href ={% url 'password_reset' %} >-->
-                                <!--    <div class='forgotpwd2'>-->
-                                <!--        <p>Forgot password</p>-->
-                                <!--    </div>-->
-                                <!--</a>-->
                             </div>
                             <div class='formsubmitbtn'>
                                 <button type='submit'>Sign in</button>
                             </div>
-                        </form>
-                        <a href = {% url 'sign_in' %} > 
-                            <div class='googlesignin'>
-                                <div class='googlesigninner'>
-                                    <img src={% static 'staff/img/MSLogo2.png' %} />
-                                </div>
-                            </div>
-                        </a>
+                        </form><br/>                        
+                        <div class='googlesignin1'>
+                            <p>or login with</p>
+                            <a href = {% url 'sign_in' %} >  <img style="width: 200px" src={% static 'staff/img/MSLogo2.png' %} /></a>
+                        </div>                        
+                    </div>
+                </div>
             </div>
         </main>
         <script src={% static 'login/js/main.js' %}></script>

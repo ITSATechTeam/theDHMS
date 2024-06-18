@@ -490,7 +490,11 @@ table a{
     width: 100%;
 }
 
-
+.copyreferallink2{
+    color: #2A66B0;
+    /* font-weight: bold; */
+    cursor: pointer;
+}
 
 
 

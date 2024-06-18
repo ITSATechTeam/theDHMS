@@ -1,15 +1,84 @@
-{% autoescape off %}
-This is to confirm your registeration on the Device Health Management Platform. We're glad to have you onboard.
+{% load static %} 
+ <!DOCTYPE html>
+ <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+ 
+ <head>
+     <title></title>
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+     <style>
+         * {
+             box-sizing: border-box;
+             font-family: tahoma,sans-serif;
+         }
+ 
+         body {
+             margin: 0;
+             padding: 0;
+             overflow-x: hidden;
+         }
+     
+         .logo{
+             background-color: white;
+             width: 100vw;
+             padding: 5px;
+             text-align: center;
+         }
+ 
+         .logo img{
+             width: 80px;
+         }
+ 
+         .mailbody{
+             width: 70%;
+             margin: auto;
+             color: white;
+         }
+         .footerbtn{
+             background-color: white;
+             padding: 10px;
+             width: 100vw;
+             text-align: center;
+             margin-bottom: 20px;
+         }
+         .footerbtn button{
+             background-color: #59A2EA;
+             padding: 10px;
+             font-size: 1.2rem;
+             color: white;
+             border: none;
+             cursor: pointer;
+             border-radius: 5px;
+         }
+ 
+         .mailbody p a{
+             color: whitesmoke;
+             font-weight: bold;
+         }
+        </style>
+        
+ </head> 
+     <body style="background-color: #59A2EA; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+         <div class="logo">
+             <div style="max-width: 84px;"><img src="https://itservicedeskafrica.com/wp-content/uploads/2024/02/cropped-imgonline-com-ua-resize-StIhnAFBkp.png" style="display: block; height: auto; border: 0; width: 100%;" width="84"></div>
+            </div>
 
-Please note you account ID above as that will be allow you and your staff members to access support remotely.
+            <div class="mailbody">
+            <h4 style="color:white">Hello {{companyname}},</h4><br/>
+            <p style="color:white">
+                This is to confirm your registeration on the Device Health Management Platform. We're glad to have you onboard.
 
-
-We hope you are as excited as we are for the whole new level of possibities you are about to unveil using the DHMS for your device management.
-
-
-Thanks again for trusting ITSA.
-Sincerely,
-ITSA Support Team
-
-{% endautoescape %}
-
+                We hope you are as excited as we are for the whole new level of possibities you are about to unveil using the DHMS for your device management.
+            </p>
+            <br/><br/>
+            <p style="color:white">
+                Thanks again for trusting the DHMS.
+                Sincerely,
+            </p>
+            <p style="color:white">DHMS Support</p>
+         </div>
+         <div class="footerbtn">
+            <a href="https://dhms.itservicedeskafrica.com/login/"><button>Visit your dashboard</button></a>
+         </div>
+     </body>
+ </html>

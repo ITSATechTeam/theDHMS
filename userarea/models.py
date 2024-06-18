@@ -8,6 +8,11 @@ MAINTAINANCE_STATUS_CHOICE = (
     ("Ongoing", "Ongoing"),
     ("Pending", "Pending"),
 )
+MAINTAINANCE_PRIORITY_STATUS_CHOICE = (
+    ("High", "High"),
+    ("Medium", "Medium"),
+    ("Low", "Low"),
+)
 DEVICE_HEALTH_STATUS = (
     ("Working", "Working"),
     ("Faulty", "Faulty"),
@@ -187,6 +192,7 @@ class MaintenanceRequest(models.Model):
     MaintainDeviceCategory = models.CharField(max_length= 300, null=True, blank = True)
     MaintainDeviceLocation = models.CharField(max_length= 300, null=True, blank = True)
     MaintainStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_STATUS_CHOICE, default = 'Pending', null=True, blank = True)
+    MaintainPriorityStatus = models.CharField(max_length= 300,choices = MAINTAINANCE_PRIORITY_STATUS_CHOICE, default = 'Medium', null=True, blank = True)
     MaintainDeviceUserID = models.CharField(max_length= 300, null=True, blank = True)
     # MaintainDeviceUserFullName = models.CharField(max_length= 300, null=True, blank = True)
     MaintainRequesterEmailAddress = models.EmailField(max_length= 300, null=True, blank = True)

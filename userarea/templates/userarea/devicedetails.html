@@ -85,6 +85,13 @@
 						</select><br/><br/> {% endcomment %}
 						<label><h4>What kind of maintenance does this device require?</h4></label>
 						<input name='MaintainType' type='text' placeholder = 'Eg: Screen change or OS Update' /><br/><br/>
+						<label>Maintenance Priority Status</label><br/>
+						<select name='MaintainPriorityStatus'>
+							<option value='Medium'>--Select a priority status--</option>
+							<option value='High'>High</option>
+							<option value='Medium'>Medium</option>
+							<option value='Low'>Low</option>
+						</select><br/><br/>
 						<label><h4>Maintenance Decription</h4></label><br/>
 						<textarea placeholder='Describe what maintenance this device requires in details' name='MaintainRequestDescription'></textarea><br/><br/>
 						<input type = 'text' hidden name='MaintainStatus' placeholder='Device Name' value ='Pending' />

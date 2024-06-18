@@ -80,11 +80,11 @@
                     {% comment %} GOOGLE SIGNUP FXN ENDS HERE {% endcomment %}
                     <!--<div class='googlesignin'>-->
                         {% load socialaccount %}
-                                   
+                        
                     <div class='googlesignin1'>
-                        <p>Or sign up with</p>
+                        {% comment %} <p>Or sign up with</p> {% endcomment %}
                         {% comment %} <a href="{% provider_login_url 'google' %}"> {% endcomment %}
-                            <img src={% static 'signup/img/google.png' %} />
+                            {% comment %} <img src={% static 'signup/img/google.png' %} /> {% endcomment %}
                         {% comment %} </a> {% endcomment %}
                     </div>
                     <div class='logininstead'>

@@ -30,7 +30,6 @@ if (closereguser){
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
 let flashStaff = document.querySelector('#flash')
 if(flashStaff){
-    console.log('flashStaff around')
     setTimeout(() => {
         flashStaff.style.display = 'none'
     }, 5000);
@@ -124,4 +123,26 @@ uploaddevicepopupintroclose3.addEventListener('click', () => {
     shadowsso.style.display = 'none'
 })
 
+
+
+// COPY STAFF ID TO CLIPBOARD CONFIG STARTS HERE
+let copyreferallink2 = document.querySelectorAll('.copyreferallink2');
+// let copyreferallink2staffname = document.querySelector('.copyreferallinkstaffname');
+
+// console.log(copyreferallink2.nextElementSibling.nextElementSibling)
+
+copyreferallink2.forEach((e)=>{
+    if (e){
+        e.addEventListener('click', async() => {
+            let referallinkproper2 = e.nextElementSibling.value
+            try {
+              await navigator.clipboard.writeText(referallinkproper2);
+              confirm(`${e.nextElementSibling.nextElementSibling.value}'s ID has been copied to your Clipboard`)
+            } catch (err) {
+              console.error('Failed to copy: ', err);
+            }
+        
+        })   
+    }    
+  })
 

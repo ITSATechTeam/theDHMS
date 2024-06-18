@@ -72,6 +72,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = str(os.getenv('DEBUG'))
+# DEBUG = str(os.getenv('DEBUG')) == 'True'
 DEBUG = True
 
 CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
@@ -79,6 +80,12 @@ CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
 
 # ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 ALLOWED_HOSTS = ['*']
+
+AXES_RESET_COOL_OFF_ON_FAILURE_DURING_LOCKOUT = False
+AXES_LOCKOUT_CALLABLE = "staffapp.views.lockout"
+AXES_FAILURE_LIMIT = 7
+AXES_COOLOFF_TIME = 1
+AXES_RESET_ON_SUCCESS = True
 
 
 # Application definition
@@ -125,7 +132,8 @@ INSTALLED_APPS = [
     'django_user_agents',
     # 
     'storages',
-    'pwa'
+    'pwa',
+    'axes',
 ]
 
 
@@ -190,6 +198,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET ='59dbe7831f34b6a5ba802a8231317683'
 
 # AUTH GOOGLE SIGNUP INTEGRATION FUNCTIONALITY CODES BELOW STARTS HERE
 AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',  
     # 
@@ -243,6 +252,10 @@ MIDDLEWARE = [
     # 
     'allauth.account.middleware.AccountMiddleware',
     # 'csp.middleware.CSPMiddleware'
+
+
+    # Below middleware should always be the last
+    'axes.middleware.AxesMiddleware',
 ]
 
 

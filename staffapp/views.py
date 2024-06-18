@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.http import JsonResponse
+
 from .models import *
 from userarea.forms import EditMaintenanceRequest
 from userarea.models import MaintenanceRequest, DeviceRegisterUpload, AddedMaintenanceComments, StaffDataSet, CompanyFaultyDevices
@@ -16,6 +18,8 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
+from django.core.mail import EmailMultiAlternatives
+from django.utils.html import strip_tags
 # 
 from django.conf import settings
 
@@ -137,6 +141,7 @@ def StaffViewDeviceDetails(request, name):
     if request.method == 'POST' and 'MaintainStatus' in request.POST:
         MaintainStatus = request.POST['MaintainStatus']
         MaintainType = request.POST['MaintainType']
+        MaintainPriorityStatus = request.POST['MaintainPriorityStatus']
         MaintainRequestDescription = request.POST['MaintainRequestDescription']
         MaintainDeviceName = request.POST['MaintainDeviceName']
         MaintainDeviceID = request.POST['MaintainDeviceID']
@@ -172,7 +177,7 @@ def StaffViewDeviceDetails(request, name):
 
         # check if any request is already filed for this device
         form = MaintenanceRequest.objects.create(user = request.user, CompanyUniqueCode = CompanyUniqueCode, MaintainRequesterEmailAddress = MaintainRequesterEmailAddress, MaintainDeviceName = MaintainDeviceName, MaintainDeviceID = MaintainDeviceID, 
-        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainDeviceUserID = MaintainDeviceUserID, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment,
+        MaintainDeviceIP = MaintainDeviceIP, MaintainDeviceMAC_ID = MaintainDeviceMAC, MaintainType = MaintainType, MaintainPriorityStatus=MaintainPriorityStatus, MaintainDeviceUserID = MaintainDeviceUserID, MaintainDeviceUserDepartment = MaintainDeviceUserDepartment,
         MaintainDeviceCategory = MaintainDeviceCategory, MaintainDeviceLocation = MaintainDeviceLocation, MaintainStatus = MaintainStatus,
         currentMonth = month1, MaintainDeviceType = MaintainDeviceType, MaintainRequester = MaintainRequester, MaintainRequestID = MaintainRequestID, MaintainRequestDescription = MaintainRequestDescription)
         form.save()
@@ -180,13 +185,13 @@ def StaffViewDeviceDetails(request, name):
         # SAVE FAULTY OR CRITICAL DEVICES 
         CompanyFaultyDevicesForm = CompanyFaultyDevices(user = request.user, deviceID = MaintainDeviceID, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = CompanyUniqueCode)
         CompanyFaultyDevicesForm.save()
-        
 
         # SEND NOTIFICATION EMAIL FOR MAINTENANCE REQUEST
         try:
             # find my company mail address
             myCompanyEmailAddress = User.objects.filter(last_name = CompanyUniqueCode).values_list('email', flat=True).first()
-            maintenenceRequestNotification(request, myCompanyEmailAddress)
+            myCompanyName = User.objects.filter(last_name = CompanyUniqueCode).values_list('username', flat=True).first()
+            maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName, MaintainRequester, MaintainPriorityStatus, MaintainDeviceMAC, MaintainType, MaintainRequestDescription)
         except: 
             print(request, "An error occured while trying to send maintenance notification")
             return redirect('StaffMaintainance')
@@ -591,7 +596,6 @@ def organizations(request):
             # print(error)
             messages.error(request, 'Login Failed: Please Try Again or Contact Your IT Admin.')
             return redirect('StaffLogin')
-            return redirect('index')
 
     
     context = {'AllCompanies':AllCompanies, 'existingUserName':existingUserName, 'findStaffFromDB':findStaffFromDB}
@@ -599,19 +603,58 @@ def organizations(request):
 
 
 
-def maintenenceRequestNotification(request, to_email):
-    mail_subject = "DEVICE MAINTENANCE ALERT - DHMS."
-    recipient_list = [to_email, 'franklin.i@itservicedeskafrica.com']
-    message = render_to_string("mailouts/maintenance_request_alert.html", {
-        # 'user': user.email,
-        'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
-        # 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        # 'token': account_activation_token.make_token(user),
-        "protocol": 'https' if request.is_secure() else 'http'
-    })
-    email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
-    if email:
-        print('Email sent')
+# def maintenenceRequestNotification(request, to_email):
+#     mail_subject = "DEVICE MAINTENANCE ALERT - DHMS."
+#     recipient_list = [to_email, 'franklin.i@itservicedeskafrica.com']
+#     message = render_to_string("mailouts/maintenance_request_alert.html", {
+#         # 'user': user.email,
+#         'domain': 'https://dhms.itservicedeskafrica.com/' if request.is_secure() else 'http://127.0.0.1:8000/',
+#         # 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#         # 'token': account_activation_token.make_token(user),
+#         "protocol": 'https' if request.is_secure() else 'http'
+#     })
+#     email = send_mail(mail_subject, message, 'dhmsinventoryapp@gmail.com', recipient_list)
+#     if email:
+#         print('Email sent')
+#     else:
+#         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
+
+
+
+def maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName, MaintainRequester, MaintainPriorityStatus, MaintainDeviceMAC, MaintainType, MaintainRequestDescription):
+    recipient_list = [myCompanyEmailAddress, 'franklin.i@itservicedeskafrica.com']
+    if (MaintainPriorityStatus == 'Low'):         
+        ResponseTime = 'Five (5) Business Days'
+    elif (MaintainPriorityStatus == 'Medium'):         
+        ResponseTime = 'Fourty Eight (48) Working Hours'
+    elif (MaintainPriorityStatus == 'High'):         
+        ResponseTime = 'Eight (8) Wordking Hours'
+
+    context = {'myCompanyName':myCompanyName, 'ResponseTime':ResponseTime, 'MaintainRequester':MaintainRequester, 'MaintainPriorityStatus':MaintainPriorityStatus, 'MaintainDeviceMAC':MaintainDeviceMAC, 'MaintainType':MaintainType, 'MaintainRequestDescription':MaintainRequestDescription}
+    html_message = render_to_string("mailouts/maintenancereqmail.html", context=context)
+    plain_message = strip_tags(html_message)
+
+    message = EmailMultiAlternatives(
+        subject = "STAFF DEVICE MAINTENANCE ALERT - DHMS.", 
+        body = plain_message,
+        from_email = 'dhmsinventoryapp@gmail.com',
+        to= recipient_list
+        )
+
+    message.attach_alternative(html_message, "text/html")
+    message.send()
+
+    if message:
+        print('Sent a confirmation email')
     else:
-        messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
+        messages.error(request, f'Problem sending email to {myCompanyEmailAddress}, check if you typed it correctly')
+
+
+
+
+def lockout(request, credentials, *args, **kwargs):
+    return render(request, 'staffapp/manyloginattempts.html')
+    # return JsonResponse({"status": "New View: Locked out due to too many login failures"}, status=403)
+# manyloginattempts.html
+
 

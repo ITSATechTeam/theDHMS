@@ -1,0 +1,51 @@
+<!-- @format -->
+{% comment %} {% include 'generalonboard.html' %}  {% endcomment %}
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		{% comment %} <link rel="stylesheet" href={% static 'signup/css/style.css' %} /> {% endcomment %}
+		<link rel="stylesheet" href={% static 'login/css/style.css' %} />
+		{% comment %} <link rel="stylesheet" href={% static 'generalonboard/css/style.css' %} /> {% endcomment %}
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css" rel="stylesheet" />
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Welcome Back | ITSA Inventory System</title>
+	</head>
+	<body>
+		<main>
+            <div class='sideimagesection'>
+                {% comment %} <div class='bckgImg'></div> {% endcomment %}
+                {% comment %} <img src={% static 'signup/img/loginsideimg.png' %} /> {% endcomment %}
+                    <img src={% static 'login/img/staffloginimg.png' %} />
+            </div>
+            <div class='nav'>
+                <div class='navmain'>
+                    <img src={% static 'generalonboard/img/itsalogopng.png' %} />
+                </div>
+                    <div class='registerform'>
+                        <h4>
+                            Your login attempts failed too many times. 
+                        </h4><br/>
+                        <p>
+                            You can try to login again after 60 minutes, or you can contact support for further assistance.
+                            <br/><br/>
+                        </p>
+                        <div class='formsubmitbtn'>
+                            <a href="https://dhms.itservicedeskafrica.com/"><button >Return to Home Page</button></a><br/><br/>
+                            <a href="mailto:franklin.i@itservicedeskafrica.com"/><button>Contact support</button></a>
+                        </div>                                         
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src={% static 'login/js/main.js' %}></script>
+    </body>
+</html>
+
+{% endblock content %}

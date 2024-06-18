@@ -68,7 +68,7 @@
             </div>
 			{% comment %} LIST ALL MAINTENANCE REQUESTS FOR THIS DEVICE SECTION STARTS HERE {% endcomment %}
 			<div class='AllmaintenanceRequests'>
-				<h3>This device has undergone {{AllMaintenanceRequestCount}} maintenances - See details below:</h3><br/>
+				<h3>This device has undergone {{AllMaintenanceRequestCount}} maintenances</h3><br/>
 				{% comment %} {% if AllMaintenanceRequest.MaintainDeviceName == name %} {% endcomment %}
 				
 				{% for AllMaintenanceRequest in AllMaintenanceRequest %}
@@ -78,6 +78,7 @@
 						<h4> Maintenance Type: <strong>{{ AllMaintenanceRequest.MaintainType }}</strong></h4>
 						<h4> Maintenance Description: <strong>{{ AllMaintenanceRequest.MaintainRequestDescription }}</strong></h4>
 						<h4> Maintenance Status: <strong>{{ AllMaintenanceRequest.MaintainStatus }}</strong></h4>			
+						<h4> Maintenance Priority: <strong>{{ AllMaintenanceRequest.MaintainPriorityStatus }}</strong></h4>			
 						<hr/><br/>
 					</div>
 				{% endfor %}
@@ -94,17 +95,18 @@
 				<form method='POST'>
 					{% csrf_token %}
 					<div>
-						{% comment %} <label>Change Maintenance Status</label><br/> {% endcomment %}
-						{% comment %} <select name='MaintainStatus'>
-							<option value='Pending'>Pending</option>
-							<option value='Ongoing'>Ongoing</option>
-							<option value='Completed'>Completed</option>
-							<option value='Canceled'>Canceled</option>
-						</select><br/><br/> {% endcomment %}
 						<label>What kind of maintenance does this device require?</label>
 						<input name='MaintainType' type='text' placeholder = 'Eg: Screen change or OS Update' /><br/><br/>
+						<label>Maintenance Priority Status</label><br/>
+						<select name='MaintainPriorityStatus'>
+							<option value='Medium'>--Select a priority status--</option>
+							<option value='High'>High</option>
+							<option value='Medium'>Medium</option>
+							<option value='Low'>Low</option>
+						</select><br/><br/>
 						<label>Maintenance Decription</label><br/>
 						<textarea placeholder='Describe what maintenance this device requires in details' name='MaintainRequestDescription'></textarea><br/><br/>
+											
 						<input type = 'text' hidden name='MaintainStatus' placeholder='Device Name' value ='Pending' />
 						<input type = 'text' hidden name='MaintainDeviceName' placeholder='Device Name' value = {{ currentDeviceList.devicebrand }} />
 						<input type = 'text' hidden name='MaintainDeviceID' placeholder='device ID' value = {{ currentDeviceList.deviceid }} />
