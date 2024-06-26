@@ -42,7 +42,7 @@ import subprocess
 # traverse the software list
 # Data = subprocess.check_output(['wmic', 'product', 'get', 'name'])
 # a = str(Data)
-  
+
 # # try block
 # try:    
 #     # arrange the string

@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', views.All_Organization, name="All_Organization"),
+    # path('', views.All_Organization, name="All_Organization"),
     path('userlogout/', views.User_Logout, name="User_Logout"),
     path('orgprofile/', views.Org_Profile, name="Org_Profile"),
     # path('orgprofile/<str:pk>/', views.Org_Profile, name="Org_Profile"),
@@ -16,6 +16,9 @@ urlpatterns = [
     path('regstaff/', views.Register_Staff, name="Register_Staff"),
     path('alldevices/', views.View_All_Devices, name="View_All_Devices"),
     path('allstaff/', views.View_All_Staff, name="View_All_Staff"),
+    # STUDENT DHMS ENDPOINTS STARTS HERE
+    path('studentreg/', views.Student_Registration, name="Student_Registration"),
+    path('studentlogin/', views.Student_Login, name="Student_Login"),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

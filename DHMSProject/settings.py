@@ -81,11 +81,11 @@ CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
 # ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 ALLOWED_HOSTS = ['*']
 
-AXES_RESET_COOL_OFF_ON_FAILURE_DURING_LOCKOUT = False
-AXES_LOCKOUT_CALLABLE = "staffapp.views.lockout"
-AXES_FAILURE_LIMIT = 7
-AXES_COOLOFF_TIME = 1
-AXES_RESET_ON_SUCCESS = True
+# AXES_RESET_COOL_OFF_ON_FAILURE_DURING_LOCKOUT = False
+# AXES_LOCKOUT_CALLABLE = "staffapp.views.lockout"
+# AXES_FAILURE_LIMIT = 7
+# AXES_COOLOFF_TIME = 1
+# AXES_RESET_ON_SUCCESS = True
 
 
 # Application definition
@@ -116,8 +116,10 @@ INSTALLED_APPS = [
     'dhmsadminboard.apps.DhmsadminboardConfig',
     'dhmsapiapp.apps.DhmsapiappConfig',
     'aichat.apps.AichatConfig',
+    'studentdhms.apps.StudentdhmsConfig',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_swagger',
     
     #  
     
@@ -133,7 +135,8 @@ INSTALLED_APPS = [
     # 
     'storages',
     'pwa',
-    'axes',
+    # 'axes',
+    'drf_yasg',
 ]
 
 
@@ -198,7 +201,7 @@ SOCIAL_AUTH_FACEBOOK_SECRET ='59dbe7831f34b6a5ba802a8231317683'
 
 # AUTH GOOGLE SIGNUP INTEGRATION FUNCTIONALITY CODES BELOW STARTS HERE
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesStandaloneBackend',
+    # 'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',  
     # 
@@ -255,7 +258,7 @@ MIDDLEWARE = [
 
 
     # Below middleware should always be the last
-    'axes.middleware.AxesMiddleware',
+    # 'axes.middleware.AxesMiddleware',
 ]
 
 
@@ -280,7 +283,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'templates'
+            os.path.join(BASE_DIR, 'templates')
+            # BASE_DIR / 'templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -296,9 +300,29 @@ TEMPLATES = [
 ]
 
 
+# SWAGGER_SETTINGS = {
+#     'USE_SESSION_AUTH': False,
+#     'DEFAULT_FIELD_INSPECTORS': [
+#         'drf_yasg.inspectors.CamelCaseJSONFilter',
+#         'drf_yasg.inspectors.InlineSerializerInspector',
+#         'drf_yasg.inspectors.RelatedFieldInspector',
+#         'drf_yasg.inspectors.ChoiceFieldInspector',
+#         'drf_yasg.inspectors.FileFieldInspector',
+#         'drf_yasg.inspectors.DictFieldInspector',
+#         'drf_yasg.inspectors.SimpleFieldInspector',
+#         'drf_yasg.inspectors.StringDefaultFieldInspector',
+#     ],
+#     'SECURITY_DEFINITIONS': {
+#         'Basic': {
+#             'type': 'basic'
+#         }
+#     }
+#  }
+
+
 # LOGIN REDIRECT
-LOGIN_REDIRECT_URL = '/useronboard/login/'
-LOGIN_URL='/useronboard/login/'
+LOGIN_REDIRECT_URL = '/login/'
+LOGIN_URL='/login/'
 # 
 
 
@@ -419,49 +443,49 @@ AWS_S3_FILE_OVERWRITE = False
 
 
 
-# CSP SECURITY CODE IMPLEMENTATION STARTS HERE
+# # CSP SECURITY CODE IMPLEMENTATION STARTS HERE
 
-# uri to report policy violations
-# uri to report policy violations
-CSP_REPORT_URI = '<add your reporting uri>'
+# # uri to report policy violations
+# # uri to report policy violations
+# CSP_REPORT_URI = '<add your reporting uri>'
 
-# default source as self
-CSP_DEFAULT_SRC = ("'self', 'STATIC_URL'", )
-# CSP_DEFAULT_SRC = ("'self'", )
+# # default source as self
+# CSP_DEFAULT_SRC = ("'self', 'STATIC_URL'", )
+# # CSP_DEFAULT_SRC = ("'self'", )
 
-# style from our domain and bootstrapcdn
-# CSP_STYLE_SRC = ("'self'", 
-# 	"stackpath.bootstrapcdn.com")
+# # style from our domain and bootstrapcdn
+# # CSP_STYLE_SRC = ("'self'", 
+# # 	"stackpath.bootstrapcdn.com")
 
-# scripts from our domain and other domains
-CSP_SCRIPT_SRC = ("'self'", 
-	"www.google-analytics.com", 
-	"ssl.google-analytics.com", 
-	# "cdn.ampproject.org", 
-	"www.googletagservices.com", 
-	# "pagead2.googlesyndication.com"
-    )
+# # scripts from our domain and other domains
+# CSP_SCRIPT_SRC = ("'self'", 
+# 	"www.google-analytics.com", 
+# 	"ssl.google-analytics.com", 
+# 	# "cdn.ampproject.org", 
+# 	"www.googletagservices.com", 
+# 	# "pagead2.googlesyndication.com"
+#     )
 
-# images from our domain and other domains
-CSP_IMG_SRC = ("'self'", 
-	# "www.google-analytics.com", 
-	# "raw.githubusercontent.com", 
-	# "googleads.g.doubleclick.net"
-    )
+# # images from our domain and other domains
+# CSP_IMG_SRC = ("'self'", 
+# 	# "www.google-analytics.com", 
+# 	# "raw.githubusercontent.com", 
+# 	# "googleads.g.doubleclick.net"
+#     )
 
-# loading manifest, workers, frames, etc
-CSP_FONT_SRC = ("'self'", )
-CSP_CONNECT_SRC = ("'self'", 
-	# "www.google-analytics.com"
-      )
-CSP_OBJECT_SRC = ("'self'", )
-CSP_BASE_URI = ("'self'", )
-CSP_FRAME_ANCESTORS = ("'self'", )
-CSP_FORM_ACTION = ("'self'", )
-CSP_INCLUDE_NONCE_IN = ('script-src', )
-CSP_MANIFEST_SRC = ("'self'", )
-CSP_WORKER_SRC = ("'self'", )
-CSP_MEDIA_SRC = ("'self'", )
+# # loading manifest, workers, frames, etc
+# CSP_FONT_SRC = ("'self'", )
+# CSP_CONNECT_SRC = ("'self'", 
+# 	# "www.google-analytics.com"
+#       )
+# CSP_OBJECT_SRC = ("'self'", )
+# CSP_BASE_URI = ("'self'", )
+# CSP_FRAME_ANCESTORS = ("'self'", )
+# CSP_FORM_ACTION = ("'self'", )
+# CSP_INCLUDE_NONCE_IN = ('script-src', )
+# CSP_MANIFEST_SRC = ("'self'", )
+# CSP_WORKER_SRC = ("'self'", )
+# CSP_MEDIA_SRC = ("'self'", )
 
 
-# CSP SECURITY CODE IMPLEMENTATION ENDS HERE
+# # CSP SECURITY CODE IMPLEMENTATION ENDS HERE

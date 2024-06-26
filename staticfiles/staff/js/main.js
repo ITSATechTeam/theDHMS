@@ -1,23 +1,35 @@
 const registerstaffbox = document.querySelector('.regsiteruser');
 const addstaffbtn = document.querySelector('.addstaffbtn button');
+const staffemptystatesectionbtn = document.querySelector('.staffemptystatesectionbtn button');
 const closereguser = document.querySelector('.closereguser');
 const shadow1 = document.querySelector('.shadow1');
 
-addstaffbtn.addEventListener('click', () => {
-	registerstaffbox.style.display = 'block';
-	shadow1.style.display = 'block';
-})
 
-closereguser.addEventListener('click', () => {
-	registerstaffbox.style.display = 'none';
-	shadow1.style.display = 'none';
-})
+if(addstaffbtn){
+    addstaffbtn.addEventListener('click', () => {
+        registerstaffbox.style.display = 'block';
+        shadow1.style.display = 'block';
+    })
+}
+
+if(staffemptystatesectionbtn){
+    staffemptystatesectionbtn.addEventListener('click', () => {
+        registerstaffbox.style.display = 'block';
+        shadow1.style.display = 'block';
+    })
+}
+
+if (closereguser){
+    closereguser.addEventListener('click', () => {
+        registerstaffbox.style.display = 'none';
+        shadow1.style.display = 'none';
+    })
+}
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashStaff = document.querySelector('.alert strong')
+let flashStaff = document.querySelector('#flash')
 if(flashStaff){
-    console.log('flashStaff around')
     setTimeout(() => {
         flashStaff.style.display = 'none'
     }, 5000);
@@ -111,4 +123,26 @@ uploaddevicepopupintroclose3.addEventListener('click', () => {
     shadowsso.style.display = 'none'
 })
 
+
+
+// COPY STAFF ID TO CLIPBOARD CONFIG STARTS HERE
+let copyreferallink2 = document.querySelectorAll('.copyreferallink2');
+// let copyreferallink2staffname = document.querySelector('.copyreferallinkstaffname');
+
+// console.log(copyreferallink2.nextElementSibling.nextElementSibling)
+
+copyreferallink2.forEach((e)=>{
+    if (e){
+        e.addEventListener('click', async() => {
+            let referallinkproper2 = e.nextElementSibling.value
+            try {
+              await navigator.clipboard.writeText(referallinkproper2);
+              confirm(`${e.nextElementSibling.nextElementSibling.value}'s ID has been copied to your Clipboard`)
+            } catch (err) {
+              console.error('Failed to copy: ', err);
+            }
+        
+        })   
+    }    
+  })
 

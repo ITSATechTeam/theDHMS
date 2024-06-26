@@ -20,7 +20,7 @@ eyeicon2.addEventListener("click", function(){
 
 
 // HANDLE FLASH MESSAGES ON DASHBOARD STARTS HERE
-let flashLogin = document.querySelector('.alert strong')
+let flashLogin = document.querySelector('#flash')
 if(flashLogin){
     console.log('flashLogin around')
     setTimeout(() => {
@@ -84,6 +84,13 @@ if(flashfamilyonboard){
         flashfamilyonboard.style.display = 'none'
     }, 5000);
 }
+
+
+// Validate input filed for text
+const fullnameinput = document.querySelector('#fullname');
+fullnameinput.addEventListener('keydown', function(event){
+  if((/\d/g).test(event.key)) event.preventDefault();
+})
 
 
 

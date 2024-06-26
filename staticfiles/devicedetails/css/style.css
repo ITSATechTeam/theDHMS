@@ -161,7 +161,7 @@
         /* border-radius: 10px; */
         width: 100%;
         background-color: rgba(0, 0, 0, 0.233);
-        z-index: 20;
+        z-index: 6;
         transition: 0.5s ease-in-out;
         display: none;
     }

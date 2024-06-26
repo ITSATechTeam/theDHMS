@@ -1,14 +1,14 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
-
 from .serializers import *
 from useronboard.models import SignupForm
 from userarea.models import *
 # from useronboard.checkuserinfo import CheckUserData
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
-
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 # from rest_framework_simplejwt.views import TokenObtainPairView
@@ -42,14 +42,15 @@ from django.conf import settings
 #     serializer_class = MyTokenObtainPairSerializer
 
 
+# ORGANIZATION DHMS API STARTS HERE
 
-@api_view(['GET'])
-# @permission_classes((permissions.AllowAny,))
-@permission_classes([IsAuthenticated])
-def All_Organization(request):
-    AllUser = SignupForm.objects.all()
-    serializer = RegisterSerializer(AllUser, many=True)
-    return Response(serializer.data)
+# @api_view(['GET'])
+# # @permission_classes((permissions.AllowAny,))
+# @permission_classes([IsAuthenticated])
+# def All_Organization(request):
+#     AllUser = SignupForm.objects.all()
+#     serializer = RegisterSerializer(AllUser, many=True)
+#     return Response(serializer.data)
 
 
 # import requests
@@ -59,7 +60,7 @@ def User_Login(request):
         
     # RegisterSerializer
     if request.method == 'POST':   
-        serializer = LoginSerializer(data = request.data)
+        serializer = OrgLoginSerializer(data = request.data)
         # response = requests.get(request.path)
         # csrf_token = request.COOKIES['csrftoken']
         # headers = {'X-CSRFToken': csrf_token}
@@ -84,6 +85,8 @@ def User_Login(request):
                 })
             else:
                 user = authenticate(request, username=CheckUserUsername, password=password)
+                print(user)
+                print('[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
                 token, created = Token.objects.get_or_create(user=user)
                 # try:
                 #     # token = Token.objects.create(user=user)
@@ -92,7 +95,7 @@ def User_Login(request):
                 # except Token.DoesNotExist:
                 #     token = Token.objects.create(user=user)
                     
-                # is_expired, token = token_expire_handler(token)     # The implementation will be described further
+                # is_expired, token = token_expire_handler(token) # The implementation will be described further
                 # user_serialized = UserSerializer(user)                  
                     
                 if user is not None:
@@ -147,6 +150,7 @@ def User_Logout(request):
 
     
 
+@swagger_auto_schema(methods=['post'], request_body=RegisterSerializer)
 @api_view(['POST', 'GET'])
 def Register_Org(request):
     if request.method == 'POST':
@@ -416,3 +420,161 @@ def token_expire_handler(token):
     return is_expired, token
 
 # TOKEN CONFIGS ENDS HERE
+
+# ORGANIZATION DHMS API ENDS HERE
+
+
+# STUDENT DHMS API STARTS HERE
+
+
+# StudentDHMSSignUp
+@swagger_auto_schema(methods=['post'], request_body=Student_Registration_Serializer)
+@api_view(['POST'])
+def Student_Registration(request):    
+    """
+    Student registration Endpoint
+
+    Allow students to register via the API by providing the following details:
+    Username, email, name, phone number, and password
+    """
+
+    if request.method == 'POST':
+        serializer = Student_Registration_Serializer(data = request.data)
+        if serializer.is_valid():
+            student_email = serializer.data['student_email']
+            student_username = serializer.data['student_username']
+            student_name = serializer.data['student_name']
+            student_school = serializer.data['student_school']
+            student_password = serializer.data['student_password']
+            # student_retypepassword = serializer.data['password']
+            
+            # checkPhone = StudentDHMSSignUp.objects.filter(student_phone = student_phone)
+            checkEmail = StudentDHMSSignUp.objects.filter(student_email = student_email)
+            checkEmailGen = User.objects.filter(email = student_email)
+            checkName = StudentDHMSSignUp.objects.filter(student_name = student_name)
+            checkNameGen = User.objects.filter(username = student_username)
+            # if student_password != student_retypepassword:
+            #     return Response({
+            #         "status": 400,
+            #         "message": "Passwords do not match"
+            #     })
+                
+            if checkEmail or checkEmailGen:
+                return Response({
+                    "status": 400,
+                    "message": "Email address already exists"
+                })
+                
+            if checkName or checkNameGen:
+                return Response({
+                    "status": 400,
+                    "message": "Student name already exists"
+                })            
+            
+                
+            # if checkPhone:
+            #     return Response({
+            #         "status": 400,
+            #         "message": "Phone number is already in use"
+            #     })            
+            
+            try:
+                form = StudentDHMSSignUp(student_username= student_username, student_name=student_name, student_school=student_school, student_email = student_email, 
+                student_password = student_password)
+
+                userprofile = User.objects.create_user(username = student_username, first_name = student_name, email = student_email, 
+                                last_name = student_school, password = student_password)
+
+                form.save()
+                userprofile.save()
+                return Response({
+                    "status": 200,
+                    "message": "Student profile created successfull.",
+                    "data": serializer.data
+                })
+            
+            except:
+                return Response({
+                    "status": 400,
+                    "message": "An error ocured, please try again"
+                }) 
+            
+            
+
+
+# STUDENT LOGIN ENDPOINT
+# import requests
+@swagger_auto_schema(methods=['post'], request_body=StudentLoginSerializer)
+@api_view(['POST'])
+def Student_Login(request):    
+    """
+    Student Login Endpoint
+
+    Allow students to login via the API by providing the following details:
+    Email and Password
+    """
+     
+    if request.method == 'POST':   
+        serializer = StudentLoginSerializer(data = request.data)
+
+        if serializer.is_valid():
+            student_email = serializer.data['email']
+            student_password = serializer.data['password']
+            CheckUserAvaibility = StudentDHMSSignUp.objects.get(student_email = student_email)
+            CheckUserModelAvaibility = User.objects.get(email = student_email)
+            CheckUserUsername = User.objects.get(email = student_email).username
+
+            if CheckUserAvaibility is None:
+                return Response({
+                    'status':400,
+                    'message': 'Email and password do not match, Try again',
+                    'error': serializer.error_messages
+                })
+            elif CheckUserModelAvaibility is None:
+                return Response({
+                    'status':400,
+                    'message': 'User with the details you entered does not exist',
+                    'error': serializer.error_messages
+                })
+            else:
+                student_user = authenticate(request, username=CheckUserUsername, password=student_password)
+                token, created = Token.objects.get_or_create(user=student_user)
+                
+                if student_user is not None:
+                    # print('login successful')
+                    login(request, student_user)
+                    # After successful login, retrieve the session ID
+                    session_id = request.session.session_key
+                    # print(session_id)
+                    return Response({
+                        'status':200,
+                        'message': 'Student Login was Successfull',
+                        "Token": token.key,
+                        "SessionID": session_id
+                    })
+                else:
+                    return Response({
+                        'status':400,
+                        'message': 'Login Failed, check your login details and try again',
+                        'error': serializer.error_messages
+                    })            
+
+    return Response({
+        'status':200,
+        'message': 'Welcome to login endpoint for student DHMS',
+        # 'error': serializer.error_messages
+    })
+    
+
+
+
+
+
+
+
+
+
+
+
+
+# STUDENT DHMS API STARTS HERE
