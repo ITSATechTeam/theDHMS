@@ -65,6 +65,10 @@ def SignUpPage(request):
         if not request.POST['companyname']:
             messages.success(request, 'Registration Failed: Enter Your Company Name')
             return redirect('SignUpPage')
+        
+        # if len(phonenumber) > 14 :
+        #     messages.success(request, 'Phone number can not be more than 14 digits')
+        #     return redirect('SignUpPage')
 
         if not request.POST['companymail']:
             messages.success(request, 'Registration Failed: Enter Your Company Email Address')

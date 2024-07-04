@@ -19,6 +19,8 @@ urlpatterns = [
     # STUDENT DHMS ENDPOINTS STARTS HERE
     path('studentreg/', views.Student_Registration, name="Student_Registration"),
     path('studentlogin/', views.Student_Login, name="Student_Login"),
+    path('changepassword/', views.RequestPasswordUpdate, name="RequestPasswordUpdate"),
+    # path('password_reset/', views.password_reset, name=password_reset),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

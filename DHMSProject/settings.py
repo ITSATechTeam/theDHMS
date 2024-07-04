@@ -120,6 +120,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
+
+    # password reset 
+    # 'django_rest_passwordreset',
     
     #  
     
@@ -208,13 +211,14 @@ AUTHENTICATION_BACKENDS = [
     # 'django_python3_ldap.auth.LDAPBackend',
 ]
 
-# REST_FRAMEWORK = {
-#     # Use Django's standard `django.contrib.auth` permissions,
-#     # or allow read-only access for unauthenticated users.
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-#     ]
+# DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+#     "CLASS": "django_rest_passwordreset.tokens.RandomStringTokenGenerator",
+#     "OPTIONS": {
+#         "min_length": 20,
+#         "max_length": 30
+#     }
 # }
+# DJANGO_REST_MULTITOKENAUTH_RESET_TOKEN_EXPIRY_TIME = 1
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -255,7 +259,6 @@ MIDDLEWARE = [
     # 
     'allauth.account.middleware.AccountMiddleware',
     # 'csp.middleware.CSPMiddleware'
-
 
     # Below middleware should always be the last
     # 'axes.middleware.AxesMiddleware',

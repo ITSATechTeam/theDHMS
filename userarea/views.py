@@ -403,6 +403,7 @@ def DeviceInventory(request):
         CompanyUniqueCode = request.user.last_name
         # CompanyUniqueCode = request.POST['CompanyUniqueCode']
         user = request.user
+        StaffUniqueId = 'Staff-' + username + str(generate_password(10, 1))
 
         if not request.POST['deviceusedepartment']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Department.")
@@ -435,7 +436,7 @@ def DeviceInventory(request):
             deviceusedepartment=deviceusedepartment, devicetype=devicetype, devicebrand=DeviceBrandProper, 
             deviceos=deviceos, devicecostofpurchase=devicecostofpurchase, devicename=devicename,
             devicemacaddress=devicemacaddress, devicelocation=devicelocation, deviceip=deviceip,
-            devicestatus=devicestatus, staffUserID=staffUserID, CompanyUniqueCode=CompanyUniqueCode,
+            devicestatus=devicestatus, staffUserID=StaffUniqueId, CompanyUniqueCode=CompanyUniqueCode,
             deviceyearofpurchase=deviceyearofpurchase, user=user, devicedepreciationrate=depreciateRateReal,
             deviceid=uniqueId
         )
@@ -460,8 +461,8 @@ def DeviceInventory(request):
         username = request.POST['username']
         filedata = request.FILES.get('csv_file', False)
         
-        print(str(username))
-        print(str(filedata))
+        # print(str(username))
+        # print(str(filedata))
         if 'csv' not in str(filedata):
             messages.success(request, 'Wrong File Format. Please Use The Recommended CSV File.')
             return redirect('DeviceInventory')
@@ -475,7 +476,7 @@ def DeviceInventory(request):
             return redirect('DeviceInventory')
 
         form = uploadedDeviceData.objects.create(user = request.user, username = username, mainfile = filedata)
-        obj = uploadedDeviceData.objects.all().first()
+        obj = uploadedDeviceData.objects.filter(user = request.user).first()
 
         with open(obj.mainfile.path, 'r') as f:
             reader = csv.reader(f)
@@ -489,7 +490,6 @@ def DeviceInventory(request):
                 # elif len(row) > 9:
                 elif len(row) > 21:
                     today = date.today()
-
                     dateForWeekNumber = datetime.today()
                     randomNumber = random.randint(100, 9999)
                     weekNumber = dateForWeekNumber.isocalendar().week

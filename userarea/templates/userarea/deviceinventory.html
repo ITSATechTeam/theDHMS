@@ -45,6 +45,7 @@
 							<p>Add New Device</p>
 						</button>
 					</div>
+					{%  if allUploadedDevices %}
 					<a href = {% url 'ExportDevice' %} >
 						<div class='scannetworkbtn2'>
 							<button>
@@ -53,6 +54,14 @@
 							</button>
 						</div>
 					</a>
+					{% else %}					
+					<div class='uploaddevicecsv2'>
+						<button>
+							<img src={% static 'dashboard/img/uploaddevice.png' %} />
+							<p>Upload CSV</p>
+						</button>
+					</div>
+					{% endif %}
 				</div>
 			</div>
 			{% if allUploadedDevices %}
@@ -421,7 +430,7 @@
 			</div>
 			{% else %}
 				<div class='devinvemptystate'>
-					<img  src={% static 'inventory/img/Character.png' %}/>
+					<img  src={% static 'inventory/img/Character.png'%}/>
 					<h4>No Device Registered Yet</h4>
 					<h5>Onboard Organizational Devices, In Order To Request & Track Maintenance</h5>
 					<div class='devinvemptystatebtn'>
@@ -533,7 +542,7 @@
 						<input  name='csv_file' type="file" id="images" accept="csv" required>
 						</label>
 				</div>
-				<button type='submit'>Upload</button>
+				<div><button type='submit'>Upload</button></div>
 			</form>
 		</div>
 		{% comment %} POP UP FOR DEVICE UPLOAD ENDS HERE {% endcomment %}

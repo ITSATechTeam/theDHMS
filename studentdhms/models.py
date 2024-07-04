@@ -21,3 +21,20 @@ class StudentDHMSSignUp(models.Model):
         return f'{self.student_email} {self.student_username}'
 
 
+
+
+class Password_Reset(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    email = models.EmailField(max_length= 200, null=False, blank = False)
+    token = models.CharField(max_length= 200, null=False, blank = False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return f'{self.student_email} {self.student_username}'
+
+
+

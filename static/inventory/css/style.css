@@ -184,6 +184,15 @@ body{
     align-items: center;
 }
 
+.uploaddevicecsv2 {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: 100;
+    margin-top: 0px;
+    align-items: center;
+}
+
 /* SEARCH SECTION ENDS HERE */
 
 /* SUB TOP SECTION ENDS HERE */
@@ -264,7 +273,7 @@ table .workingstatus{
 /* DEVICES DISPLAY COUNT SETTINGS ENDS HERE */
 
 .uploaddevicepopup form button{
-    padding-left: 45%;
+    padding-left: 0%;
 }
 
 
@@ -377,6 +386,18 @@ background: #0085b6;
     border-radius: 10px;
     padding: 5px;
     font-size: 1.1rem;
+    /* width: 45px; */
+}
+
+.uploaddevicecsv2 button{
+    background-color: #2A66B0;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 5px;
+    margin-top: -16px;
+    font-weight: 600;
+    /* font-size: 1.1rem; */
     /* width: 45px; */
 }
 
@@ -587,6 +608,19 @@ background: #0085b6;
     .showdeviceuploadpopup button{
         margin-right: 10px;
         width: 100px;
+    }
+
+    
+    .uploaddevicecsv2 button{
+        background-color: #2A66B0;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 5px;
+        margin-top: -0px;
+        font-weight: 600;
+        /* font-size: 1.1rem; */
+        /* width: 45px; */
     }
 
     .maintop{

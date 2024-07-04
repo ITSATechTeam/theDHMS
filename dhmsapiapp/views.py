@@ -1,3 +1,6 @@
+import os
+from django.dispatch import receiver
+from grpc import Status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
@@ -5,10 +8,27 @@ from .serializers import *
 from useronboard.models import SignupForm
 from userarea.models import *
 # from useronboard.checkuserinfo import CheckUserData
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from studentdhms.models import Password_Reset
+from django.core.mail import EmailMultiAlternatives
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.contrib.auth.forms import PasswordResetForm
+
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
+from django.contrib import messages
 
 # from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 # from rest_framework_simplejwt.views import TokenObtainPairView
@@ -23,6 +43,9 @@ from rest_framework.authtoken.models import Token
 from datetime import timedelta
 from django.utils import timezone
 from django.conf import settings
+
+# from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail, EmailMessage
 
 
 #   implement my customization of token claim when displaying user data I create a custome view for it as below:
@@ -540,6 +563,10 @@ def Student_Login(request):
                 student_user = authenticate(request, username=CheckUserUsername, password=student_password)
                 token, created = Token.objects.get_or_create(user=student_user)
                 
+                Student_username = StudentDHMSSignUp.objects.get(student_email = student_email).student_username
+                Student_name = StudentDHMSSignUp.objects.get(student_email = student_email).student_name
+                student_school = StudentDHMSSignUp.objects.get(student_email = student_email).student_school
+                
                 if student_user is not None:
                     # print('login successful')
                     login(request, student_user)
@@ -550,7 +577,9 @@ def Student_Login(request):
                         'status':200,
                         'message': 'Student Login was Successfull',
                         "Token": token.key,
-                        "SessionID": session_id
+                        "SessionID": session_id,
+                        "studentData": {"email": student_email, "username": Student_username, 
+                                        "studentName":  Student_name, "student_school": student_school},
                     })
                 else:
                     return Response({
@@ -568,6 +597,64 @@ def Student_Login(request):
 
 
 
+@swagger_auto_schema(methods=['post'], request_body=UpdatePasswordSerializer)
+@api_view(['POST'])
+def RequestPasswordUpdate(request):
+    """
+    Password update request Endpoint
+
+    Allow users to update their password via the API by providing the follwoing information:
+    Email Address
+    """
+    serializer = UpdatePasswordSerializer(data = request.data)
+    # password_reset_form = PasswordResetForm(request.POST)
+    if serializer.is_valid():
+        data = serializer.data['email']
+        userEmail = User.objects.get(email=data).email
+        user = User.objects.get(email=data)
+        print(user)
+        if user:
+            subject = "DHMS Password Reset Requested"
+            email_template_name = "password/password_reset_email.txt"
+            c = {
+            "email":user,
+            'domain':'itservicedeskafrica.com',
+            'site_name': 'dhms@itservicedeskafrica.com',
+            "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+            "user": user,
+            'token': default_token_generator.make_token(user),
+            'protocol': 'https' if request.is_secure() else 'https',
+            }
+            email = render_to_string(email_template_name, c)
+            try:
+                send_mail(subject, email, 'info@itservicedeskafrica.com' , [userEmail], fail_silently=False)
+
+                if send_mail:                        
+                    return Response({
+                        'status': 200,
+                        'message': 'Password update email has been sent to you inbox',
+                        'User': userEmail
+                    })
+
+            except:
+                return Response({
+                    'status': 400,
+                    'message': 'Could not start process. Please try again',
+                    'error': serializer.error_messages
+                })
+        else:
+            return Response({
+                'status': 400,
+                'message': 'An error occured. Please try again',
+                'error': serializer.error_messages
+            })
+        
+    else:
+        return Response({
+            'status': 400,
+            'message': 'An error occured. Please try again',
+            'error': serializer.error_messages
+        })
 
 
 
@@ -577,4 +664,5 @@ def Student_Login(request):
 
 
 
-# STUDENT DHMS API STARTS HERE
+
+
