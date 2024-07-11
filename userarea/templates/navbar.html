@@ -48,7 +48,7 @@
                 {% csrf_token %}
                 <input name='startAISession'type='hidden'  />
                 <button type='submit'>
-                    <img src={% static 'general\img\aiicon.png' %} />
+                    {% comment %} <img src={% static 'general\img\aiicon.png' %} /> {% endcomment %}
                     Ask Our AI</button>
             </form>
         </div>

@@ -118,7 +118,7 @@
 						<div class='graphintrotextInner'>
 							<div>
 								<h2>Faulty Device Trends</h2>
-								<h5>Gain insights on expenses made on devices/hardwares over time</h5>
+								<h5>Gain insights on the trend of faulty devices under your jurisdiction</h5>
 							</div>
 	
 							<div class='graphdate'>
@@ -457,13 +457,13 @@
 				{% endfor %}
 			</div>
 			<div>
-				{% for JuneDevices in JuneDevices %}
-				<p class='JuneDevices'>{{ JuneDevices }}</p>
+				{% for JunDevices in JunDevices %}
+				<p class='JuneDevices'>{{ JunDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
-				{% for JulyDevices in JulyDevices %}
-				<p class='JulyDevices'>{{ JulyDevices }}</p>
+				{% for JulDevices in JulDevices %}
+				<p class='JulyDevices'>{{ JulDevices }}</p>
 				{% endfor %}
 			</div>
 			<div>
@@ -620,18 +620,21 @@
 		let julyelementMain2;
 		let julySum;
 		let julyDevices = document.querySelectorAll('.JulyDevices')
+		console.log(julyDevices)
 		julyDevices.forEach(element => {
-		julyelementMain2 = element.innerText;
-			julyelement.push(julyelementMain2)
-			julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
-			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
-			})
-			.reduce( function(a,b){ // sum all resulting numbers
-			return a+b
-			});
-			
+			julyelementMain2 = element.innerText.trim();
+				console.log(julyelementMain2)
+				julyelement.push(julyelementMain2)
+				julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
+				return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+				})
+				.reduce( function(a,b){ // sum all resulting numbers
+				return a+b
+				});
+				
 		});
 		AllMonthArray.push(julyelement.length);
+		console.log(julySum)
 		// JULY CALCULATIONS ENDS HERE
 
 		// AUGUST CALCULATIONS STARTS HERE

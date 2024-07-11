@@ -483,6 +483,14 @@ body{
     font-weight: bold;
 }
 
+.Good{
+    background-color: #b7f2bc;
+    height: 1px;
+    /* width: 40px; */
+    padding: 5px;
+    font-weight: bold;
+}
+
 .link strong a {
     color: #2A66B0;
 }

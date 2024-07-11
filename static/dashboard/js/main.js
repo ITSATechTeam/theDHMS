@@ -45,7 +45,7 @@ if(flashGeneraldash){
 
 if(filtercategory2){
     filtercategory2.addEventListener('click', () => {
-        console.log('close filter')
+        // console.log('close filter')
         shadow.style.display = 'block';
         filterbox1A.style.display = 'block'
     })
@@ -265,7 +265,7 @@ maintenanceStatus.forEach((e) => {
 
 let maintenanceType = document.querySelectorAll('.maintenanceType')
 maintenanceType.forEach((e) => {
-    console.log(e)
+    // console.log(e)
     shortenString = e.innerHTML.substring(0, 15).concat('...')
     e.innerHTML = shortenString
 })

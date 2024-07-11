@@ -183,7 +183,7 @@ def StaffViewDeviceDetails(request, name):
         form.save()
 
         # SAVE FAULTY OR CRITICAL DEVICES 
-        CompanyFaultyDevicesForm = CompanyFaultyDevices(user = request.user, deviceID = MaintainDeviceID, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = CompanyUniqueCode)
+        CompanyFaultyDevicesForm = CompanyFaultyDevices.objects.create(user = request.user, deviceID = MaintainDeviceID, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = CompanyUniqueCode)
         CompanyFaultyDevicesForm.save()
 
         # SEND NOTIFICATION EMAIL FOR MAINTENANCE REQUEST

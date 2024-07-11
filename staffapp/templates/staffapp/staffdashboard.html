@@ -7,6 +7,9 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		{% comment %} <link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'devicedetails/css/style.css' %} /> {% endcomment %}
 		<link rel="stylesheet" href={% static 'staffdashboard/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
@@ -27,11 +30,11 @@
 			<div class='maintop'>
 				<div class='maintopinner'>
 					<div>
-						{% for AllStaffMembers in AllStaffMembers %}
-						{% if AllStaffMembers.staff_email == request.user.username %}
-						<h1>Welcome back {{AllStaffMembers.staff_firstname}},</h1>
-						{% endif %}
-						{% endfor %}
+						{% comment %} {% for AllStaffMembers in AllStaffMembers %}
+						{% if AllStaffMembers.staff_email == request.user.username %} {% endcomment %}
+						<h1>Welcome back {{request.user.last_name}},</h1>
+						{% comment %} {% endif %}
+						{% endfor %} {% endcomment %}
 					
 						{% comment %} {% if request.identity_context_data.authenticated %}
 						<h1>Welcome on-board {{ request.identity_context_data.username }}!</h1>

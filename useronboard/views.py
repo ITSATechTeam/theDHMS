@@ -145,7 +145,7 @@ def Login(request):
             login(request, user)
             try:
                 myCompanyName = User.objects.filter(email = companymail).values_list('username', flat=True).first()
-                notifyLoginEmail(request, user, companymail, myCompanyName)
+                # notifyLoginEmail(request, user, companymail, myCompanyName)
             except:
                 print('error sending login notification email to user')
             if next == "":
@@ -153,7 +153,6 @@ def Login(request):
             else:
                 return HttpResponseRedirect(next)
                 
-            return redirect('Dashboard')
 
         else:
             # print(error)

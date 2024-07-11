@@ -42,7 +42,7 @@ import subprocess
 # traverse the software list
 # Data = subprocess.check_output(['wmic', 'product', 'get', 'name'])
 # a = str(Data)
-
+  
 # # try block
 # try:    
 #     # arrange the string
@@ -353,7 +353,7 @@ def Settings(request):
 
 
 
-
+# findDeviceInventoryhere
 @login_required(login_url='Login')
 def DeviceInventory(request):
     today = date.today()
@@ -369,7 +369,7 @@ def DeviceInventory(request):
             return redirect('DeviceInventory')
 
         if request.POST['deviceyearofpurchase']:
-            depreciateRate = 2023 - int(request.POST['deviceyearofpurchase'])
+            depreciateRate = 2024 - int(request.POST['deviceyearofpurchase'])
             # calc depreciateRateReal from depreciateRate below:
             if depreciateRate <= 0:
                 depreciateRateReal = '100%'
@@ -420,6 +420,11 @@ def DeviceInventory(request):
         if not request.POST['devicetype']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Type.")
             return redirect('DeviceInventory')
+        
+        
+        if (DeviceRegisterUpload.objects.filter(Q(Q(devicename = request.POST['devicename']) & Q(user = request.user)))):
+            messages.success(request, f'Upload Failed: the device: {devicename} already exists in your system. Please change the device name and try again')
+            return redirect('DeviceInventory')
 
         # if not request.POST['deviceyearofpurchase']:
             
@@ -458,11 +463,10 @@ def DeviceInventory(request):
 
     # CSV UPLOAD STARTS HERE
     if request.method == "POST" and 'csv_file' in request.FILES:
+        print('file uploaded')
         username = request.POST['username']
         filedata = request.FILES.get('csv_file', False)
         
-        # print(str(username))
-        # print(str(filedata))
         if 'csv' not in str(filedata):
             messages.success(request, 'Wrong File Format. Please Use The Recommended CSV File.')
             return redirect('DeviceInventory')
@@ -474,39 +478,38 @@ def DeviceInventory(request):
         if not request.POST['username']:
             messages.success(request, 'Device List Updated Failed! User Name Missing Login Again.')
             return redirect('DeviceInventory')
+        
 
         form = uploadedDeviceData.objects.create(user = request.user, username = username, mainfile = filedata)
         obj = uploadedDeviceData.objects.filter(user = request.user).first()
+        print('file saved')
 
         with open(obj.mainfile.path, 'r') as f:
+            print('file opened')
             reader = csv.reader(f)
             for i, row in enumerate(reader):
+                randomNumberForStaff = random.randint(1000, 9999999)
+                StaffUniqueId = 'Staff-' + request.user.username + str(randomNumberForStaff)
+                print('file reder starter')
                 if i == 0:
                     pass
+                elif (DeviceRegisterUpload.objects.filter(Q(Q(devicename = row[1]) & Q(user = request.user)))):
+                    messages.success(request, f'Upload Failed: the device: {row[1]} already exists in your system. Please change the device name and try again')
+                    return redirect('DeviceInventory')
                 elif len(row) < 21:
-                # elif row[21] < 0:
                     messages.success(request, 'Upload Failed: Please Use The Sample CSV File Provided')
-                    return redirect('Dashboard')
-                # elif len(row) > 9:
+                    return redirect('DeviceInventory')
                 elif len(row) > 21:
                     today = date.today()
                     dateForWeekNumber = datetime.today()
-                    randomNumber = random.randint(100, 9999)
+                    randomNumber = random.randint(100, 99999)
                     weekNumber = dateForWeekNumber.isocalendar().week
                     randomNumberForStaff = random.randint(1000, 99999)
-                    StaffUniqueId = 'Staff-' + request.user.username + str(randomNumberForStaff)
-                    # ('Samsung，', 3501)
                     uniqueId = 'Device-' + get_random_string(length=5)
-                    # DeviceBrandProper = row[14] + '_' + str(randomNumber)
-                    # DeviceBrandProper = str(row[14] '，' get_random_string(length=5))
-                    # print(DeviceBrandProper)
-                    # print(len(row))
-                    # if row[21] is not None and row[21] != '':
                     if row[21]:
                         depreciateRate = 2023 - int(row[21])
                     else:
                         depreciateRate = 2020
-                    # calc depreciateRateReal from depreciateRate below:
                     if depreciateRate <= 0:
                         depreciateRateReal = '100%'
                     elif depreciateRate == 1:
@@ -518,22 +521,33 @@ def DeviceInventory(request):
                     elif depreciateRate >= 4:
                         depreciateRateReal = '0%'
                     else:
-                        depreciateRateReal = 'Nil' 
+                        depreciateRateReal = 'Nil'
                     
-                    if row[17] == '':
-                        messages.error(request, 'Device user email address is missing, please fill in the email address and try again.')
-                        return redirect('Dashboard')
-                    
-                    if row[4] == '' or row[5] == '':
-                        messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
-                        return redirect('Dashboard')                    
-
-                    AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
-                    print(AllStaffCheck)
-                    if AllStaffCheck:
-                        print('email already exists')
-                        messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
-                        return redirect('Dashboard')
+                    if (row[17] == ''):
+                        row[17] = f'{request.user}_Staff_{StaffUniqueId}'
+                    elif ('@' not in row[17]):
+                        row[17] = f'{request.user}_Staff_{StaffUniqueId}'
+                    else:
+                        row[17] = row[17]               
+                    if (StaffDataSet.objects.filter(Q(Q(staff_email = row[17]) & Q(user = request.user)))):
+                        ExisitingStaffID = StaffDataSet.objects.filter(Q(Q(staff_email = row[17]) & Q(user = request.user))).first().StaffID
+                        StaffUniqueId = ExisitingStaffID
+                    else:
+                        StaffUniqueId = StaffUniqueId
+                        StaffDataSet.objects.create(
+                            user = request.user,
+                            StaffID = StaffUniqueId,
+                            staff_firstname = row[4],
+                            staff_lastname = row[5],
+                            staff_phonenumber = row[18],
+                            staff_location = row[13],
+                            staff_email = row[17],
+                            staff_role = row[8],
+                            CompanyUniqueCode = request.user.last_name
+                            ),
+                        User.objects.create_user(
+                            username = row[17], email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
+                            )
 
                     DeviceRegisterUpload.objects.create(
                         user = request.user,
@@ -541,8 +555,6 @@ def DeviceInventory(request):
                         devicename = row[1],
                         devicemacaddress = row[2],
                         devicenetworkadaptercompany = row[3],
-                        deviceuserfirstname = row[4],
-                        deviceuserlastname = row[5],
                         devicestatus = row[6],
                         deviceworkgroup = row[7],
                         deviceusedepartment = row[8],
@@ -554,7 +566,6 @@ def DeviceInventory(request):
                         devicebrand = row[14],
                         deviceos = row[15],
                         devicecostofpurchase = row[16],
-                        deviceuseremail = row[17],
                         deviceuserphonenumber = row[18],
                         deviceuserdateofresumption = row[19],
                         deviceworkingcondition = row[20],
@@ -566,35 +577,21 @@ def DeviceInventory(request):
                         registeredMonth = today.strftime("%b"),
                         weekNumberSaved = weekNumber,
                         CompanyUniqueCode = request.user.last_name
-                    ),
-                    StaffDataSet.objects.create(
-                        user = request.user,
-                        StaffID = StaffUniqueId,
-                        staff_firstname = row[4],
-                        staff_lastname = row[5],
-                        staff_phonenumber = row[18],
-                        staff_location = row[13],
-                        staff_email = row[17],
-                        staff_role = row[8],
-                        CompanyUniqueCode = request.user.last_name
-                        # CompanyUniqueCode = request.user.last_name
                     )
-                    try:
-                        # checkUniqueUser = User.objects.filter(username = row[17])
-                        checkUniqueUser =  User.objects.create_user(
-                        username = row[17], email = StaffUniqueId, password =  StaffUniqueId, first_name = request.user.last_name, last_name = row[4] +' '+row[5]
-                        )
-                    except:
-                         messages.error(request, 'Sorry, a staff with an email address you are trying to upload has already been uploaded.')
-                         return redirect('DeviceInventory')
-                    checkUniqueUser.save()
+                    
+                    
+                    # SAVE FAULTY OR CRITICAL DEVICES 
+                    if row[6] == 'Faulty' or row[6] == 'Critical' or row[6] == 'Bad':
+                        CompanyFaultyDevicesForm = CompanyFaultyDevices(user = request.user, deviceID = uniqueId, month = today.strftime("%b"), year = today.strftime("%B %d, %Y"), CompanyUniqueCode = request.user.last_name)
+                        CompanyFaultyDevicesForm.save() 
+
                 else:
-                    messages.error(request, 'Device List Updated Unsuccessfully')
+                    messages.error(request, 'Device List Updated Unsuccessfully: Please Fill CSV File And Upload Again')
                     return redirect('DeviceInventory')
             obj.save()
-            form.save()
         messages.success(request, 'Device List Updated Successfully')
         return redirect('DeviceInventory')
+                    
     # CSV UPLOAD ENDS HERE
 
     # PAGINATION COUNT FORM STARTS HERE
@@ -1037,91 +1034,100 @@ def StaffMembers(request):
 
 @login_required(login_url='Login')
 def StaffDetails(request, id):
-    allStaff = StaffDataSet.objects.get(id = id)
-    if request.method == 'POST' and 'deviceusedepartment' in request.POST and 'deviceToAssign' not in request.POST:
-        uniqueId = 'Device-' + get_random_string(length=5)
-        if request.POST['devicebrand']:
-            randomNumber = random.randint(1, 99999)
-            DeviceBrandProper = request.POST['devicebrand']+ '_' + str(randomNumber)
-        else: 
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's Brand.")
-            return redirect('DeviceInventory')
-
-        if request.POST['deviceyearofpurchase']:
-            depreciateRate = 2023 - int(request.POST['deviceyearofpurchase'])
-            # calc depreciateRateReal from depreciateRate below:
-            if depreciateRate <= 0:
-                depreciateRateReal = '100%'
-            elif depreciateRate == 1:
-                depreciateRateReal = '75%'
-            elif depreciateRate == 2:
-                depreciateRateReal = '50%'
-            elif depreciateRate == 3:
-                depreciateRateReal = '25%'
-            elif depreciateRate >= 4:
-                depreciateRateReal = '0%'
+    try:
+        allStaff = StaffDataSet.objects.get(id = id)
+        if request.method == 'POST' and 'deviceusedepartment' in request.POST and 'deviceToAssign' not in request.POST:
+            uniqueId = 'Device-' + get_random_string(length=5)
+            if request.POST['devicebrand']:
+                randomNumber = random.randint(1, 99999)
+                DeviceBrandProper = request.POST['devicebrand']+ '_' + str(randomNumber)
+            else: 
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's Brand.")
+                return redirect('DeviceInventory')
+    
+            if request.POST['deviceyearofpurchase']:
+                depreciateRate = 2023 - int(request.POST['deviceyearofpurchase'])
+                # calc depreciateRateReal from depreciateRate below:
+                if depreciateRate <= 0:
+                    depreciateRateReal = '100%'
+                elif depreciateRate == 1:
+                    depreciateRateReal = '75%'
+                elif depreciateRate == 2:
+                    depreciateRateReal = '50%'
+                elif depreciateRate == 3:
+                    depreciateRateReal = '25%'
+                elif depreciateRate >= 4:
+                    depreciateRateReal = '0%'
+                else:
+                    depreciateRateReal = 'Nil'
             else:
-                depreciateRateReal = 'Nil'
-        else:
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's Year Of Purchase.")
-            return redirect('DeviceInventory')
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's Year Of Purchase.")
+                return redirect('DeviceInventory')
+                
+            deviceusedepartment = request.POST['deviceusedepartment']
+            devicetype = request.POST['devicetype']
+            devicebrand = request.POST['devicebrand']
+            deviceos = request.POST['deviceos']
+            devicecostofpurchase = request.POST['devicecostofpurchase']
+            deviceyearofpurchase = request.POST['deviceyearofpurchase']
+            devicename = request.POST['devicename']
+            devicemacaddress = request.POST['devicemacaddress']
+            devicelocation = request.POST['devicelocation']
+            deviceip = request.POST['deviceip']
+            devicestatus = request.POST['devicestatus']
+            staffUserID = allStaff.staffID
+            CompanyUniqueCode = request.user.last_name
+            user = request.user
+    
+            if not request.POST['deviceusedepartment']:
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's Department.")
+                return redirect('DeviceInventory')
             
-        deviceusedepartment = request.POST['deviceusedepartment']
-        devicetype = request.POST['devicetype']
-        devicebrand = request.POST['devicebrand']
-        deviceos = request.POST['deviceos']
-        devicecostofpurchase = request.POST['devicecostofpurchase']
-        deviceyearofpurchase = request.POST['deviceyearofpurchase']
-        devicename = request.POST['devicename']
-        devicemacaddress = request.POST['devicemacaddress']
-        devicelocation = request.POST['devicelocation']
-        deviceip = request.POST['deviceip']
-        devicestatus = request.POST['devicestatus']
-        staffUserID = allStaff.staffID
-        CompanyUniqueCode = request.user.last_name
-        user = request.user
-
-        if not request.POST['deviceusedepartment']:
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's Department.")
-            return redirect('DeviceInventory')
-        
-        # if not request.POST['devicebrand']:
-        #     messages.error(request, "Device uploaded failed. Please Indicate This Device's Brand.")
-        #     return redirect('DeviceInventory')
-        
-        if not request.POST['devicemacaddress']:
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's MAC Address.")
-            return redirect('DeviceInventory')
-        
-        if not request.POST['devicetype']:
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's Type.")
-            return redirect('DeviceInventory')            
-
-        if not request.POST['devicelocation']:
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's Location.")
-            return redirect('DeviceInventory')
-        
-        if not request.POST['devicestatus']:
-            messages.error(request, "Device uploaded failed. Please Indicate This Device's Working Condition.")
-            return redirect('DeviceInventory')
-        
-        SaveDeviceProper = DeviceRegisterUpload.objects.create(
-            deviceusedepartment=deviceusedepartment, devicetype=devicetype, devicebrand=DeviceBrandProper, 
-            deviceos=deviceos, devicecostofpurchase=devicecostofpurchase, devicename=devicename,
-            devicemacaddress=devicemacaddress, devicelocation=devicelocation, deviceip=deviceip,
-            devicestatus=devicestatus, staffUserID=staffUserID, CompanyUniqueCode=CompanyUniqueCode,
-            deviceyearofpurchase=deviceyearofpurchase, user=user, devicedepreciationrate=depreciateRateReal,
-            deviceid=uniqueId
-        )
-
-        try:
-            SaveDeviceProper.save()
-            messages.success(request, 'Device uploaded successfully')
-            return redirect('DeviceInventory')
-        except:
-            messages.error(request, 'Device uploaded failed. Please Try again.')
-            return redirect('DeviceInventory')
-
+            
+            if (DeviceRegisterUpload.objects.filter(Q(Q(devicename = request.POST['devicename']) & Q(user = request.user)))):
+                messages.success(request, f'Upload Failed: the device: {devicename} already exists in your system. Please change the device name and try again')
+                return redirect('DeviceInventory')
+            
+            # if not request.POST['devicebrand']:
+            #     messages.error(request, "Device uploaded failed. Please Indicate This Device's Brand.")
+            #     return redirect('DeviceInventory')
+            
+            if not request.POST['devicemacaddress']:
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's MAC Address.")
+                return redirect('DeviceInventory')
+            
+            if not request.POST['devicetype']:
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's Type.")
+                return redirect('DeviceInventory')            
+    
+            if not request.POST['devicelocation']:
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's Location.")
+                return redirect('DeviceInventory')
+            
+            if not request.POST['devicestatus']:
+                messages.error(request, "Device uploaded failed. Please Indicate This Device's Working Condition.")
+                return redirect('DeviceInventory')
+            
+            SaveDeviceProper = DeviceRegisterUpload.objects.create(
+                deviceusedepartment=deviceusedepartment, devicetype=devicetype, devicebrand=DeviceBrandProper, 
+                deviceos=deviceos, devicecostofpurchase=devicecostofpurchase, devicename=devicename,
+                devicemacaddress=devicemacaddress, devicelocation=devicelocation, deviceip=deviceip,
+                devicestatus=devicestatus, staffUserID=staffUserID, CompanyUniqueCode=CompanyUniqueCode,
+                deviceyearofpurchase=deviceyearofpurchase, user=user, devicedepreciationrate=depreciateRateReal,
+                deviceid=uniqueId
+            )
+    
+            try:
+                SaveDeviceProper.save()
+                messages.success(request, 'Device uploaded successfully')
+                return redirect('DeviceInventory')
+            except:
+                messages.error(request, 'Device uploaded failed. Please Try again.')
+                return redirect('DeviceInventory')
+    except:
+        messages.error(request, 'An error occured. Kindly try again.')
+        return redirect('StaffMembers')
+    allStaff = StaffDataSet.objects.get(id = id)
 
     
     if request.method == 'POST' and 'startAISession' in request.POST:
@@ -1151,17 +1157,15 @@ def StaffDetails(request, id):
     #           messages.success(request, 'Error saving device data')
 
 
-    # allUploadedDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = request.user.last_name)
     allUploadedDevices = DeviceRegisterUpload.objects.filter(user = request.user)
     allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
-    # allUploadedDevicesNotAssigned = DeviceRegisterUpload.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(staffUserID = 'None'))
     allSignUps = SignupForm.objects.all()
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
     context = {'AllMaintenanceRequests':AllMaintenanceRequests, 'allSignUps':allSignUps, 'allStaff' : allStaff, 'allUploadedDevices' : allUploadedDevices, 'allUploadedDevicesNotAssigned':allUploadedDevicesNotAssigned}
     return render(request, 'userarea/staffdetails.html', context)
 
 
-# @login_required(login_url='Login')
+@login_required(login_url='Login')
 def registerStaff(request, name):
     form = regStaff(request.POST)
     staffMembers = StaffDataSet.objects.all()
@@ -1275,9 +1279,9 @@ def Dashboard(request):
                         messages.error(request, 'Device user email address is missing, please fill in the email address and try again.')
                         return redirect('Dashboard')
                     
-                    if row[4] == '' or row[5] == '':
-                        messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
-                        return redirect('Dashboard')
+                    # if row[4] == '' or row[5] == '':
+                    #     messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
+                    #     return redirect('Dashboard')
 
 
                     AllStaffCheck = StaffDataSet.objects.filter(staff_email = row[17])
@@ -1404,6 +1408,10 @@ def Dashboard(request):
             messages.error(request, "Device uploaded failed. Please Indicate This Device's MAC Address.")
             return redirect('Dashboard')
         
+        if (DeviceRegisterUpload.objects.filter(Q(Q(devicename = request.POST['devicename']) & Q(user = request.user)))):
+            messages.success(request, f'Upload Failed: the device: {devicename} already exists in your system. Please change the device name and try again')
+            return redirect('DeviceInventory')
+        
         if not request.POST['devicetype']:
             messages.error(request, "Device uploaded failed. Please Indicate This Device's Type.")
             return redirect('Dashboard')
@@ -1464,6 +1472,8 @@ def Dashboard(request):
     MayDevices = CompanyFaultyDevices.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(month = 'May'))
     JunDevices = CompanyFaultyDevices.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(month = 'Jun'))
     JulDevices = CompanyFaultyDevices.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(month = 'Jul'))
+    # print('JunDevices')
+    # print(JulDevices)
     AugDevices = CompanyFaultyDevices.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(month = 'Aug'))
     SeptDevices = CompanyFaultyDevices.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(month = 'Sep'))
     OctDevices = CompanyFaultyDevices.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(month = 'Oct'))
@@ -1474,7 +1484,7 @@ def Dashboard(request):
 
     # dataMain = [JanDevices1, FebDevices1, MarDevices1, AprDevices1, MayDevices1, JuneDevices1, JulyDevices1, AugDevices1, SeptDevices1, OctDevices1, NovDevices1, DecDevices1]
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    AllMaintenancesCount = MaintenanceRequest.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(MaintainStatus = 'Ongoing')).count()
+    AllMaintenancesCount = MaintenanceRequest.objects.filter(Q(CompanyUniqueCode = request.user.last_name) & Q(MaintainStatus = 'Ongoing') & Q(MaintainStatus = 'Pending')).count()
     AllMaintenanceRequests = MaintenanceRequest.objects.filter(CompanyUniqueCode = request.user.last_name)
         
 
@@ -1498,7 +1508,6 @@ def Dashboard(request):
     AllLaptopsCount = AllLaptops.count()
     AllDesktops = DeviceRegisterUpload.objects.filter(Q(devicetype = 'Desktop' or 'desktop') & Q(user = request.user))
     AllDesktopsCount = AllDesktops.count()
-    print(AllLaptopsCount)
     labels = ['Laptops', 'Desktops']
     data = [AllLaptopsCount, AllDesktopsCount]
     thisYear = datetime.today().year
@@ -1741,9 +1750,9 @@ def ScanNetwork(request):
                         messages.error(request, 'Device user email address is missing, please fill in the email address and try again.')
                         return redirect('Dashboard')
                     
-                    if row[4] == '' or row[5] == '':
-                        messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
-                        return redirect('Dashboard')
+                    # if row[4] == '' or row[5] == '':
+                    #     messages.error(request, "Device user's firstname or last name is missing. Please complete and try again")
+                    #     return redirect('Dashboard')
 
                     
 
@@ -1888,11 +1897,13 @@ def AllDeviceDelete(request):
 
 def DeleteStaff(request, pk):
     staffToDeleteEmail = StaffDataSet.objects.get(id=pk).staff_email
-    getStaffUser = User.objects.get(username = staffToDeleteEmail)
-    print(staffToDeleteEmail)
     staffToDelete = StaffDataSet.objects.get(id=pk)
     staffToDelete.delete()
-    getStaffUser.delete()
+    try:
+        getStaffUser = User.objects.get(username = staffToDeleteEmail)
+        getStaffUser.delete()
+    except:
+        print('Staff admin account was not found while trying to delete staff')
     messages.success(request, 'Staff Details Successfully Deleted!')
     return redirect('StaffMembers')
     # return render(request, 'userarea/deviceinventory.html')
@@ -2169,7 +2180,7 @@ def errorpagevisist(request):
 
 
 def maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName, MaintainRequester, MaintainPriorityStatus, MaintainDeviceMAC, MaintainType, MaintainRequestDescription):
-    recipient_list = [myCompanyEmailAddress, 'franklin.i@itservicedeskafrica.com']
+    recipient_list = [myCompanyEmailAddress, 'franklin.i@itservicedeskafrica.com', 'chinedu.o@itservicedeskafrica.com']
     if (MaintainPriorityStatus == 'Low'):         
         ResponseTime = 'Five (5) Business Days'
     elif (MaintainPriorityStatus == 'Medium'):         
@@ -2182,7 +2193,7 @@ def maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName
     plain_message = strip_tags(html_message)
 
     message = EmailMultiAlternatives(
-        subject = "ADMIN REQUEST DEVICE MAINTENANCE ALERT - DHMS.", 
+        subject = "ADMIN DEVICE MAINTENANCE REQUEST ALERT - DHMS.", 
         body = plain_message,
         from_email = 'dhmsinventoryapp@gmail.com',
         to= recipient_list
@@ -2195,9 +2206,4 @@ def maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName
         print('Sent a confirmation email')
     else:
         messages.error(request, f'Problem sending email to {myCompanyEmailAddress}, check if you typed it correctly')
-
-
-
-
-
 

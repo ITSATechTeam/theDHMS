@@ -61,11 +61,19 @@ class StaffDataSetSerializer(serializers.ModelSerializer):
 class Student_Registration_Serializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDHMSSignUp
-        fields = '__all__'
+        fields = ['student_name', 'student_email', 'student_school', 'student_password']
 
 
 
 class StudentLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+
+class AccountValidationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= StaffDataSet
+        fields = '__all__'
     email = serializers.EmailField()
     password = serializers.CharField()
 

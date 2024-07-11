@@ -1,11 +1,12 @@
 
 let uploaddevicecsv = document.querySelector('.uploaddevicecsv2')
-uploaddevicecsv.addEventListener('click', () => {
-  console.log('block')
-    uploaddevicepopup.style.display = 'block'
-    shadow.style.display = 'block';
-})
-
+if (uploaddevicecsv){
+  uploaddevicecsv.addEventListener('click', () => {
+    console.log('block')
+      uploaddevicepopup.style.display = 'block'
+      shadow.style.display = 'block';
+  })
+}
 
 
 // ADD DEVICE POPUP STARTS HERE

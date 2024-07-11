@@ -9,6 +9,9 @@
 		<link rel="icon" type="image/x-icon" href={% static 'useronboard/login/images/itsalogo.PNG' %}> 
 		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'editprofile/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'devicedetails/css/style.css' %} />
 		<link rel="stylesheet" href={% static 'staffdetails/css/style.css' %} />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
@@ -42,7 +45,7 @@
                             </div>
                             <div>
                                 <div class='datatext'><span>Name: </span>{{ allStaff.staff_firstname }} {{ allStaff.staff_lastname }}<br/></div>
-                                <div class='datatext'><span>ID: </span>{{ allStaff.StaffID }}<br/></div>
+                                {% comment %} <div class='datatext'><span>ID: </span>{{ allStaff.StaffID }}<br/></div> {% endcomment %}
                                 <div class='datatext'><span>Role: </span>{{ allStaff.staff_role }}<br/></div>
                                 <div class='datatext'><span>Location: </span>{{ allStaff.staff_location }}<br/></div>
                                 <div class='datatext'><span>Email: </span>{{ allStaff.staff_email }}<br/></div>
@@ -72,7 +75,7 @@
                         <h5>ASSIGNED DEVICE(S)</h5>
                         <img src={% static 'editprofile/img/line.png' %} />
                     </div>
-                    <div class='staffsearchout'>
+                    {% comment %} <div class='staffsearchout'>
                         <div class='staffsearch'>
                             <div class='searchdashboardout'>
                                 <div class='searchdashboard'>
@@ -92,13 +95,13 @@
                                 <p>Assign New Device</p>
                             </button>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
                     <div>
                         <table>
                             <tr>
-                              <th>
+                              {% comment %} <th>
                                 <input type='radio' />
-                              </th>
+                              </th> {% endcomment %}
                               <th>Device Name</th>
                               <th>Category</th>
                               <th>Device ID</th>
@@ -110,9 +113,9 @@
                             {% for allUploadedDevices in allUploadedDevices %}
                             {% if allUploadedDevices.staffUserID == allStaff.StaffID %}
                             <tr>
-                              <td>
+                              {% comment %} <td>
                                 <input type='radio' />
-                              </td>
+                              </td> {% endcomment %}
                               <td><strong>{{ allUploadedDevices.devicename }}</strong></td>
                               <td>{{ allUploadedDevices.devicetype }}</td>
                               <td class='ctaction'><strong><a href= /member/viewdevicedetails/{{ allUploadedDevices.deviceid }}/ >{{ allUploadedDevices.deviceid }}</a></strong></td>
@@ -136,68 +139,6 @@
                             {% endfor %}
                         </table>
                         
-				<div class='pagesdetailsseection'>
-					<div class='perpagecount'>
-						<div>
-							<div class='selectedNumber'>
-								<p>{{ numberOfDevicesPerPage }}</p>
-								<img src={% static 'inventory/img/selectnav.png' %} />
-							</div>
-							<div class='selectPerPageCountBox'>
-								<div class='selectPerPageCountBoxintro'>
-									<h4>Select number of items to display per page</h4>
-									<img src={% static 'inventory/img/close.png' %} />
-								</div>
-								<hr/>
-								<form method='POST'>
-									{% csrf_token %}
-									<div class='numofitemsperpageout'>
-											<select class='numofitemsperpage' name='numofitemsperpage'>
-												<option value='1'>1</option>
-												<option value='2'>2</option>
-												<option value='3'>3</option>
-												<option value='4'>4</option>
-												<option value='5'>5</option>
-												<option value='6'>6</option>
-												<option value='7'>7</option>
-												<option value='8'>8</option>
-												<option value='9'>9</option>
-												<option value='10'>10</option>
-											</select>
-										<button type='submit'>Activate</button>
-									</div>
-								</form>
-							</div>
-						</div>
-						<div>
-							<p>items per page</p>
-						</div>
-					</div>
-					<div class='perpagecount2'>
-						1-<span>{{ numberOfDevicesPerPage }}</span> items of <i>{{ allUploadedDevicesCount }}</i>
-					</div>
-					<div id="pagination-numbers">
-      
-					</div>
-
-					<div class='pages'>
-						{% comment %} <div>
-							<select>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-							</select>
-						</div> {% endcomment %}
-						
-						<div id="pagination-numbers"></div>
-						<div>Total of <span class='pageNumberCount'>10</span> page(s)</div>
-						<div class='navigation'>
-							<img class='navLeft' id='prev-button' src={% static 'inventory/img/left.png' %} />
-							<img id="next-button" src={% static 'inventory/img/right.png' %} />
-						</div>
-					</div>
-				</div>
                     </div>
                 </div>
             </div>

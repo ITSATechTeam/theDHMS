@@ -80,7 +80,7 @@ class StaffDataSet(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.staff_firstname} {self.StaffID}'
+        return f'{self.staff_firstname} {self.CompanyUniqueCode}'
 
 
 

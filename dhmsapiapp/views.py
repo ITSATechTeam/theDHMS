@@ -4,6 +4,8 @@ from grpc import Status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import permissions
+
+from dhmsapiapp.activateuser import ActivateUserBeforeRegister
 from .serializers import *
 from useronboard.models import SignupForm
 from userarea.models import *
@@ -108,8 +110,6 @@ def User_Login(request):
                 })
             else:
                 user = authenticate(request, username=CheckUserUsername, password=password)
-                print(user)
-                print('[[[[[[[[[[[[[[[[[]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]')
                 token, created = Token.objects.get_or_create(user=user)
                 # try:
                 #     # token = Token.objects.create(user=user)
@@ -465,7 +465,7 @@ def Student_Registration(request):
         serializer = Student_Registration_Serializer(data = request.data)
         if serializer.is_valid():
             student_email = serializer.data['student_email']
-            student_username = serializer.data['student_username']
+            # student_username = serializer.data['student_username']
             student_name = serializer.data['student_name']
             student_school = serializer.data['student_school']
             student_password = serializer.data['student_password']
@@ -475,7 +475,7 @@ def Student_Registration(request):
             checkEmail = StudentDHMSSignUp.objects.filter(student_email = student_email)
             checkEmailGen = User.objects.filter(email = student_email)
             checkName = StudentDHMSSignUp.objects.filter(student_name = student_name)
-            checkNameGen = User.objects.filter(username = student_username)
+            # checkNameGen = User.objects.filter(username = student_username)
             # if student_password != student_retypepassword:
             #     return Response({
             #         "status": 400,
@@ -488,24 +488,18 @@ def Student_Registration(request):
                     "message": "Email address already exists"
                 })
                 
-            if checkName or checkNameGen:
+            if checkName:
                 return Response({
                     "status": 400,
                     "message": "Student name already exists"
-                })            
-            
-                
-            # if checkPhone:
-            #     return Response({
-            #         "status": 400,
-            #         "message": "Phone number is already in use"
-            #     })            
-            
+                })
+
+            # ActivateUserBeforeRegister(student_email, code='1234')
             try:
-                form = StudentDHMSSignUp(student_username= student_username, student_name=student_name, student_school=student_school, student_email = student_email, 
+                form = StudentDHMSSignUp( student_name=student_email, student_school=student_school, student_email = student_email, 
                 student_password = student_password)
 
-                userprofile = User.objects.create_user(username = student_username, first_name = student_name, email = student_email, 
+                userprofile = User.objects.create_user(username = student_email, first_name = student_name, email = student_email, 
                                 last_name = student_school, password = student_password)
 
                 form.save()
@@ -529,7 +523,7 @@ def Student_Registration(request):
 # import requests
 @swagger_auto_schema(methods=['post'], request_body=StudentLoginSerializer)
 @api_view(['POST'])
-def Student_Login(request):    
+def Student_Login(request):
     """
     Student Login Endpoint
 
@@ -563,7 +557,7 @@ def Student_Login(request):
                 student_user = authenticate(request, username=CheckUserUsername, password=student_password)
                 token, created = Token.objects.get_or_create(user=student_user)
                 
-                Student_username = StudentDHMSSignUp.objects.get(student_email = student_email).student_username
+                # Student_username = StudentDHMSSignUp.objects.get(student_email = student_email).student_username
                 Student_name = StudentDHMSSignUp.objects.get(student_email = student_email).student_name
                 student_school = StudentDHMSSignUp.objects.get(student_email = student_email).student_school
                 
@@ -578,8 +572,7 @@ def Student_Login(request):
                         'message': 'Student Login was Successfull',
                         "Token": token.key,
                         "SessionID": session_id,
-                        "studentData": {"email": student_email, "username": Student_username, 
-                                        "studentName":  Student_name, "student_school": student_school},
+                        "studentData": {"email": student_email, "studentName":  Student_name, "student_school": student_school},
                     })
                 else:
                     return Response({
