@@ -61,7 +61,7 @@ class StaffDataSetSerializer(serializers.ModelSerializer):
 class Student_Registration_Serializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDHMSSignUp
-        fields = ['student_name', 'student_email', 'student_school', 'student_password']
+        fields = ['student_name', 'student_email', 'student_school', 'student_phone', 'student_password']
 
 
 

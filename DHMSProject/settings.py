@@ -203,13 +203,20 @@ SOCIAL_AUTH_FACEBOOK_SECRET ='59dbe7831f34b6a5ba802a8231317683'
 
 
 # AUTH GOOGLE SIGNUP INTEGRATION FUNCTIONALITY CODES BELOW STARTS HERE
+# AUTHENTICATION_BACKENDS = [
+#     # 'axes.backends.AxesStandaloneBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+#     'allauth.account.auth_backends.AuthenticationBackend',  
+#     # 
+#     # 'django_python3_ldap.auth.LDAPBackend',
+# ]
+
 AUTHENTICATION_BACKENDS = [
     # 'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',  
-    # 
-    # 'django_python3_ldap.auth.LDAPBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
 
 # DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
 #     "CLASS": "django_rest_passwordreset.tokens.RandomStringTokenGenerator",
@@ -243,7 +250,6 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 # ALLUTH GOOGLE LOGIN UNTEGRATION FUNCTIONALITY CODES BELOW ENDS HERE
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -256,13 +262,33 @@ MIDDLEWARE = [
     'django_auto_logout.middleware.auto_logout',
     # 
     'django_user_agents.middleware.UserAgentMiddleware',
-    # 
+#     # 
     'allauth.account.middleware.AccountMiddleware',
-    # 'csp.middleware.CSPMiddleware'
+
 
     # Below middleware should always be the last
     # 'axes.middleware.AxesMiddleware',
 ]
+
+# MIDDLEWARE = [
+#     'django.middleware.security.SecurityMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#     "whitenoise.middleware.WhiteNoiseMiddleware",
+#     'django_auto_logout.middleware.auto_logout',
+#     # 
+#     'django_user_agents.middleware.UserAgentMiddleware',
+#     # 
+#     'allauth.account.middleware.AccountMiddleware',
+#     # 'csp.middleware.CSPMiddleware'
+
+#     # Below middleware should always be the last
+#     # 'axes.middleware.AxesMiddleware',
+# ]
 
 
 
