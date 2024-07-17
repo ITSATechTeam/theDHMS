@@ -9,6 +9,8 @@ urlpatterns = [
     path('pre_signup/', views.PreSignUpPage, name="PreSignUpPage"),
     path('signup/', views.SignUpPage, name="SignUpPage"),
     path('login/', views.Login, name="Login"),
+    path('verifyotp/', views.Verify_otp, name="Verify_otp"),
+    # path('verifyotp/<str:useremail>/', views.Verify_otp, name="Verify_otp"),
     # path('login/cancelled/', views.LoginCanceled, name="LoginCanceled"),
     path('', views.Home, name="Home"),
 

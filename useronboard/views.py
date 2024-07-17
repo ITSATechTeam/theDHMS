@@ -1,3 +1,9 @@
+# from datetime import datetime, timedelta
+import datetime
+import re
+from time import strftime
+from django.utils import timezone
+import random
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
@@ -52,71 +58,71 @@ def csrf_failure(request, reason=""):
     
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def SignUpPage(request):
-    if request.method == 'POST':
-        companyname = request.POST['companyname']
-        email = request.POST['companymail']
-        phonenumber = request.POST['phonenumber']
-        companyUniqueID = (companyname+'-'+email).replace(" ", "")
-        # address = request.POST['address']
-        password = request.POST['password']
-        # rtpassword = request.POST['rtpassword']
-        
-        
-        if not request.POST['companyname']:
-            messages.success(request, 'Registration Failed: Enter Your Company Name')
-            return redirect('SignUpPage')
-        
-        # if len(phonenumber) > 14 :
-        #     messages.success(request, 'Phone number can not be more than 14 digits')
-        #     return redirect('SignUpPage')
-
-        if not request.POST['companymail']:
-            messages.success(request, 'Registration Failed: Enter Your Company Email Address')
-            return redirect('SignUpPage')
-        
-        if not request.POST['phonenumber']:
-            messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
-            return redirect('SignUpPage')
-
-
-        # if (password != rtpassword):
-        #     messages.error(request, 'Passwords Do Not Match!')
-        #     return redirect('SignUpPage')
-
-        data = SignupForm.objects.filter(companyname=companyname)
-        UserData = User.objects.filter(username=companyname)
-        UserDataCheckEmail = User.objects.filter(email=email)
-        if data or UserData:
-            messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
-            return redirect('SignUpPage')
-
-        elif UserDataCheckEmail:
-            messages.error(request, 'Sorry, Email Address Is Already Taken, Please Use A Unique Email Address')
-            return redirect('SignUpPage')
+    try:          
+        if request.method == 'POST':
+            companyname = request.POST['companyname']
+            email = request.POST['companymail']
+            phonenumber = request.POST['phonenumber']
+            companyUniqueID = (companyname+'-'+email).replace(" ", "")
+            # address = request.POST['address']
+            password = request.POST['password']
+            # rtpassword = request.POST['rtpassword']
             
-        else:
-            form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password)
-            user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
-            form.save()
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            user.save(False)
-            activateEmail(request, user, email, companyname)
-            try:
-                activateEmail(request, user, email)
-            except:
-                print('Registration mail was not sent successfully')
-            return redirect('Dashboard')
+            
+            if not request.POST['companyname']:
+                messages.success(request, 'Registration Failed: Enter Your Company Name')
+                return redirect('SignUpPage')
+            
+            # if len(phonenumber) > 14 :
+            #     messages.success(request, 'Phone number can not be more than 14 digits')
+            #     return redirect('SignUpPage')
 
-            # return redirect('Login')
-    return render(request, 'useronboard/signup.html')
+            if not request.POST['companymail']:
+                messages.success(request, 'Registration Failed: Enter Your Company Email Address')
+                return redirect('SignUpPage')
+            
+            if not request.POST['phonenumber']:
+                messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
+                return redirect('SignUpPage')
+
+
+            # if (password != rtpassword):
+            #     messages.error(request, 'Passwords Do Not Match!')
+            #     return redirect('SignUpPage')
+
+            data = SignupForm.objects.filter(companyname=companyname)
+            UserData = User.objects.filter(username=companyname)
+            UserDataCheckEmail = User.objects.filter(email=email)
+            if data or UserData:
+                messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
+                return redirect('SignUpPage')
+
+            elif UserDataCheckEmail:
+                messages.error(request, 'Sorry, Email Address Is Already Taken, Please Use A Unique Email Address')
+                return redirect('SignUpPage')
+                
+            else:
+                form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password)
+                user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
+                form.save()
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                user.save(False)
+                activateEmail(request, user, email, companyname)
+                try:
+                    activateEmail(request, user, email)
+                except:
+                    print('Registration mail was not sent successfully')
+                return redirect('Dashboard')
+
+                # return redirect('Login')
+        return render(request, 'useronboard/signup.html')
+    except:
+        messages.error(request, 'An error occured. Kindly check your connectivity and try again.')
+        return redirect('SignUpPage')
 
 
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
-def Login(request):
-    next = ""
-    if request.GET:  
-        next = request.GET['next']
-        
+def Login(request):        
     if request.method == 'POST':
         companymail = request.POST['companymail']
         password = request.POST['password']
@@ -125,7 +131,7 @@ def Login(request):
             if user:
                 pass
             else:
-                messages.error(request, 'An error occured, please try again.')
+                messages.error(request, 'We do not have an account linked to the email address.')
                 return redirect('Login') 
                 
             isacompany = SignupForm.objects.get(email = companymail)
@@ -138,28 +144,159 @@ def Login(request):
             messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
             return redirect('SignUpPage')
         
-        user = authenticate(request, username=user, password=password)
-        # LoginStatus.objects.create(user = user, email = companymail, status = 'Online')
+        # Check for max OTP attempts
+        try:
+            # OTP SETUP CODE STARTS HERE        
+            authUser = authenticate(request, username=user, password=password)
+            if authUser is not None:
+                if(AccountValidation.objects.filter(useremail=companymail)):
+                    LatestAccountValidationEntry = AccountValidation.objects.filter(useremail=companymail).first()
+                    userMaxOTPTry = LatestAccountValidationEntry.max_otp_try
+                    userMaxOut = LatestAccountValidationEntry.otp_max_out
+                    userOTPExpiry = LatestAccountValidationEntry.otp_expiry
+                    
+                    if int(userMaxOTPTry) <= 3 and userMaxOut is None:
+                        otp = random.randint(1000, 9999)
+                        userMaxOTPTryNew = int(userMaxOTPTry) -1
+                        clientUserName = User.objects.get(email = companymail).username
+                        otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
+                        SendOTPForLogin(request, otp, companymail, clientUserName)
+                        otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                        request.session['useremail'] = companymail
+                        request.session['password'] = password
+                        AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
+                        return redirect('Verify_otp') 
+                    
+                    if int(userMaxOTPTry) == 1:
+                        otp = random.randint(1000, 9999)
+                        otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
+                        print('otp_user_waittime')
+                        print(otp_user_waittime)
+                        userMaxOTPTryNew = int(userMaxOTPTry) -1
+                        clientUserName = User.objects.get(email = companymail).username
+                        SendOTPForLogin(request, otp, companymail, clientUserName)
+                        otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                        request.session['useremail'] = companymail
+                        request.session['password'] = password
+                        AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = userMaxOTPTryNew)
+                        return redirect('Verify_otp') 
 
-        if user is not None:
-            login(request, user)
-            try:
-                myCompanyName = User.objects.filter(email = companymail).values_list('username', flat=True).first()
-                # notifyLoginEmail(request, user, companymail, myCompanyName)
-            except:
-                print('error sending login notification email to user')
-            if next == "":
-                return redirect('Dashboard')
-            else:
-                return HttpResponseRedirect(next)
+                    elif int(userMaxOTPTry) <= 0 and timezone.now() < userMaxOut:
+                        
+                    # FORMAT REMAINING TIME SECTION ENDS HERE
+
+                        remainingTime = userMaxOut - timezone.now() 
+                        duration = str(remainingTime)
+                        dot_index = duration.find('.')
+                        if dot_index != -1:
+                            part_before_dot = duration[:dot_index]  # Slice to keep only before the dot
+                        else:
+                            part_before_dot = duration  # Keep original string if no dot found
+                        print(part_before_dot)
+
+                        colon_index = part_before_dot.find(':')
+                        if colon_index != -1:
+                            part_after_colon = part_before_dot[colon_index + 1:]  # Slice to keep only after the first colon
+                        else:
+                            part_after_colon = part_before_dot 
+                            
+                        dot_index2 = part_after_colon.find(':')
+                        if dot_index2 != -1:
+                            FinalDuration = part_after_colon[:dot_index2]  # Slice to keep only before the dot
+                        else:
+                            FinalDuration = part_after_colon  # Keep original string if no dot found
+
+                    # FORMAT REMAINING TIME SECTION ENDS HERE
+                            
+                        messages.error(request, f'Max OTP trial reached or OTP has expired, try to login again after about {FinalDuration} minutes')
+                        return redirect('Login')
+                    
+
+                    elif int(userMaxOTPTry) >= 0 and timezone.now() > userOTPExpiry:
+                        otp = random.randint(1000, 9999)
+                        userMaxOTPTryNew = 3
+                        clientUserName = User.objects.get(email = companymail).username
+                        otp_user_waittime = None
+                        # otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
+                        SendOTPForLogin(request, otp, companymail, clientUserName)
+                        otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                        request.session['useremail'] = companymail
+                        request.session['password'] = password
+                        AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
+                        return redirect('Verify_otp')
+                    
+                    elif int(userMaxOTPTry) <= 0 and timezone.now() < userOTPExpiry:                    
+                    # FORMAT REMAINING TIME SECTION ENDS HERE
+                    
+                        remainingTime = userMaxOut - timezone.now() 
+                        duration = str(remainingTime)
+                        dot_index = duration.find('.')
+                        if dot_index != -1:
+                            part_before_dot = duration[:dot_index]  # Slice to keep only before the dot
+                        else:
+                            part_before_dot = duration  # Keep original string if no dot found
+                        print(part_before_dot)
+
+                        colon_index = part_before_dot.find(':')
+                        if colon_index != -1:
+                            part_after_colon = part_before_dot[colon_index + 1:]  # Slice to keep only after the first colon
+                        else:
+                            part_after_colon = part_before_dot 
+                            
+                        dot_index2 = part_after_colon.find(':')
+                        if dot_index2 != -1:
+                            FinalDuration = part_after_colon[:dot_index2]  # Slice to keep only before the dot
+                        else:
+                            FinalDuration = part_after_colon  # Keep original string if no dot found
+
+                    # FORMAT REMAINING TIME SECTION ENDS HERE
+                        messages.error(request, f'Max OTP trial reached or OTP has expired, try to login again after about {FinalDuration} minutes')
+                        return redirect('Login')
+                    
+                    # elif int(userMaxOTPTry) >= 0 and timezone.now() > userOTPExpiry:
+                    #     print('userOTPExpiryuserOTPExpiryuserOTPExpiryuserOTPExpiryuserOTPExpiry')
+                    #     otp = random.randint(1000, 9999)
+                    #     otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                    #     otp_user_waittime = None
+                    #     max_otp_try = 3
+                    #     AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = max_otp_try)
+                    #     clientUserName = User.objects.get(email = companymail).username
+                    #     SendOTPForLogin(request, otp, companymail, clientUserName)
+                    #     request.session['useremail'] = companymail
+                    #     request.session['password'] = password
+                    #     messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
+                    #     return redirect('Verify_otp')   
+                    
+                    elif int(userMaxOTPTry) < 0 and timezone.now() > userOTPExpiry:
+                        messages.error(request, f'OTP Expired, kindly login again to recieve a new OTP')
+                        return redirect('Login')
+
+                    else:
+                        messages.error(request, f'An error occured')
+                        return redirect('Login')  
+                else:
+                    otp = random.randint(1000, 9999)
+                    otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                    otp_user_waittime = None
+                    # otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
+                    max_otp_try = 3
+                    AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = max_otp_try)
+                    clientUserName = User.objects.get(email = companymail).username
+                    SendOTPForLogin(request, otp, companymail, clientUserName)
+                    request.session['useremail'] = companymail
+                    request.session['password'] = password
+                    messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
+                    return redirect('Verify_otp')        
                 
+            else:
+                messages.error(request, 'Login details are incorrect.')
+                return redirect('Login')
+        except:
+            messages.error(request, 'An error occured. Kindly check your connectivity and try again.')
+            return redirect('Login')
 
-        else:
-            # print(error)
-            messages.error(request, 'Login Failed: Please Try Again!!')
-            return render(request, 'useronboard/login.html')
+        # OTP SETUP CODE ENDS HERE
     return render(request, 'useronboard/login.html')
-
 
 
 # RESET PASSWORD VIEW STARTS HERE
@@ -251,4 +388,97 @@ def notifyLoginEmail(request, user, to_email, myCompanyName):
         messages.error(request, f'Problem sending email to {to_email}, check if you typed it correctly')
 
 
-# def sync_user_relations(us
+
+
+
+def SendOTPForLogin(request, otp, to_email, clientUserName):
+    recipient_list = [to_email, ]
+
+    context = {'clientUserName':clientUserName, 'otp':otp, 'to_email':to_email}
+    html_message = render_to_string("mailouts/login_otp_mail.html", context=context)
+    plain_message = strip_tags(html_message)
+
+    message = EmailMultiAlternatives(
+        subject = "Your DHMS Login OTP.", 
+        body = plain_message,
+        from_email = 'dhmsinventoryapp@gmail.com',
+        to= recipient_list
+        )
+
+    message.attach_alternative(html_message, "text/html")
+    message.send()
+
+    if message:
+        print('Sent a OTP code via email')
+    else:
+        messages.error(request, f'Problem sending OTP code via email to {to_email}, check if you typed it correctly')
+
+
+
+
+
+def Verify_otp(request):
+    try:
+        userEmailAddress = request.session['useremail']
+        userEnteredPassword = request.session['password']
+        if request.method == 'POST':
+            otp = request.POST['otp']
+
+            try:
+                user = User.objects.get(email=userEmailAddress)
+                if user:
+                    pass
+                else:
+                    messages.error(request, 'An error occured, please try again.')
+                    return redirect('login') 
+                    
+                isacompany = SignupForm.objects.get(email = userEmailAddress)
+                if isacompany:
+                    pass
+                else:
+                    messages.error(request, 'Sorry, you do not have an admin access. Kindly contact your company support for details')
+                    return redirect('Login') 
+            except:
+                messages.error(request, 'Verification failed. Kindly try again or contact support for prompt assistance.')
+                return redirect('Verify_otp')
+            
+            GetOTP = AccountValidation.objects.filter(useremail = userEmailAddress).first()
+            if timezone.now() < GetOTP.otp_expiry:
+                print(timezone.now())
+                print(GetOTP.otp_expiry)
+                messages.error(request, 'OTP Expired. Kindly Generate a New OTP')
+                return redirect('Verify_otp')
+
+            if otp == GetOTP.otp:
+                user = authenticate(request, username=user, password=userEnteredPassword)
+
+                if user is not None:
+                    # login(request, user)
+                    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                    AccountValidation.objects.filter(useremail = userEmailAddress).delete()
+                    try:
+                        myCompanyName = User.objects.filter(email = userEmailAddress).values_list('username', flat=True).first()
+                        notifyLoginEmail(request, user, userEmailAddress, myCompanyName)
+                    except:
+                        print('error sending login notification email to user')
+
+                    return redirect('Dashboard')
+                        
+
+                else:
+                    # print(error)
+                    messages.error(request, 'OTP Verification Failed.')
+                    return redirect('Verify_otp')
+            else:
+                # print(error)
+                messages.error(request, 'OTP Verification Failed.')
+                return redirect('Verify_otp')
+    except:
+        messages.error(request, 'OTP Verification Failed. Kindly try again or contact support')
+        return redirect('Login')
+
+
+    context = {'useremail':userEmailAddress}
+    return render(request, 'useronboard/otpverificationpage.html', context)
+
+

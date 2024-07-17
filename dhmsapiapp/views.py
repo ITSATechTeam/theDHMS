@@ -601,13 +601,7 @@ def Student_Login(request):
                 'status':400,
                 'message': 'Login Failed, request was unable to process',
                 "error": serializer.error_messages
-            })    
-
-    return Response({
-        'status':200,
-        'message': 'Welcome to login endpoint for student DHMS',
-        # 'error': serializer.error_messages
-    })
+            }) 
 
 
 

@@ -62,8 +62,11 @@ class LoginStatus(models.Model):
 class AccountValidation(models.Model):
     userphonenumber = models.EmailField(max_length= 300, null=True, blank = True)
     useremail = models.EmailField(max_length= 300, null=True, blank = True)
-    accountValidationCode = models.CharField(max_length= 300, null=True, blank = True)
-    activationStatus = models.CharField(max_length= 300, null=True, blank = True)
+    # activationStatus = models.CharField(max_length= 300, null=True, blank = True)
+    otp = models.CharField(max_length=6, null=True, blank=True)
+    otp_expiry = models.DateTimeField(blank=True, null=True)
+    max_otp_try = models.CharField(max_length=2, default=3)
+    otp_max_out = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
@@ -72,4 +75,4 @@ class AccountValidation(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return self.email
+        return self.useremail
