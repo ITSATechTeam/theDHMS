@@ -64,11 +64,14 @@ def StaffDashboard(request):
     AllStaffMembers = StaffDataSet.objects.all()
     MaintenanceRequestsCount = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username).count()
     MaintenanceRequestsPendingCount = MaintenanceRequest.objects.filter(Q(MaintainRequesterEmailAddress = request.user.username) & Q(MaintainStatus = 'Ongoing')).count()
-    RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email)
-    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email).count()
+    RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID__iexact = (request.user.email).lower())
+    # print(request.user.email)
+    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(staffUserID__iexact = request.user.email).count()
+    print('RegisteredDevicesCount')
+    print(RegisteredDevicesCount)
     labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     data = [JanMaintainReqs, FebMaintainReqs, MarchMaintainReqs,
-            AprilMaintainReqs, MayMaintainReqs, JuneMaintainReqs, 
+            AprilMaintainReqs, MayMaintainReqs, JuneMaintainReqs,
             JulyMaintainReqs, AugMaintainReqs, SeptMaintainReqs,
             OctMaintainReqs, NovMaintainReqs, DecMaintainReqs]
 
@@ -119,10 +122,10 @@ def StaffLogout(request):
 @login_required(login_url='StaffLogin')
 def StaffDeviceInventory(request):
     MaintenanceRequests = MaintenanceRequest.objects.filter(MaintainRequesterEmailAddress = request.user.username).count()
-    RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email)
-    RegisteredDevicesFaulty = DeviceRegisterUpload.objects.filter(Q(staffUserID = request.user.email) & Q(devicestatus = 'Faulty')).count()
-    RegisteredDevicesWorking = DeviceRegisterUpload.objects.filter(Q(staffUserID = request.user.email) & Q(devicestatus = 'Working')).count()
-    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(staffUserID = request.user.email).count()
+    RegisteredDevices = DeviceRegisterUpload.objects.filter(staffUserID__iexact = request.user.email)
+    RegisteredDevicesFaulty = DeviceRegisterUpload.objects.filter(Q(staffUserID__iexact = request.user.email) & Q(devicestatus = 'Faulty')).count()
+    RegisteredDevicesWorking = DeviceRegisterUpload.objects.filter(Q(staffUserID__iexact = request.user.email) & Q(devicestatus = 'Working')).count()
+    RegisteredDevicesCount = DeviceRegisterUpload.objects.filter(staffUserID__iexact = request.user.email).count()
     context = {'RegisteredDevicesWorking':RegisteredDevicesWorking,'MaintenanceRequests':MaintenanceRequests, 'RegisteredDevicesFaulty':RegisteredDevicesFaulty, 'RegisteredDevices':RegisteredDevices, 'RegisteredDevicesCount':RegisteredDevicesCount}
     return render(request, 'staffapp/staffdeviceinventory.html', context)
 

@@ -90,8 +90,8 @@ def SignUpPage(request):
             #     messages.error(request, 'Passwords Do Not Match!')
             #     return redirect('SignUpPage')
 
-            data = SignupForm.objects.filter(companyname=companyname)
-            UserData = User.objects.filter(username=companyname)
+            data = SignupForm.objects.get(companyname=companyname)
+            UserData = User.objects.get(username=companyname)
             UserDataCheckEmail = User.objects.filter(email=email)
             if data or UserData:
                 messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
@@ -126,23 +126,20 @@ def Login(request):
     if request.method == 'POST':
         companymail = request.POST['companymail']
         password = request.POST['password']
+        # print(f'{companymail} - {password}')
         try:
-            user = User.objects.get(email=companymail)
-            if user:
-                pass
-            else:
-                messages.error(request, 'We do not have an account linked to the email address.')
-                return redirect('Login') 
-                
-            isacompany = SignupForm.objects.get(email = companymail)
-            if isacompany:
-                 pass
-            else:
-                messages.error(request, 'You are not allowed to use an Administrator account at this time, kindly contact support.')
-                return redirect('Login') 
+            user = User.objects.get(email=companymail)   
+            print(user) 
         except:
-            messages.error(request, 'The email address you entered is not registered. Please create an account to continue.')
-            return redirect('SignUpPage')
+            messages.error(request, 'No user with the email address was found on the DHMS.')
+            return redirect('SignUpPage') 
+
+        isacompany = SignupForm.objects.filter(email = companymail)
+        if isacompany:
+                pass
+        else:
+            messages.error(request, 'You are not allowed to use an Administrator account at this time, kindly contact support.')
+            return redirect('Login') 
         
         # Check for max OTP attempts
         try:
@@ -443,9 +440,9 @@ def Verify_otp(request):
                 return redirect('Verify_otp')
             
             GetOTP = AccountValidation.objects.filter(useremail = userEmailAddress).first()
-            if timezone.now() < GetOTP.otp_expiry:
-                print(timezone.now())
-                print(GetOTP.otp_expiry)
+            if timezone.now() > GetOTP.otp_expiry:
+                # print(timezone.now())
+                # print(GetOTP.otp_expiry)
                 messages.error(request, 'OTP Expired. Kindly Generate a New OTP')
                 return redirect('Verify_otp')
 

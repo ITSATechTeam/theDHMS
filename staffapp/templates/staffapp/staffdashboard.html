@@ -30,18 +30,7 @@
 			<div class='maintop'>
 				<div class='maintopinner'>
 					<div>
-						{% comment %} {% for AllStaffMembers in AllStaffMembers %}
-						{% if AllStaffMembers.staff_email == request.user.username %} {% endcomment %}
 						<h1>Welcome back {{request.user.last_name}},</h1>
-						{% comment %} {% endif %}
-						{% endfor %} {% endcomment %}
-					
-						{% comment %} {% if request.identity_context_data.authenticated %}
-						<h1>Welcome on-board {{ request.identity_context_data.username }}!</h1>
-						{% else %}
-						<h1>You are logged out!</h1>
-						<a href="{% url 'sign_in' %}">Login</a>
-						{% endif %} {% endcomment %}
 						<h5>Get a detailed overview of your devices health and status.</h5>
 					</div>
 
@@ -80,8 +69,7 @@
 							<div class='yellow introdetailsbar2'>
 								<img src={% static 'staffdashboard/img/pending.png' %} />
 								<h3>{{ MaintenanceRequestsPendingCount }}</h3>
-								<p>Ongoing Maintenance(s)</p>
-								
+								<p>Ongoing Maintenance(s)</p>								
 							</div>
 						</div>
 					</div>

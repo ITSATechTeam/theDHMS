@@ -490,7 +490,7 @@ def DeviceInventory(request):
             for i, row in enumerate(reader):
                 randomNumberForStaff = random.randint(1000, 9999999)
                 StaffUniqueId = 'Staff-' + request.user.username + str(randomNumberForStaff)
-                print('file reder starter')
+                print('file reader started')
                 if i == 0:
                     pass
                 elif (DeviceRegisterUpload.objects.filter(Q(Q(devicename = row[1]) & Q(user = request.user)))):

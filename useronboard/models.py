@@ -40,7 +40,7 @@ class SignupForm(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return self.companyname
+        return self.email
 
 
 

@@ -459,11 +459,11 @@ def Student_Registration(request):
     Student registration Endpoint
 
     Allow students to register via the API by providing the following details:
-    Username, email, name, phone number, and password
+    email, name, phone number, and password
     """
 
-    try:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        try:
             serializer = Student_Registration_Serializer(data = request.data)
             if serializer.is_valid():
                 student_email = serializer.data['student_email']
@@ -471,18 +471,41 @@ def Student_Registration(request):
                 student_name = serializer.data['student_name']
                 student_school = serializer.data['student_school']
                 student_password = serializer.data['student_password']
-                # student_retypepassword = serializer.data['password']
+
+                if(student_email is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Missing email address",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_phone is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Missing phone number",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_name is None):
+                    return Response({
+                        "status": 400,
+                        "message": "No student name provided",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_school is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Kindy provide your school",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_password is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Password missing",
+                        "error_message": serializer.error_messages
+                    })
                 
-                # checkPhone = StudentDHMSSignUp.objects.filter(student_phone = student_phone)
                 checkEmail = StudentDHMSSignUp.objects.filter(student_email = student_email)
                 checkEmailGen = User.objects.filter(email = student_email)
                 checkPhone = StudentDHMSSignUp.objects.filter(student_phone = student_phone)
-                # checkNameGen = User.objects.filter(username = student_username)
-                # if student_password != student_retypepassword:
-                #     return Response({
-                #         "status": 400,
-                #         "message": "Passwords do not match"
-                #     })
                     
                 if checkEmail or checkEmailGen:
                     return Response({
@@ -518,15 +541,19 @@ def Student_Registration(request):
                     return Response({
                         "status": 400,
                         "message": "An error ocured, please try again"
-                    }) 
-            
-            
-    except Exception as e:
-        return Response({
-            "status": 400,
-            "message": "An error ocured, please try again",
-            "error": logger.error('Failed to upload to ftp: %s', repr(e))
-        }) 
+                    })            
+            else:
+                return Response({
+                    'status':400,
+                    'message': 'Login Failed, check your login details and try again',
+                    'error': serializer.error_messages
+                })            
+        except:
+            return Response({
+                "status": 400,
+                "message": "An error ocured, kindly fill the form properly",
+                "error": serializer.error_messages
+            }) 
 
 
 # STUDENT LOGIN ENDPOINT
@@ -549,27 +576,27 @@ def Student_Login(request):
                 student_password = serializer.data['password']
                 CheckUserAvaibility = StudentDHMSSignUp.objects.get(student_email = student_email)
                 CheckUserModelAvaibility = User.objects.get(email = student_email)
-                # CheckUserUsername = User.objects.get(email = student_email).username
-
+                CheckUserUsername = User.objects.get(email = student_email).username
                 if CheckUserAvaibility is None:
                     return Response({
                         'status':400,
                         'message': 'Email and password do not match, Try again',
                         'error': serializer.error_messages
                     })
-                elif CheckUserModelAvaibility is None:
+                if CheckUserModelAvaibility is None:
                     return Response({
                         'status':400,
                         'message': 'User with the details you entered does not exist',
                         'error': serializer.error_messages
                     })
                 else:
-                    student_user = authenticate(request, email=student_email, password=student_password)
+                    student_user = authenticate(request, username=CheckUserUsername, password=student_password)
+                    print(f'{student_email} {student_password}')
                     print('student_user')
                     print('student_user')
                     print('student_user')
                     print('CheckUserModelAvaibility')
-                    print(CheckUserModelAvaibility)
+                    print(student_user)
                     token, created = Token.objects.get_or_create(user=student_user)
                     
                     # Student_username = StudentDHMSSignUp.objects.get(student_email = student_email).student_username
@@ -577,25 +604,33 @@ def Student_Login(request):
                     student_school = StudentDHMSSignUp.objects.get(student_email = student_email).student_school
                     student_phoneNumber = StudentDHMSSignUp.objects.get(student_email = student_email).student_phone
                     
-                    if student_user is not None:
-                        # print('login successful')
-                        login(request, student_user)
-                        # After successful login, retrieve the session ID
-                        session_id = request.session.session_key
-                        # print(session_id)
-                        return Response({
-                            'status':200,
-                            'message': 'Student Login was Successfull',
-                            "Token": token.key,
-                            "SessionID": session_id,
-                            "studentData": {"email": student_email, "Phone number": student_phoneNumber, "studentName":  Student_name, "student_school": student_school},
-                        })
-                    else:
-                        return Response({
-                            'status':400,
-                            'message': 'Login Failed, check your login details and try again',
-                            'error': serializer.error_messages
-                        })  
+                if student_user is not None:
+                    # print('login successful')
+                    login(request, student_user)
+                    # After successful login, retrieve the session ID
+                    session_id = request.session.session_key
+                    # print(session_id)
+                    return Response({
+                        'status':200,
+                        'message': 'Student Login was Successfull',
+                        "Token": token.key,
+                        "SessionID": session_id,
+                        "studentData": {"email": student_email, "Phone number": student_phoneNumber, "studentName":  Student_name, "student_school": student_school},
+                    })
+                else:
+                    return Response({
+                        'status':400,
+                        'message': 'Login Failed, check your login details and try again',
+                        'error': serializer.error_messages
+                    })
+    
+            
+            else:
+                return Response({
+                    'status':400,
+                    'message': 'Login Failed, check your login details and try again',
+                    'error': serializer.error_messages
+                })  
         except Exception as e:
             return Response({
                 'status':400,
@@ -643,7 +678,6 @@ def RequestPasswordUpdate(request):
                         'message': 'Password update email has been sent to you inbox',
                         'User': userEmail
                     })
-
             except:
                 return Response({
                     'status': 400,
