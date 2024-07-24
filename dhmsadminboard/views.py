@@ -16,9 +16,19 @@ import json
 from useronboard.models import SignupForm
 from userarea.models import *
 from django.utils.crypto import get_random_string
+import random
+import string
 
 # Create your views here.
 
+
+
+def generate_password(length, count):
+    passwords = []
+    for i in range(count):
+        password = ''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(length))
+        passwords.append(password)
+    return passwords
 
 def AdminNavBar(request):
     return render(request, 'admingen.html')
@@ -288,6 +298,9 @@ def ITPartners(request):
         technicianAvailability = request.POST['technicianAvailability']
         technicianPhoneNumber = request.POST['technicianPhoneNumber']
         technicianLocation = request.POST['technicianLocation']
+        
+        # technicalPartnerUniqueID = 'Partner-' + technicianName + str(generate_password(10, 1))
+        technicalPartnerUniqueID = f'Partner_{get_random_string(length=10)}'
 
         if User.objects.filter(email = request.POST['technicianEmail']):
             messages.success(request, 'Registration Failed: The email provided has been used already')
@@ -315,8 +328,10 @@ def ITPartners(request):
 
         
         AllTechnicalPartners = technicianModel.objects.create(technicianName = technicianName, technicianEmail = technicianEmail, 
-        technicianAvailability = technicianAvailability, technicianPhoneNumber = technicianPhoneNumber, technicianLocation = technicianLocation)
-        User.objects.create(first_name = technicianLocation, email = technicianEmail, last_name = technicianPhoneNumber, username = technicianName)
+        technicianAvailability = technicianAvailability, technicianPhoneNumber = technicianPhoneNumber, 
+        technicianLocation = technicianLocation, technicianUniqueID = technicalPartnerUniqueID)
+        User.objects.create(first_name = technicianLocation, email = technicianEmail, last_name = technicianPhoneNumber, 
+                            username = technicianName, password = technicalPartnerUniqueID)
         if AllTechnicalPartners:
             messages.success(request, "Techncian's registration was successful.")
             return redirect('ITPartners')
