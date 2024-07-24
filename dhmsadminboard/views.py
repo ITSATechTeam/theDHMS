@@ -90,6 +90,7 @@ def SuperAdminAccess(request):
         password = 'superadminpass121090890dhms'
         try:
             user = User.objects.get(email=superadminmail)
+            print(user)
             useravailable = SuperAdminsModel.objects.get(email=superadminmail)
             if user:
                 userEmail = user.email
@@ -281,7 +282,50 @@ def AdminMaintenance(request):
 
 
 def ITPartners(request):
-    return render(request, 'dhmsadminboard/partners.html')
+    if request.method == 'POST':
+        technicianName = request.POST['technicianName']
+        technicianEmail = request.POST['technicianEmail']
+        technicianAvailability = request.POST['technicianAvailability']
+        technicianPhoneNumber = request.POST['technicianPhoneNumber']
+        technicianLocation = request.POST['technicianLocation']
+
+        if User.objects.filter(email = request.POST['technicianEmail']):
+            messages.success(request, 'Registration Failed: The email provided has been used already')
+            return redirect('ITPartners')
+
+        if User.objects.filter(email = request.POST['technicianPhoneNumber']):
+            messages.success(request, 'Registration Failed: The phone number provided has been used already')
+            return redirect('ITPartners')
+
+        if not request.POST['technicianName']:
+            messages.success(request, 'Registration Failed: Kindly provide a name for this technician')
+            return redirect('ITPartners')
+
+        if not request.POST['technicianAvailability']:
+            messages.success(request, "Registration Failed: Kindly provide the technician's availability")
+            return redirect('ITPartners')
+
+        if not request.POST['technicianPhoneNumber']:
+            messages.success(request, "Registration Failed: Kindly provide the technician's phone number")
+            return redirect('ITPartners')
+
+        if not request.POST['technicianLocation']:
+            messages.success(request, "Registration Failed: Kindly provide the technician's location")
+            return redirect('ITPartners')
+
+        
+        AllTechnicalPartners = technicianModel.objects.create(technicianName = technicianName, technicianEmail = technicianEmail, 
+        technicianAvailability = technicianAvailability, technicianPhoneNumber = technicianPhoneNumber, technicianLocation = technicianLocation)
+        User.objects.create(first_name = technicianLocation, email = technicianEmail, last_name = technicianPhoneNumber, username = technicianName)
+        if AllTechnicalPartners:
+            messages.success(request, "Techncian's registration was successful.")
+            return redirect('ITPartners')
+
+    AllTechnicalPartners = technicianModel.objects.all()
+    AllTechnicalPartnersCount = AllTechnicalPartners.count()
+    numberOfDevicesPerPage = 5
+    context = {'numberOfDevicesPerPage':numberOfDevicesPerPage, 'AllTechnicalPartnersCount':AllTechnicalPartnersCount, 'AllTechnicalPartners':AllTechnicalPartners}
+    return render(request, 'dhmsadminboard/partners.html', context)
 
 
 def SuperAdminReports(request):
@@ -321,8 +365,9 @@ def Organizations(request):
     AllOrganizations = SignupForm.objects.all()
     AllDevices = DeviceRegisterUpload.objects.all()
     AllStaffMembers = StaffDataSet.objects.all()
-    AllOrganizationsCount = AllOrganizations.count()    
-    context = {'AllOrganizations':AllOrganizations, 'AllOrganizationsCount':AllOrganizationsCount, 'AllDevices':AllDevices, 'AllStaffMembers':AllStaffMembers}
+    AllOrganizationsCount = AllOrganizations.count()
+    numberOfDevicesPerPage = 5
+    context = {'numberOfDevicesPerPage': numberOfDevicesPerPage, 'AllOrganizations':AllOrganizations, 'AllOrganizationsCount':AllOrganizationsCount, 'AllDevices':AllDevices, 'AllStaffMembers':AllStaffMembers}
     return render(request, 'dhmsadminboard/organizations.html', context)
 
 

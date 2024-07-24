@@ -29,6 +29,25 @@ class SuperAdminsModel(models.Model):
         return self.email
     
     
+
+class technicianModel(models.Model):
+    technicianEmail = models.EmailField(max_length= 300)
+    technicianName = models.CharField(max_length= 300)
+    technicianPhoneNumber = models.CharField(max_length= 300)
+    technicianAvailability = models.CharField(max_length= 300)
+    technicianLocation = models.CharField(max_length= 300)
+    technicianUniqueID = models.CharField(max_length= 300)
+    created_at = models.DateTimeField(auto_now_add=True)
+    edited_at = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        ordering = ['-edited_at', '-created_at']
+        
+    def __str__(self):
+        return f'{self.technicianName} {self.technicianName}'
+    
+    
     
     
     

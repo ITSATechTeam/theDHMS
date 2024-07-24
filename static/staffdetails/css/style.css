@@ -130,10 +130,6 @@ span{
     font-weight: bold;
 }
 
-select{
-    height: 20px;
-}
-
 
 .staffdetailsaddtn button{
     background-color: #2A66B0;
@@ -267,6 +263,11 @@ select{
     border: rgb(226, 226, 226) solid .8px;
     padding: 5px;
     font-family: 1.1rem;
+}
+
+
+select{
+    height: 20px;
 }
 
 

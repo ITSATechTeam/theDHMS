@@ -19,7 +19,7 @@
     background-color: white;
     text-align: center;
     margin-top: 8%;
-    display: none;
+    /* display: none; */
 }
 
 .orgsectionintro span{
@@ -203,6 +203,14 @@
 .orgdatain{
     display: flex;
     margin-top: 10px;
+}
+
+.devinvetable::-webkit-scrollbar{
+    display: none;
+}
+
+table::-webkit-scrollbar{
+    display: none;
 }
 
 .orgdatamain{
