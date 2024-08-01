@@ -18,8 +18,13 @@ urlpatterns = [
     path('allstaff', views.View_All_Staff, name="View_All_Staff"),
     # STUDENT DHMS ENDPOINTS STARTS HERE
     path('studentreg', views.Student_Registration, name="Student_Registration"),
+    path('studentdevreg', views.Student_Device_Registration, name="Student_Device_Registration"),
+    path('substudentreg', views.Sub_Student_Registration, name="Sub_Student_Registration"),
     path('studentlogin', views.Student_Login, name="Student_Login"),
     path('changepassword', views.RequestPasswordUpdate, name="RequestPasswordUpdate"),
+    # TECHNICAL PARTNERS ENDPOINTS STARTS HERE
+    path('findtechnicalpartner', views.Find_Technical_Partner, name="Find_Technical_Partner"),
+    path('technicalpartners', views.Technical_Partners, name="Technical_Partners"),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

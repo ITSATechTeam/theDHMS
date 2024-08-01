@@ -1,22 +1,12 @@
 from typing import OrderedDict
 from rest_framework import serializers
-from studentdhms.models import StudentDHMSSignUp
+from dhmsadminboard.models import technicianModel
+from studentdhms.models import *
 from useronboard.models import SignupForm
 from userarea.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
-
-    # user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    # companyname = models.CharField(max_length=200, null=True, blank=True)
-    # companyUniqueID = models.CharField(max_length=200, null=True, blank=True)
-    # email = models.EmailField(max_length=200, null=True, blank=True)
-    # phone = models.IntegerField(null=True, blank=True)
-    # city = models.CharField(max_length=200, null=True, blank=True)
-    # country = models.CharField(max_length=200, null=True, blank=True)
-    # password = models.CharField(max_length=200, null=True, blank=True)
-    # repassword = models.CharField(max_length=200, null=True, blank=True)
-    # address = models.CharField(max_length=200, null=True, blank=True)
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -93,3 +83,28 @@ class ResetPasswordSerializer(serializers.Serializer):
     write_only=True,
     error_messages={'invalid': ('Password must be at least 8 characters long with at least one capital letter and symbol')})
     confirm_password = serializers.CharField(write_only=True, required=True)
+
+
+
+class TechnicalPartnersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = technicianModel
+        fields = ['technicianEmail', 'technicianName', 'technicianPhoneNumber', 'technicianAvailability', 'technicianLocation', 'technicianUniqueID', 'created_at']
+
+
+class SingleTechnicalPartnersModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = technicianModel
+        fields = ['technicianEmail']
+
+
+class StudentDeviceRegSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentDeviceReg
+        fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email']
+
+
+class SubStudentRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubStudentRegistration
+        fields = ['sub_student_name', 'sub_student_email']

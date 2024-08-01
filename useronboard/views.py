@@ -55,6 +55,18 @@ def csrf_failure(request, reason=""):
 
 
 
+def contains_other_characters(email):
+    # Check if '@' is in the email
+    if '@' in email:
+        # Split the email into two parts
+        local_part, domain_part = email.split('@', 1)
+        
+        # Check if either part contains other characters
+        return (any(char.isalnum() or char in '._-+' for char in local_part) or
+                any(char.isalnum() or char in '._-+' for char in domain_part))
+    return False
+
+    
     
 # @method_decorator(ratelimit(key='user_or_ip', rate='5/m'))
 def SignUpPage(request):
@@ -69,6 +81,11 @@ def SignUpPage(request):
             # rtpassword = request.POST['rtpassword']
             
             
+            if contains_other_characters(email):
+                messages.error(request, 'Invalid email address')
+                return redirect('SignUpPage')
+            
+            
             if not request.POST['companyname']:
                 messages.success(request, 'Registration Failed: Enter Your Company Name')
                 return redirect('SignUpPage')
@@ -80,6 +97,10 @@ def SignUpPage(request):
             if not request.POST['companymail']:
                 messages.success(request, 'Registration Failed: Enter Your Company Email Address')
                 return redirect('SignUpPage')
+
+            # if request.POST['companymail'].contain:
+            #     messages.success(request, 'Registration Failed: Enter Your Company Email Address')
+            #     return redirect('SignUpPage')
             
             if not request.POST['phonenumber']:
                 messages.success(request, 'Registration Failed: Enter Your Company Phone Number')
@@ -90,8 +111,8 @@ def SignUpPage(request):
             #     messages.error(request, 'Passwords Do Not Match!')
             #     return redirect('SignUpPage')
 
-            data = SignupForm.objects.get(companyname=companyname)
-            UserData = User.objects.get(username=companyname)
+            data = SignupForm.objects.filter(companyname=companyname)
+            UserData = User.objects.filter(username=companyname)
             UserDataCheckEmail = User.objects.filter(email=email)
             if data or UserData:
                 messages.error(request, 'Sorry, Company Name Is Already Taken, Please Use Another Company Name')
@@ -105,14 +126,15 @@ def SignUpPage(request):
                 form = SignupForm(companyname=companyname, companyUniqueID=companyUniqueID, email=email, phone=phonenumber, password=password)
                 user = User.objects.create_user(username=companyname, email=email, password=password, first_name=phonenumber, last_name=companyUniqueID)
                 form.save()
-                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                # login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 user.save(False)
-                activateEmail(request, user, email, companyname)
+                # activateEmail(request, user, email, companyname)
                 try:
                     activateEmail(request, user, email)
                 except:
                     print('Registration mail was not sent successfully')
-                return redirect('Dashboard')
+                messages.error(request, 'Regitration was successful. Kindly login to continue.')
+                return redirect('Login')
 
                 # return redirect('Login')
         return render(request, 'useronboard/signup.html')
@@ -139,7 +161,7 @@ def Login(request):
                 pass
         else:
             messages.error(request, 'You are not allowed to use an Administrator account at this time, kindly contact support.')
-            return redirect('Login') 
+            return redirect('Login')
         
         # Check for max OTP attempts
         try:
@@ -441,8 +463,8 @@ def Verify_otp(request):
             
             GetOTP = AccountValidation.objects.filter(useremail = userEmailAddress).first()
             if timezone.now() > GetOTP.otp_expiry:
-                # print(timezone.now())
-                # print(GetOTP.otp_expiry)
+                print(timezone.now())
+                print(GetOTP.otp_expiry)
                 messages.error(request, 'OTP Expired. Kindly Generate a New OTP')
                 return redirect('Verify_otp')
 

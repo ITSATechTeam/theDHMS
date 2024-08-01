@@ -46,6 +46,7 @@ from rest_framework.authtoken.models import Token
 from datetime import timedelta
 from django.utils import timezone
 from django.conf import settings
+from django.utils.crypto import get_random_string
 
 # from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail, EmailMessage
@@ -699,10 +700,319 @@ def RequestPasswordUpdate(request):
         })
 
 
+# Technical partners serializer
+@swagger_auto_schema(methods=['GET'])
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def Technical_Partners(request):
+    """
+    View all technical partners endpoint
+
+    You can view all technical partners from here when you're logged in and authenticated
+    """
+
+    if request.method == 'GET':
+        AllTechnicalPartners = technicianModel.objects.all()
+        if AllTechnicalPartners:
+            serializer = TechnicalPartnersSerializer(AllTechnicalPartners, many=True)
+            if serializer:
+                userData = serializer.data
+                return Response({
+                    "status":200,
+                    "message": "Technical Partners found",
+                    "data": userData
+                    # {
+                    #     'Technicial_name': serializer.data.technicianName,
+                    #     'Technicial_email': serializer.data.technicianEmail,
+                    #     'Technicial_phone': serializer.data.technicianPhoneNumber,
+                    #     'Technicial_availability': serializer.data.technicianAvailability,
+                    #     'Technicial_location': serializer.data.technicianLocation,
+                    #     'Technicial_ID': serializer.data.technicianUniqueID,
+                    #     'Technicial_date_registered': serializer.data.created_at,
+                    # }
+                })
+            else: 
+                return Response({
+                    "status":400,
+                    "message": "Technical Partners not found",
+                })
+        
+        return Response({
+            "status": 400,
+            "message": "An error occured. No technical partner found."
+        })
+    
+    return Response({
+        "status": 200,
+        "message": "Execute to view all technical partners on the DHMS."
+    })
+
+
+# Find a particular technical partner
+@swagger_auto_schema(methods=['post'], request_body=SingleTechnicalPartnersModelSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def Find_Technical_Partner(request):
+    """
+    View a single technical partner endpoint
+
+    You can view or search for a single technical partners by providing their email address
+    Sample Technical Partner: testpartner4@gmail.com
+    """
+    if request.method == 'POST':
+        serializer = SingleTechnicalPartnersModelSerializer(data = request.data)
+        try:
+            if serializer.is_valid():
+                partner_email = serializer.data['technicianEmail']
+
+                print(partner_email)
+                FindTechnicalPartner = technicianModel.objects.get(technicianEmail = partner_email)
+                if FindTechnicalPartner:
+                    # serializer = SingleTechnicalPartnersModelSerializer(FindTechnicalPartner, many=False)
+                    if FindTechnicalPartner:
+                        return Response({
+                            "status":200,
+                            "message": "Technical partner was found",
+                            "data": {
+                                'Technicial_Name' : FindTechnicalPartner.technicianName,
+                                'Technicial_Email' : FindTechnicalPartner.technicianEmail,
+                                'Technicial_Location' : FindTechnicalPartner.technicianLocation,
+                                'Technicial_Phone' : FindTechnicalPartner.technicianPhoneNumber,
+                                'Technicial_Availability' : FindTechnicalPartner.technicianAvailability,
+                                'Technicial_Onboard_Date' : FindTechnicalPartner.created_at,
+                            }
+                        })
+                    else: 
+                        return Response({
+                            "status":400,
+                            "message": "Technical Partner not found",
+                        })
+                
+                return Response({
+                    "status": 400,
+                    "message": "An error occured. Technical Partner does not exit on the DHMS"
+                })
+            
+            return Response({
+                "status": 200,
+                "message": "Find Individual Technical Partners."
+            })
+        except:                
+            return Response({
+                "status": 400,
+                "message": "An error occured. Technical Partner does not exit on the DHMS"
+            })
 
 
 
+@swagger_auto_schema(methods=['post'], request_body=StudentDeviceRegSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def Student_Device_Registration(request):    
+    """
+    Student device registration Endpoint
 
+    We allow student admins to register devices via this endpoint
+    """
+
+    if request.method == 'POST':
+        try:
+            serializer = StudentDeviceRegSerializer(data = request.data)
+            if serializer.is_valid():
+                student_admin_email = request.user.email
+                student_user_email = serializer.data['student_user_email']
+                student_device_name = serializer.data['device_name']
+                student_device_serial_number = serializer.data['device_serial_number']
+                student_device_os = serializer.data['device_os']
+
+                if(student_admin_email is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Login as a student admin to register a device via the student DHMS",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_user_email is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Missing email address for student device user",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_device_name is None):
+                    return Response({
+                        "status": 400,
+                        "message": "No device name was provided",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_device_serial_number is None):
+                    return Response({
+                        "status": 400,
+                        "message": "No device serial number was provided",
+                        "error_message": serializer.error_messages
+                    })
+                if(student_device_os is None):
+                    return Response({
+                        "status": 400,
+                        "message": "No OS was provided",
+                        "error_message": serializer.error_messages
+                    })
+                
+                checkAdminEmail = StudentDHMSSignUp.objects.filter(student_email = student_admin_email)
+                checkStudentUserEmail = SubStudentRegistration.objects.filter(sub_student_email = student_user_email)
+                checkAdminUserEmailGen = User.objects.filter(email = student_admin_email)
+                checkDeviceSerialNumber = StudentDeviceReg.objects.filter(device_serial_number = student_device_serial_number)
+                findStudentUserEmail = checkStudentUserEmail.values_list('sub_student_admin_email', flat=True)
+                findStudentUserEmailMain = findStudentUserEmail[0]
+                    
+                if checkAdminEmail is None or checkAdminUserEmailGen is None:
+                    return Response({
+                        "status": 400,
+                        "message": "Student Admin Email address was not found",
+                        "error_message": serializer.error_messages
+                    })
+                
+                if findStudentUserEmailMain != request.user.email:
+                    return Response({
+                        "status": 400,
+                        "message": "The sub student is not allocated to you as the student admin, and therefore can not assign a device to the student. Kindly select a student under your allocation or register a new student",
+                        "error_message": serializer.error_messages
+                    })
+                    
+                    
+                if checkStudentUserEmail is None:
+                    return Response({
+                        "status": 400,
+                        "message": "Sub Student Email address was not found on the DHMS",
+                        "error_message": serializer.error_messages
+                    })
+                    
+                if checkDeviceSerialNumber:
+                    return Response({
+                        "status": 400,
+                        "message": "A device with the serial number already exists",
+                        "error_message": serializer.error_messages
+                    })
+
+                # ActivateUserBeforeRegister(student_email, code='1234')
+                try:
+                    form = StudentDeviceReg(user=request.user, student_admin_email = student_admin_email, device_name=student_device_name, device_serial_number = student_device_serial_number, 
+                    device_os = student_device_os, student_user_email = student_user_email)
+                    form.save()
+                    # userprofile.save()
+                    return Response({
+                        "status": 200,
+                        "message": "Device registered successfully.",
+                        "data": serializer.data
+                    })
+                
+                except:
+                    return Response({
+                        "status": 400,
+                        "message": "An error ocured, please try again"
+                    })            
+            else:
+                return Response({
+                    'status':400,
+                    'message': 'Submission error, kindly try again',
+                    'error': serializer.error_messages
+                })            
+        except:
+            return Response({
+                "status": 400,
+                "message": "An error ocured and device could not be registered. Kindly try again and provide all required details",
+                "error": serializer.error_messages
+            }) 
+
+
+
+@swagger_auto_schema(methods=['post'], request_body=SubStudentRegistrationSerializer)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def Sub_Student_Registration(request):   
+    """
+    Sub Student registration Endpoint
+
+    Allow admin students to register sub students via the API by providing the following details:
+    student email and student full name.
+    """
+
+    if request.method == 'POST':
+        try:
+            serializer = SubStudentRegistrationSerializer(data = request.data)
+            if serializer.is_valid():
+                StudentAdminEmail = request.user.email
+                sub_student_name = serializer.data['sub_student_name']
+                sub_student_email = serializer.data['sub_student_email']
+                checkEmailExit = SubStudentRegistration.objects.filter(sub_student_email = sub_student_email)
+                checkEmailExitInUser = User.objects.filter(email = sub_student_email)
+                checkEmailOfAdminStudent = StudentDHMSSignUp.objects.filter(student_email = StudentAdminEmail)
+                Sub_Student_UniqueID = 'substudent' + '-' +  get_random_string(length=7)
+
+                if(sub_student_email is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Missing student email address",
+                        "error_message": serializer.error_messages
+                    })
+                if(sub_student_name is None):
+                    return Response({
+                        "status": 400,
+                        "message": "Missing student name",
+                        "error_message": serializer.error_messages
+                    })
+                if checkEmailExit or checkEmailExitInUser:
+                    return Response({
+                        "status": 400,
+                        "message": "Email address allocated to sub student already exist on the DHMS. Kindly use a unique email address",
+                        "error_message": serializer.error_messages
+                    })
+                if(checkEmailOfAdminStudent is None):
+                    return Response({
+                        "status": 400,
+                        "message": "You do not have permission to register a student. Kindly register as an admin on the student DHMS to do this",
+                        "error_message": serializer.error_messages
+                    })
+                # if(student_password is None):
+                #     return Response({
+                #         "status": 400,
+                #         "message": "Password missing",
+                #         "error_message": serializer.error_messages
+                #     })
+
+                # ActivateUserBeforeRegister(student_email, code='1234')
+                try:
+                    substudentformreg = SubStudentRegistration(user=request.user, sub_student_name = sub_student_name, sub_student_email=sub_student_email, 
+                    sub_student_admin_email = StudentAdminEmail, sub_student_password = Sub_Student_UniqueID)
+
+                    substudentuserprofilecreation = User.objects.create_user(username = f'{sub_student_email} {sub_student_name}', first_name = sub_student_name, email = sub_student_email, 
+                                    last_name = StudentAdminEmail, password = Sub_Student_UniqueID)
+
+                    substudentformreg.save()
+                    substudentuserprofilecreation.save()
+                    return Response({
+                        "status": 200,
+                        "message": "Student profile created successfull.",
+                        "data": serializer.data
+                    })
+                
+                except:
+                    return Response({
+                        "status": 400,
+                        "message": "An error ocured, please try again"
+                    })            
+            else:
+                return Response({
+                    'status':400,
+                    'message': 'Login Failed, check your login details and try again',
+                    'error': serializer.error_messages
+                })            
+        except:
+            return Response({
+                "status": 400,
+                "message": "An error ocured, kindly fill the form properly",
+                "error": serializer.error_messages
+            }) 
+    # sub_student_admin_email = request.user.email
+    pass
 
 
 

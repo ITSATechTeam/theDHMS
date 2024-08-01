@@ -1,0 +1,55 @@
+<!-- @format -->
+{% comment %} {% include 'staffgeneral.html' %}  {% endcomment %}
+{% load static %} 
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		{% comment %} <link rel="stylesheet" href={% static 'dashboard/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'inventory/css/style.css' %} />
+		<link rel="stylesheet" href={% static 'devicedetails/css/style.css' %} /> {% endcomment %}
+		<link rel="stylesheet" href={% static 'staffdashboard/css/style.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+				
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>Student Dashboard | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+	</head>
+	<body class='body'>
+		<div class='main'>
+			<div class='maintop'>
+				<div class='maintopinner'>
+					<div>
+						<h1>Welcome back {{request.user.first_name}},</h1>
+						{% comment %} <h5>Get a detailed overview of your devices health and status.</h5> {% endcomment %}
+					</div>
+
+				
+					<div id="flash">
+						{% if messages %} {% for message in messages %}
+						<div class="alert alert-{{ message.tags}} m-0" role="alert">
+							<strong style="color: red">{{ message }}</strong>
+						</div>
+						{% endfor %} {% endif %}
+					</div>
+					
+					{% comment %} <a href = {% url 'StaffMaintainance' %} >
+						<div class='maintainReqBtn'>
+							Contact Support
+						</div>
+					</a> {% endcomment %}
+				</div>
+			</div>
+    </body>
+</html>
+{% endblock content %}
+
+
