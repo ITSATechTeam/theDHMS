@@ -62,8 +62,8 @@ def contains_other_characters(email):
         local_part, domain_part = email.split('@', 1)
         
         # Check if either part contains other characters
-        return (any(char.isalnum() or char in '._-+' for char in local_part) or
-                any(char.isalnum() or char in '._-+' for char in domain_part))
+        return (any(char.isalnum() or char in '_-+' for char in local_part) or
+                any(char.isalnum() or char in '_-+' for char in domain_part))
     return False
 
     
@@ -81,9 +81,9 @@ def SignUpPage(request):
             # rtpassword = request.POST['rtpassword']
             
             
-            if contains_other_characters(email):
-                messages.error(request, 'Invalid email address')
-                return redirect('SignUpPage')
+            # if contains_other_characters(email):
+            #     messages.error(request, 'Invalid email address')
+            #     return redirect('SignUpPage')
             
             
             if not request.POST['companyname']:

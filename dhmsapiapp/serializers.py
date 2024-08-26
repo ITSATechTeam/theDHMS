@@ -6,6 +6,26 @@ from useronboard.models import SignupForm
 from userarea.models import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token['email'] = user.email
+
+        return token
+
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -56,7 +76,7 @@ class Student_Registration_Serializer(serializers.ModelSerializer):
 
 
 class StudentLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    username = serializers.CharField()
     password = serializers.CharField()
 
 
@@ -101,10 +121,53 @@ class SingleTechnicalPartnersModelSerializer(serializers.ModelSerializer):
 class StudentDeviceRegSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
-        fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email']
+        fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
+
+
+
+class DeviceSerializerForEdit(serializers.ModelSerializer):
+    class Meta:
+        model = StudentDeviceReg
+        fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
+
+
+
+class AllStudentDevicesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentDeviceReg
+        fields = ['id', 'device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
 
 
 class SubStudentRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubStudentRegistration
-        fields = ['sub_student_name', 'sub_student_email']
+        fields = ['sub_student_firstname', 'sub_student_lastname', 'sub_student_email_address', 'sub_student_phone_number', 'sub_student_school_name', 'sub_student_matric_number']
+
+
+class FetchStudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubStudentRegistration
+        fields = ['id', 'sub_student_firstname', 'sub_student_lastname', 'sub_student_email_address', 'sub_student_phone_number', 'sub_student_school_name', 'sub_student_matric_number']
+
+
+class FetchStudentSerializerForEdit(serializers.ModelSerializer):
+    class Meta:
+        model = SubStudentRegistration
+        fields = ['sub_student_firstname', 'sub_student_lastname', 'sub_student_email_address', 'sub_student_phone_number', 'sub_student_school_name', 'sub_student_matric_number']
+
+
+
+# DHMS SUPER ADMIN SERIALIZERS STARTS HERE
+class ItsaSuperAdminLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField()
+
+
+
+
+
+
+
+# DHMS SUPER ADMIN SERIALIZERS ENDS HERE
+
+

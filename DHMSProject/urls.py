@@ -9,6 +9,8 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from drf_yasg import openapi
 
+
+
 # MSAL - AZURE AUTH SETUP
 from ms_identity_web.django.msal_views_and_urls import MsalViews       
 msal_urls = MsalViews(settings.MS_IDENTITY_WEB).url_patterns()
@@ -18,7 +20,7 @@ msal_urls = MsalViews(settings.MS_IDENTITY_WEB).url_patterns()
 schema_view = get_schema_view(
     openapi.Info(
         title="The DHMS API",
-        default_version='v1',
+        default_version='v2',
         description="DHMS API Documentation",
         terms_of_service="https://itservicedeskafrica.com/wp-content/uploads/2023/07/ITSA-POLICIES-1.pdf",
         contact=openapi.Contact(email="franklin.i@itservicedeskafrica.com"),
@@ -26,6 +28,7 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
+    authentication_classes=[],
 )
 
 urlpatterns = [
@@ -66,3 +69,5 @@ urlpatterns = [
 
 if settings.DEBUG:
      urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

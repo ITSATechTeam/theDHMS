@@ -96,8 +96,8 @@ def SuperAdminAccess(request):
         
     if request.method == 'POST':
         superadminmail = request.POST['superadminmail']
-        # password = request.POST['superadminpassword']
-        password = 'superadminpass121090890dhms'
+        password = request.POST['superadminpassword']
+        # password = 'superadminpass121090890dhms'
         try:
             user = User.objects.get(email=superadminmail)
             print(user)
@@ -215,10 +215,7 @@ def SuperAdminDashboard(request):
     
     # 
     
-    # 
-    
     JanHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jan'))
-    # print(JanHealthyDevices.count())
     FebHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Feb'))
     MarHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Mar'))
     AprHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Apr'))
@@ -228,11 +225,8 @@ def SuperAdminDashboard(request):
     AugHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Aug'))
     SeptHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Sep'))
     OctHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Oct'))
-    print('Healthy Devices')
     NovHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Nov'))
-    DecHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Dec'))
-    print(DecHealthyDevices.count())
-    
+    DecHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Dec'))    
     # 
     context = {'AllCompanyCount':AllCompanyCount, 'AllCompany':AllCompany, 'AllDevicesCount':AllDevicesCount, 'AllDevices':AllDevices,
     'AllFaultyDevicesCount':AllFaultyDevicesCount, 'AllHealthyDevicesCount':AllHealthyDevicesCount, 'AllMaintenanceRequestCount':AllMaintenanceRequestCount,
@@ -391,6 +385,69 @@ def AdminLogout(request):
     messages.success(request, 'Logout Successful')
     return redirect('SuperAdminAccess')
 
+
+# MAINTENANCE REQUESTS COUNTS FOR ADMIN MOBILE APP
+def GraphCountsForMobileApp(request):
+    # 
+    
+    JanMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Jan').count()
+    FebMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Feb').count()
+    MarMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Mar').count()
+    AprMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Apr').count()
+    MayMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'May').count()
+    JunMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Jun').count()
+    JulMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Jul').count()
+    print('JanMaintenanceCount')
+    print(JanMaintenanceCount)
+    AugMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Aug').count()
+    SeptMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Sep').count()
+    OctMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Oct').count()
+    NovMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Nov').count()
+    DecMaintenanceCount = MaintenanceRequest.objects.filter(currentMonth = 'Dec').count()
+    
+    # 
+    
+    JanDevices = CompanyFaultyDevices.objects.filter(month = 'Jan')
+    FebDevices = CompanyFaultyDevices.objects.filter(month = 'Feb')
+    MarDevices = CompanyFaultyDevices.objects.filter(month = 'Mar')
+    AprDevices = CompanyFaultyDevices.objects.filter(month = 'Apr')
+    MayDevices = CompanyFaultyDevices.objects.filter(month = 'May')
+    JunDevices = CompanyFaultyDevices.objects.filter(month = 'Jun')
+    JulDevices = CompanyFaultyDevices.objects.filter(month = 'Jul')
+    AugDevices = CompanyFaultyDevices.objects.filter(month = 'Aug')
+    SeptDevices = CompanyFaultyDevices.objects.filter(month = 'Sep')
+    OctDevices = CompanyFaultyDevices.objects.filter(month = 'Oct')
+    NovDevices = CompanyFaultyDevices.objects.filter(month = 'Nov')
+    DecDevices = CompanyFaultyDevices.objects.filter(month = 'Dec')
+    
+    # 
+    
+    JanHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jan'))
+    FebHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Feb'))
+    MarHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Mar'))
+    AprHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Apr'))
+    MayHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'May'))
+    JunHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jun'))
+    JulHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Jul'))
+    AugHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Aug'))
+    SeptHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Sep'))
+    OctHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Oct'))
+    NovHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Nov'))
+    DecHealthyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(registeredMonth = 'Dec'))    
+    # 
+    context = {'JanDevices':JanDevices, 'FebDevices':FebDevices, 'AugDevices':AugDevices, 'SeptDevices':SeptDevices,
+    'OctDevices':OctDevices, 'NovDevices':NovDevices, 'DecDevices':DecDevices, 'MarDevices':MarDevices, 
+    'AprDevices':AprDevices, 'MayDevices':MayDevices,'JunDevices':JunDevices, 'JulDevices':JulDevices,
+    # 
+    'JanMaintenanceCount':JanMaintenanceCount, 'FebMaintenanceCount':FebMaintenanceCount, 'AugMaintenanceCount':AugMaintenanceCount, 'SeptMaintenanceCount':SeptMaintenanceCount,
+    'OctMaintenanceCount':OctMaintenanceCount, 'NovMaintenanceCount':NovMaintenanceCount, 'DecMaintenanceCount':DecMaintenanceCount, 'MarMaintenanceCount':MarMaintenanceCount, 
+    'AprMaintenanceCount':AprMaintenanceCount, 'MayMaintenanceCount':MayMaintenanceCount,'JunMaintenanceCount':JunMaintenanceCount, 'JulMaintenanceCount':JulMaintenanceCount,
+    # 
+    'JanHealthyDevices':JanHealthyDevices, 'FebHealthyDevices':FebHealthyDevices, 'AugHealthyDevices':AugHealthyDevices, 'SeptHealthyDevices':SeptHealthyDevices,
+    'OctHealthyDevices':OctHealthyDevices, 'NovHealthyDevices':NovHealthyDevices, 'DecHealthyDevices':DecHealthyDevices, 'MarHealthyDevices':MarHealthyDevices, 
+    'AprHealthyDevices':AprHealthyDevices, 'MayHealthyDevices':MayHealthyDevices,'JunHealthyDevices':JunHealthyDevices, 'JulHealthyDevices':JulHealthyDevices,
+    }
+    return render(request, 'dhmsadminboard/maintenancecount.html', context)
 
 
 

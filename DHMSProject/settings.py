@@ -59,6 +59,20 @@ from ms_identity_web.configuration import AADConfig
 from ms_identity_web import IdentityWebPython
 
 
+
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Bearer {token}"',
+        },
+    },
+}
+
 # for rendering 401 or other errors from msal_middleware
 # MIDDLEWARE.append('ms_identity_web.django.middleware.MsalMiddleware')
 
@@ -229,8 +243,9 @@ AUTHENTICATION_BACKENDS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication'
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication'
     ],
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     'rest_framework.permissions.IsAuthenticated',
@@ -238,8 +253,16 @@ REST_FRAMEWORK = {
 }
 
 # TOKEN_EXPIRED_AFTER_SECONDS = 86400
-
-
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': 'oun-d6sf67@ls+sm%!0=pug',  # Use your Django SECRET_KEY or a different key
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
 SOCIALACCOUNT_AUTO_SIGNUP = False
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
@@ -269,26 +292,6 @@ MIDDLEWARE = [
     # Below middleware should always be the last
     # 'axes.middleware.AxesMiddleware',
 ]
-
-# MIDDLEWARE = [
-#     'django.middleware.security.SecurityMiddleware',
-#     'django.contrib.sessions.middleware.SessionMiddleware',
-#     'django.middleware.common.CommonMiddleware',
-#     'django.middleware.csrf.CsrfViewMiddleware',
-#     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#     'django.contrib.messages.middleware.MessageMiddleware',
-#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#     "whitenoise.middleware.WhiteNoiseMiddleware",
-#     'django_auto_logout.middleware.auto_logout',
-#     # 
-#     'django_user_agents.middleware.UserAgentMiddleware',
-#     # 
-#     'allauth.account.middleware.AccountMiddleware',
-#     # 'csp.middleware.CSPMiddleware'
-
-#     # Below middleware should always be the last
-#     # 'axes.middleware.AxesMiddleware',
-# ]
 
 
 
@@ -327,26 +330,6 @@ TEMPLATES = [
         },
     },
 ]
-
-
-# SWAGGER_SETTINGS = {
-#     'USE_SESSION_AUTH': False,
-#     'DEFAULT_FIELD_INSPECTORS': [
-#         'drf_yasg.inspectors.CamelCaseJSONFilter',
-#         'drf_yasg.inspectors.InlineSerializerInspector',
-#         'drf_yasg.inspectors.RelatedFieldInspector',
-#         'drf_yasg.inspectors.ChoiceFieldInspector',
-#         'drf_yasg.inspectors.FileFieldInspector',
-#         'drf_yasg.inspectors.DictFieldInspector',
-#         'drf_yasg.inspectors.SimpleFieldInspector',
-#         'drf_yasg.inspectors.StringDefaultFieldInspector',
-#     ],
-#     'SECURITY_DEFINITIONS': {
-#         'Basic': {
-#             'type': 'basic'
-#         }
-#     }
-#  }
 
 
 # LOGIN REDIRECT

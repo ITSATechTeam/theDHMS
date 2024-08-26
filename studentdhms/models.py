@@ -22,8 +22,12 @@ class StudentDHMSSignUp(models.Model):
 
 class SubStudentRegistration(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    sub_student_name = models.CharField(max_length= 200, null=False, blank = False)
-    sub_student_email = models.EmailField(max_length= 200, null=False, blank = False)
+    sub_student_firstname = models.CharField(max_length= 200, null=False, blank = False)
+    sub_student_lastname = models.CharField(max_length= 200, null=False, blank = False)
+    sub_student_email_address = models.EmailField(max_length= 200, null=False, blank = False)
+    sub_student_phone_number = models.CharField(max_length= 200, null=False, blank = False)
+    sub_student_school_name = models.CharField(max_length= 200, null=False, blank = False)
+    sub_student_matric_number = models.CharField(max_length= 200, null=False, blank = False)
     sub_student_admin_email = models.EmailField(max_length= 200, null=False, blank = False)
     sub_student_password = models.EmailField(max_length= 200, null=False, blank = False)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,7 +37,7 @@ class SubStudentRegistration(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.sub_student_name} {self.sub_student_email}'
+        return f'{self.sub_student_firstname} {self.sub_student_email_address}'
 
 
 
@@ -57,9 +61,11 @@ class StudentDeviceReg(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     student_admin_email = models.EmailField(max_length= 200, null=False, blank = False)
     device_name = models.CharField(max_length= 200, null=False, blank = False)
+    # device_name = models.CharField(max_length= 200, null=False, blank = False)
     device_serial_number = models.CharField(max_length= 200, null=False, blank = False)
     device_os = models.CharField(max_length= 200, null=False, blank = False)
     student_user_email = models.EmailField(max_length= 200, null=False, blank = False)
+    student_device_health = models.CharField(max_length= 200, null=False, blank = False)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

@@ -1,0 +1,690 @@
+<!-- @format -->
+{% include 'admingen.html' %} 
+{% load static %} 
+{% load pwa %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="icon" type="image/x-icon" href={% static 'general/img/itsalogo.PNG' %}> 
+		<link rel="stylesheet" href={% static 'adminpages/css/dashboardstyle.css' %} />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500;600&display=swap" rel="stylesheet">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+		<title>ITSA Admin Dashboard | ITSA Inventory System</title>
+		{% comment %} <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script> {% endcomment %}
+        {% progressive_web_app_meta %}
+	</head>
+	<div class='shadow1'></div>
+	<body class='body'>
+		<div class='main'>
+		
+		{% comment %} AMOUNT OF FAULTY DEVICES PER MONTH CALCULATIONS STARTS HERE {% endcomment %}
+		<div class='faultymonthlyAmount'>
+			<div>
+				{% for JanDevices in JanDevices %}
+				<p class='JanDevices'>{{ JanDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for FebDevices in FebDevices %}
+				<p class='FebDevices'>{{ FebDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for MarDevices in MarDevices %}
+				<p class='MarDevices'>{{ MarDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for AprDevices in AprDevices %}
+				<p class='AprDevices'>{{ AprDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for MayDevices in MayDevices %}
+				<p class='MayDevices'>{{ MayDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for JuneDevices in JuneDevices %}
+				<p class='JuneDevices'>{{ JuneDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for JulyDevices in JulyDevices %}
+				<p class='JulyDevices'>{{ JulyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for AugDevices in AugDevices %}
+				<p class='AugDevices'>{{ AugDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for SeptDevices in SeptDevices %}
+				<p class='SeptDevices'>{{ SeptDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for OctDevices in OctDevices %}
+				<p class='OctDevices'>{{ OctDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for NovDevices in NovDevices %}
+				<p class='NovDevices'>{{ NovDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for DecDevices in DecDevices %}
+				<p class='DecDevices'>{{ DecDevices }}</p>
+				{% endfor %}
+			</div>
+		</div>
+		{% comment %} AMOUNT OF FAULTY DEVICES PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
+		
+		{% comment %} AMOUNT OF HEALTHY DEVICES PER MONTH CALCULATIONS STARTS HERE {% endcomment %}
+		<div class='healthymonthlyAmount'>
+			<div>
+				{% for JanHealthyDevices in JanHealthyDevices %}
+				<p class='JanHealthyDevices'>{{ JanHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for FebHealthyDevices in FebHealthyDevices %}
+				<p class='FebHealthyDevices'>{{ FebHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for MarHealthyDevices in MarHealthyDevices %}
+				<p class='MarHealthyDevices'>{{ MarHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for AprHealthyDevices in AprHealthyDevices %}
+				<p class='AprHealthyDevices'>{{ AprHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for MayHealthyDevices in MayHealthyDevices %}
+				<p class='MayHealthyDevices'>{{ MayHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for JunHealthyDevices in JunHealthyDevices %}
+				<p class='JunHealthyDevices'>{{ JunHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for JulHealthyDevices in JulHealthyDevices %}
+				<p class='JulHealthyDevices'>{{ JulHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for AugHealthyDevices in AugHealthyDevices %}
+				<p class='AugHealthyDevices'>{{ AugHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for SeptHealthyDevices in SeptHealthyDevices %}
+				<p class='SeptHealthyDevices'>{{ SeptHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for OctHealthyDevices in OctHealthyDevices %}
+				<p class='OctHealthyDevices'>{{ OctHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for NovHealthyDevices in NovHealthyDevices %}
+				<p class='NovHealthyDevices'>{{ NovHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+			<div>
+				{% for DecHealthyDevices in DecHealthyDevices %}
+				<p class='DecHealthyDevices'>{{ DecHealthyDevices }}</p>
+				{% endfor %}
+			</div>
+		</div>
+		{% comment %} AMOUNT OF HEALTHY DEVICES PER MONTH CALCULATIONS ENDS HERE {% endcomment %}
+
+	<script src={% static 'dashboard/js/admindash.js' %}></script>
+	{% comment %} DEVICE DETAILS GRAPH STARTS HERE {% endcomment %}
+	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
+	<script>
+			
+		let AllMonthArray = [];
+		// JANUARY CALCULATION STARTS HERE
+		let janelement =[];
+		let janelementMain2;
+		let janSum;
+		let janDevices = document.querySelectorAll('.JanDevices')
+		janDevices.forEach(element => {
+		janelementMain2 = element.innerText;
+			janelement.push(janelementMain2)
+			janSum = janelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(janelement.length);
+		// JANUARY CALCULATION ENDS HERE
+
+		// FEBRUARY CALCULATION STARTS HERE
+		let febelement =[];
+		let febelementMain2;
+		let febSum;
+		let febDevices = document.querySelectorAll('.FebDevices')
+		febDevices.forEach(element => {
+		febelementMain2 = element.innerText;
+			febelement.push(febelementMain2)
+			febSum = febelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(febelement.length);
+		// FEBRUARY CALCULATION ENDS HERE
+
+		// MARCH CALCULATION STARTS HERE
+		let marelement =[];
+		let marelementMain2;
+		let marSum;
+		let marDevices = document.querySelectorAll('.MarDevices')
+		marDevices.forEach(element => {
+		marelementMain2 = element.innerText;
+			marelement.push(marelementMain2)
+			marSum = marelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(marelement.length);
+		// MARCH CALCULATION ENDS HERE
+
+		// APRIL CALCULATION STARTS HERE
+		let aprelement =[];
+		let aprelementMain2;
+		let aprSum;
+		let aprDevices = document.querySelectorAll('.AprDevices')
+		aprDevices.forEach(element => {
+		aprelementMain2 = element.innerText;
+			aprelement.push(aprelementMain2)
+			aprSum = aprelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(aprelement.length);
+		// APRIL CALCULATION ENDS HERE
+
+		// MAY CALCULATION STARTS HERE
+		let mayelement =[];
+		let mayelementMain2;
+		let maySum;
+		let mayDevices = document.querySelectorAll('.MayDevices')
+		mayDevices.forEach(element => {
+		mayelementMain2 = element.innerText;
+			mayelement.push(mayelementMain2)
+			maySum = mayelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(mayelement.length);
+		// MAY CALCULATION ENDS HERE
+
+
+		// JUNE CALCULATIONS STARTS HERE
+		let juneelement =[];
+		let juneelementMain2;
+		let JuneSum;
+		let JuneDevices = document.querySelectorAll('.JuneDevices')
+		JuneDevices.forEach(element => {
+		juneelementMain2 = element.innerText;
+		juneelement.push(juneelementMain2)
+			JuneSum = juneelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(juneelement.length);
+		// JUNE CALCULATIONS ENDS HERE
+
+		// JULY CALCULATIONS STARTS HERE
+		let julyelement =[];
+		let julyelementMain2;
+		let julySum;
+		let julyDevices = document.querySelectorAll('.JulyDevices')
+		julyDevices.forEach(element => {
+		julyelementMain2 = element.innerText;
+			julyelement.push(julyelementMain2)
+			julySum = julyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(julyelement.length);
+		// JULY CALCULATIONS ENDS HERE
+
+		// AUGUST CALCULATIONS STARTS HERE
+		let augelement =[];
+		let augelementMain2;
+		let augSum;
+		let augDevices = document.querySelectorAll('.AugDevices')
+		augDevices.forEach(element => {
+		augelementMain2 = element.innerText;
+			augelement.push(augelementMain2)
+			augSum = augelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(augelement.length);
+		// AUGUST CALCULATIONS ENDS HERE
+
+		// SEPTEMBER CALCULATIONS STARTS HERE
+		let septelement =[];
+		let septelementMain2;
+		let septSum;
+		let septDevices = document.querySelectorAll('.septDevices')
+		septDevices.forEach(element => {
+		septelementMain2 = element.innerText;
+			septelement.push(septelementMain2)
+			septSum = septelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(septelement.length);
+		// SEPTEMBER CALCULATIONS ENDS HERE
+
+		// OCTOBER CALCULATIONS STARTS HERE
+		let octtelement =[];
+		let octtelementMain2;
+		let octtSum;
+		let octtDevices = document.querySelectorAll('.OctDevices')
+		octtDevices.forEach(element => {
+		octtelementMain2 = element.innerText;
+			octtelement.push(octtelementMain2)
+			octtSum = octtelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(octtelement.length);
+		// OCTOBER CALCULATIONS ENDS HERE
+
+		// NOVEMBER CALCULATIONS STARTS HERE
+		let novtelement =[];
+		let novtelementMain2;
+		let novtSum;
+		let novtDevices = document.querySelectorAll('.NovDevices')
+		novtDevices.forEach(element => {
+		novtelementMain2 = element.innerText;
+			novtelement.push(novtelementMain2)
+			novtSum = novtelement.map(function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllMonthArray.push(novtelement.length);
+		// console.log(novtelement.length);
+		// NOVEMBER CALCULATIONS ENDS HERE
+
+		// DECEMBER CALCULATIONS STARTS HERE
+		let dectelement =[];
+		let dectelementMain2;
+		let dectSum;
+		let dectDevices = document.querySelectorAll('.DecDevices')
+		dectDevices.forEach(element => {
+		dectelementMain2 = element.innerText;
+			dectelement.push(dectelementMain2)
+			dectSum = dectelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});				
+		});
+		AllMonthArray.push(dectelement.length);
+		AllMonthArray, result = AllMonthArray.map(v => v === undefined ? 0 : v);
+		// console.log(AllMonthArray)
+		
+		let resultSum = result.reduce((a, b) => a + b, 0)
+		let amountspenttotal = document.querySelector('.amountspenttotal a')
+		if (amountspenttotal){
+			amountspenttotal.innerText = resultSum.toLocaleString("en-US")
+		}
+	</script>
+	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
+
+	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS STARTS HERE {% endcomment %}
+	<script>
+		let AllHealthyMonthArray = [];
+		// JANUARY CALCULATION STARTS HERE
+		let janhealthyelement =[];
+		let janhealthyelementMain2;
+		let janhealthySum;
+		let janhealthyDevices = document.querySelectorAll('.JanHealthyDevices')
+		janhealthyDevices.forEach(element => {
+			janhealthyelementMain2 = element.innerText;
+			janhealthyelement.push(janhealthyelementMain2)
+			janhealthySum = janhealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});			
+		});
+		AllHealthyMonthArray.push(janhealthyelement.length);
+		// JANUARY CALCULATION ENDS HERE
+
+		// FEBRUARY CALCULATION STARTS HERE
+		let febHealthyelement =[];
+		let febHealthyelementMain2;
+		let febHealthySum;
+		let febHealthyDevices = document.querySelectorAll('.FebHealthyDevices')
+		febHealthyDevices.forEach(element => {
+		febHealthyelementMain2 = element.innerText;
+			febHealthyelement.push(febHealthyelementMain2)
+			febHealthySum = febHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(febHealthyelement.length);
+		// FEBRUARY CALCULATION ENDS HERE
+
+		// MARCH CALCULATION STARTS HERE
+		let marHealthyelement =[];
+		let marHealthyelementMain2;
+		let marHealthySum;
+		let marHealthyDevices = document.querySelectorAll('.MarHealthyDevices')
+		marHealthyDevices.forEach(element => {
+		marHealthyelementMain2 = element.innerText;
+			marHealthyelement.push(marHealthyelementMain2)
+			marHealthySum = marHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(marHealthyelement.length);
+		// MARCH CALCULATION ENDS HERE
+
+		// APRIL CALCULATION STARTS HERE
+		let aprHealthyelement =[];
+		let aprHealthyelementMain2;
+		let aprHealthySum;
+		let aprHealthyDevices = document.querySelectorAll('.AprHealthyDevices')
+		aprHealthyDevices.forEach(element => {
+		aprHealthyelementMain2 = element.innerText;
+			aprHealthyelement.push(aprHealthyelementMain2)
+			aprHealthySum = aprHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(aprHealthyelement.length);
+		// APRIL CALCULATION ENDS HERE
+
+		// MAY CALCULATION STARTS HERE
+		let mayHealthyelement =[];
+		let mayHealthyelementMain2;
+		let mayHealthySum;
+		let mayHealthyDevices = document.querySelectorAll('.MayHealthyDevices')
+		mayHealthyDevices.forEach(element => {
+		mayHealthyelementMain2 = element.innerText;
+			mayHealthyelement.push(mayHealthyelementMain2)
+			mayHealthySum = mayHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(mayHealthyelement.length);
+		// MAY CALCULATION ENDS HERE
+
+
+		// JUNE CALCULATIONS STARTS HERE
+		let juneHealthyelement =[];
+		let juneHealthyelementMain2;
+		let JuneHealthySum;
+		let JunHealthyDevices = document.querySelectorAll('.JunHealthyDevices')
+		JunHealthyDevices.forEach(element => {
+		juneHealthyelementMain2 = element.innerText;
+		juneHealthyelement.push(juneHealthyelementMain2)
+			JuneHealthySum = juneHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(juneHealthyelement.length);
+		// JUNE CALCULATIONS ENDS HERE
+
+		// JULY CALCULATIONS STARTS HERE
+		let julyHealthyelement =[];
+		let julyHealthyelementMain2;
+		let julyHealthySum;
+		let JulHealthyDevices = document.querySelectorAll('.JulHealthyDevices')
+		JulHealthyDevices.forEach(element => {
+		julyHealthyelementMain2 = element.innerText;
+			julyHealthyelement.push(julyHealthyelementMain2)
+			julyHealthySum = julyHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(julyHealthyelement.length);
+		// JULY CALCULATIONS ENDS HERE
+
+		// AUGUST CALCULATIONS STARTS HERE
+		let augHealthyelement =[];
+		let augHealthyelementMain2;
+		let augHealthySum;
+		let augHealthyDevices = document.querySelectorAll('.AugHealthyDevices')
+		augHealthyDevices.forEach(element => {
+		augHealthyelementMain2 = element.innerText;
+			augHealthyelement.push(augHealthyelementMain2)
+			augHealthySum = augHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(augHealthyelement.length);
+		// AUGUST CALCULATIONS ENDS HERE
+
+		// SEPTEMBER CALCULATIONS STARTS HERE
+		let septHealthyelement =[];
+		let septHealthyelementMain2;
+		let septHealthySum;
+		let septHealthyDevices = document.querySelectorAll('.septHealthyDevices')
+		septHealthyDevices.forEach(element => {
+		septHealthyelementMain2 = element.innerText;
+			septHealthyelement.push(septHealthyelementMain2)
+			septHealthySum = septHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(septHealthyelement.length);
+		// SEPTEMBER CALCULATIONS ENDS HERE
+
+		// OCTOBER CALCULATIONS STARTS HERE
+		let octHealthyelement =[];
+		let octHealthyelementMain2;
+		let octHealthySum;
+		let octHealthyDevices = document.querySelectorAll('.OctHealthyDevices')
+		octHealthyDevices.forEach(element => {
+		octHealthyelementMain2 = element.innerText;
+			octHealthyelement.push(octHealthyelementMain2)
+			octHealthySum = octHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(octHealthyelement.length);
+		// OCTOBER CALCULATIONS ENDS HERE
+
+		// NOVEMBER CALCULATIONS STARTS HERE
+		let novHealthyelement =[];
+		let novHealthyelementMain2;
+		let novHealthySum;
+		let novHealthyDevices = document.querySelectorAll('.NovHealthyDevices')
+		novHealthyDevices.forEach(element => {
+		novHealthyelementMain2 = element.innerText;
+			novHealthyelement.push(novHealthyelementMain2)
+			novHealthySum = novHealthyelement.map(function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});
+			
+		});
+		AllHealthyMonthArray.push(novHealthyelement.length);
+		// console.log(novHealthyelement.length);
+		// NOVEMBER CALCULATIONS ENDS HERE
+
+		// DECEMBER CALCULATIONS STARTS HERE
+		let decHealthyelement =[];
+		let decHealthyelementMain2;
+		let decHealthySum;
+		let decHealthyDevices = document.querySelectorAll('.DecHealthyDevices')
+		decHealthyDevices.forEach(element => {
+		decHealthyelementMain2 = element.innerText;
+			decHealthyelement.push(decHealthyelementMain2)
+			decHealthySum = decHealthyelement.map( function(elt){ // assure the value can be converted into an integer
+			return /^\d+$/.test(elt) ? parseInt(elt) : 0; 
+			})
+			.reduce( function(a,b){ // sum all resulting numbers
+			return a+b
+			});				
+		});
+		AllHealthyMonthArray.push(decHealthyelement.length);
+		AllHealthyMonthArray, result = AllHealthyMonthArray.map(v => v === undefined ? 0 : v);
+		// console.log(AllHealthyMonthArray)
+		
+		let resultHealthySum = result.reduce((a, b) => a + b, 0)
+		let amountspenttotalHealthy = document.querySelector('.amountspenttotalHealthy a')
+		if (amountspenttotalHealthy){
+			amountspenttotalHealthy.innerText = resultHealthySum.toLocaleString("en-US")
+		}
+	</script>
+	{% comment %} SCRIPT FOR AMOUNT SPENT PER MONTH SETTINGS ENDS HERE {% endcomment %}
+
+	<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script> 
+	<script src= "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.1.2/chart.umd.js"></script>
+
+	<script> 
+		var mychart = document.getElementById( 
+			"mixedChartID").getContext("2d"); 
+		
+	   new Chart(mychart, { 
+		   type: 'bar',    
+		   title: { 
+			   text: "Monthly Sales Data" 
+		   },
+		   data: {
+			   datasets: [{ 
+				   label: 'Healthy', 
+				   data: AllHealthyMonthArray, 
+				   type: 'line',     
+				   borderColor:"green",                                         
+				  }, 
+				  
+				  {% comment %} { 
+					label: 'On maintenance', 
+					data: [15, 43, 68, 28, 15, 5, 27,65], 
+					type: 'line',     
+					borderColor:"#F2994A"                                         
+				   },  {% endcomment %}
+
+				  { 
+				   type:'line', 
+				   data: AllMonthArray, 
+				   label: 'Faulty', 
+				   borderColor: "red", 
+				//    fill:true, 
+				//    backgroundColor: "pink", 
+				   lineTension:0.2       
+					
+				  } 
+			   ],//end data sets 
+			   labels: ['Jan', 'Feb', 'Mar', 'Apr', 
+					 'May','Jun','Jul','Aug', 'Sep', 'Oct', 'Nov', 'Dec'] 
+		   }//end data             
+	   }); 
+   </script>
+	{% comment %} DEVICE DETAILS GRAPH ENDS HERE {% endcomment %}
+    </body>
+</html>
+{% endblock content %}
+
+
