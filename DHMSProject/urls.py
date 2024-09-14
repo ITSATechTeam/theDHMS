@@ -42,14 +42,9 @@ urlpatterns = [
     path('api/', include("dhmsapiapp.urls")),
     path('aichat/', include("aichat.urls")),
     path('student/', include("studentdhms.urls")),
+    path('comm/', include("commapp.urls")),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),    
-    # path(r'^api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
-    # path('api_schema/', get_schema_view(title="API Schema", description="DHMS API"), name="DHMS_Api_Schema"),
-    # path('swagger_api/', TemplateView.as_view(template_name="apischema.html", 
-    #                                           extra_context={'swagger_api_schema' : 'DHMS_Api_Schema'}), 
-    #                                           name="swagger_api_schema"),
-
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password/password_reset_confirm.html"), name='password_reset_confirm'),
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name='password/password_reset_complete.html'), name='password_reset_complete'),
@@ -57,9 +52,6 @@ urlpatterns = [
     # Google auth credentials
     # path('', include('googleauthentication.urls')),
     path('accounts/', include('allauth.urls')),
-    # path('accounts/', include('allauth.socialaccount.urls')),
-    # path('account/', include('django.contrib.auth.urls')),
-    # path('accounts/social/', include("useronboard.urls")),
     #
     path(f'{settings.AAD_CONFIG.django.auth_endpoints.prefix}/', include(msal_urls)),
     # PWA

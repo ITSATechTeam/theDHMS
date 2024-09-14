@@ -1,4 +1,4 @@
 {
-    "editor.fontSize": 12,
-    "files.autoSave": "onWindowChange"
+    "editor.fontFamily": "monospace",
+    "editor.fontSize": 13
 }

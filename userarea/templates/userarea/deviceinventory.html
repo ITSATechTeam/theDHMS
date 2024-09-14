@@ -46,14 +46,14 @@
 						</button>
 					</div>
 					{%  if allUploadedDevices %}
-					<a href = {% url 'ExportDevice' %} >
+					{% comment %} <a href = {% url 'ExportDevice' %} >
 						<div class='scannetworkbtn2'>
 							<button>
 								<img src={% static 'dashboard/img/scannetwork.png' %} />
 								<p>Export CSV</p>
 							</button>
 						</div>
-					</a>
+					</a> {% endcomment %}
 					{% else %}					
 					<div class='uploaddevicecsv2'>
 						<button>

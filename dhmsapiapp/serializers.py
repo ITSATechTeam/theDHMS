@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import OrderedDict
 from rest_framework import serializers
 from dhmsadminboard.models import technicianModel
@@ -71,7 +72,14 @@ class StaffDataSetSerializer(serializers.ModelSerializer):
 class Student_Registration_Serializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDHMSSignUp
-        fields = ['student_name', 'student_email', 'student_school', 'student_phone', 'student_password']
+        fields = ['student_firstname', 'student_lastname', 'student_email', 'student_school', 'student_phone', 'student_password']
+
+
+class Update_Student_Registration_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentDHMSSignUp
+        fields = ['student_firstname', 'student_lastname', 'student_school', 'student_phone']
+        # fields = ['student_firstname', 'student_lastname', 'student_email', 'student_school', 'student_phone']
 
 
 
@@ -91,6 +99,23 @@ class AccountValidationSerializer(serializers.ModelSerializer):
 
 class UpdatePasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
+    
+    
+
+class UpdatePasswordSerializerWithPasswordFieldStudentModel(serializers.ModelSerializer):
+    class Meta:
+        model= StudentDHMSSignUp
+        fields = ['student_password']
+
+
+
+class UpdatePasswordSerializerWithPasswordField(serializers.Serializer):
+    oldPassword = serializers.CharField(max_length= 50)
+    newPassword = serializers.CharField(max_length= 50)
+    # class Meta:
+    #     model= User
+        # fields = ['password']
+
 
 
 class ResetPasswordRequestSerializer(serializers.Serializer):
@@ -159,15 +184,176 @@ class FetchStudentSerializerForEdit(serializers.ModelSerializer):
 
 # DHMS SUPER ADMIN SERIALIZERS STARTS HERE
 class ItsaSuperAdminLoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    username = serializers.EmailField()
     password = serializers.CharField()
 
 
 
+class UpdateDeviceAssigneeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentDeviceReg
+        fields = ['student_user_email']
 
 
 
 
-# DHMS SUPER ADMIN SERIALIZERS ENDS HERE
+class MaintenanceRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentMaintenanceRequest
+        fields = ['student_requester_id', 'student_admin_id', 'device_name', 'maintenance_priority_level', 
+        'maintenance_issue', 'maintenance_description',]
+
+
+
+
+class FetchAllMaintenanceRequestsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentMaintenanceRequest
+        fields = ['student_requester_id', 'device_name', 'maintenance_priority_level', 
+        'maintenance_issue', 'maintenance_description', 'created_at']
+
+
+
+
+class GetEmailAddress(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+
+class GetPhoneNumber(serializers.Serializer):
+    phone = serializers.IntegerField()
+
+
+
+class GetValidationCode(serializers.Serializer):
+    code = serializers.CharField()
+
+
+class StudentTransactionPINSerializer(serializers.Serializer):
+    student_transaction_pin = serializers.CharField()
+
+
+
+class UpdateStudentTransactionPINSerializer(serializers.Serializer):
+    oldPin = serializers.CharField()
+    newPin = serializers.CharField()
+        
+
+
+class FetchStudentTransactionPINSerializerForEdit(serializers.ModelSerializer):
+    class Meta:
+        model = StudentTransactionPIN
+        fields = ['student_transaction_pin']
+        
+        
+# class PayStackCustomerCreationSerializer(serializers.Serializer):
+#     customer_firstname = serializers.CharField()
+#     customer_lastname = serializers.CharField()
+    
+
+
+class ValidatePayStackCustomerSerializer(serializers.Serializer):
+    # account_number = serializers.CharField()
+    bvn = serializers.CharField()
+    # bank_code = serializers.CharField()
+    
+
+
+class Device_Health_Status_Serializer(serializers.Serializer):
+    Healthy = serializers.CharField()
+    Faulty = serializers.CharField()
+    Critical = serializers.CharField()
+
+
+class SavePayStackCustomerWalletDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PayStackCustomerWalletDetails
+        fields = ['bank_name', 'bank_account_name', 'bank_account_number',
+                  'bank_account_currency', 'bank_customer_code', 'bank_account_creation_date', 'student_id' ]    
+
+    # def create(self, validated_data):
+    #     # Get the authenticated user from the context
+    #     user = self.context['request'].user
+    #     profile = PayStackCustomerWalletDetails.objects.create(user=user, **validated_data)
+    #     return profile
+
+    
+
+class FetchPayStackCustomerWalletDetails(serializers.ModelSerializer):
+    class Meta:
+        model = PayStackCustomerWalletDetails
+        fields = ['bank_customer_code', 'student_id', 'bank_name', 'bank_name_slug', 'bank_account_name', 
+                  'bank_account_number', 'bank_account_currency', 'bank_account_creation_date', 'accountBalance']
+
+
+class VerifyUserAccountDetailsSerializer(serializers.Serializer):
+    bank_code = serializers.CharField()
+    account_number = serializers.CharField()
+    
+
+class SavePayStackRecipientIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentTransferRecipientCode
+        fields = ['bank_customer_code', 'student_id', 'bank_account_number', 'recipient_code', 'recipient_id']
+    
+
+class InitializeFundTransferSerializer(serializers.Serializer):
+    recipient_code = serializers.CharField()
+    amount = serializers.IntegerField()
+    reason = serializers.CharField()
+
+
+class AccountBalanceSerializer(serializers.Serializer):
+    account_number = serializers.CharField()
+    
+    
+class UpdateWalletBalance(serializers.ModelSerializer):
+    class Meta:
+        model = PayStackCustomerWalletDetails
+        fields = ['accountBalance']
+    
+
+class SaveTransactionInDatabase(serializers.ModelSerializer):
+    class Meta:
+        model = StudentWalletTransactions
+        fields = ['transactionType', 'StudentEmail', 'transactionAmount', 
+                  'transactionStatus', 'partnerAccountNumber', 'partnerAccountName',
+                  'partnerAccountBank','transactionDateFromPaystack', 'transactionPOSData',
+                  'paystackFeeForTransaction', 'transactionAuthCode', 'transactionCardType',
+                  'transactionNarration'
+                  ]
+
+
+
+
+class PlaceTransferRequestsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransferRequests
+        fields = ['transferAmount', 'receiverEmail']
+        # fields = ['transferAmount', 'transferNarration', 'receiverAccountNumber', 
+        #           'receiverBank']
+        
+    # transferAmount = serializers.IntegerField()
+    # transferNarration = serializers.CharField()
+    # #
+    # receiverAccountNumber = serializers.CharField()
+    # receiverBank = serializers.CharField()
+    # receiverEmail = serializers.EmailField()
+    
+    # def get_bank_name(self, obj):
+    #     transferAmount_tuple = obj.transferAmount  # Assuming bank_name is returned as a tuple
+    #     transferNarration_tuple = obj.transferNarration_name  # Assuming bank_name is returned as a tuple
+    #     receiverAccountNumber_tuple = obj.receiverAccountNumber_name  # Assuming bank_name is returned as a tuple
+    #     receiverBank_tuple = obj.receiverBank_name  # Assuming bank_name is returned as a tuple
+    #     receiverEmail_tuple = obj.receiverEmail_name  # Assuming bank_name is returned as a tuple
+    #     if isinstance(transferAmount_tuple,transferNarration_tuple, receiverAccountNumber_tuple, receiverBank_tuple, receiverEmail_tuple, tuple):
+    #         return transferAmount_tuple[0], transferNarration_tuple[0],receiverAccountNumber_tuple[0], receiverBank_tuple[0], receiverEmail_tuple[0]
+    #     return transferAmount_tuple, transferNarration_tuple,receiverAccountNumber_tuple, receiverBank_tuple, receiverEmail_tuple,
+    
+    
+
+
+
+
 
 

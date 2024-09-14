@@ -30,6 +30,15 @@ from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
+from django.utils.crypto import get_random_string
+from getstream import Stream
+from getstream.models import UserRequest
+from getstream.models import (
+    CallRequest,
+    MemberRequest,
+)
+
+
 # RESET PASSWORD IMPORTS ENDS HERE
 
 
@@ -148,7 +157,6 @@ def Login(request):
     if request.method == 'POST':
         companymail = request.POST['companymail']
         password = request.POST['password']
-        # print(f'{companymail} - {password}')
         try:
             user = User.objects.get(email=companymail)   
             print(user) 
@@ -183,7 +191,8 @@ def Login(request):
                         otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
                         request.session['useremail'] = companymail
                         request.session['password'] = password
-                        AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
+                        AccountValidationSave = AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
+                        AccountValidationSave.save()
                         return redirect('Verify_otp') 
                     
                     if int(userMaxOTPTry) == 1:
@@ -208,25 +217,23 @@ def Login(request):
                         duration = str(remainingTime)
                         dot_index = duration.find('.')
                         if dot_index != -1:
-                            part_before_dot = duration[:dot_index]  # Slice to keep only before the dot
+                            part_before_dot = duration[:dot_index]
                         else:
-                            part_before_dot = duration  # Keep original string if no dot found
+                            part_before_dot = duration
                         print(part_before_dot)
 
                         colon_index = part_before_dot.find(':')
                         if colon_index != -1:
-                            part_after_colon = part_before_dot[colon_index + 1:]  # Slice to keep only after the first colon
+                            part_after_colon = part_before_dot[colon_index + 1:]
                         else:
                             part_after_colon = part_before_dot 
                             
                         dot_index2 = part_after_colon.find(':')
                         if dot_index2 != -1:
-                            FinalDuration = part_after_colon[:dot_index2]  # Slice to keep only before the dot
+                            FinalDuration = part_after_colon[:dot_index2]
                         else:
-                            FinalDuration = part_after_colon  # Keep original string if no dot found
-
-                    # FORMAT REMAINING TIME SECTION ENDS HERE
-                            
+                            FinalDuration = part_after_colon
+                    # FORMAT REMAINING TIME SECTION ENDS HERE                            
                         messages.error(request, f'Max OTP trial reached or OTP has expired, try to login again after about {FinalDuration} minutes')
                         return redirect('Login')
                     
@@ -251,40 +258,26 @@ def Login(request):
                         duration = str(remainingTime)
                         dot_index = duration.find('.')
                         if dot_index != -1:
-                            part_before_dot = duration[:dot_index]  # Slice to keep only before the dot
+                            part_before_dot = duration[:dot_index] 
                         else:
-                            part_before_dot = duration  # Keep original string if no dot found
+                            part_before_dot = duration 
                         print(part_before_dot)
 
                         colon_index = part_before_dot.find(':')
                         if colon_index != -1:
-                            part_after_colon = part_before_dot[colon_index + 1:]  # Slice to keep only after the first colon
+                            part_after_colon = part_before_dot[colon_index + 1:]
                         else:
                             part_after_colon = part_before_dot 
                             
                         dot_index2 = part_after_colon.find(':')
                         if dot_index2 != -1:
-                            FinalDuration = part_after_colon[:dot_index2]  # Slice to keep only before the dot
+                            FinalDuration = part_after_colon[:dot_index2]
                         else:
-                            FinalDuration = part_after_colon  # Keep original string if no dot found
+                            FinalDuration = part_after_colon
 
                     # FORMAT REMAINING TIME SECTION ENDS HERE
                         messages.error(request, f'Max OTP trial reached or OTP has expired, try to login again after about {FinalDuration} minutes')
-                        return redirect('Login')
-                    
-                    # elif int(userMaxOTPTry) >= 0 and timezone.now() > userOTPExpiry:
-                    #     print('userOTPExpiryuserOTPExpiryuserOTPExpiryuserOTPExpiryuserOTPExpiry')
-                    #     otp = random.randint(1000, 9999)
-                    #     otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
-                    #     otp_user_waittime = None
-                    #     max_otp_try = 3
-                    #     AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = max_otp_try)
-                    #     clientUserName = User.objects.get(email = companymail).username
-                    #     SendOTPForLogin(request, otp, companymail, clientUserName)
-                    #     request.session['useremail'] = companymail
-                    #     request.session['password'] = password
-                    #     messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
-                    #     return redirect('Verify_otp')   
+                        return redirect('Login')  
                     
                     elif int(userMaxOTPTry) < 0 and timezone.now() > userOTPExpiry:
                         messages.error(request, f'OTP Expired, kindly login again to recieve a new OTP')
@@ -299,11 +292,12 @@ def Login(request):
                     otp_user_waittime = None
                     # otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
                     max_otp_try = 3
-                    AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = max_otp_try)
+                    AccountValidationSave = AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = max_otp_try)
+                    AccountValidationSave.save()
                     clientUserName = User.objects.get(email = companymail).username
-                    SendOTPForLogin(request, otp, companymail, clientUserName)
                     request.session['useremail'] = companymail
                     request.session['password'] = password
+                    SendOTPForLogin(request, otp, companymail, clientUserName)
                     messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
                     return redirect('Verify_otp')        
                 
@@ -434,8 +428,6 @@ def SendOTPForLogin(request, otp, to_email, clientUserName):
 
 
 
-
-
 def Verify_otp(request):
     try:
         userEmailAddress = request.session['useremail']
@@ -470,11 +462,25 @@ def Verify_otp(request):
 
             if otp == GetOTP.otp:
                 user = authenticate(request, username=user, password=userEnteredPassword)
-
                 if user is not None:
-                    # login(request, user)
                     login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                     AccountValidation.objects.filter(useremail = userEmailAddress).delete()
+                    companyID = int(User.objects.filter(email = userEmailAddress).values_list('id', flat=True).first())
+                    print('companyID')
+                    print(type(companyID))
+                    print(companyID)
+
+                    # GetStream user creation starts here
+                    client = Stream(api_key="8ssxqcb3y55c", api_secret="dgyyjjvm78eet9ny69abjwx6ewy858tnwmmyddyn7ufk978scj38bgsa7qte6rk9", timeout=3.0)
+                    client.upsert_users(
+                        UserRequest(
+                            id=get_random_string(length=15), name=userEmailAddress, role="admin", custom={"country": "NG"}
+                        ),
+                    )
+                    client.create_token(user_id=userEmailAddress, expiration=3600)
+                    
+                    # GetStream user creation ends here
+
                     try:
                         myCompanyName = User.objects.filter(email = userEmailAddress).values_list('username', flat=True).first()
                         notifyLoginEmail(request, user, userEmailAddress, myCompanyName)
@@ -482,7 +488,6 @@ def Verify_otp(request):
                         print('error sending login notification email to user')
 
                     return redirect('Dashboard')
-                        
 
                 else:
                     # print(error)

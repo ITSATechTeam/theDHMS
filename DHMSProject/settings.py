@@ -84,13 +84,12 @@ SWAGGER_SETTINGS = {
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = str(os.getenv('DEBUG'))
-# DEBUG = str(os.getenv('DEBUG')) == 'True'
 DEBUG = True
 
 CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
 
+WEBHOOK_SECRET = str(os.getenv('webhook_secret_key'))
+PAYSTACK_SECRET_KEY = str(os.getenv('paystack_secret_key'))
 
 # ALLOWED_HOSTS = ['http://127.0.0.1:8000/']
 ALLOWED_HOSTS = ['*']
@@ -131,6 +130,7 @@ INSTALLED_APPS = [
     'dhmsapiapp.apps.DhmsapiappConfig',
     'aichat.apps.AichatConfig',
     'studentdhms.apps.StudentdhmsConfig',
+    'commapp.apps.CommappConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',

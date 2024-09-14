@@ -20,6 +20,13 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail, BadHeaderError
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
+from django.utils.crypto import get_random_string
+from getstream.models import UserRequest
+from getstream import Stream
+from getstream.models import (
+    CallRequest,
+    MemberRequest,
+)
 # 
 from django.conf import settings
 
@@ -83,6 +90,8 @@ def StaffLogin(request):
     if request.method == 'POST':
         staffemail = request.POST['staffemailaddres']
         staffphonenumber = request.POST['staffphonenumber']
+        # staffID = StaffDataSet.objects.filter(staff_email = staffemail).values_list('StaffID').first()[0]
+        print('staffID')
         try:
             user = User.objects.get(username=staffemail)
             if user:
@@ -96,8 +105,20 @@ def StaffLogin(request):
         LoginStatus.objects.create(user = user, email = staffemail, status = 'Online')
 
         if user is not None:
+            # print('get_random_string(length=15)')
+            # print(get_random_string(length=15))
             login(request, user)
+            # GetStream user creation starts here
+            client = Stream(api_key="8ssxqcb3y55c", api_secret="dgyyjjvm78eet9ny69abjwx6ewy858tnwmmyddyn7ufk978scj38bgsa7qte6rk9", timeout=3.0)
+            client.upsert_users(
+                UserRequest(
+                    id='oYYSrBtHc0LdcX8', name=staffemail, role="admin", custom={"country": "NG"}
+                ),
+            )
+            # client.create_token(user_id=request.user, expiration=3600)
             return redirect('StaffDashboard')
+            
+            # GetStream user creation ends here
 
         else:
             # print(error)

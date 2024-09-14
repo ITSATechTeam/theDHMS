@@ -1,4 +1,5 @@
 # from site import USER_BASE
+# from http import client
 from django.urls import reverse
 from django.contrib import messages
 
@@ -26,6 +27,17 @@ import random
 import string
 import time
 import os
+import uuid
+from getstream import Stream
+from getstream.models import (
+    CallRequest,
+    MemberRequest,
+)
+
+
+
+
+
 
 def generate_password(length, count):
     passwords = []
@@ -876,7 +888,7 @@ def ExportDevice(request):
                     'devicelocation', 'devicebrand', 'deviceos', 'devicecostofpurchase', 'deviceuseremail', 'deviceuserphonenumber', 'deviceuserdateofresumption', 'deviceworkingcondition', 'deviceyearofpurchase', 'devicedepreciationrate',
                     'deviceid'):
                         writer.writerow(DeviceInfo)
-        response['Content-Disposition'] = 'attachment; filename =  maintenancerequests.csv'
+        response['Content-Disposition'] = 'attachment; filename = All_devices.csv'
 
         return response
 
@@ -2208,3 +2220,21 @@ def maintenenceRequestNotification(request, myCompanyEmailAddress, myCompanyName
     else:
         messages.error(request, f'Problem sending email to {myCompanyEmailAddress}, check if you typed it correctly')
 
+
+
+def Call_Staff(request):
+    # call = client.video.call("default", uuid.uuid4())
+    client = Stream(api_key="8ssxqcb3y55c", api_secret="dgyyjjvm78eet9ny69abjwx6ewy858tnwmmyddyn7ufk978scj38bgsa7qte6rk9", timeout=3.0)
+    call = client.video.call("default", get_random_string(length=15))
+    call.create(
+        data=CallRequest(
+            created_by_id=request.user.username,
+            # note: you can add users as members to calls to support more complex permissions
+            members=[
+                MemberRequest(user_id='oYYSrBtHc0LdcX8', role="user"),
+                # MemberRequest(user_id="jack"),
+            ],
+            custom={"color": "blue"},
+        ),
+    )
+    return render(request, 'userarea/staffpage.html')

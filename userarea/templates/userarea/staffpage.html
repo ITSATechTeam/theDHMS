@@ -88,11 +88,12 @@
               <input type='radio' />
             </th>
             <th>Staff's Name</th>
-            <th>Contact Number</th>
+            {% comment %} <th>Contact Number</th>
+            <th style="width: 20px">Call Staff</th> {% endcomment %}
             <th>Email Address</th>
             <th>Staff Unique ID</th>
             <th>Staff Unit</th>
-            <th  style="width: 40px" >Device(s) ID</th>
+            <th style="width: 10px" >Device(s) ID</th>
             <th>Staff Availability</th>
             <th>Action</th>
             <th>More Info</th>
@@ -114,10 +115,17 @@
                 {% endif %}
               </a></strong>
             </td>
-            <td>{{ staffMembers.staff_phonenumber }}</td>
-            <td>{{ staffMembers.staff_email }}</td>
+            {% comment %} <td>{{ staffMembers.staff_phonenumber }}</td>
+            <td>
+              <a href= {% url 'Call_Staff' %}>
+                <button style="width: 100px">
+                  <p>CLICK TO CALL</p>
+                </button>
+              </a>
+            </td> {% endcomment %}
+            <td><p style="width: 70px; overflow: hidden">{{ staffMembers.staff_email }}</p></td>
             {% comment %} <td><a href="mailto={{ staffMembers.deviceuseremail }}">{{ staffMembers.deviceuseremail }}</a></td> {% endcomment %}
-            <td><p class="copyreferallink2">Click to copy ID<br/> </p><input type="hidden" value="{{ staffMembers.StaffID }}" /><input type="hidden" value="{{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }}" /></td>
+            <td><p class="copyreferallink2" style="width: 70px">Click to copy ID<br/> </p><input type="hidden" value="{{ staffMembers.StaffID }}" /><input type="hidden" value="{{ staffMembers.staff_firstname }} {{ staffMembers.staff_lastname }}" /></td>
             <td><p>{{ staffMembers.staff_role }}</p></td>
             <td class='staffassigneddevice'>
               {% comment %} <a href=''>{{ staffMembers.staffDevice }}</a> {% endcomment %}
@@ -147,9 +155,9 @@
               </div>
             </td>
             <td class='moredetailsbtn'>
-            <a href = /member/staffdetails/{{ staffMembers.id }}/ >
-              <button>More Details</button>
-            </a>
+              <a href = /member/staffdetails/{{ staffMembers.id }}/ >
+                <button>More Details</button>
+              </a>
             </td>
           </tr>
           {% comment %} {% endif %} {% endcomment %}
