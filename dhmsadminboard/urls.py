@@ -10,7 +10,12 @@ urlpatterns = [
     path('switcher/', views.SuperAdminSwitcher, name="SuperAdminSwitcher"),
     path('devices/', views.AllDevices, name="AllDevices"),
     path('adminmaintenance/', views.AdminMaintenance, name="AdminMaintenance"),
+    # Partners data 
     path('partners/', views.ITPartners, name="ITPartners"),
+    # view partner
+    path('viewpartner/<str:id>', views.FindITPartners, name="FindITPartners"),
+    # edit partner data
+    # path('editpartner/', views.EditITPartners, name="EditITPartners"),
     path('adminreports/', views.SuperAdminReports, name="SuperAdminReports"),
     path('adminsettings/', views.SuperAdminSettings, name="SuperAdminSettings"),
     path('organizations/', views.Organizations, name="Organizations"),
@@ -20,3 +25,4 @@ urlpatterns = [
 ]
 
 
+ 

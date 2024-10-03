@@ -143,24 +143,31 @@ class SingleTechnicalPartnersModelSerializer(serializers.ModelSerializer):
         fields = ['technicianEmail']
 
 
-class StudentDeviceRegSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StudentDeviceReg
-        fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
+class StudentDeviceRegSerializer(serializers.Serializer):
+    student_user_email = serializers.EmailField()
+    device_name = serializers.CharField()
+    device_serial_number = serializers.CharField()
+    device_os = serializers.CharField()
+    student_device_health = serializers.CharField()
+    
+    # class Meta:
+    #     model = StudentDeviceReg
+    #     fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
 
 
 
 class DeviceSerializerForEdit(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
-        fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
+        fields = ['device_name', 'device_serial_number', 'device_os', 'student_device_health']
+        # fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_id', 'student_device_health']
 
 
 
 class AllStudentDevicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
-        fields = ['id', 'device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
+        fields = ['id', 'device_name', 'device_serial_number', 'device_os', 'student_user_id', 'student_device_health']
 
 
 class SubStudentRegistrationSerializer(serializers.ModelSerializer):
@@ -192,7 +199,7 @@ class ItsaSuperAdminLoginSerializer(serializers.Serializer):
 class UpdateDeviceAssigneeSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
-        fields = ['student_user_email']
+        fields = ['device_admin_id']
 
 
 
@@ -200,9 +207,8 @@ class UpdateDeviceAssigneeSerializer(serializers.ModelSerializer):
 class MaintenanceRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentMaintenanceRequest
-        fields = ['student_requester_id', 'student_admin_id', 'device_name', 'maintenance_priority_level', 
-        'maintenance_issue', 'maintenance_description',]
-
+        fields = ['device_id', 'maintenance_priority_level', 
+        'maintenance_issue', 'maintenance_description']
 
 
 
@@ -210,7 +216,7 @@ class FetchAllMaintenanceRequestsSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentMaintenanceRequest
         fields = ['student_requester_id', 'device_name', 'maintenance_priority_level', 
-        'maintenance_issue', 'maintenance_description', 'created_at']
+        'maintenance_issue', 'maintenance_description', 'maintenance_status', 'created_at']
 
 
 
@@ -326,12 +332,11 @@ class SaveTransactionInDatabase(serializers.ModelSerializer):
 
 
 
-class PlaceTransferRequestsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TransferRequests
-        fields = ['transferAmount', 'receiverEmail']
-        # fields = ['transferAmount', 'transferNarration', 'receiverAccountNumber', 
-        #           'receiverBank']
+class PlaceTransferRequestsSerializer(serializers.Serializer):
+    transferAmount = serializers.IntegerField()
+    receiverEmail = serializers.EmailField()
+        
+        
         
     # transferAmount = serializers.IntegerField()
     # transferNarration = serializers.CharField()

@@ -8,7 +8,7 @@ from .models import *
 from userarea.models import CompanyFaultyDevices
 from useronboard.models import SignupForm
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from datetime import datetime
 from datetime import date
 from django.db.models import Q
@@ -451,6 +451,14 @@ def GraphCountsForMobileApp(request):
 
 
 
+def FindITPartners(request, id):
+    findPartner = technicianModel.objects.get(id = id)
+    if findPartner is None:
+        raise Http404('Technician does not exist')
+    else:
+        context = {'findPartner':findPartner}
+        return (render(request, 'dhmsadminboard/viewpartner.html', context))
+    
 
 
 

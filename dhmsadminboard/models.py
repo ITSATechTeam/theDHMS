@@ -36,7 +36,6 @@ class technicianModel(models.Model):
     technicianPhoneNumber = models.CharField(max_length= 300)
     technicianAvailability = models.CharField(max_length= 300)
     technicianLocation = models.CharField(max_length= 300)
-    technicianUniqueID = models.CharField(max_length= 300)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

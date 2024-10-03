@@ -1,22 +1,15 @@
 import json
 import os
-from rest_framework.views import APIView
 from rest_framework import status
 from django.conf import settings
 import hmac
 import hashlib
-from venv import logger
-from django.dispatch import receiver
-from grpc import Status
 import requests
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework import permissions
-
 from dhmsapiapp.generate_code import Verify_otp, generate_validation_code
-from dhmsapiapp.generaterandomnum import generate_unique_number
-from django.http import JsonResponse
-
+from dhmsapiapp.sendphonecode import SendPhoneVerificationCode
+from dhmsapiapp.sendtransactionmails import TransferEmailNotification
 from .utils import save_new_transactions  # Import the function
 # from dhmsapiapp.activateuser import ActivateUserBeforeRegister
 from .serializers import *
@@ -24,32 +17,16 @@ from useronboard.models import SignupForm
 from userarea.models import *
 from dhmsadminboard.models import *
 # from useronboard.checkuserinfo import CheckUserData
-from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from studentdhms.models import Password_Reset
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
-from django.dispatch import receiver
 from django.template.loader import render_to_string
-from django.urls import reverse
-from django.contrib.auth.forms import PasswordResetForm
-
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import HttpResponse
-from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-from enum import Enum
-
-
-
 # from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 # from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
@@ -558,12 +535,26 @@ def Student_Registration(request):
                     student_password = student_password)
 
                     userprofile = User.objects.create_user(username = student_email, first_name = student_firstname, email = student_email, 
-                                    last_name = student_lastname, password = student_password)
+                                    last_name = student_lastname, password = student_password)  
+                    
+                    # save user info in DB
                     form.save()
-                    userprofile.save()
+                    userprofile.save()                    
+                    # Fetch data for creating tokens
+                    getUserusername = student_email
+                    getUserPassword = student_password
+
+                    tokenCreationDate = {
+                        'username': getUserusername,
+                        'password': getUserPassword
+                    }
+                    token_serializer = CustomTokenObtainPairSerializer(data=tokenCreationDate)
+                    token_serializer.is_valid(raise_exception=True)
+                    
                     return Response({
                         "status": status.HTTP_200_OK,
                         "message": "Student profile created successfull.",
+                        "Token": token_serializer.validated_data,
                         "data": serializer.data
                     })
                 
@@ -682,10 +673,6 @@ def Student_Login(request):
                     
                     token_serializer = CustomTokenObtainPairSerializer(data=request.data)
                     token_serializer.is_valid(raise_exception=True)
-
-                    # Return the JWT token
-                    # return Response(token_serializer.validated_data, status=200)
-                    # return Response(token_serializer.validated_data, status=status.HTTP_200_OK)
                     
                     # Check if user email is verified
                     student_admin_id = StudentDHMSSignUp.objects.get(student_email = student_email).id
@@ -694,7 +681,8 @@ def Student_Login(request):
                     else:
                         student_email_verification_status = False
                     # Check if user pin is set
-                    if StudentTransactionPIN.objects.filter(student_email_address = student_email):
+                    StudentID = StudentDHMSSignUp.objects.get(student_email = student_email).id
+                    if StudentTransactionPIN.objects.filter(student_id = StudentID):
                         student_pin_set = True
                     else:
                         student_pin_set = False
@@ -1052,8 +1040,7 @@ def Find_Technical_Partner(request):
                 "status": status.HTTP_400_BAD_REQUEST,
                 "message": "An error occured. Technical Partner does not exit on the DHMS"
             })
-
-
+            
 
 @swagger_auto_schema(methods=['post'], request_body=StudentDeviceRegSerializer)
 @csrf_exempt
@@ -1066,18 +1053,19 @@ def Student_Device_Registration(request):
     We allow student admins to register devices via this endpoint
     """
 
-    if request.method == 'POST':
-        # try:
+    try:
+        if request.method == 'POST':
             serializer = StudentDeviceRegSerializer(data = request.data)
             if serializer.is_valid():
                 student_admin_id = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
                 student_admin_email = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
+                
                 student_user_email = serializer.data['student_user_email']
                 student_device_name = serializer.data['device_name']
                 student_device_serial_number = serializer.data['device_serial_number']
                 student_device_os = serializer.data['device_os']
                 student_device_health = serializer.data['student_device_health']
-
+                
                 if(student_admin_email is None):
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
@@ -1114,16 +1102,13 @@ def Student_Device_Registration(request):
                         "message": "Student device health was not provided",
                         "error_message": serializer.error_messages
                     })
-                
+                    
                 # checkAdminEmail = StudentDHMSSignUp.objects.filter(student_email = student_admin_email)
                 checkAdminEmail = StudentDHMSSignUp.objects.filter(student_email = student_admin_email)
                 checkAdminUserEmailGen = User.objects.filter(email = student_admin_email)
                 checkDeviceSerialNumber = StudentDeviceReg.objects.filter(device_serial_number = student_device_serial_number)
                 checkStudentUserEmail = SubStudentRegistration.objects.filter(sub_student_email_address = student_user_email)
-                # findStudentUserAdminID = SubStudentRegistration.objects.get(sub_student_email_address = student_user_email).sub_student_admin_id
-                # findStudentUserAdminID = checkStudentUserEmail.values_list('sub_student_admin_id', flat=True)
                 findAdminUserEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
-                findStudentUserAdminID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
                 # findStudentUserEmailMain = findStudentUserAdminID.first()
                     
                 if checkAdminEmail is None or checkAdminUserEmailGen is None:
@@ -1143,7 +1128,7 @@ def Student_Device_Registration(request):
                 if checkStudentUserEmail is None:
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "Sub Student Email address was not found on the DHMS",
+                        "message": "Sub Student Email address is invalid",
                         "error_message": serializer.error_messages
                     })
                     
@@ -1153,35 +1138,42 @@ def Student_Device_Registration(request):
                         "message": "A device with the serial number already exists",
                         "error_message": serializer.error_messages
                     })
-
-                # ActivateUserBeforeRegister(student_email, code='1234')
-                try:
-                    form = StudentDeviceReg(user=request.user, student_admin_id = student_admin_id, device_name=student_device_name, device_serial_number = student_device_serial_number, 
-                    device_os = student_device_os, student_user_email = student_user_email, student_device_health = student_device_health)
-                    form.save()
-                    # userprofile.save()
-                    return Response({
-                        "status": status.HTTP_200_OK,
-                        "message": "Device registered successfully.",
-                        "data": serializer.data
-                    })
+                # check if student is assigned to the admin
                 
-                except:
+                if int(SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['student_user_email']).sub_student_admin_id) == int(student_admin_id):
+                    # Find the device user ID
+                    SubStudentID = SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['student_user_email']).id
+                    print(SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['student_user_email']).id)
+                    try:
+                        form = StudentDeviceReg(user=request.user, student_admin_id = student_admin_id, device_name=student_device_name, device_serial_number = student_device_serial_number, 
+                        device_os = student_device_os, student_user_id = SubStudentID, student_device_health = student_device_health)
+                        form.save()
+                        return Response({
+                            "status": status.HTTP_200_OK,
+                            "message": "Device registered successfully.",
+                            "data": serializer.data
+                        })                    
+                    except:
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "An error ocured, please try again"
+                        })                    
+                else:
                     return Response({
-                        "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "An error ocured, please try again"
-                    })            
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "An error ocured, sub student is not under your jurisdiction"
+                })            
             else:
                 return Response({
                     'status':status.HTTP_400_BAD_REQUEST,
                     'message': 'Submission error, kindly try again',
                     'error': serializer.error_messages
                 })            
-        # except:
-        #     return Response({
-        #         "status": status.HTTP_400_BAD_REQUEST,
-        #         "message": "An error ocured and device could not be registered. Kindly try again and provide all required details",
-        #     }) 
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error occured and device could not be registered. Kindly try again and provide all required details",
+        }) 
 
 
 
@@ -1196,7 +1188,6 @@ def Sub_Student_Registration(request):
     Allow admin students to register sub students via the API by providing the following details:
     student email and student full name.
     """
-
     if request.method == 'POST':
         try:
             serializer = SubStudentRegistrationSerializer(data = request.data)
@@ -1318,17 +1309,18 @@ def UnassignDevice(request, id):
         if id:
             checkStudentExist = StudentDeviceReg.objects.get(id = id)
             device_admin_id = StudentDeviceReg.objects.get(id = id).student_admin_id
-            device_admin_email = User.objects.get(id = device_admin_id).email
+            # device_admin_email = User.objects.get(id = device_admin_id).email
+            device_admin_id = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
             # 
-            user_update = {"student_user_email": device_admin_email}
+            user_update = {"student_user_id": device_admin_id}
             serializer = UpdateDeviceAssigneeSerializer(checkStudentExist, data = user_update)
             # serializer = UpdateDeviceAssigneeSerializer(checkStudentExist, data = request.user.email)
             if serializer.is_valid():
                 serializer.save()
                 return Response({
                     "status":status.HTTP_200_OK,
-                    "message": "Device user updated successfully",
-                    "data": serializer.data
+                    "message": "Device has been unassigned to student and assigned to the student admin",
+                    # "data": serializer.data
                 })
             else: 
                 return Response({
@@ -1373,10 +1365,14 @@ def GetAllStudentDevices(request):
                     device_serial_number = checkDeviceExist.device_serial_number
                     device_os = checkDeviceExist.device_os
                     device_device_health = checkDeviceExist.student_device_health
-                    device_admin_id = checkDeviceExist.student_admin_id
-                    device_admin_email = User.objects.get(id = device_admin_id).email
-                    device_user_email = checkDeviceExist.student_user_email
-                    device_registration_date = checkDeviceExist.created_at                    
+                    device_user_id = checkDeviceExist.student_user_id
+                    if SubStudentRegistration.objects.filter(id = device_user_id):
+                        device_user_email = SubStudentRegistration.objects.get(id = device_user_id).sub_student_email_address
+                    elif StudentDHMSSignUp.objects.filter(id = device_user_id):
+                        device_user_email = StudentDHMSSignUp.objects.get(id = device_user_id).student_email
+                    else:
+                        device_user_email = ''
+                    device_registration_date = checkDeviceExist.created_at              
                     
                     if StudentDHMSSignUp.objects.filter(student_email = device_user_email):
                         fetchUserData = StudentDHMSSignUp.objects.get(student_email = device_user_email)
@@ -1387,8 +1383,9 @@ def GetAllStudentDevices(request):
                         fetchUserPhone = fetchUserData.student_phone
 
                         fetchUserDataList = {
-                            'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
-                                'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone
+                            'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 
+                            'DeviceUserEmail':fetchUserEmail,
+                            'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone
                         }
                         
                     elif SubStudentRegistration.objects.filter(sub_student_email_address = device_user_email):
@@ -1410,7 +1407,6 @@ def GetAllStudentDevices(request):
                     FoundData = {"device_id":device_id, "device_name":device_name, "device_serial_number":  device_serial_number, 'device_os': device_os, 'device_health': device_device_health,
                                 'device_user_data':fetchUserDataList, 'device_user_admin': device_admin_email, "device_registration_date":device_registration_date}
                     FoundDevices.append(FoundData)
-                # if device_admin_email == device_user_email:        
                 return Response({
                     "status":status.HTTP_200_OK,
                     "message": "Student Devices found",
@@ -1423,11 +1419,51 @@ def GetAllStudentDevices(request):
                 device_serial_number = checkDeviceExist.device_serial_number
                 device_os = checkDeviceExist.device_os
                 device_device_health = checkDeviceExist.student_device_health
-                device_user_email = checkDeviceExist.student_user_email
+                device_user_id = checkDeviceExist.student_user_id
+                if SubStudentRegistration.objects.filter(id = device_user_id):
+                    device_user_email = SubStudentRegistration.objects.get(id = device_user_id).sub_student_email_address
+                elif StudentDHMSSignUp.objects.filter(id = device_user_id):
+                    device_user_email = StudentDHMSSignUp.objects.get(id = device_user_id).student_email
+                else:
+                    device_user_email = ''
                 device_registration_date = checkDeviceExist.created_at
-                # Device user query start here
+                
+                # get device user data starts here
+                if StudentDHMSSignUp.objects.filter(student_email = device_user_email):
+                    currentAdminUser = StudentDHMSSignUp.objects.get(student_email = device_user_email)                    
+                    
+                    fetchUserFirstName = currentAdminUser.student_firstname
+                    fetchUserLastName = currentAdminUser.student_lastname
+                    fetchUserEmail = currentAdminUser.student_email
+                    fetchUserSchool = currentAdminUser.student_school
+                    fetchUserPhone = currentAdminUser.student_phone                    
+
+                    fetchUserDataList = {
+                        'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
+                        'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone, 
+                    }
+                    
+                elif SubStudentRegistration.objects.filter(sub_student_email_address = device_user_email):
+                    currentDeviceUser = SubStudentRegistration.objects.get(sub_student_email_address = device_user_email)
+                    
+                    fetchUserFirstName = currentDeviceUser.sub_student_firstname
+                    fetchUserLastName = currentDeviceUser.sub_student_lastname
+                    fetchUserEmail = currentDeviceUser.sub_student_email_address
+                    fetchUserSchool = currentDeviceUser.sub_student_school_name
+                    fetchUserPhone = currentDeviceUser.sub_student_phone_number
+                    fetchUserMatricNumber = currentDeviceUser.sub_student_matric_number                      
+                    
+                    fetchUserDataList = {
+                        'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
+                        'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone, 'deviceUserMatricNumber' : fetchUserMatricNumber
+                    }
+                
+                else:
+                    fetchUserDataList = ''
+                
+                # get device data start here
                 FoundData = {"device_id":device_id, "device_name":device_name, "device_serial_number":  device_serial_number, 'device_os': device_os, 'device_health': device_device_health,
-                            'device_user_email':device_user_email, 'device_user_admin': device_admin_email, "device_registration_date":device_registration_date}
+                            'device_user_data':fetchUserDataList,   'device_user_admin': device_admin_email, "device_registration_date":device_registration_date}
                 FoundDevices.append(FoundData)
                 # if device_admin_email == device_user_email:        
                 return Response({
@@ -1478,7 +1514,8 @@ def GetAllStudentDevices(request):
 def GetSingleStudentDevices(request, id):
     try:
         if id:
-            specificDevice = StudentDeviceReg.objects.get(Q(id = id) & Q(student_admin_email = request.user.email))    
+            getAdminID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+            specificDevice = StudentDeviceReg.objects.get(Q(id = id) & Q(student_admin_id = getAdminID))    
             serializer = AllStudentDevicesSerializer(specificDevice, many=False)
             if serializer:
                 return Response({
@@ -1508,85 +1545,108 @@ def GetSingleStudentDevices(request, id):
 @csrf_exempt
 @api_view(['POST'])
 def ItsaSuperAdminLoginFxn(request):
-    try:
-        if request.method == 'POST':   
-            serializer = ItsaSuperAdminLoginSerializer(data = request.data)
-            # try:
-            if serializer.is_valid():
-                admin_email = serializer.data['username']
-                admin_password = serializer.data['password']
+    # try:
+    if request.method == 'POST':   
+        serializer = ItsaSuperAdminLoginSerializer(data = request.data)
+        # try:
+        if serializer.is_valid():
+            admin_email = serializer.data['username']
+            admin_password = serializer.data['password']
+            print('serializer valid')
+            
 
-                # Admin student Login setup starts here
-                if SuperAdminsModel.objects.filter(email = admin_email).exists():
-                    CheckAdminUserAvaibility = SuperAdminsModel.objects.filter(email = admin_email)
-                                        
-                    token_serializer = CustomTokenObtainPairSerializer(data=request.data)
-                    token_serializer.is_valid(raise_exception=True)
+            # Admin student Login setup starts here
+            if SuperAdminsModel.objects.filter(email = admin_email).exists():
+                CheckAdminUserAvaibility = SuperAdminsModel.objects.filter(email = admin_email)
+                                    
+                token_serializer = CustomTokenObtainPairSerializer(data=request.data)
+                token_serializer.is_valid(raise_exception=True)
 
-                    # All student Login setup starts here
-                    CheckUserModelAvaibility = User.objects.get(email = admin_email)
-                    CheckUserUsername = User.objects.get(email = admin_email).username
-                        
-                    if CheckAdminUserAvaibility is None:
-                        return Response({
-                            'status':status.HTTP_400_BAD_REQUEST,
-                            'message': 'Email and password do not match, Try again',
-                            'error': serializer.error_messages
-                        })
-                    if CheckUserModelAvaibility is None:
-                        return Response({
-                            'status':status.HTTP_400_BAD_REQUEST,
-                            'message': 'User with the details you entered does not exist',
-                            'error': serializer.error_messages
-                        })
-                    else:
-                        admin_user = authenticate(request, username=CheckUserUsername, password=admin_password)
-                        token, created = Token.objects.get_or_create(user=admin_user)
-                        
-                        Admin_name = SuperAdminsModel.objects.get(email = admin_email).firstname
-                        Admin_email = SuperAdminsModel.objects.get(email = admin_email).email
-                        
-                        # Get organization and device data for admin dashboard
-                        AllCompany = SignupForm.objects.all()
-                        AllCompanyCount = AllCompany.count()
-                        AllDevices = DeviceRegisterUpload.objects.all()
-                        AllDevicesCount = AllDevices.count()
-                        AllFaultyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Faulty')
-                        AllFaultyDevicesCount = AllFaultyDevices.count()
-                        AllHealthyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Working')
-                        AllHealthyDevicesCount = AllHealthyDevices.count()
+                # All student Login setup starts here
+                CheckUserModelAvaibility = User.objects.get(email = admin_email)
+                CheckUserUsername = User.objects.get(email = admin_email).username
+                    
+                if CheckAdminUserAvaibility is None:
+                    return Response({
+                        'status':status.HTTP_400_BAD_REQUEST,
+                        'message': 'Email and password do not match, Try again',
+                        'error': serializer.error_messages
+                    })
+                if CheckUserModelAvaibility is None:
+                    return Response({
+                        'status':status.HTTP_400_BAD_REQUEST,
+                        'message': 'User with the details you entered does not exist',
+                        'error': serializer.error_messages
+                    })
+                else:
+                    admin_user = authenticate(request, username=CheckUserUsername, password=admin_password)
+                    token, created = Token.objects.get_or_create(user=admin_user)
+                    
+                    Admin_name = SuperAdminsModel.objects.get(email = admin_email).firstname
+                    Admin_email = SuperAdminsModel.objects.get(email = admin_email).email
+                    
+                    # Get organization and device data for admin dashboard
+                    AllCompany = SignupForm.objects.all()
+                    AllCompanyCount = AllCompany.count()
+                    AllDevices = DeviceRegisterUpload.objects.all()
+                    AllDevicesCount = AllDevices.count()
+                    AllFaultyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Faulty')
+                    AllFaultyDevicesCount = AllFaultyDevices.count()
+                    AllHealthyDevices = DeviceRegisterUpload.objects.filter(devicestatus = 'Working')
+                    AllHealthyDevicesCount = AllHealthyDevices.count()
 
-                        # Latest registered company req. info
-                        LatestRegisteredCompanyID = SignupForm.objects.all()[1:2].values_list('companyUniqueID', flat=True)[0]
-                        print(LatestRegisteredCompanyID)
-                        LatestRegisteredCompanyName = SignupForm.objects.all()[1:2].values_list('companyname', flat=True)[0]
-                        AllLatestRegisteredCompanyDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = LatestRegisteredCompanyID)
-                        LatestRegCompDevices = AllLatestRegisteredCompanyDevices.count()
-                        LatestRegCompFaultyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Faulty') & Q(CompanyUniqueCode = LatestRegisteredCompanyID))
-                        LatestRegCompFaultyDevicesCount = LatestRegCompFaultyDevices.count()
-                        LatestRegCompWorkingDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(CompanyUniqueCode = LatestRegisteredCompanyID))
-                        LatestRegCompWorkingDevicesCount = LatestRegCompWorkingDevices.count()
-                        LatestRegCompStaff = StaffDataSet.objects.filter(CompanyUniqueCode = LatestRegisteredCompanyID)
-                        LatestRegCompStaffCount = LatestRegCompStaff.count()
-                        
-                    if admin_user is not None:
-                        login(request, admin_user)
-                        session_id = request.session.session_key
-                        return Response({
-                            'status':status.HTTP_200_OK,
-                            'message': 'Admin Login was Successfull',
-                            "Token": token_serializer.validated_data,
-                            "studentData": {"email": Admin_email, "adminName":  Admin_name, 'NumberofOrg': AllCompanyCount, 'NumberofDevices': AllDevicesCount,
-                                            'NumberofFaultyDevices':AllFaultyDevicesCount, 'NumberofHealthyDevices':AllHealthyDevicesCount, 'LatestRegCompDevices':LatestRegCompDevices,
-                                            'LatestRegCompName':LatestRegisteredCompanyName, 'LatestRegCompFaultyDevicesCount':LatestRegCompFaultyDevicesCount, 'LatestRegCompWorkingDevicesCount':LatestRegCompWorkingDevicesCount,
-                                            'LatestRegCompStaffCount':LatestRegCompStaffCount},
-                        })
-    except:
+                    # Latest registered company req. info
+                    LatestRegisteredCompanyID = SignupForm.objects.all()[1:2].values_list('companyUniqueID', flat=True)[0]
+                    LatestRegisteredCompanyName = SignupForm.objects.all()[1:2].values_list('companyname', flat=True)[0]
+                    AllLatestRegisteredCompanyDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = LatestRegisteredCompanyID)
+                    LatestRegCompDevices = AllLatestRegisteredCompanyDevices.count()
+                    LatestRegCompFaultyDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Faulty') & Q(CompanyUniqueCode = LatestRegisteredCompanyID))
+                    LatestRegCompFaultyDevicesCount = LatestRegCompFaultyDevices.count()
+                    LatestRegCompWorkingDevices = DeviceRegisterUpload.objects.filter(Q(devicestatus = 'Working') & Q(CompanyUniqueCode = LatestRegisteredCompanyID))
+                    LatestRegCompWorkingDevicesCount = LatestRegCompWorkingDevices.count()
+                    LatestRegCompStaff = StaffDataSet.objects.filter(CompanyUniqueCode = LatestRegisteredCompanyID)
+                    LatestRegCompStaffCount = LatestRegCompStaff.count()
+                    print('LatestRegisteredCompanyID')
+                    
+                if admin_user is not None:
+                    login(request, admin_user)
+                    session_id = request.session.session_key
+                    return Response({
+                        'status':status.HTTP_200_OK,
+                        'message': 'Admin Login was Successfull',
+                        "Token": token_serializer.validated_data,
+                        "studentData": {"email": Admin_email, "adminName":  Admin_name, 'NumberofOrg': AllCompanyCount, 'NumberofDevices': AllDevicesCount,
+                                        'NumberofFaultyDevices':AllFaultyDevicesCount, 'NumberofHealthyDevices':AllHealthyDevicesCount, 'LatestRegCompDevices':LatestRegCompDevices,
+                                        'LatestRegCompName':LatestRegisteredCompanyName, 'LatestRegCompFaultyDevicesCount':LatestRegCompFaultyDevicesCount, 'LatestRegCompWorkingDevicesCount':LatestRegCompWorkingDevicesCount,
+                                        'LatestRegCompStaffCount':LatestRegCompStaffCount},
+                    })
+                    
+                    
+            else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "An error occured",
+                    "error_message": "You have to be the super admin to gain access"
+                })
+                    
+        else:
+            return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "An error occured",
+                "error_message": serializer.error_messages
+            })
+    else:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
             "message": "An error occured",
-            "error_message": serializer.error_messages
+            "error_message": "REQUEST FORMAT NOT ACCEPTED"
         })
+    # except:
+    #     return Response({
+    #         "status": status.HTTP_400_BAD_REQUEST,
+    #         "message": "An error occured",
+    #         "error_message": 'An error occured while processing your request'
+    #     })
 
 
 
@@ -1602,6 +1662,7 @@ def GetAllRegStudents(request):
             currentUserStudents = SubStudentRegistration.objects.filter(sub_student_admin_id = studentAdminID)
             if currentUserStudents.count() > 1:
                 for currentUserStudents in currentUserStudents:            
+                    sub_student_id = currentUserStudents.id
                     sub_student_firstname = currentUserStudents.sub_student_firstname
                     sub_student_lastname = currentUserStudents.sub_student_lastname
                     sub_student_email_address = currentUserStudents.sub_student_email_address
@@ -1611,7 +1672,7 @@ def GetAllRegStudents(request):
                     created_at = currentUserStudents.created_at
                     
                     FoundStudentsData = {
-                        "sub_student_firstname":sub_student_firstname, "sub_student_lastname":sub_student_lastname, "sub_student_email_address":sub_student_email_address,
+                        "sub_student_id":sub_student_id, "sub_student_firstname":sub_student_firstname, "sub_student_lastname":sub_student_lastname, "sub_student_email_address":sub_student_email_address,
                         "sub_student_phone_number":sub_student_phone_number, "sub_student_school_name":sub_student_school_name, "sub_student_matric_number":sub_student_matric_number,
                         "date_registered":created_at
                     }
@@ -1629,11 +1690,12 @@ def GetAllRegStudents(request):
                 sub_student_email_address = currentUserStudents.sub_student_email_address
                 sub_student_phone_number = currentUserStudents.sub_student_phone_number
                 sub_student_school_name = currentUserStudents.sub_student_school_name
-                sub_student_matric_number = currentUserStudents.sub_student_matric_number
+                sub_student_matric_number = currentUserStudents.sub_student_matric_number       
+                sub_student_id = currentUserStudents.id
                 created_at = currentUserStudents.created_at
                     
                 FoundStudentsData = {
-                    "sub_student_firstname":sub_student_firstname, "sub_student_lastname":sub_student_lastname, "sub_student_email_address":sub_student_email_address,
+                    "sub_student_id":sub_student_id,"sub_student_firstname":sub_student_firstname, "sub_student_lastname":sub_student_lastname, "sub_student_email_address":sub_student_email_address,
                     "sub_student_phone_number":sub_student_phone_number, "sub_student_school_name":sub_student_school_name, "sub_student_matric_number":sub_student_matric_number,
                     "date_registered":created_at
                 }
@@ -1897,37 +1959,70 @@ def MaintenanceReqPerMonth(request):
 @api_view(['POST'])
 def MaintenanceReg(request):
     try:
-        if request.method == 'POST':   
+        if request.method == 'POST':
             serializer = MaintenanceRequestSerializer(data = request.data)
             if serializer.is_valid():
-                student_requester_id = serializer.data['student_requester_id']
-                device_name = serializer.data['device_name']
+                # 'student_requester_id', 'student_admin_id', 
+                device_id = serializer.data['device_id']
+                # device_name = serializer.data['device_name']
                 maintenance_priority_level = serializer.data['maintenance_priority_level']
                 maintenance_issue = serializer.data['maintenance_issue']
                 maintenance_description = serializer.data['maintenance_description']  
                 user = User.objects.get(email = request.user.email)
-
-                if StudentDHMSSignUp.objects.get(id = student_requester_id):
-                    form = StudentMaintenanceRequest(user = user, student_requester_id= student_requester_id, device_name=device_name, maintenance_priority_level = maintenance_priority_level, 
-                    maintenance_issue = maintenance_issue,  maintenance_description =  maintenance_description)  
-                    form.save()
-                    return Response({
-                        "status": status.HTTP_200_OK,
-                        "message": "Maintenance request placed successfully by the admin"
-                    })  
-
-                elif SubStudentRegistration.objects.get(id = student_requester_id):
-                    form = StudentMaintenanceRequest(user = user, student_requester_id= student_requester_id, device_name=device_name, maintenance_priority_level = maintenance_priority_level, 
-                    maintenance_issue = maintenance_issue,  maintenance_description =  maintenance_description)  
-                    form.save()
-                    return Response({
-                        "status": status.HTTP_200_OK,
-                        "message": "Maintenance request placed successfully for sub student"
-                    })
+                    
+                # check device ID
+                if (StudentDeviceReg.objects.filter(id = serializer.data['device_id'])):
+                    # check if student admin is the requester
+                    device_name = StudentDeviceReg.objects.get(id = serializer.data['device_id']).device_name
+                    if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
+                        signedInAdminID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id 
+                        print(StudentDeviceReg.objects.get(id = serializer.data['device_id']).student_admin_id)           
+                        if int(signedInAdminID) == int(StudentDeviceReg.objects.get(id = serializer.data['device_id']).student_admin_id):
+                        # deviceAdminID = StudentDeviceReg.objects.get(id = serializer.data['device_id']).student_admin_id                            
+                            # signedInAdminEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email                            
+                            if signedInAdminID:
+                                form = StudentMaintenanceRequest(user = user, student_requester_id= signedInAdminID, student_admin_id = signedInAdminID,
+                                device_id = device_id, device_name=device_name, maintenance_priority_level = maintenance_priority_level, 
+                                maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description)
+                                form.save()
+                                return Response({
+                                    "status": status.HTTP_200_OK,
+                                    "message": "Maintenance request placed successfully by the admin"
+                                })
+                        else:
+                            return Response({
+                                "status": status.HTTP_200_OK,
+                                "message": "This device is not under your jurisdiction"
+                            })
+                            
+                    elif SubStudentRegistration.objects.filter(sub_student_email_address = request.user.email):
+                        # 
+                        deviceUserID = StudentDeviceReg.objects.get(id = serializer.data['device_id']).student_user_id
+                        signedInSubStudentID = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id
+                        # 
+                        if int(signedInSubStudentID) == int(deviceUserID):
+                            form = StudentMaintenanceRequest(user = user, student_requester_id= signedInSubStudentID, device_name=device_name, 
+                            maintenance_priority_level = maintenance_priority_level, student_admin_id = signedInAdminID,
+                            maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description, device_id = device_id)  
+                            form.save()
+                            return Response({
+                                "status": status.HTTP_200_OK,
+                                "message": "Maintenance request placed successfully for sub student"
+                            })
+                        else:
+                            return Response({
+                                "status": status.HTTP_400_BAD_REQUEST,
+                                "message": "You are not authorized to request a maintenance for this device."
+                            })            
+                    else:
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "An error occured while trying to submit your maintenance request. Kindly confirm your authentication and try again"
+                        })            
                 else:
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "An error occured while trying to submit your maintenance request. Please try again"
+                        "message": "The device ID you submitted is not valid"
                     })            
             else:
                 return Response({
@@ -1960,13 +2055,13 @@ def FetchMaintenaceRequests(request):
             if serializer:
                 return Response({
                     "status":status.HTTP_200_OK,
-                    "message": "Student found",
+                    "message": "Maintenance request found",
                     "data": serializer.data
                 })
             else:
                 return Response({
                     "status": status.HTTP_400_BAD_REQUEST,
-                    "message": "An error occured. Please try again"
+                    "message": "We experienced an error while trying to fetch maintenance requests"
                 })
         else:
             return Response({
@@ -1987,7 +2082,7 @@ def FetchMaintenaceRequests(request):
 def GetEmailValidationCode(request):
     try:
         if request.method == 'GET':
-            if StudentDHMSSignUp.objects.get(student_email = request.user.email):
+            if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
                 StudentEmailAddress = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
                 user_update = {"email": StudentEmailAddress}
                 serializer = GetEmailAddress(data = user_update)
@@ -2069,73 +2164,55 @@ def GetEmailValidationCode(request):
 def GetPhoneNumberValidationCode(request):
     try:
         if request.method == 'GET':
-            if StudentDHMSSignUp.objects.get(student_email = request.user.email):
-                StudentPhoneNumber = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_phone
-                user_update = {"phone": StudentPhoneNumber}
-                serializer = GetPhoneNumber(data = user_update)
-                if serializer.is_valid():
-                    LoggedInAdminPhoneNumber = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_phone
-                    LoggedInAdminName = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_firstname
-                    recipient_list = [LoggedInAdminPhoneNumber]
-                    # SETUP EMAIL SENDING FUNCTIONALITY
-                    phoneNumber = LoggedInAdminPhoneNumber
-                    otp = generate_validation_code(request, phoneNumber)
-                    if otp == 'CODE SENT':
-                        return Response({
-                            "status": status.HTTP_400_BAD_REQUEST,
-                            "message": f'Max code request reached, try to login again after about 10 minutes'
-                        })
-                    elif otp == 'CODE EXPIRED':
-                        return Response({
-                            "status": status.HTTP_400_BAD_REQUEST,
-                            "message": 'Code expired. Kindly request for a new code'
-                        })
-                    
-                    else:
-                        context = {'userName':LoggedInAdminName, 'otp':otp, 'emailAddress':LoggedInAdminPhoneNumber}
-                        html_message = render_to_string("mailouts/emailvalidationmail.html", context=context)
-                        plain_message = strip_tags(html_message)
-
-                        message = EmailMultiAlternatives(
-                            subject = "Your DHMS Verification Code", 
-                            body = plain_message,
-                            from_email = 'dhmsinventoryapp@gmail.com',
-                            to= recipient_list
-                            )        
-                        
-                        message.attach_alternative(html_message, "text/html")
-                        message.send()
-
-                        if message:
-                            print('Sent a OTP code via email')
-                            return Response({
-                                "status":status.HTTP_200_OK,
-                                "message": "Validation email has been sent successfully.",
-                            })
-                        else:
+            if VerifyPhoneNumber.objects.filter(studentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id):
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Your phone number has already been verified"
+                })
+            
+            else:
+                if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
+                    StudentPhoneNumber = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_phone
+                    user_update = {"phone": StudentPhoneNumber}
+                    serializer = GetPhoneNumber(data = user_update)
+                    if serializer.is_valid():
+                        LoggedInAdminPhoneNumber = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_phone
+                        LoggedInAdminName = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_firstname
+                        recipient_list = [LoggedInAdminPhoneNumber]
+                        # SETUP EMAIL SENDING FUNCTIONALITY
+                        phoneNumber = LoggedInAdminPhoneNumber
+                        otp = generate_validation_code(request, phoneNumber)
+                        if otp == 'CODE SENT':
                             return Response({
                                 "status": status.HTTP_400_BAD_REQUEST,
-                                "message": f'Problem sending OTP code via email to {LoggedInAdminPhoneNumber}, check if you typed it correctly'
+                                "message": f'Max code request reached, try to login again after about 10 minutes'
                             })
-                        # else:
-                        #     return Response({
-                        #         "status": status.HTTP_400_BAD_REQUEST,
-                        #         "message": "Email validation not sent. Kindly check you network and try again"
-                        #     })
+                        elif otp == 'CODE EXPIRED':
+                            return Response({
+                                "status": status.HTTP_400_BAD_REQUEST,
+                                "message": 'Code expired. Kindly request for a new code'
+                            })
+                        
+                        else:
+                            SendPhoneVerificationCode(LoggedInAdminName, LoggedInAdminPhoneNumber, otp)
+                            return Response({
+                                "status": status.HTTP_200_OK,
+                                "message": f'Verification code has been sent to {LoggedInAdminPhoneNumber}'
+                            })   
+                    else:
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "Verification code not sent. Kindly check you network and try again"
+                        })   
                 else:
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "Email validation not sent. Kindly check you network and try again"
+                        "message": "You are not a student admin."
                     })   
-            else:
-                return Response({
-                    "status": status.HTTP_400_BAD_REQUEST,
-                    "message": "You are not a student admin."
-                })   
         else:
             return Response({
                 "status": status.HTTP_400_BAD_REQUEST,
-                "message": "Email validation not sent. Kindly check you network and try again"
+                "message": "Verification code not sent. Kindly check you network and try again"
             })
     except:
         return Response({
@@ -2154,7 +2231,7 @@ def ValidateEmailCode(request):
         if request.method == 'POST':
             serializer = GetValidationCode(data = request.data)
             if serializer.is_valid():
-                if StudentDHMSSignUp.objects.get(student_email = request.user.email):
+                if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
                     StudentEmailAddress = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
                     code = serializer.data['code']
                     ValidationStatus = Verify_otp(StudentEmailAddress, code)
@@ -2207,8 +2284,8 @@ def ValidatePhoneCode(request):
             serializer = GetValidationCode(data = request.data)
             if serializer.is_valid():
                 student_admin_id = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
-                if StudentDHMSSignUp.objects.get(student_email = request.user.email):
-                    StudentEmailAddress = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
+                if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
+                    StudentEmailAddress = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_phone
                     code = serializer.data['code']
                     ValidationStatus = Verify_otp(StudentEmailAddress, code)
                     if ValidationStatus == 'CODE EXPIRED':
@@ -2244,7 +2321,7 @@ def ValidatePhoneCode(request):
     except:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
-            "message": "An error occured."
+            "message": "Code Validation Failed. Kindly try again"
         })
 
 
@@ -2255,36 +2332,29 @@ def ValidatePhoneCode(request):
 @permission_classes([IsAuthenticated])
 def CreateTransactionPIN(request):
     try:
+        user = User.objects.get(email = request.user.email)
         if request.method == 'POST':
             serializer = StudentTransactionPINSerializer(data = request.data)
             if serializer.is_valid():
-                student_pin = serializer.data['student_transaction_pin'] 
-                if StudentTransactionPIN.objects.filter(student_email_address = request.user.email):
-                    user = User.objects.get(email = request.user.email)
+                student_pin = serializer.data['student_transaction_pin']
+                FindStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+                if StudentTransactionPIN.objects.filter(student_id = FindStudentID):
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
                         "message": "Sorry, you have an existing transaction PIN"
                     })
                 else:
-                    if StudentDHMSSignUp.objects.get(student_email = request.user.email):
+                    if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
                         adminStudentEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
-                        adminStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
                         
-                        if StudentTransactionPIN.objects.filter(student_email_address = request.user.email):
-                            return Response({
-                                "status": status.HTTP_400_BAD_REQUEST,
-                                "message": "Transaction PIN has been set up already"
-                            })  
-                                
-                        form = StudentTransactionPIN(user = user, student_id= adminStudentID, student_email_address=adminStudentEmail, 
-                        student_transaction_pin = student_pin)  
+                        form = StudentTransactionPIN(user = user, student_id= FindStudentID, student_transaction_pin = student_pin)  
                         form.save()
                         return Response({
                             "status": status.HTTP_200_OK,
                             "message": f'Transaction PIN created successfully for admin: {adminStudentEmail}',
                             "data": {
                                 "User_email_address": adminStudentEmail,
-                                "User_id": adminStudentID,
+                                "User_id": FindStudentID,
                                 "New_transaction_pin": student_pin,
                             }
                         })
@@ -2793,8 +2863,17 @@ def handle_dva_funds_received(data):
         transactionAmount = data["data"]["amount"]    
         
         # UPDATE ACCOUNT BALANCE FOR USER STARTS HERE
-        findStudentReciever = PayStackCustomerWalletDetails.objects.get(student_email_address=receiverEmail)
-        oldWalletBalance = int(PayStackCustomerWalletDetails.objects.get(student_email_address = receiverEmail).accountBalance)
+        if StudentDHMSSignUp.objects.filter(student_email = receiverEmail):
+            receiverID = int(StudentDHMSSignUp.objects.get(student_email = receiverEmail).id)
+        elif SubStudentRegistration.objects.filter(sub_student_email_address = receiverEmail):
+            receiverID = int(SubStudentRegistration.objects.get(sub_student_email_address = receiverEmail).id)    
+        else:
+            return Response({
+                    "status":status.HTTP_400_BAD_REQUEST,
+                    "message": "System does not recignize your user ID. Kindly logout and login again, or contact support",
+                })
+        findStudentReciever = PayStackCustomerWalletDetails.objects.get(student_id=receiverID)
+        oldWalletBalance = int(findStudentReciever.accountBalance)
         newTransactionAmount = oldWalletBalance + int(transactionAmount) / 100
         newAccountBalance = {'accountBalance': newTransactionAmount}
         serializer = UpdateWalletBalance(findStudentReciever, data = newAccountBalance)
@@ -2961,7 +3040,7 @@ def initialize_transfer(request):
                     'status': status.HTTP_400_BAD_REQUEST,
                     'message': f'{dataResMessage}. {dataResMessageTwo}',
                 })
-            else:        
+            else:
                 return Response({
                     'status': status.HTTP_200_OK,
                     'data': response.json(),
@@ -3116,135 +3195,115 @@ def Calculate_balance(request):
 
 
 # CALCULATE ACCOUNT BALANCE BELOW
-# @swagger_auto_schema(methods=['GET'])
-# @csrf_exempt
-# @api_view(['GET'])
-# def FetchAllTransactions(request):
-#     try:    
-#         if (PayStackCustomerWalletDetails.objects.filter(student_email_address = request.user.email)):    
-#             account_number = PayStackCustomerWalletDetails.objects.get(student_email_address = request.user.email).bank_account_number
-#             url = f'https://api.paystack.co/transaction'    
-            
-#             headers = {
-#                 'Authorization': f'Bearer {paystackSecretKey}',
-#                 # 'Content-Type': 'application/json',
-#             }
-            
-#             response = requests.get(url, headers=headers)
-            
-#             if response.status_code == 200:
-#                 transactions = response.json().get('data', [])
-#                 # Filter transactions related to the specific virtual account
-#                 account_transactions = [tx for tx in transactions if tx['metadata']['receiver_account_number'] == account_number]
-#                 # print(account_transactions)
-#                 # return account_transactions
-#                 return Response({
-#                     'status': status.HTTP_200_OK,
-#                     'message': 'Transactions found',
-#                     'transactions': account_transactions,
-#                     })
-#             else:
-#                 print("Failed to fetch transactions:", response.json())
-#                 return Response({
-#                 'status': status.HTTP_400_BAD_REQUEST,
-#                 'message': 'An error occured',
-#                 })
-        
-#         else:
-#             return Response({
-#             'status': status.HTTP_400_BAD_REQUEST,
-#             'message': 'An error occured. Kindly confirm you have created a wallet and try again.',
-#             })
-#     except:
-#             return Response({
-#             'status': status.HTTP_400_BAD_REQUEST,
-#             'message': 'An error occured. Kindly try again.',
-#             })
-
-
-# CALCULATE ACCOUNT BALANCE BELOW
 @swagger_auto_schema(methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def FetchAllTransactions(request):    
     FoundTransactions = []
-    # try:
-    ResponseData = fetch_and_save_transactions(request)
-    if ResponseData == 'No Transaction found for this user':
+    try:
+        ResponseData = fetch_and_save_transactions(request)
+        if ResponseData == 'No Transaction found for this user':
+                return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "No transaction."
+        })
+        elif ResponseData == "An error occured while updating transactions history":
+                return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "An error occured while updating transactions history"
+        })
+
+        if StudentDHMSSignUp.objects.get(student_email = request.user.email).id:
+            getRequestingID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
+        elif SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id:
+            getRequestingID = int(SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id)  
+        else:
             return Response({
             "status": status.HTTP_400_BAD_REQUEST,
-            "message": "You transaction found for this user."
+            "message": "An error occured. User is not a student admin or a substudent."
             })
-    else:
-        fetch_and_save_transactions(request)
-        getRequestingID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id    
-        if StudentWalletTransactions.objects.filter(StudentEmail = request.user.email):
-            currentTransaction = StudentWalletTransactions.objects.filter(StudentEmail = request.user.email)
-            if currentTransaction.count() > 1:
-                for currentTransaction in currentTransaction:            
-                    transactionType = currentTransaction.transactionType
-                    transactionAmount = currentTransaction.transactionAmount
-                    transactionNarration = currentTransaction.transactionNarration
-                    transactionCardType = currentTransaction.transactionCardType
-                    partnerAccountNumber = currentTransaction.partnerAccountNumber
-                    partnerAccountName = currentTransaction.partnerAccountName
-                    partnerAccountBank = currentTransaction.partnerAccountBank
-                    transactionDateFromPaystack = currentTransaction.transactionDateFromPaystack
-                    created_at = currentTransaction.created_at
-                    
-                    FoundTransactionsData = {
-                        "transactionAmount":transactionAmount, "transactionType":transactionType, "transactionNarration":transactionNarration,
-                        "transactionMethod":transactionCardType, "senderAccountNumber":partnerAccountNumber, "SenderAccountName":partnerAccountName,
-                        "SenderBank":partnerAccountBank, "paystackTransactionDate":transactionDateFromPaystack, "dateSaveInDB": created_at
-                    }
-                    FoundTransactions.append(FoundTransactionsData)            
-                    
-                return Response({
-                    "status":status.HTTP_200_OK,
-                    "message": "Transactions found",
-                    "data": FoundTransactions
-                })
-            else:
-                currentTransaction = StudentWalletTransactions.objects.get(StudentEmail = request.user.email)
+        currentTransaction = StudentWalletTransactions.objects.filter(SenderStudentID = getRequestingID)
+        if currentTransaction.count() > 1:
+            for currentTransaction in currentTransaction:            
                 transactionType = currentTransaction.transactionType
                 transactionAmount = currentTransaction.transactionAmount
                 transactionNarration = currentTransaction.transactionNarration
                 transactionCardType = currentTransaction.transactionCardType
-                partnerAccountNumber = currentTransaction.partnerAccountNumber
-                partnerAccountName = currentTransaction.partnerAccountName
-                partnerAccountBank = currentTransaction.partnerAccountBank
+                transactionStatus = currentTransaction.transactionStatus
+                # when transaction is debit
+                receiverAccountNumber = currentTransaction.receiverAccountNumber
+                receiverAccountStudentID = currentTransaction.receiverAccountStudentID
+                receiverAccountName = currentTransaction.receiverAccountName
+                receiverAccountBank = currentTransaction.receiverAccountBank
+                # When transaction is credit
+                senderAccountNumber = currentTransaction.senderAccountNumber
+                senderAccountName = currentTransaction.senderAccountName
+                senderAccountBank = currentTransaction.senderAccountBank
+                # 
                 transactionDateFromPaystack = currentTransaction.transactionDateFromPaystack
                 created_at = currentTransaction.created_at
-                    
+        
+                
                 FoundTransactionsData = {
                     "transactionAmount":transactionAmount, "transactionType":transactionType, "transactionNarration":transactionNarration,
-                    "transactionMethod":transactionCardType, "senderAccountNumber":partnerAccountNumber, "SenderAccountName":partnerAccountName,
-                    "SenderBank":partnerAccountBank, "paystackTransactionDate":transactionDateFromPaystack, "dateSaveInDB": created_at
+                    "transactionMethod":transactionCardType, "receiverAccountNumber":receiverAccountNumber, "receiverAccountStudentID":receiverAccountStudentID,
+                    "receiverAccountName":receiverAccountName, 'receiverAccountBank':receiverAccountBank, "paystackTransactionDate":transactionDateFromPaystack,
+                    'senderAccountNumber':senderAccountNumber, 'senderAccountName': senderAccountName, 'senderAccountBank':senderAccountBank, 'transactionStatus':transactionStatus,
+                    "dateSaveInDB": created_at
                 }
-                
                 FoundTransactions.append(FoundTransactionsData)            
                 
-                return Response({
-                    "status":status.HTTP_200_OK,
-                    "message": "Transaction found",
-                    "data": FoundTransactions
-                })
-        else:
             return Response({
-            "status": status.HTTP_400_BAD_REQUEST,
-            "message": "You have not registered any students yet."
+                "status":status.HTTP_200_OK,
+                "message": "Transactions found",
+                "data": FoundTransactions
             })
-    # except:
-    #     return Response({
-    #         "status": status.HTTP_400_BAD_REQUEST,
-    #         "message": "No Transaction Found For This Student"
-    #     })
+        else:
+            currentTransaction = StudentWalletTransactions.objects.get(SenderStudentID = getRequestingID)
+            transactionType = currentTransaction.transactionType
+            transactionAmount = currentTransaction.transactionAmount
+            transactionNarration = currentTransaction.transactionNarration
+            transactionCardType = currentTransaction.transactionCardType
+            transactionStatus = currentTransaction.transactionStatus
+            # when transaction is debit
+            receiverAccountNumber = currentTransaction.receiverAccountNumber
+            receiverAccountStudentID = currentTransaction.receiverAccountStudentID
+            receiverAccountName = currentTransaction.receiverAccountName
+            receiverAccountBank = currentTransaction.receiverAccountBank
+            # When transaction is credit
+            senderAccountNumber = currentTransaction.senderAccountNumber
+            senderAccountName = currentTransaction.senderAccountName
+            senderAccountBank = currentTransaction.senderAccountBank
+            transactionDateFromPaystack = currentTransaction.transactionDateFromPaystack
+            created_at = currentTransaction.created_at
+                
+            FoundTransactionsData = {
+                "transactionAmount":transactionAmount, "transactionType":transactionType, "transactionNarration":transactionNarration,
+                "transactionMethod":transactionCardType, "receiverAccountNumber":receiverAccountNumber, "receiverAccountStudentID":receiverAccountStudentID,
+                "receiverAccountName":receiverAccountName, 'receiverAccountBank':receiverAccountBank, "paystackTransactionDate":transactionDateFromPaystack,
+                'senderAccountNumber':senderAccountNumber, 'senderAccountName': senderAccountName, 'senderAccountBank':senderAccountBank, 'transactionStatus':transactionStatus,
+                "dateSaveInDB": created_at
+            }
+            
+            FoundTransactions.append(FoundTransactionsData)            
+            
+            return Response({
+                "status":status.HTTP_200_OK,
+                "message": "Transaction found",
+                "data": FoundTransactions
+            })
+        
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "No Transaction Found For This Student"
+        })
 
 
 # UPDATE ALL TRANSACTIONS IN DATABASE
 def fetch_and_save_transactions(request):
-    save_new_transactions(request)
-    return print("Transactions fetched and saved successfully.")
+    getReponse = save_new_transactions(request)
+    return getReponse
 
 
 # CHECK KYC COMPLETON
@@ -3253,23 +3312,31 @@ def fetch_and_save_transactions(request):
 @api_view(['GET'])
 def CheckKYCValidation(request):
     try:
-        getRequestingID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id    
+        getRequestingID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id 
+        # check email verification status 
         if VerifyEmailAddress.objects.filter(studentID = getRequestingID):
             VerifyEmailAddressStatus = True
         else:
             VerifyEmailAddressStatus = False
+        # check phone number verification status
         if VerifyPhoneNumber.objects.filter(studentID = getRequestingID):
             VerifyPhoneNumberStatus = True
         else:
             VerifyPhoneNumberStatus = False
+        # check transaction PIN setup status
         if StudentTransactionPIN.objects.filter(student_id = getRequestingID):
             StudentTransactionPINSetUpStatus = True
         else:
             StudentTransactionPINSetUpStatus = False
+        # check wallet setup status
+        if PayStackCustomerWalletDetails.objects.filter(student_id = getRequestingID):
+            walletSetUpStatus = True
+        else:
+            walletSetUpStatus = False
             
         KYCUpdates = {
             'VerifyEmailAddressStatus':VerifyEmailAddressStatus, 'VerifyPhoneNumberStatus':VerifyPhoneNumberStatus,
-            'StudentTransactionPINSetUpStatus':StudentTransactionPINSetUpStatus
+            'StudentTransactionPINSetUpStatus':StudentTransactionPINSetUpStatus, 'walletSetUpStatus':walletSetUpStatus
             }
         
         return Response({
@@ -3290,61 +3357,101 @@ def CheckKYCValidation(request):
 @csrf_exempt
 @api_view(['POST'])
 def StudentPlaceTransferRequest(request):
-    getRequestingID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
-    fetchUserProfile = StudentDHMSSignUp.objects.get(student_email = request.user.email)
-    fetchUserPhoneNumber = fetchUserProfile.student_phone
-    serializer = PlaceTransferRequestsSerializer(data = request.data)
-    if serializer.is_valid():
-        transferAmount = int(serializer.data['transferAmount']),
-        # receiverEmail = serializer.data['receiverEmail'],
-        senderStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
-        print(StudentDHMSSignUp.objects.filter(student_email = serializer.data['receiverEmail']))
-        if StudentDHMSSignUp.objects.filter(student_email = serializer.data['receiverEmail']):
-            receiverID = StudentDHMSSignUp.objects.get(student_email = serializer.data['receiverEmail']).id,
-            if PayStackCustomerWalletDetails.objects.filter(student_id = receiverID[0]):
-                transferID = 'TransferReq_' + str(getRequestingID) + '_' + get_random_string(length=30)                
+    # try:
+        serializer = PlaceTransferRequestsSerializer(data = request.data)
+        if serializer.is_valid():
+            transferAmount = int(serializer.data['transferAmount']),
+            # receiverEmail = serializer.data['receiverEmail'],
+            if StudentDHMSSignUp.objects.filter(student_email = serializer.data['receiverEmail']):
+                receiverID = int(StudentDHMSSignUp.objects.get(student_email = serializer.data['receiverEmail']).id)
+                getRequestingID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
+                fetchUserProfile = StudentDHMSSignUp.objects.get(student_email = request.user.email)
+                fetchUserPhoneNumber = fetchUserProfile.student_phone
+                #                         
+                senderFirstName = fetchUserProfile.student_firstname
+                senderLastName = fetchUserProfile.student_lastname
+                senderEmail = fetchUserProfile.student_email
+                # 
+            elif SubStudentRegistration.objects.filter(sub_student_email_address = serializer.data['receiverEmail']):
+                getRequestingID = int(SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id)
+                fetchUserProfile = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email)
+                receiverID = int(SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['receiverEmail']).id )    
+                fetchUserPhoneNumber = fetchUserProfile.sub_student_phone_number     
+                #                         
+                senderFirstName = fetchUserProfile.sub_student_firstname
+                senderLastName = fetchUserProfile.sub_student_lastname
+                senderEmail = fetchUserProfile.sub_student_email_address 
+                # 
+            else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Sorry, the reciever does not have a student DHMS account. Kindly send them an invite to download and register on the DHMS and start receiving funds"
+                })
+            # Check if receiver has a wallet on DHMS
+            if PayStackCustomerWalletDetails.objects.filter(student_id = receiverID):
+                transferID = 'TransferReq_' + str(getRequestingID) + '_' + get_random_string(length=10)
+                getReceiverData = PayStackCustomerWalletDetails.objects.get(student_id = receiverID)
+                getReceiverDataAcctNumber = getReceiverData.bank_account_number
+                getReceiverCustomerID = getReceiverData.bank_customer_code
+                getReceiverAccountName = getReceiverData.bank_account_name
+                getReceiverBank = getReceiverData.bank_name
+
                 # CHECK CURRENT USER BALANCE
-                print(getRequestingID)
                 if PayStackCustomerWalletDetails.objects.get(student_id = getRequestingID):
                     senderPaystackWallet = PayStackCustomerWalletDetails.objects.get(student_id = getRequestingID)
                     senderPaystackWalletBalance = senderPaystackWallet.accountBalance     
                     senderPaystackCustomerCode = senderPaystackWallet.bank_customer_code
                 
                     # CHECK IF BALANCE CAN SEND FUNDS
-                    # if int(senderPaystackWalletBalance) > (transferAmount + 50.00):
-                    if (100 <= (int(serializer.data['transferAmount'])+ 50)):
-                    # if int(serializer.data['transferAmount']) > senderPaystackWalletBalance:
+                    if int(senderPaystackWalletBalance) < (int(serializer.data['transferAmount']) + 50.00):
                         return Response({
                             "status": status.HTTP_400_BAD_REQUEST,
                             "message": "Sorry, you have an insufficient wallet balance. Kindly topup and try again"
                         })
                     else:
                         # SAVE DEBIT TRANSACTION IN WALLET
-                        StudentWalletTransactionsSave = StudentWalletTransactions(user = request.user, StudentID = getRequestingID, transactionID = transferID, transactionType = 'Transafer',
-                            transactionAmount = transferAmount, transactionStatus = 'Pending', transactionCustomerCode = senderPaystackCustomerCode, 
-                            transactionCustomerPhone = fetchUserPhoneNumber,            
+                        StudentWalletTransactionsSave = StudentWalletTransactions(user = request.user, SenderStudentID = getRequestingID, 
+                            transactionID = transferID, transactionType = 'Debit', transactionCustomerPhone = fetchUserPhoneNumber, 
+                            transactionAmount = serializer.data['transferAmount'], transactionStatus = 'Pending', 
+                            transactionCustomerCode = senderPaystackCustomerCode, receiverAccountNumber = getReceiverDataAcctNumber,
+                            receiverCustomerID = getReceiverCustomerID, receiverAccountName =  getReceiverAccountName,
+                            receiverAccountBank = getReceiverBank, receiverAccountStudentID = getRequestingID
                             )
-                        
-                        # FIND RECEIVER ACCOUNT NUMBER
-                        getRecieverID = StudentDHMSSignUp.objects.get(student_email = serializer.data['receiverEmail']).id
-                        getRecieverEmail = StudentDHMSSignUp.objects.get(student_email = serializer.data['receiverEmail']).student_email
-                        RecieverWalletDetails = PayStackCustomerWalletDetails.objects.get(student_id = getRecieverID)
-                        RecieverAccountNumber = RecieverWalletDetails.bank_account_number
-                        receiverBank = RecieverWalletDetails.bank_name
-
-                        # SAVE DATA TO DB
-                        TransferRequestsSave = TransferRequests(user = request.user, senderStudentID = getRequestingID, 
-                            transferAmount = int(serializer.data['transferAmount']), receiverAccountNumber = RecieverAccountNumber, receiverBank = receiverBank,
-                            receiverID = getRecieverID, transferStatus = 'Pending', transferID = transferID, receiverEmail = getRecieverEmail, 
-                            transferNarration = None
-                            )
-
-                        StudentWalletTransactionsSave.save()
-                        TransferRequestsSave.save()
+                        # update sender account balance in DB
+                        findStudentSender = PayStackCustomerWalletDetails.objects.get(student_id=getRequestingID)
+                        oldWalletBalance = int(PayStackCustomerWalletDetails.objects.get(student_id = getRequestingID).accountBalance)
+                        newTransactionAmount = oldWalletBalance - int(serializer.data['transferAmount'] + 50)
+                        newAccountBalance = {'accountBalance': newTransactionAmount}
+                        serializer = UpdateWalletBalance(findStudentSender, data = newAccountBalance)
+                        #
+                        senderFirstName = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_firstname
+                        senderLastName = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_lastname
+                        senderEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
+                        transferstatus = 'Pending'
+                        newStudentAccountBalance = newTransactionAmount
+                        amountToTransfer = transferAmount[0]
+                        # 
+                        if serializer.is_valid():
+                            serializer.save()                    
+                            # Send notification email
+                            TransferEmailNotification(request, senderEmail, senderFirstName, senderLastName, amountToTransfer, getReceiverAccountName, getReceiverBank, transferstatus, newStudentAccountBalance)
+                            # try:
+                            #     TransferEmailNotification(request, senderEmail, senderFirstName, senderLastName, serializer.data['transferAmount'], getReceiverAccountName, getReceiverBank, transferstatus, newStudentAccountBalance)
+                            # except:
+                            #     print(f'email for transfer notification was not sent for user: {senderEmail}')
+                            StudentWalletTransactionsSave.save()
+                            print(f'{request.user.email} account balance updated')
+                        else:
+                            return Response({
+                                        "status":status.HTTP_400_BAD_REQUEST,
+                                        "message": 'An error occured',
+                                        'error': serializer.error_messages
+                                    })
+                            
                         
                         return Response({
                                         "status":status.HTTP_200_OK,
-                                        "message": 'Nice! Your transfer request of NGN' +int(serializer.data['transferAmount']) + 'has been sent successfully! Funds will arrive in shortly'
+                                        "message": 'Nice! Your transfer request was sent successfully! Funds will arrive in shortly'
                                     })                    
                 else:
                     return Response({
@@ -3356,21 +3463,113 @@ def StudentPlaceTransferRequest(request):
                     "status": status.HTTP_400_BAD_REQUEST,
                     "message": "Sorry, the reciever does not own a wallet account on DHMS"
                 }) 
+        
         else:
             return Response({
                 "status": status.HTTP_400_BAD_REQUEST,
-                "message": "Sorry, the reciever does not have a student DHMS account. Kindly send them an invite to download and register on the DHMS and start receiving funds"
+                "message": "Invalid data submitted",
+                "error": serializer.error_messages
+            }) 
+    # except:
+    #     return Response({
+    #         "status": status.HTTP_400_BAD_REQUEST,
+    #         "message": "An error occured. Kindly try again"
+        # })   
+
+
+
+@permission_classes([IsAuthenticated])
+@swagger_auto_schema(methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def DashboardOverview(request):
+    try:
+        if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
+            FindStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+            NumberOfDevices = StudentDeviceReg.objects.filter(student_admin_id = FindStudentID).count()
+            NumberOfHealthyDevices = StudentDeviceReg.objects.filter(Q(student_admin_id = FindStudentID) & Q(student_device_health = 'Healthy')).count()
+            NumberOfFaultyDevices = StudentDeviceReg.objects.filter(Q(student_admin_id = FindStudentID) & Q(student_device_health = 'Faulty')).count()
+            NumberOfMaintenanceDevices = StudentMaintenanceRequest.objects.filter(student_admin_id = FindStudentID).count()
+            NumberOfSubStudents = SubStudentRegistration.objects.filter(sub_student_admin_id = FindStudentID).count()
+            
+            overViewData = {
+                'NumberOfDevices':NumberOfDevices, 'NumberOfHealthyDevices':NumberOfHealthyDevices, 'NumberOfFaultyDevices':NumberOfFaultyDevices,
+                'NumberOfMaintenanceDevices':NumberOfMaintenanceDevices, 'NumberOfSubStudents':NumberOfSubStudents
+            }
+            return Response({
+                "status": status.HTTP_200_OK,
+                'overViewData':overViewData,
+                "message": "Overview data found"
+            }) 
+        else:
+            return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "User does not exit",
             })  
-    
-    else:
+    except:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
-            "message": "Invalid data submitted",
-            "error": serializer.error_messages
-        })    
+            "message": "An error occured. Kindly try again"
+        })
+    
 
 
+@permission_classes([IsAuthenticated])
+@swagger_auto_schema(methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def CheckStudentPlan(request):
+    try:
+        StudentDHMSSignUp.objects.get(student_email = request.user.email)
+        FindStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+        if SubscribedUser.objects.filter(StudentID = FindStudentID):
+            StudentPlan = SubscribedUser.objects.get(StudentID = FindStudentID).StudentPlan
+            return Response({
+                "status": status.HTTP_200_OK,
+                'StudentPlan':StudentPlan,
+                "message": "Student Plan Found"
+            }) 
+        else:
+            return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "You Do Not Have An Existing Plan on The DHMS",
+            })  
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error occured. Kindly try again"
+        })
+    
 
-
-
-
+# FETCH MAINTENANCE COUNTS
+@permission_classes([IsAuthenticated])
+@swagger_auto_schema(methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def FetchMaintenanceRequestCounts(request):
+    try:
+        findCurrentUserID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+        StudentMaintenanceRequest.objects.filter(student_admin_id = findCurrentUserID)
+        completedMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Completed')).count()
+        pendingMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Pending')).count()
+        ongoingMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Ongoing')).count()
+        declinedMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Declined')).count()
+        # print(f'completedMaintenance: {completedMaintenance}, pendingMaintenance: {pendingMaintenance}, ongoingMaintenance: {ongoingMaintenance}, declinedMaintenance: {declinedMaintenance}')
+        data = {
+            'completedMaintenance': completedMaintenance, 
+            'pendingMaintenance' : pendingMaintenance, 
+            'ongoingMaintenance' : ongoingMaintenance, 
+            'declinedMaintenance' : declinedMaintenance
+        }
+        
+        return Response({
+            "status": status.HTTP_200_OK,
+            'maintenanceCount':data,
+            "message": "Maintenance counts fetch successfull"
+        }) 
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error occured. Kindly try again"
+        })
+    

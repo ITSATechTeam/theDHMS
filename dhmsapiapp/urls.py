@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from . import viewsadminapi
 from .views import PaystackWebhookView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -17,7 +18,8 @@ urlpatterns = [
     # WEBHOOK URL
     # path('webhook/', WebhookView.as_view(), name='webhook'),
     path('paystackwebhook', PaystackWebhookView, name='PaystackWebhookView'),
-    # path('', views.All_Organization, name="All_Organization"),
+    path('allorgs', viewsadminapi.FetchAllOrganization, name="FetchAllOrganization"),
+    path('organizationdetails', viewsadminapi.FetchOrganizationDetails, name="FetchOrganizationDetails"),
     # path('userlogout', views.User_Logout, name="User_Logout"),
     # path('orgprofile', views.Org_Profile, name="Org_Profile"),
     # # path('orgprofile/<str:pk>/', views.Org_Profile, name="Org_Profile"),
@@ -28,11 +30,13 @@ urlpatterns = [
     # path('regstaff', views.Register_Staff, name="Register_Staff"),
     # path('alldevices', views.View_All_Devices, name="View_All_Devices"),
     # path('allstaff', views.View_All_Staff, name="View_All_Staff"),
+    # FETCH ALL GENERAL SUPER USER MAINTENANCE REQUEST 
+    path('getallmaintenancereqs', viewsadminapi.GetAllDHMSMaintenanceReqs, name="GetAllDHMSMaintenanceReqs"),
     # GET DEVICE CONDITION STATUS ENUM
     path('devicestatus', views.Device_Health_Status, name="Device_Health_Status"),
     # STUDENT DHMS ENDPOINTS STARTS HERE
     path('studentreg', views.Student_Registration, name="Student_Registration"),
-    path('studentdevreg', views.Student_Device_Registration, name="Student_Device_Registration"),
+    path('studentdevicereg', views.Student_Device_Registration, name="Student_Device_Registration"),
     path('substudentreg', views.Sub_Student_Registration, name="Sub_Student_Registration"),
     path('studentlogin', views.Student_Login, name="Student_Login"),
     # PASSWORD CHANGE ENDPOINTS
@@ -70,7 +74,7 @@ urlpatterns = [
     path('reqmaintenenace', views.MaintenanceReg, name="MaintenanceReg"),
     path('fetchmaintenance', views.FetchMaintenaceRequests, name="FetchMaintenaceRequests"),
     # REQUEST EMAIL VALIDATION CODE
-    # path('getemailcode', views.GetEmailValidationCode, name="GetEmailValidationCode"),
+    path('getemailcode', views.GetEmailValidationCode, name="GetEmailValidationCode"),
     path('validatecode', views.ValidateEmailCode, name="ValidateEmailCode"),
     # REQUEST PHONE NUMBER VALIDATION CODE
     path('getphonenumbercode', views.GetPhoneNumberValidationCode, name="GetPhoneNumberValidationCode"),
@@ -86,11 +90,10 @@ urlpatterns = [
     path('listbanks', views.PaystackListofBanks, name="PaystackListofBanks"),
     path('listalldva', views.List_DVAs, name="List_DVAs"),
     path('validatepaystackcustomer', views.ValidatePayStackCustomer, name="ValidatePayStackCustomer"),
-    # path('fetchtransactions', views.FetchAllTransactions, name="FetchAllTransactions"),
     path('fetchwalletdetails', views.FetchWalletDetails, name="FetchWalletDetails"),
     path('findaccountname', views.VerifyUserAccountDetails, name="VerifyUserAccountDetails"),
     path('createtransferrecipient', views.create_transfer_recipient, name="create_transfer_recipient"),
-    path('initializetransfer', views.initialize_transfer, name="initialize_transfer"),
+    # path('initializetransfer', views.initialize_transfer, name="initialize_transfer"),
     path('fetchalltransactions', views.FetchAllTransactions, name="FetchAllTransactions"),
     path('findaccountbalance', views.Calculate_balance, name="Calculate_balance"),
     path('fetch-transactions', views.fetch_and_save_transactions, name='fetch_transactions'),
@@ -98,6 +101,12 @@ urlpatterns = [
     path('checkvalidationstatus', views.CheckKYCValidation, name='CheckKYCValidation'),
     # CHECK KYC REQUIREMENT COMPLETION: EMAIL, PHONE, PIN CALIDATED.
     path('transferfunds', views.StudentPlaceTransferRequest, name='StudentPlaceTransferRequest'),
+    # FETCH OVERVIEW DETAILS
+    path('dashboardoverview', views.DashboardOverview, name='DashboardOverview'),
+    # CHECK STUDENT SUSCRIPTION PLAN
+    path('checkstudentplan', views.CheckStudentPlan, name='CheckStudentPlan'),
+    # FETCH MAINTENANCE COUNTS
+    path('fetchmaintenacecount', views.FetchMaintenanceRequestCounts, name='FetchMaintenanceRequestCounts'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

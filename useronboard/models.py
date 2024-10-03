@@ -3,9 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
 
 
-# Create your models here.
-
-
 class UserProfileImage(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     userReg = models.CharField(max_length=200, null=True, blank=True)
@@ -41,7 +38,6 @@ class SignupForm(models.Model):
         
     def __str__(self):
         return self.email
-
 
 
 class LoginStatus(models.Model):

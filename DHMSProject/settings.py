@@ -58,6 +58,8 @@ PWA_APP_LANG = 'en-US'
 from ms_identity_web.configuration import AADConfig
 from ms_identity_web import IdentityWebPython
 
+CORS_ALLOW_ALL_ORIGINS = True  # This allows all origins (for development)
+
 
 
 
@@ -134,6 +136,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
+    'corsheaders',
 
     # password reset 
     # 'django_rest_passwordreset',
@@ -287,6 +290,9 @@ MIDDLEWARE = [
     'django_user_agents.middleware.UserAgentMiddleware',
 #     # 
     'allauth.account.middleware.AccountMiddleware',
+    
+    # CORS FOR LOCAL SERVER USAGE ONLY
+    'corsheaders.middleware.CorsMiddleware',
 
 
     # Below middleware should always be the last
