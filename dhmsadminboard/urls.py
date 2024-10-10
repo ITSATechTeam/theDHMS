@@ -13,9 +13,9 @@ urlpatterns = [
     # Partners data 
     path('partners/', views.ITPartners, name="ITPartners"),
     # view partner
-    path('viewpartner/<str:id>', views.FindITPartners, name="FindITPartners"),
-    # edit partner data
-    # path('editpartner/', views.EditITPartners, name="EditITPartners"),
+    path('viewpartner/<str:id>/', views.FindITPartners, name="FindITPartners"),
+    # delete partner data
+    path('deletepartner/<str:id>/', views.DeleteTechnicaPartner, name="DeleteTechnicaPartner"),
     path('adminreports/', views.SuperAdminReports, name="SuperAdminReports"),
     path('adminsettings/', views.SuperAdminSettings, name="SuperAdminSettings"),
     path('organizations/', views.Organizations, name="Organizations"),

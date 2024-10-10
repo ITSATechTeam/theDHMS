@@ -150,9 +150,6 @@ class StudentDeviceRegSerializer(serializers.Serializer):
     device_os = serializers.CharField()
     student_device_health = serializers.CharField()
     
-    # class Meta:
-    #     model = StudentDeviceReg
-    #     fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_email', 'student_device_health']
 
 
 
@@ -160,14 +157,23 @@ class DeviceSerializerForEdit(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
         fields = ['device_name', 'device_serial_number', 'device_os', 'student_device_health']
-        # fields = ['device_name', 'device_serial_number', 'device_os', 'student_user_id', 'student_device_health']
+
+
+class ReassignDeviceSerializer(serializers.Serializer):
+    substudentEmail = serializers.EmailField()
+
+
+class UpdateDeviceUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentDeviceReg
+        fields = ['id', 'device_name', 'device_serial_number',]
 
 
 
 class AllStudentDevicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
-        fields = ['id', 'device_name', 'device_serial_number', 'device_os', 'student_user_id', 'student_device_health']
+        fields = ['student_user_id']
 
 
 class SubStudentRegistrationSerializer(serializers.ModelSerializer):
@@ -199,9 +205,7 @@ class ItsaSuperAdminLoginSerializer(serializers.Serializer):
 class UpdateDeviceAssigneeSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentDeviceReg
-        fields = ['device_admin_id']
-
-
+        fields = ['student_user_id']
 
 
 class MaintenanceRequestSerializer(serializers.ModelSerializer):
@@ -331,31 +335,13 @@ class SaveTransactionInDatabase(serializers.ModelSerializer):
 
 
 
-
 class PlaceTransferRequestsSerializer(serializers.Serializer):
     transferAmount = serializers.IntegerField()
     receiverEmail = serializers.EmailField()
+    transactionPIN = serializers.CharField()
         
         
-        
-    # transferAmount = serializers.IntegerField()
-    # transferNarration = serializers.CharField()
-    # #
-    # receiverAccountNumber = serializers.CharField()
-    # receiverBank = serializers.CharField()
-    # receiverEmail = serializers.EmailField()
-    
-    # def get_bank_name(self, obj):
-    #     transferAmount_tuple = obj.transferAmount  # Assuming bank_name is returned as a tuple
-    #     transferNarration_tuple = obj.transferNarration_name  # Assuming bank_name is returned as a tuple
-    #     receiverAccountNumber_tuple = obj.receiverAccountNumber_name  # Assuming bank_name is returned as a tuple
-    #     receiverBank_tuple = obj.receiverBank_name  # Assuming bank_name is returned as a tuple
-    #     receiverEmail_tuple = obj.receiverEmail_name  # Assuming bank_name is returned as a tuple
-    #     if isinstance(transferAmount_tuple,transferNarration_tuple, receiverAccountNumber_tuple, receiverBank_tuple, receiverEmail_tuple, tuple):
-    #         return transferAmount_tuple[0], transferNarration_tuple[0],receiverAccountNumber_tuple[0], receiverBank_tuple[0], receiverEmail_tuple[0]
-    #     return transferAmount_tuple, transferNarration_tuple,receiverAccountNumber_tuple, receiverBank_tuple, receiverEmail_tuple,
-    
-    
+
 
 
 

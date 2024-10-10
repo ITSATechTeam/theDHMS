@@ -58,7 +58,7 @@ if (window.location.href.includes('superadmin')){
 
 
 let subadminIcon = document.querySelector('#subadminIcon')
-if (window.location.href.includes('partners')){
+if (window.location.href.includes('partners') || window.location.href.includes('viewpartner')){
     subadmin.classList.add('active')
     subadminIcon.style.fill='white'
     dashboard.classList.remove('active')

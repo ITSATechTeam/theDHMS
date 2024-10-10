@@ -10,7 +10,7 @@ from django.dispatch import receiver
 from grpc import Status
 import requests
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, schema
 from rest_framework import permissions
 
 from dhmsapiapp.generate_code import Verify_otp, generate_validation_code
@@ -62,7 +62,7 @@ from django.utils.crypto import get_random_string
 
 
 
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['Admin_DHMS_EndPoints'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
@@ -137,9 +137,10 @@ def GetAllDHMSMaintenanceReqs(request):
         })
 
 
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['Admin_DHMS_EndPoints'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
+@schema(None)  
 def FetchAllOrganization(request):
     FoundOrganizations = []
     try:
@@ -225,8 +226,9 @@ def FetchAllOrganization(request):
 
 
 
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['Admin_DHMS_EndPoints'], methods=['get'])
 @csrf_exempt
+@schema(None)
 @api_view(['GET'])
 def FetchOrganizationDetails(request):
     id = request.GET.get('id')

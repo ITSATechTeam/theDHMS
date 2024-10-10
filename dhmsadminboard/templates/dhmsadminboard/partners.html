@@ -38,6 +38,18 @@
 					</button>
 				</div>
 			</div>
+			
+				
+			<div id="flash flashmessage">
+				{% if messages %} {% for message in messages %}
+				<div class="alert alert-{{ message.tags}} m-0" role="alert">
+					<strong>{{ message }}</strong>
+					{% comment %} <strong style="color: blue">{{ message }}</strong> {% endcomment %}
+				</div>
+				{% endfor %} {% endif %}
+			</div>
+			
+			
 			{% if AllTechnicalPartners %}
 			<!-- ORGANIZATION AVAILABLE STATE STARTS HERE -->
 			<div>
@@ -125,14 +137,14 @@
 											<img src={% static 'adminpages/img/dotsvertical.png' %} />	
 										</div>
 										<div class='actionbtnsmain'>
-											<a href=  "/superadmin/organizations/{{ AllTechnicalPartners.companyUniqueID }}/" ><div class='actionbtnsmainin'>
+											<a href=  "/superadmin/viewpartner/{{ AllTechnicalPartners.id }}/" ><div class='actionbtnsmainin'>
 												<img src={% static 'adminpages/img/dashboard.png' %} />
 												<p>View Details</p>
 											</div></a>
-											<div class='actionbtnsmainin'>
+											<a href="/superadmin/deletepartner/{{ AllTechnicalPartners.id }}/"><div class='actionbtnsmainin'>
 												<img src={% static 'adminpages/img/delete.png' %} />
 												<p>Remove Technician</p>
-											</div>
+											</div></a>
 										</div>
 									</td>
 								</tr>

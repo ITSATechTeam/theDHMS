@@ -104,6 +104,7 @@ class StudentMaintenanceRequest(models.Model):
     maintenance_issue = models.CharField(max_length= 200, null=True, blank = True)
     maintenance_status = models.CharField(max_length= 300, choices = MaintainanceStatusOption, default = 'Pending')
     maintenance_description = models.CharField(max_length= 200, null=True, blank = True)
+    registeredMonth = models.CharField(max_length = 1500, default=None, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

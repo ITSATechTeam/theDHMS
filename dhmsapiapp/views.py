@@ -6,14 +6,14 @@ import hmac
 import hashlib
 import requests
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, schema
 from dhmsapiapp.generate_code import Verify_otp, generate_validation_code
 from dhmsapiapp.sendphonecode import SendPhoneVerificationCode
 from dhmsapiapp.sendtransactionmails import TransferEmailNotification
 from .utils import save_new_transactions  # Import the function
 # from dhmsapiapp.activateuser import ActivateUserBeforeRegister
 from .serializers import *
-from useronboard.models import SignupForm
+# from useronboard.models import SignupForm
 from userarea.models import *
 from dhmsadminboard.models import *
 # from useronboard.checkuserinfo import CheckUserData
@@ -38,23 +38,22 @@ from django.contrib.auth import login, logout, authenticate
 import random
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
-from datetime import timedelta
+from datetime import date, timedelta
 from django.utils import timezone
 from django.conf import settings
 from django.utils.crypto import get_random_string
+from drf_spectacular.utils import extend_schema
 
 # from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail, EmailMessage
-paystackSecretKey = 'sk_live_c7189e306761b8940a19ef83bdb28809c0209139'
-# paystackSecretKey = str(os.getenv('paystack_secret_key'))
+paystackSecretKey = str(os.getenv('paystack_secret_key'))
+                
+checkEmail = StudentDHMSSignUp.objects.all()
 
-
-
-# from rest_framework_simplejwt.serializers import (TokenObtainPairSerializer, TokenRefreshView)
 
 
 # REFRESH JWT TOKEN
-@swagger_auto_schema(methods=['post'], request_body=CustomTokenObtainPairSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=CustomTokenObtainPairSerializer)
 @api_view(['POST'])
 def CustomTokenObtainPair(request):
     serializer = CustomTokenObtainPairSerializer(data=request.data)
@@ -143,6 +142,7 @@ def User_Login(request):
 
 @csrf_exempt
 @api_view(['GET'])
+@schema(None)  
 def User_Logout(request):
     # request.user.auth_token.delete()
     logout(request)
@@ -167,7 +167,7 @@ def User_Logout(request):
 
     
 
-@swagger_auto_schema(methods=['post'], request_body=RegisterSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=RegisterSerializer)
 @csrf_exempt
 @api_view(['POST', 'GET'])
 def Register_Org(request):
@@ -452,7 +452,7 @@ def token_expire_handler(token):
 
 
 # find student signup here
-@swagger_auto_schema(methods=['post'], request_body=Student_Registration_Serializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=Student_Registration_Serializer)
 @csrf_exempt
 @api_view(['POST'])
 def Student_Registration(request):
@@ -578,7 +578,7 @@ def Student_Registration(request):
 
 
 # update student data here
-@swagger_auto_schema(methods=['PUT'], request_body=Update_Student_Registration_Serializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body=Update_Student_Registration_Serializer)
 @csrf_exempt
 @api_view(['PUT'])
 def EditAdminStudentData(request):
@@ -644,8 +644,8 @@ def EditAdminStudentData(request):
 
 # STUDENT LOGIN ENDPOINT
 # import requests
-@swagger_auto_schema(methods=['POST'], request_body=StudentLoginSerializer)
-# @swagger_auto_schema(methods=['post'], request_body=CustomTokenObtainPairSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body=StudentLoginSerializer)
+# @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=CustomTokenObtainPairSerializer)
 @csrf_exempt
 @api_view(['POST'])
 def Student_Login(request):
@@ -708,7 +708,6 @@ def Student_Login(request):
                     else:
                         student_user = authenticate(request, username=CheckUserUsername, password=student_password)
                         print('admin student access detected')
-                        print(student_user)
                         # token, created = Token.objects.get_or_create(user=student_user)
                         
                         # Student_username = StudentDHMSSignUp.objects.get(student_email = student_email).student_username
@@ -816,7 +815,7 @@ def Student_Login(request):
 # def VerifyEmailAddress(request):
 
 
-@swagger_auto_schema(methods=['post'], request_body=UpdatePasswordSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=UpdatePasswordSerializer)
 @csrf_exempt
 @permission_classes([])
 @api_view(['POST'])
@@ -891,7 +890,7 @@ def RequestPasswordUpdate(request):
 
 
 
-@swagger_auto_schema(methods=['PUT'], request_body=UpdatePasswordSerializerWithPasswordField)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body=UpdatePasswordSerializerWithPasswordField)
 @csrf_exempt
 @api_view(['PUT'])
 def AddNewPassword(request):
@@ -946,7 +945,7 @@ def AddNewPassword(request):
 
 
 # Technical partners serializer
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -986,11 +985,11 @@ def Technical_Partners(request):
 
 
 # Find a particular technical partner
-@swagger_auto_schema(methods=['post'], request_body=SingleTechnicalPartnersModelSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=SingleTechnicalPartnersModelSerializer)
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def Find_Technical_Partner(request):
+def GetTechnicalPartnerProfile(request):
     """
     View a single technical partner endpoint
 
@@ -1002,8 +1001,6 @@ def Find_Technical_Partner(request):
         try:
             if serializer.is_valid():
                 partner_email = serializer.data['technicianEmail']
-
-                print(partner_email)
                 FindTechnicalPartner = technicianModel.objects.get(technicianEmail = partner_email)
                 if FindTechnicalPartner:
                     # serializer = SingleTechnicalPartnersModelSerializer(FindTechnicalPartner, many=False)
@@ -1042,7 +1039,7 @@ def Find_Technical_Partner(request):
             })
             
 
-@swagger_auto_schema(methods=['post'], request_body=StudentDeviceRegSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=StudentDeviceRegSerializer)
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -1146,7 +1143,8 @@ def Student_Device_Registration(request):
                     print(SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['student_user_email']).id)
                     try:
                         form = StudentDeviceReg(user=request.user, student_admin_id = student_admin_id, device_name=student_device_name, device_serial_number = student_device_serial_number, 
-                        device_os = student_device_os, student_user_id = SubStudentID, student_device_health = student_device_health)
+                        device_os = student_device_os, student_user_id = SubStudentID, student_device_health = student_device_health,
+                        )
                         form.save()
                         return Response({
                             "status": status.HTTP_200_OK,
@@ -1177,7 +1175,7 @@ def Student_Device_Registration(request):
 
 
 
-@swagger_auto_schema(methods=['post'], request_body=SubStudentRegistrationSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=SubStudentRegistrationSerializer)
 @csrf_exempt
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
@@ -1296,7 +1294,7 @@ def Sub_Student_Registration(request):
 
 
 
-@swagger_auto_schema(methods=['PUT'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'])
 @csrf_exempt
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -1308,11 +1306,13 @@ def UnassignDevice(request, id):
         # if request.method == 'POST':
         if id:
             checkStudentExist = StudentDeviceReg.objects.get(id = id)
-            device_admin_id = StudentDeviceReg.objects.get(id = id).student_admin_id
+            # device_admin_id = StudentDeviceReg.objects.get(id = id).student_admin_id
             # device_admin_email = User.objects.get(id = device_admin_id).email
-            device_admin_id = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+            studentAdminID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+            print(checkStudentExist)
+            print(studentAdminID)
             # 
-            user_update = {"student_user_id": device_admin_id}
+            user_update = {"student_user_id": None}
             serializer = UpdateDeviceAssigneeSerializer(checkStudentExist, data = user_update)
             # serializer = UpdateDeviceAssigneeSerializer(checkStudentExist, data = request.user.email)
             if serializer.is_valid():
@@ -1332,12 +1332,7 @@ def UnassignDevice(request, id):
             return Response({
                 'status':status.HTTP_400_BAD_REQUEST,
                 'message': 'Invalid ID. No student matched the ID provided',
-            })
-        # else:
-        #     return Response({
-        #         'status':status.HTTP_400_BAD_REQUEST,
-        #         'message': 'Update not started. An error occured in your request',
-        #     })            
+            })         
     except:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
@@ -1347,7 +1342,7 @@ def UnassignDevice(request, id):
 
 
 # GET ALL STUDENT ADMIN REGISTERED DEVICES ENDPOINT
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1371,7 +1366,7 @@ def GetAllStudentDevices(request):
                     elif StudentDHMSSignUp.objects.filter(id = device_user_id):
                         device_user_email = StudentDHMSSignUp.objects.get(id = device_user_id).student_email
                     else:
-                        device_user_email = ''
+                        device_user_email = None
                     device_registration_date = checkDeviceExist.created_at              
                     
                     if StudentDHMSSignUp.objects.filter(student_email = device_user_email):
@@ -1381,10 +1376,11 @@ def GetAllStudentDevices(request):
                         fetchUserEmail = fetchUserData.student_email
                         fetchUserSchool = fetchUserData.student_school
                         fetchUserPhone = fetchUserData.student_phone
+                        fetchUserID = fetchUserData.id
 
                         fetchUserDataList = {
                             'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 
-                            'DeviceUserEmail':fetchUserEmail,
+                            'DeviceUserEmail':fetchUserEmail, 'DeviceUserID': fetchUserID,
                             'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone
                         }
                         
@@ -1395,13 +1391,14 @@ def GetAllStudentDevices(request):
                             fetchUserEmail = fetchUserData.sub_student_email_address
                             fetchUserSchool = fetchUserData.sub_student_school_name
                             fetchUserPhone = fetchUserData.sub_student_phone_number
+                            fetchUserID = fetchUserData.id
 
                             fetchUserDataList = {
                                 'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
-                                'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone
+                                'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone, 'DeviceUserID':fetchUserID
                             }
                     else:
-                        fetchUserDataList = 'Device is Not Assigned'
+                        fetchUserDataList = None
                         
                                             
                     FoundData = {"device_id":device_id, "device_name":device_name, "device_serial_number":  device_serial_number, 'device_os': device_os, 'device_health': device_device_health,
@@ -1425,7 +1422,7 @@ def GetAllStudentDevices(request):
                 elif StudentDHMSSignUp.objects.filter(id = device_user_id):
                     device_user_email = StudentDHMSSignUp.objects.get(id = device_user_id).student_email
                 else:
-                    device_user_email = ''
+                    device_user_email = None
                 device_registration_date = checkDeviceExist.created_at
                 
                 # get device user data starts here
@@ -1436,11 +1433,12 @@ def GetAllStudentDevices(request):
                     fetchUserLastName = currentAdminUser.student_lastname
                     fetchUserEmail = currentAdminUser.student_email
                     fetchUserSchool = currentAdminUser.student_school
-                    fetchUserPhone = currentAdminUser.student_phone                    
+                    fetchUserPhone = currentAdminUser.student_phone   
+                    fetchUserID = currentAdminUser.id                 
 
                     fetchUserDataList = {
                         'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
-                        'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone, 
+                        'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone, 'DeviceUserID': fetchUserID,
                     }
                     
                 elif SubStudentRegistration.objects.filter(sub_student_email_address = device_user_email):
@@ -1451,19 +1449,20 @@ def GetAllStudentDevices(request):
                     fetchUserEmail = currentDeviceUser.sub_student_email_address
                     fetchUserSchool = currentDeviceUser.sub_student_school_name
                     fetchUserPhone = currentDeviceUser.sub_student_phone_number
-                    fetchUserMatricNumber = currentDeviceUser.sub_student_matric_number                      
+                    fetchUserMatricNumber = currentDeviceUser.sub_student_matric_number   
+                    fetchUserID = currentDeviceUser.id                   
                     
                     fetchUserDataList = {
-                        'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
+                        'DeviceUserID': fetchUserID, 'DeviceUserFirstName':fetchUserFirstName, 'DeviceUserLastName':fetchUserLastName, 'DeviceUserEmail':fetchUserEmail,
                         'DeviceUserSchool':fetchUserSchool, 'DeviceUserPhone': fetchUserPhone, 'deviceUserMatricNumber' : fetchUserMatricNumber
                     }
                 
                 else:
-                    fetchUserDataList = ''
+                    fetchUserDataList = None
                 
                 # get device data start here
                 FoundData = {"device_id":device_id, "device_name":device_name, "device_serial_number":  device_serial_number, 'device_os': device_os, 'device_health': device_device_health,
-                            'device_user_data':fetchUserDataList,   'device_user_admin': device_admin_email, "device_registration_date":device_registration_date}
+                            'device_user_data':fetchUserDataList, 'device_user_admin': device_admin_email, "device_registration_date":device_registration_date}
                 FoundDevices.append(FoundData)
                 # if device_admin_email == device_user_email:        
                 return Response({
@@ -1501,13 +1500,13 @@ def GetAllStudentDevices(request):
     except:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
-            "message": "You're probably not authenticated. Kindly try again"
+            "message": "An error occured. Kindly try again"
         })
 
 
 
 # GET SPECIFIC STUDENT ADMIN REGISTERED DEVICES ENDPOINT
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1541,7 +1540,7 @@ def GetSingleStudentDevices(request, id):
 
 
 # SUPER ADMIN FUNCTIONS STARTS HERE
-@swagger_auto_schema(methods=['post'], request_body=ItsaSuperAdminLoginSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=ItsaSuperAdminLoginSerializer)
 @csrf_exempt
 @api_view(['POST'])
 def ItsaSuperAdminLoginFxn(request):
@@ -1650,7 +1649,7 @@ def ItsaSuperAdminLoginFxn(request):
 
 
 
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1720,7 +1719,7 @@ def GetAllRegStudents(request):
 
 
 # GET SPECIFIC STUDENT ADMIN REGISTERED DEVICES ENDPOINT
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1754,7 +1753,7 @@ def GetSingleStudents(request, id):
 
 
 
-@swagger_auto_schema(methods=['PUT'], request_body=FetchStudentSerializerForEdit)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body=FetchStudentSerializerForEdit)
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['PUT'])
@@ -1789,7 +1788,7 @@ def EditStudentData(request, id):
 
 
 
-@swagger_auto_schema(methods=['DELETE'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['DELETE'])
 @csrf_exempt
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -1800,17 +1799,17 @@ def DeleteStudentData(request, id):
             DeviceStudent = SubStudentRegistration.objects.get(Q(id = id) & Q(sub_student_admin_id = currentLoggedInUserID))
             if DeviceStudent:
                 DeviceStudent.delete()
-                Response({
+                return Response({
                 "status": status.HTTP_200_OK,
                 "message": "Student was deleted successfully."
                 })
             else:
-                Response({
+                return Response({
                 "status": status.HTTP_400_BAD_REQUEST,
                 "message": "Student with specified ID was not found under your directory."
                 })
         else:
-            Response({
+            return Response({
             "status": status.HTTP_400_BAD_REQUEST,
             "message": "Student with specified ID was not found under your directory."
             })
@@ -1822,7 +1821,7 @@ def DeleteStudentData(request, id):
     
 
 
-@swagger_auto_schema(methods=['PUT'], request_body=DeviceSerializerForEdit)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body=DeviceSerializerForEdit)
 @csrf_exempt
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
@@ -1856,7 +1855,7 @@ def EditDeviceData(request, id):
         })
 
 
-@swagger_auto_schema(methods=['DELETE'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['DELETE'])
 @csrf_exempt
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
@@ -1883,7 +1882,7 @@ def DeleteDeviceData(request, id):
     
 
 
-# @swagger_auto_schema(methods=['PUT'])
+# @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'])
 # @csrf_exempt
 # @api_view(['PUT'])
 # @permission_classes([IsAuthenticated])
@@ -1910,7 +1909,7 @@ def DeleteDeviceData(request, id):
 
 
 
-@swagger_auto_schema(methods=['get'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['get'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -1954,12 +1953,13 @@ def MaintenanceReqPerMonth(request):
         })
 
 
-@swagger_auto_schema(methods=['post'], request_body=MaintenanceRequestSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=MaintenanceRequestSerializer)
 @csrf_exempt
 @api_view(['POST'])
 def MaintenanceReg(request):
     try:
         if request.method == 'POST':
+            today = date.today()
             serializer = MaintenanceRequestSerializer(data = request.data)
             if serializer.is_valid():
                 # 'student_requester_id', 'student_admin_id', 
@@ -1969,6 +1969,7 @@ def MaintenanceReg(request):
                 maintenance_issue = serializer.data['maintenance_issue']
                 maintenance_description = serializer.data['maintenance_description']  
                 user = User.objects.get(email = request.user.email)
+                registeredMonth = today.strftime("%b")
                     
                 # check device ID
                 if (StudentDeviceReg.objects.filter(id = serializer.data['device_id'])):
@@ -1983,7 +1984,7 @@ def MaintenanceReg(request):
                             if signedInAdminID:
                                 form = StudentMaintenanceRequest(user = user, student_requester_id= signedInAdminID, student_admin_id = signedInAdminID,
                                 device_id = device_id, device_name=device_name, maintenance_priority_level = maintenance_priority_level, 
-                                maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description)
+                                maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description, registeredMonth = registeredMonth)
                                 form.save()
                                 return Response({
                                     "status": status.HTTP_200_OK,
@@ -2002,7 +2003,7 @@ def MaintenanceReg(request):
                         # 
                         if int(signedInSubStudentID) == int(deviceUserID):
                             form = StudentMaintenanceRequest(user = user, student_requester_id= signedInSubStudentID, device_name=device_name, 
-                            maintenance_priority_level = maintenance_priority_level, student_admin_id = signedInAdminID,
+                            maintenance_priority_level = maintenance_priority_level, student_admin_id = signedInAdminID, registeredMonth = registeredMonth,
                             maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description, device_id = device_id)  
                             form.save()
                             return Response({
@@ -2041,7 +2042,7 @@ def MaintenanceReg(request):
         })
 
 
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -2075,7 +2076,7 @@ def FetchMaintenaceRequests(request):
         })
 
 
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -2157,7 +2158,7 @@ def GetEmailValidationCode(request):
         })
 
 
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -2222,7 +2223,7 @@ def GetPhoneNumberValidationCode(request):
 
 
 
-@swagger_auto_schema(methods=['POST'], request_body=GetValidationCode)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body=GetValidationCode)
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -2274,7 +2275,7 @@ def ValidateEmailCode(request):
         })
 
 
-@swagger_auto_schema(methods=['POST'], request_body=GetValidationCode)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body=GetValidationCode)
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -2326,7 +2327,7 @@ def ValidatePhoneCode(request):
 
 
 
-@swagger_auto_schema(methods=['post'], request_body=StudentTransactionPINSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['post'], request_body=StudentTransactionPINSerializer)
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -2391,7 +2392,7 @@ def CreateTransactionPIN(request):
         })
 
 
-@swagger_auto_schema(methods=['PUT'], request_body=UpdateStudentTransactionPINSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body=UpdateStudentTransactionPINSerializer)
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['PUT'])
@@ -2451,7 +2452,7 @@ def UpdateTransactionPIN(request):
 
 
 # CREATE PAYSTACK CUSTOMER
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
@@ -2512,7 +2513,7 @@ def CreatePaystackCustomer(request):
 
 
 # FETCH PAYSTACK CUSTOMER
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
@@ -2610,7 +2611,7 @@ def create_transfer_recipient(request, bank_account_name, studentBankCode, bank_
         
 
 # CREATE VIRTUAL ACCOUNT
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
@@ -2706,7 +2707,7 @@ def CreateDedicatedVirtualAccount(request):
 
 
 # FETCT PAYSTACK SUPPORTED BANKS
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 # @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
@@ -2734,7 +2735,7 @@ def PaystackListofBanks(request):
 
 
 # FETCT PAYSTACK SUPPORTED BANKS
-@swagger_auto_schema(methods=['POST'], request_body = ValidatePayStackCustomerSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = ValidatePayStackCustomerSerializer)
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['POST'])
@@ -2795,6 +2796,7 @@ def ValidatePayStackCustomer(request):
 
 
 @csrf_exempt
+@schema(None)  
 @api_view(['POST'])
 def PaystackWebhookView(request):
     if request.method == 'POST':
@@ -2903,7 +2905,7 @@ def handle_dva_funds_received(data):
 
 
 # FETCT ALL DVAs
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
@@ -2932,7 +2934,7 @@ def List_DVAs(request):
 
 
 # FETCT USER WALLET DETAILS
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def FetchWalletDetails(request):
@@ -2967,7 +2969,7 @@ def FetchWalletDetails(request):
 
 
 # FETCT DEVICE STATUS ENUMS
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def Device_Health_Status(request):
@@ -2995,7 +2997,7 @@ def Device_Health_Status(request):
 
 # TRANSFER FUNDS
 # Function to initialize a transfer
-@swagger_auto_schema(methods=['POST'], request_body = InitializeFundTransferSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = InitializeFundTransferSerializer)
 @csrf_exempt
 @api_view(['POST'])
 # def initialize_transfer(amount, recipient_code, reason='Transfer from dedicated virtual account'):
@@ -3089,7 +3091,7 @@ def finalize_transfer(transfer_code, otp):
 
 # paystack customer code: CUS_ufzwn9sughvqskp
 
-@swagger_auto_schema(methods=['POST'], request_body = VerifyUserAccountDetailsSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = VerifyUserAccountDetailsSerializer)
 @csrf_exempt
 @api_view(['POST'])
 def VerifyUserAccountDetails(request):
@@ -3152,7 +3154,7 @@ def FetchTransactionsForCalc(getUserAccountNumber):
 
 
 
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def Calculate_balance(request):
@@ -3195,7 +3197,7 @@ def Calculate_balance(request):
 
 
 # CALCULATE ACCOUNT BALANCE BELOW
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def FetchAllTransactions(request):    
@@ -3307,7 +3309,7 @@ def fetch_and_save_transactions(request):
 
 
 # CHECK KYC COMPLETON
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def CheckKYCValidation(request):
@@ -3353,21 +3355,41 @@ def CheckKYCValidation(request):
 
 
 # PLACE STUDENT TRANSFER REQUEST
-@swagger_auto_schema(methods=['POST'], request_body = PlaceTransferRequestsSerializer)
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = PlaceTransferRequestsSerializer)
 @csrf_exempt
 @api_view(['POST'])
 def StudentPlaceTransferRequest(request):
-    # try:
+    try:
         serializer = PlaceTransferRequestsSerializer(data = request.data)
         if serializer.is_valid():
             transferAmount = int(serializer.data['transferAmount']),
-            # receiverEmail = serializer.data['receiverEmail'],
+            transactionPIN = serializer.data['transactionPIN']
+            # Check if requester has set up transaction PIN
+            if (StudentDHMSSignUp.objects.filter(student_email = request.user.email)):
+                GetStudentAdminID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
+                if StudentTransactionPIN.objects.filter(student_id = GetStudentAdminID):
+                    GetStudentAdminTransPIN = StudentTransactionPIN.objects.get(student_id = GetStudentAdminID).student_transaction_pin
+                    # check if transaction pin is correct
+                    if (GetStudentAdminTransPIN == serializer.data['transactionPIN']):
+                        pass
+                    else:
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "Sorry, Your transaction pin is incorrect"
+                        })
+                else:
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Sorry, You have not set a transaction pin yet. Please create a transaction PIN and try again"
+                    })
+            else:
+                pass
             if StudentDHMSSignUp.objects.filter(student_email = serializer.data['receiverEmail']):
                 receiverID = int(StudentDHMSSignUp.objects.get(student_email = serializer.data['receiverEmail']).id)
                 getRequestingID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
                 fetchUserProfile = StudentDHMSSignUp.objects.get(student_email = request.user.email)
                 fetchUserPhoneNumber = fetchUserProfile.student_phone
-                #                         
+                # 
                 senderFirstName = fetchUserProfile.student_firstname
                 senderLastName = fetchUserProfile.student_lastname
                 senderEmail = fetchUserProfile.student_email
@@ -3451,7 +3473,7 @@ def StudentPlaceTransferRequest(request):
                         
                         return Response({
                                         "status":status.HTTP_200_OK,
-                                        "message": 'Nice! Your transfer request was sent successfully! Funds will arrive in shortly'
+                                        "message": 'Nice! Your transfer request was sent successfully! Funds will arrive shortly'
                                     })                    
                 else:
                     return Response({
@@ -3470,16 +3492,16 @@ def StudentPlaceTransferRequest(request):
                 "message": "Invalid data submitted",
                 "error": serializer.error_messages
             }) 
-    # except:
-    #     return Response({
-    #         "status": status.HTTP_400_BAD_REQUEST,
-    #         "message": "An error occured. Kindly try again"
-        # })   
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error occured. Kindly try again"
+        })   
 
 
 
 @permission_classes([IsAuthenticated])
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def DashboardOverview(request):
@@ -3515,7 +3537,7 @@ def DashboardOverview(request):
 
 
 @permission_classes([IsAuthenticated])
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def CheckStudentPlan(request):
@@ -3543,18 +3565,68 @@ def CheckStudentPlan(request):
 
 # FETCH MAINTENANCE COUNTS
 @permission_classes([IsAuthenticated])
-@swagger_auto_schema(methods=['GET'])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
 def FetchMaintenanceRequestCounts(request):
-    try:
+    # try:
         findCurrentUserID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
         StudentMaintenanceRequest.objects.filter(student_admin_id = findCurrentUserID)
         completedMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Completed')).count()
         pendingMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Pending')).count()
         ongoingMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Ongoing')).count()
         declinedMaintenance = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(maintenance_status = 'Declined')).count()
-        # print(f'completedMaintenance: {completedMaintenance}, pendingMaintenance: {pendingMaintenance}, ongoingMaintenance: {ongoingMaintenance}, declinedMaintenance: {declinedMaintenance}')
+        
+        # get maintenance requests by month
+        # allDevicesMonthPre = StudentMaintenanceRequest.objects.filter(student_admin_id = findCurrentUserID)
+        # allDevicesMonth = allDevicesMonthPre.values_list('registeredMonth')
+        JanMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Jan'))
+        JanMaintenanceReqsCount = JanMaintenanceReqs.count()
+        FebMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Feb'))
+        FebMaintenanceReqsCount = FebMaintenanceReqs.count()
+        MarMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Mar'))
+        MarMaintenanceReqsCount = MarMaintenanceReqs.count()
+        AprMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Apr'))
+        AprMaintenanceReqsCount = AprMaintenanceReqs.count()
+        MayMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'May'))
+        MayMaintenanceReqsCount = MayMaintenanceReqs.count()
+        JuneMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Jun'))
+        JuneMaintenanceReqsCount = JuneMaintenanceReqs.count()
+        JulyMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Jul'))
+        JulyMaintenanceReqsCount = JulyMaintenanceReqs.count()
+        AugMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Aug'))
+        AugMaintenanceReqsCount = AugMaintenanceReqs.count()
+        SeptMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Sep'))
+        SeptMaintenanceReqsCount = SeptMaintenanceReqs.count()
+        OctMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Oct'))
+        OctMaintenanceReqsCount = OctMaintenanceReqs.count()
+        NovMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Nov'))
+        NovMaintenanceReqsCount = NovMaintenanceReqs.count()
+        DecMaintenanceReqs = StudentMaintenanceRequest.objects.filter(Q(student_admin_id = findCurrentUserID) & Q(registeredMonth = 'Dec'))
+        DecMaintenanceReqsCount = DecMaintenanceReqs.count()
+        # january = {
+        #     'Jan':JanMaintenanceReqsCount,
+        # }
+        
+#         maintenanceCountPerMonth": [
+#               {"month":"Jan", "count": 0}
+#          ]
+
+        maintenanceReqsPerMonth = {
+            'Jan':JanMaintenanceReqsCount,
+            'Feb':FebMaintenanceReqsCount,
+            'Mar':MarMaintenanceReqsCount,
+            'Apr':AprMaintenanceReqsCount,
+            'May':MayMaintenanceReqsCount,
+            'June':JuneMaintenanceReqsCount,
+            'July':JulyMaintenanceReqsCount,
+            'Aug':AugMaintenanceReqsCount,
+            'Sept':SeptMaintenanceReqsCount,
+            'Oct':OctMaintenanceReqsCount,
+            'Nov':NovMaintenanceReqsCount,
+            'Dec':DecMaintenanceReqsCount,            
+        }
+
         data = {
             'completedMaintenance': completedMaintenance, 
             'pendingMaintenance' : pendingMaintenance, 
@@ -3564,12 +3636,159 @@ def FetchMaintenanceRequestCounts(request):
         
         return Response({
             "status": status.HTTP_200_OK,
-            'maintenanceCount':data,
+            'maintenanceCountByStatus':data,
+            'maintenanceCountPerMonth':maintenanceReqsPerMonth,
             "message": "Maintenance counts fetch successfull"
+        }) 
+    # except:
+    #     return Response({
+    #         "status": status.HTTP_400_BAD_REQUEST,
+    #         "message": "An error occured. Kindly try again"
+    #     })
+    
+
+@permission_classes([IsAuthenticated])
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def FetchTechnicalPartners(request):
+    try:
+        FoundTechnicians = []
+        if technicianModel.objects.filter():
+            fetchAllTechnicians = technicianModel.objects.all()
+            for fetchAllTechnician in fetchAllTechnicians:
+                fetchAllTechnicianName = fetchAllTechnician.technicianName
+                fetchAllTechnicianEmail = fetchAllTechnician.technicianEmail
+                fetchAllTechnicianPhone = fetchAllTechnician.technicianPhoneNumber
+                fetchAllTechnicianAvailability = fetchAllTechnician.technicianAvailability
+                fetchAllTechnicianLocation = fetchAllTechnician.technicianLocation
+                dateRegistered = fetchAllTechnician.created_at
+                
+                techniciansData = {
+                    'technicianName': fetchAllTechnicianName, 'technicianEmail': fetchAllTechnicianEmail, 'technicianPhone': fetchAllTechnicianPhone,
+                    'technicianAvailability': fetchAllTechnicianAvailability, 'technicianLocation': fetchAllTechnicianLocation, 
+                    'dateRegistered': dateRegistered,
+                }
+                
+                FoundTechnicians.append(techniciansData)
+                
+            return Response({
+                "status": status.HTTP_200_OK,
+                'techniciansData':FoundTechnicians,
+                "message": "Technicians fetch successfull"
+            }) 
+        else:
+            return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "No technician available",
+            }) 
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error occured.",
+        }) 
+        
+
+# Reassign device endpoint
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body = ReassignDeviceSerializer)
+@csrf_exempt
+@api_view(['PUT'])
+def ReassignDevice(request, id):
+    try:
+        serializer = ReassignDeviceSerializer(data = request.data)
+        if serializer.is_valid():
+            studentEmailAddress = serializer.data['substudentEmail']
+            
+            # find device 
+            if StudentDeviceReg.objects.filter(id = id):
+                getDevice = StudentDeviceReg.objects.get(id = id)
+                getDeviceUserId = StudentDeviceReg.objects.get(id = id).student_user_id
+                if getDeviceUserId is not None:
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Device is already assigned to a student. Kindly unassign the device before reassiging it.",
+                    })
+                # find sub student
+                if SubStudentRegistration.objects.filter(sub_student_email_address = studentEmailAddress):
+                    findSubStudent = SubStudentRegistration.objects.get(sub_student_email_address = studentEmailAddress)
+                    findSubStudentID = int(findSubStudent.id)
+                    findSubStudentAdminID = int(findSubStudent.sub_student_admin_id)
+                    findAdminID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
+                    # getDeviceUserId
+                    if findSubStudentAdminID == findAdminID:
+                        assignNewUser = {'student_user_id' :  findSubStudentID}  
+                        print(findSubStudentID)
+                        serialiseData = AllStudentDevicesSerializer(getDevice, data = assignNewUser)
+                        if serialiseData.is_valid():
+                            serialiseData.save()
+                            return Response({
+                                "status": status.HTTP_200_OK,
+                                "message": "Device Reassigned successfull"
+                            })
+                        else:
+                            return Response({
+                                "status": status.HTTP_400_BAD_REQUEST,
+                                "message": "An error occured.",
+                                "error": serializer.error_messages
+                            }) 
+                    else:
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "The student is not under your jurisdiction.",
+                        })
+                else:
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Invalid email address provided",
+                    })            
+            else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "An error occured. The ID is invalid",
+                }) 
+        else:
+            return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "An error occured.",
+                "error": serializer.error_messages
+            }) 
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error occured.",
+        }) 
+
+
+
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def UnassignedDevices(request):
+    try:
+        allUnAssignedDevice = []
+        finAdminID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
+        allDevices = StudentDeviceReg.objects.filter(Q(student_user_id = None) & Q(student_admin_id = finAdminID))
+        for allDevice in allDevices:
+            allDeviceID = allDevice.id
+            allDeviceName = allDevice.device_name
+            allDeviceSerialNumber = allDevice.device_serial_number
+            allDeviceOS = allDevice.device_os
+            allDeviceHealth = allDevice.student_device_health
+            
+            deviceData = {
+                'DeviceID' : allDeviceID, 'DeviceName' : allDeviceName, 'DeviceSerialNumber': allDeviceSerialNumber,
+                'DeviceOS': allDeviceOS, 'DeviceHealth': allDeviceHealth
+            }
+            
+            allUnAssignedDevice.append(deviceData)
+            
+        return Response({
+            "status": status.HTTP_200_OK,
+            "unassignedDevice": allUnAssignedDevice,
+            "message": "Device Reassigned successfull"
         }) 
     except:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
-            "message": "An error occured. Kindly try again"
-        })
-    
+            "message": "An error occured.",
+        }) 

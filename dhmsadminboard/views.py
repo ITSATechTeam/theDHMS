@@ -323,7 +323,7 @@ def ITPartners(request):
         
         AllTechnicalPartners = technicianModel.objects.create(technicianName = technicianName, technicianEmail = technicianEmail, 
         technicianAvailability = technicianAvailability, technicianPhoneNumber = technicianPhoneNumber, 
-        technicianLocation = technicianLocation, technicianUniqueID = technicalPartnerUniqueID)
+        technicianLocation = technicianLocation)
         User.objects.create(first_name = technicianLocation, email = technicianEmail, last_name = technicianPhoneNumber, 
                             username = technicianName, password = technicalPartnerUniqueID)
         if AllTechnicalPartners:
@@ -459,6 +459,15 @@ def FindITPartners(request, id):
         context = {'findPartner':findPartner}
         return (render(request, 'dhmsadminboard/viewpartner.html', context))
     
+
+ 
+def DeleteTechnicaPartner(request, id):
+    partnerToDelete = technicianModel.objects.get(id = id)
+    partnerToDelete.delete()
+    messages.error(request, 'Comment has been deleted')
+    # return response
+    messages.success(request, "Techncian's partner deleted successfully.")
+    return redirect('ITPartners')
 
 
 

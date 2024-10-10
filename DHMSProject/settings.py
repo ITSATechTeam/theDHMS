@@ -86,7 +86,7 @@ SWAGGER_SETTINGS = {
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
-DEBUG = True
+DEBUG = False
 
 CSRF_FAILURE_VIEW = 'useronboard.views.csrf_failure'
 

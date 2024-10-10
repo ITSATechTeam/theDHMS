@@ -1,10 +1,10 @@
 from django.urls import path
 from . import views
 from . import viewsadminapi
-from .views import PaystackWebhookView
+from .views import *
+from . import technicalappviews
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import CustomTokenObtainPair
 # from .views import custom_token_refresh
 
 # JWT IMPORTS
@@ -42,9 +42,20 @@ urlpatterns = [
     # PASSWORD CHANGE ENDPOINTS
     path('changepassword', views.RequestPasswordUpdate, name="RequestPasswordUpdate"),
     path('addnewpassword', views.AddNewPassword, name="AddNewPassword"),
+    
     # TECHNICAL PARTNERS ENDPOINTS STARTS HERE
-    path('findtechnicalpartner', views.Find_Technical_Partner, name="Find_Technical_Partner"),
+    # REGISTER A TECHNICAL PARTNER
+    path('registertechnician', technicalappviews.RegisterTechnicalPartner, name="RegisterTechnicalPartner"),
+    # LOGIN A TECHNICAL PARTNER
+    path('technicianlogin', technicalappviews.TechnicianPartnerLogin, name="TechnicianPartnerLogin"),
+    # FIND A SINGLE TECHNICAL PARTNER
+    path('findtechnicalpartner', views.GetTechnicalPartnerProfile, name="GetTechnicalPartnerProfile"),
+    # FETCH ALL TECHNICAL PARTNERS
     path('technicalpartners', views.Technical_Partners, name="Technical_Partners"),
+    # FETCH TECHNICAL PARTNERS
+    path('fetchtechnicians', views.FetchTechnicalPartners, name='FetchTechnicalPartners'),    
+    # TECHNICAL PARTNERS ENDPOINTS STARTS HERE
+    
     # ITSA SUPER ADMIN ENDPOINT
     path('superadminlogin', views.ItsaSuperAdminLoginFxn, name="ItsaSuperAdminLoginFxn"),
     # GET MAINTENANCE REQS PER MONTH ENDPOINT
@@ -92,7 +103,7 @@ urlpatterns = [
     path('validatepaystackcustomer', views.ValidatePayStackCustomer, name="ValidatePayStackCustomer"),
     path('fetchwalletdetails', views.FetchWalletDetails, name="FetchWalletDetails"),
     path('findaccountname', views.VerifyUserAccountDetails, name="VerifyUserAccountDetails"),
-    path('createtransferrecipient', views.create_transfer_recipient, name="create_transfer_recipient"),
+    # path('createtransferrecipient', views.create_transfer_recipient, name="create_transfer_recipient"),
     # path('initializetransfer', views.initialize_transfer, name="initialize_transfer"),
     path('fetchalltransactions', views.FetchAllTransactions, name="FetchAllTransactions"),
     path('findaccountbalance', views.Calculate_balance, name="Calculate_balance"),
@@ -107,6 +118,9 @@ urlpatterns = [
     path('checkstudentplan', views.CheckStudentPlan, name='CheckStudentPlan'),
     # FETCH MAINTENANCE COUNTS
     path('fetchmaintenacecount', views.FetchMaintenanceRequestCounts, name='FetchMaintenanceRequestCounts'),
+    # REASSIGN DEVICE TO ANOTHER SUB STUDENT
+    path('reassigndevice/<str:id>', views.ReassignDevice, name='ReassignDevice'),
+    path('allunassigneddevices', views.UnassignedDevices, name='UnassignedDevices'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
