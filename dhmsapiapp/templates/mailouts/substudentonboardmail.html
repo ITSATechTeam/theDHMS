@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: tahoma, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .logo {
+            background-color: white;
+            width: 100vw;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 80px;
+        }
+
+        .mailbody {
+            width: 70%;
+            margin: auto;
+            color: white;
+        }
+
+        .footerbtn {
+            background-color: white;
+            padding: 10px;
+            width: 100vw;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .footerbtn button {
+            background-color: #59A2EA;
+            padding: 10px;
+            font-size: 1.2rem;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .mailbody p a {
+            color: whitesmoke;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+
+<body style="background-color: #59A2EA; color: white; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
+    <div class="logo">
+        <div style="max-width: 84px;"><img
+                src="https://itservicedeskafrica.com/wp-content/uploads/2024/02/cropped-imgonline-com-ua-resize-StIhnAFBkp.png"
+                style="display: block; height: auto; border: 0; width: 100%;" width="84"></div>
+    </div>
+
+    <div class="mailbody">
+        <h4>Hello {{firstName}},</h4>
+
+        <p style="color:white">
+            You have been registered on the Student DHMS by {{adminName}}, whose email address is {{adminEmail}}:
+        <br /><br />
+
+        <a href = "https://drive.google.com/file/d/1fTNYTkfbkwWPdMQQ52nlM4SgFsNSFohG/view?usp=sharing">Click here</a> to download the Student DHMS mobile application and login to start using the DHMS, see your login details below:
+        <br/>
+        Email Address: {{emailAddress}}<br/>
+        Password: {{password}}
+
+        <br /><br />
+        To reset your password, kindly <a href="https://dhms.itservicedeskafrica.com/password_reset">click here</a>
+
+        <h1 style="margin: auto;"><strong>{{otp}}<strong /></h1>
+
+        <br />
+        To Contact support: <br />
+        <a href="mailto:franklin.i@itservicedeskafrica.com">Click to send an email</a><br />
+        <a href="tel:+2347011567240">Click here call support</a>
+        {% comment %} <a href="tel:+2347011567240"><strong style="color:blue">Click here call support</strong></a> {% endcomment %}
+
+        <br /><br />
+        Best Regards,<br />
+        DHMS Support
+        </p>
+        <br />
+
+        <p>This email was sent to {{emailAddress}} because you have been registered as a student on Student DHMS by {{adminEmail}}</p>
+         <br /><br />
+    </div>
+</body>
+
+</html>

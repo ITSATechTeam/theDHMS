@@ -121,6 +121,8 @@ urlpatterns = [
     # REASSIGN DEVICE TO ANOTHER SUB STUDENT
     path('reassigndevice/<str:id>', views.ReassignDevice, name='ReassignDevice'),
     path('allunassigneddevices', views.UnassignedDevices, name='UnassignedDevices'),
+    # SEND SUB STUDENT EMAIL NOTIFICATION AFTER REGISTRATION
+    # path('sendsubstudentemail', views.SendSubStudentEmailNotification, name='SendSubStudentEmailNotification'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
