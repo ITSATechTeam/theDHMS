@@ -8,6 +8,12 @@ SUPER_ADMIN_ACCESS = (
     ("FAMILYDHMS", "FAMILYDHMS"),
 )
 
+MaintainanceStatusOption = (
+    ("Ful_lTime", "Full_Time"),
+    ("Part_Time", "Part_Time"),
+    ("Not Available", "Not Available"),
+    ("Suspended", "Suspended"),
+)
 
 class SuperAdminsModel(models.Model):
     # user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
@@ -34,7 +40,7 @@ class technicianModel(models.Model):
     technicianEmail = models.EmailField(max_length= 300)
     technicianName = models.CharField(max_length= 300)
     technicianPhoneNumber = models.CharField(max_length= 300)
-    technicianAvailability = models.CharField(max_length= 300)
+    technicianAvailability = models.CharField(max_length= 300, choices = MaintainanceStatusOption, default = 'Full_Time')
     technicianLocation = models.CharField(max_length= 300)
     password = models.CharField(max_length= 300)
     created_at = models.DateTimeField(auto_now_add=True)

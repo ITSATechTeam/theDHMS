@@ -347,10 +347,10 @@ def Student_Login(request):
                             'status':status.HTTP_200_OK,
                             'message': 'Student Login was Successfull',
                             "Token": token_serializer.validated_data,
-                            # "SessionID": session_id,
                             "studentData": {"email": student_email, "phone_number": student_phoneNumber, "student_firstName":  Student_firstname, 
                                             "student_lastname": Student_lastname, "student_school": student_school, 'student_email_verification_status': student_email_verification_status, 
-                                            "student_pin_set":student_pin_set, "is_student_admin": is_Student_Admin},
+                                            "student_pin_set":student_pin_set, "is_student_admin": is_Student_Admin
+                                            },
                         })
 
                 # Sub student Login setup starts here
@@ -387,15 +387,29 @@ def Student_Login(request):
                         student_school = Student_name_details.sub_student_school_name
                         student_phoneNumber = Student_name_details.sub_student_phone_number
                         
+                        
+                    sub_student_id = SubStudentRegistration.objects.get(sub_student_email_address = student_email).id
+                    if VerifyEmailAddress.objects.filter(studentID = sub_student_id):
+                        student_email_verification_status = True
+                    else:
+                        student_email_verification_status = False
+                        # check if PIN is created
+                    if StudentTransactionPIN.objects.filter(student_id = sub_student_id):
+                        student_pin_set = True
+                    else:
+                        student_pin_set = False
+
+                        
                     if student_user is not None:
                         login(request, student_user)
                         return Response({
                             'status':status.HTTP_200_OK,
                             'message': 'Sub Student Login was Successfull',
                             "Token": token_serializer.validated_data,
-                            # "SessionID": session_id,
-                            "studentData": {"email": student_email, "Phone number": student_phoneNumber, "studentFirstName":  student_firstname,"studentLastName":  student_lastname, 
-                                            "student_school": student_school, "student_matric_number":student_matric_number, "is_student_admin": is_Student_Admin},
+                            "studentData": {"email": student_email, "Phone_number": student_phoneNumber, "student_firstName":  student_firstname, "student_lastname":  student_lastname, 
+                                            "student_school": student_school, "student_matric_number":student_matric_number, "is_student_admin": is_Student_Admin,
+                                            'student_email_verification_status': student_email_verification_status, "student_pin_set":student_pin_set,
+                                            },
                         })
                 else:
                     return Response({
@@ -3407,3 +3421,29 @@ def UnassignedDevices(request):
             "status": status.HTTP_400_BAD_REQUEST,
             "message": "An error occured.",
         }) 
+    
+    
+
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def MaintenaceRequestIssueTypes(request):
+    try:
+        deviceStatuses = {
+            'Screen Repairs':'Screen Repairs',
+            'Battery Issues':'Battery Issues',
+            'Keyboard Issues':'Keyboard Issues',
+            'Motherboard Issues':'Motherboard Issues',
+            'Others':'Others',
+            }        
+        return Response({
+            'status': status.HTTP_200_OK,
+            'message': 'Maintenance Request Issues Types',
+            'data': deviceStatuses
+        })
+    except:
+        return Response({
+            'status': status.HTTP_400_BAD_REQUEST,
+            'message': 'An error occured'
+        })
+

@@ -322,14 +322,16 @@ def ITPartners(request):
 
         
         AllTechnicalPartners = technicianModel.objects.create(technicianName = technicianName, technicianEmail = technicianEmail, 
-        technicianAvailability = technicianAvailability, technicianPhoneNumber = technicianPhoneNumber, 
+        technicianAvailability = technicianAvailability, technicianPhoneNumber = technicianPhoneNumber, password = technicalPartnerUniqueID,
         technicianLocation = technicianLocation)
-        User.objects.create(first_name = technicianLocation, email = technicianEmail, last_name = technicianPhoneNumber, 
-                            username = technicianName, password = technicalPartnerUniqueID)
+        userprofile = User.objects.create_user(first_name = technicianName, email = technicianEmail, last_name = technicianPhoneNumber, 
+                            username = technicianEmail, password = technicalPartnerUniqueID)
+
+        AllTechnicalPartners.save()
+        userprofile.save()
         if AllTechnicalPartners:
             messages.success(request, "Techncian's registration was successful.")
             return redirect('ITPartners')
-
     AllTechnicalPartners = technicianModel.objects.all()
     AllTechnicalPartnersCount = AllTechnicalPartners.count()
     numberOfDevicesPerPage = 5

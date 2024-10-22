@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 MAINTAINANCE_STATUS_CHOICE = (
     ("Completed", "Completed"),
-    ("Cancelled", "Cancelled"),
+    ("Declined", "Declined"),
     ("Ongoing", "Ongoing"),
     ("Pending", "Pending"),
 )

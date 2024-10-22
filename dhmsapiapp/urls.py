@@ -54,8 +54,28 @@ urlpatterns = [
     path('technicalpartners', views.Technical_Partners, name="Technical_Partners"),
     # FETCH TECHNICAL PARTNERS
     path('fetchtechnicians', views.FetchTechnicalPartners, name='FetchTechnicalPartners'),    
+    # FETCH MAINTENANCE REQUEST COUNT
+    path('getmaintenancerequestscount', technicalappviews.GetAllMaintenanceCount, name='GetAllMaintenanceCount'),    
+    # FETCH ALL MAINTENANCE REQUEST
+    path('getallmaintenancerequests', technicalappviews.GetAllMaintenanceRequest, name='GetAllMaintenanceRequest'),    
+    # FETCH MAINTENANCE COMPLETION PERCENTAGE
+    path('getcompletemaintenancepercentrate', technicalappviews.GetCompletedMaintenancePercentage, name='GetCompletedMaintenancePercentage'),    
+    # FETCH PENDING MAINTENANCE REQUEST
+    path('getpendingmaintenancereqs', technicalappviews.GetPendingMaintenanceRequest, name='GetPendingMaintenanceRequest'),    
+    # FETCH COMPLETED MAINTENANCE REQUEST
+    path('getcompletedmaintenancereqs', technicalappviews.GetCompletedMaintenanceRequest, name='GetCompletedMaintenanceRequest'),    
+    # FETCH ONGOING MAINTENANCE REQUEST
+    path('getongoingmaintenancereqs', technicalappviews.GetOngoingMaintenanceRequest, name='GetOngoingMaintenanceRequest'),    
+    # FETCH DECLINED MAINTENANCE REQUEST
+    path('getdeclineddmaintenancereqs', technicalappviews.GetDeclinedMaintenanceRequest, name='GetDeclinedMaintenanceRequest'),    
+    # FETCH MAINTENANCE REQEUSTS PER MONTH
+    path('fetchmaintenancepermonth', technicalappviews.FetchMaintenanceRequestPerMonth, name='FetchMaintenanceRequestPerMonth'),    
+    # FETCH MAINTENANCE TYPE RATE
+    path('getmaintenancetyperate', technicalappviews.GetMaintenanceTypePercentage, name='GetMaintenanceTypePercentage'),    
+    # FETCH LASTEST FIVEMAINTENANCE REQEUSTS
+    path('getlastfivemaintenacereqs', technicalappviews.GetLatestFiveMaintenanceRequest, name='GetLatestFiveMaintenanceRequest'),    
     # TECHNICAL PARTNERS ENDPOINTS STARTS HERE
-    
+     
     # ITSA SUPER ADMIN ENDPOINT
     path('superadminlogin', views.ItsaSuperAdminLoginFxn, name="ItsaSuperAdminLoginFxn"),
     # GET MAINTENANCE REQS PER MONTH ENDPOINT
@@ -121,6 +141,7 @@ urlpatterns = [
     # REASSIGN DEVICE TO ANOTHER SUB STUDENT
     path('reassigndevice/<str:id>', views.ReassignDevice, name='ReassignDevice'),
     path('allunassigneddevices', views.UnassignedDevices, name='UnassignedDevices'),
+    path('maintenanceissuetype', views.MaintenaceRequestIssueTypes, name='MaintenaceRequestIssueTypes'),
     # SEND SUB STUDENT EMAIL NOTIFICATION AFTER REGISTRATION
     # path('sendsubstudentemail', views.SendSubStudentEmailNotification, name='SendSubStudentEmailNotification'),
 

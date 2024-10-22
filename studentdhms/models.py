@@ -12,6 +12,13 @@ MaintainanceStatusOption = (
     ("Declined", "Declined"),
     ("Completed", "Completed"),
 )
+MaintainanceIssueOption = (
+    ("Screen Repairs", "Screen Repairs"),
+    ("Battery Issues", "Battery Issues"),
+    ("Keyboard Issues", "Keyboard Issues"),
+    ("Motherboard Issues", "Motherboard Issues"),
+    ("Others", "Others"),
+)
 
 # Create your models here.
 
@@ -101,10 +108,11 @@ class StudentMaintenanceRequest(models.Model):
     device_id = models.CharField(max_length= 200, null=True, blank = True)
     device_name = models.CharField(max_length= 200, null=True, blank = True)
     maintenance_priority_level = models.CharField(max_length= 200, null=True, blank = True)
-    maintenance_issue = models.CharField(max_length= 200, null=True, blank = True)
+    maintenance_issue = models.CharField(max_length= 300, choices = MaintainanceIssueOption, default = 'Other')
     maintenance_status = models.CharField(max_length= 300, choices = MaintainanceStatusOption, default = 'Pending')
     maintenance_description = models.CharField(max_length= 200, null=True, blank = True)
     registeredMonth = models.CharField(max_length = 1500, default=None, null=True, blank = True)
+    techicianInCharge = models.EmailField(default=None, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
