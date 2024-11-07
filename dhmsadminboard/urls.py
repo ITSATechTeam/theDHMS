@@ -19,6 +19,7 @@ urlpatterns = [
     path('adminreports/', views.SuperAdminReports, name="SuperAdminReports"),
     path('adminsettings/', views.SuperAdminSettings, name="SuperAdminSettings"),
     path('organizations/', views.Organizations, name="Organizations"),
+    path('students/', views.Students, name="Students"),
     path('adminlogout/', views.AdminLogout, name="AdminLogout"),
     path('graphcountsformobileapp/', views.GraphCountsForMobileApp, name="GraphCountsForMobileApp"),
     path('organizations/<str:pk>/', views.OrganizationsDetails, name="OrganizationsDetails"),

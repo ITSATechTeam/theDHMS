@@ -12,7 +12,8 @@ let detailsTabInnerViewDetails = document.querySelector('.detailsTabInnerViewDet
 let selectedRequest = document.querySelector('.sectionCheckBox p')
 let maintainName = document.querySelectorAll('.maintainName p')
 let maintainNameID = document.getElementById('maintainName')
-let maintainNameIDMain = document.querySelectorAll('.maintainName p')
+let maintainNameIDMain = document.querySelectorAll('.maintainName strong')
+// let maintainNameIDMain = document.querySelectorAll('.maintainName p')
 let maintainNameIDMain2= document.querySelectorAll('.maintainName i')
 let ExportDataHere = document.querySelector('.ExportDataHere input')
 let requesttoviewdetails = document.querySelector('.requesttoviewdetails input')
@@ -51,21 +52,20 @@ topCheckBox.addEventListener('change', () => {
 })
 
 
-
-
-
 // CHECK BOX COUNTS SECTION STARTS HERE
 let trueBoxes = 0;
 let DataArray = []
 let DataArrayFirst;
 let IDArray = []
 function checkBoxFunctions(each){
+    console.log('checkBoxFunctions each')
+    console.log(each)
     each.addEventListener('change', () => {
         maintainNameIDMain.forEach((e) => {
             let eValue = e.innerHTML
             if(eValue.includes(each.value)){
                 DataArray.push(eValue);
-                // console.log(DataArray)
+                console.log(DataArray)
                 return DataArray, 
                 ExportDataHere.value = DataArray, 
                 idforedit.value = DataArray, 

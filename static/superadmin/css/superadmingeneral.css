@@ -226,8 +226,14 @@ nav button{
 
 .dashboard svg{
     fill: black;
-    /* margin-right: 10px; */
 }
+
+/* #studentsIcon svg{
+    fill: black;
+} */
+
+/* studentsIcon.style.fill='white'
+studentsIcon1.style.fill='white' */
 /* SIDE BAR ENDS HERE */
 
 /* NOTIFICATION POPUP STARTS HERE */
@@ -342,6 +348,10 @@ nav button{
 }
 
 #supportIcon, #supportIcon1{
+    fill: #4F4F4F;
+}
+
+#StudentsIcon, #StudentsIcon2{
     fill: #4F4F4F;
 }
 

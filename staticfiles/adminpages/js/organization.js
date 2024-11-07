@@ -1,4 +1,141 @@
 
+
+// DISPLAY PAGINATION COUNT SELECTION SECTION STARTS HERE
+// const selectedNumber = document.querySelector('.selectedNumber')
+const selectedNumber = 5;
+const selectPerPageCountBox = document.querySelector('.selectPerPageCountBox')
+const selectPerPageCountBoxintro = document.querySelector('.selectPerPageCountBoxintro img')
+
+// if(selectedNumber){
+//     selectedNumber.addEventListener('click', () => {
+//         selectPerPageCountBox.style.display = 'block'
+//         shadow.style.display = 'block'
+//     })
+    
+//     selectPerPageCountBoxintro.addEventListener('click', () => {
+//         selectPerPageCountBox.style.display = 'none'
+//         shadow.style.display = 'none'
+//     })
+// }
+
+// DISPLAY PAGINATION COUNT SELECTION SECTION ENDS HERE
+
+
+//PAGINATION STARTS HERE
+const paginationNumbers = document.getElementById("pagination-numbers");
+const paginatedList = document.getElementById("paginated-list");
+const listItems = paginatedList.querySelectorAll(".item");
+const nextButton = document.getElementById("next-button");
+const prevButton = document.getElementById("prev-button");
+const span = document.querySelector("span");
+const numofitemsperpage = document.querySelector(".numofitemsperpage").value
+// let selectedCount = document.querySelector(".selectedNumber p").innerHTML;
+let selectedCount = 5
+const pageNumberCount = document.querySelector(".pageNumberCount")
+// 
+const paginationLimit = selectedCount;
+
+
+const pageCount = Math.ceil(listItems.length / paginationLimit);
+pageNumberCount.innerHTML = pageCount
+let currentPage = 1;
+span.innerHTML = selectedCount;
+
+const disableButton = (button) => {
+  button.classList.add("disabled");
+  button.setAttribute("disabled", true);
+};
+
+const enableButton = (button) => {
+  button.classList.remove("disabled");
+  button.removeAttribute("disabled");
+};
+
+const handlePageButtonsStatus = () => {
+  if (currentPage === 1) {
+    disableButton(prevButton);
+  } else {
+    enableButton(prevButton);
+  }
+
+  if (pageCount === currentPage) {
+    disableButton(nextButton);
+  } else {
+    enableButton(nextButton);
+  }
+};
+
+const handleActivePageNumber = () => {
+  document.querySelectorAll(".pagination-number").forEach((button) => {
+    button.classList.remove("active");
+    const pageIndex = Number(button.getAttribute("page-index"));
+    if (pageIndex == currentPage) {
+      button.classList.add("active");
+    //   console.log(pageIndex)
+    }
+  });
+};
+
+
+const appendPageNumber = (index) => {
+  const pageNumber = document.createElement("button");
+  pageNumber.className = "pagination-number";
+  pageNumber.innerHTML = index;
+  pageNumber.setAttribute("page-index", index);
+  pageNumber.setAttribute("aria-label", "Page " + index);
+    // const span = document.
+
+  paginationNumbers.appendChild(pageNumber);
+};
+
+const getPaginationNumbers = () => {
+  for (let i = 1; i <= pageCount; i++) {
+    appendPageNumber(i);
+  }
+};
+
+const setCurrentPage = (pageNum) => {
+  currentPage = pageNum;
+
+  handleActivePageNumber();
+  handlePageButtonsStatus();
+  
+  const prevRange = (pageNum - 1) * paginationLimit;
+  const currRange = pageNum * paginationLimit;
+
+  listItems.forEach((item, index) => {
+    item.classList.add("hidden");
+    if (index >= prevRange && index < currRange) {
+      item.classList.remove("hidden");
+    }
+  });
+};
+
+window.addEventListener("load", () => {
+  getPaginationNumbers();
+  setCurrentPage(1);
+
+  prevButton.addEventListener("click", () => {
+    setCurrentPage(currentPage - 1);
+  });
+
+  nextButton.addEventListener("click", () => {
+    setCurrentPage(currentPage + 1);
+  });
+
+  document.querySelectorAll(".pagination-number").forEach((button) => {
+    const pageIndex = Number(button.getAttribute("page-index"));
+
+    if (pageIndex) {
+      button.addEventListener("click", () => {
+        setCurrentPage(pageIndex);
+      });
+    }
+  });
+});
+
+//PAGINATION ENDS HERE
+
 const shadoworg = document.querySelector('.shadoworg')
 
 // let deviceherecountin = document.querySelector('.deviceherecountin')
@@ -42,45 +179,6 @@ AllActionbtns.forEach((e)=>{
 })
 
 
-let deviceslistpop = document.querySelector('.deviceslistpop')
-let staffmemberspop = document.querySelector('.staffmemberspop')
-let activitylogpop = document.querySelector('.activitylogpop')
-
-let devinvetorg = document.querySelector('.devinvetorg')
-let stafftableorg = document.querySelector('.stafftableorg')
-let activitylogsection = document.querySelector('.activitylogsection')
-// activeorgadminoptions
-
-staffmemberspop.addEventListener('click', () => {
-    devinvetorg.style.display = 'none'
-    stafftableorg.style.display = 'block'
-    activitylogsection.style.display = 'none'
-    deviceslistpop.classList.remove('activeorgadminoptions')
-    activitylogpop.classList.remove('activeorgadminoptions')
-    staffmemberspop.classList.add('activeorgadminoptions')
-})
-
-activitylogpop.addEventListener('click', () => {
-    devinvetorg.style.display = 'none'
-    stafftableorg.style.display = 'none'
-    activitylogsection.style.display = 'block'
-    deviceslistpop.classList.remove('activeorgadminoptions')
-    staffmemberspop.classList.remove('activeorgadminoptions')
-    activitylogpop.classList.add('activeorgadminoptions')
-})
-
-deviceslistpop.addEventListener('click', () => {
-    devinvetorg.style.display = 'block'
-    stafftableorg.style.display = 'none'
-    activitylogsection.style.display = 'none'
-    deviceslistpop.classList.add('activeorgadminoptions')
-    staffmemberspop.classList.remove('activeorgadminoptions')
-    activitylogpop.classList.remove('activeorgadminoptions')
-})
-
-// 
-
-
 
 let actionbtnsmainin = document.querySelectorAll('.actionbtnsmainin')
 actionbtnsmainin.forEach((e)=>{
@@ -103,18 +201,3 @@ devicedetialsproperimg.forEach((e)=>{
     })
 })
 
-
-let orgboxclosefilter = document.querySelector('.orgboxclosefilter')
-let orgdetialsbox = document.querySelector('.orgdetialsbox')
-let orgsectionintroinner = document.querySelector('.orgsectionintroinner img')
-
-
-orgsectionintroinner.addEventListener('click', () => {
-    shadoworg.style.display = 'block'
-    orgdetialsbox.style.display = 'block'
-})
-
-orgboxclosefilter.addEventListener('click', () => {
-    shadoworg.style.display = 'none'
-    orgdetialsbox.style.display = 'none'
-})

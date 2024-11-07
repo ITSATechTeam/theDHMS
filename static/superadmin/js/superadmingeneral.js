@@ -39,6 +39,7 @@ let settings = document.querySelector('.settings')
 let logout = document.querySelector('.logout')
 let software = document.querySelector('.software')
 let subadmin = document.querySelector('.subadmin')
+let students = document.querySelector('.studentsSection')
 
 let dashboardIcon = document.querySelector('#dashboardIcon')
 // let dashboardIconWhite = document.querySelector('#dashboardIconWhite')
@@ -145,50 +146,59 @@ if (window.location.href.includes('maintain') || window.location.href.includes('
     dashboard.classList.remove('active')
     dashboardIcon.style.fill='#4F4F4F'
 }
-// maintain.addEventListener('mouseover', () => {
-//     maintenanceIcon.style.fill='white'
-//     maintenanceIcon1.style.fill='white'
-// })
-// maintain.addEventListener('mouseout', () => {
-//     maintenanceIcon.style.fill='#4F4F4F'
-//     maintenanceIcon1.style.fill='#4F4F4F'
-// })
-
 
 
 
 let settingsIcon = document.querySelector('#settingsIcon')
-if (window.location.href.includes('setting')){
+let settingsIcon1 = document.querySelector('#settingsIcon1')
+if (window.location.href.includes('adminsettings')){
     deviceinventory.classList.remove('active')
     staffmembers.classList.remove('active')
     support.classList.remove('active')
     reports.classList.remove('active')
-    maintain.classList.remove('active')
+    // maintain.classList.remove('active')
     settings.classList.add('active')
     settingsIcon.style.fill='white'
+    settingsIcon1.style.fill='white'
     dashboard.classList.remove('active')
     dashboardIcon.style.fill='#4F4F4F'
 }
-// settings.addEventListener('mouseover', () => {
-//     settingsIcon.style.fill='white'
-// })
-// settings.addEventListener('mouseout', () => {
-//     settingsIcon.style.fill='#4F4F4F'
-// })
 
 
 
-if (window.location.href.includes('software')){
+let studentsIcon = document.querySelector('#studentsIcon')
+let studentsIcon1 = document.querySelector('#studentsIcon1')
+if (window.location.href.includes('students')){
     deviceinventory.classList.remove('active')
     staffmembers.classList.remove('active')
     support.classList.remove('active')
     reports.classList.remove('active')
-    maintain.classList.remove('active')
-    settings.classList.remove('active')
-    software.classList.add('active')
+    // maintain.classList.remove('active')
+    students.classList.add('active')
+    // settings.classList.add('active')
+    studentsIcon.style.fill='white'
+    studentsIcon1.style.fill='white'
     dashboard.classList.remove('active')
     dashboardIcon.style.fill='#4F4F4F'
+}else{
+    studentsIcon.style.fill='#4F4F4F'
+    studentsIcon1.style.fill='#4F4F4F'
+
 }
+
+
+
+// if (window.location.href.includes('software')){
+//     deviceinventory.classList.remove('active')
+//     staffmembers.classList.remove('active')
+//     support.classList.remove('active')
+//     reports.classList.remove('active')
+//     maintain.classList.remove('active')
+//     settings.classList.remove('active')
+//     software.classList.add('active')
+//     dashboard.classList.remove('active')
+//     dashboardIcon.style.fill='#4F4F4F'
+// }
 
 // let logout = document.querySelector('.logout2')
 

@@ -26,8 +26,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
-
-
+    
 
 class TechnicalPartnersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,6 +40,9 @@ class RegisterTechnicalPartnerSerializer(serializers.ModelSerializer):
         fields = ['technicianEmail', 'technicianName', 'technicianPhoneNumber', 'technicianAvailability', 'technicianLocation', 'password']
 
 
+class SearchSerializer(serializers.Serializer):
+    searchKeyword = serializers.CharField()
+
 
 class LoginTechnicalPartnerSerializer(serializers.Serializer):
     technicianEmail = serializers.EmailField()
@@ -51,4 +53,23 @@ class SingleTechnicalPartnersModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = technicianModel
         fields = ['technicianEmail']
+
+
+class ChangeMaintenanceStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentMaintenanceRequest
+        fields = ['maintenance_status']
+
+
+class GetChangeMaintenanceStatusSerializerData(serializers.Serializer):
+    newMaintenanceStatus = serializers.CharField()
+    MaintenanceID = serializers.IntegerField()
+
+
+
+
+
+
+
+
 

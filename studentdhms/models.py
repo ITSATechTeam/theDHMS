@@ -38,7 +38,7 @@ class StudentDHMSSignUp(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.student_email} {self.student_firstname}'
+        return f'{self.id} {self.student_email} {self.student_firstname}'
 
 
 class SubStudentRegistration(models.Model):
@@ -50,7 +50,7 @@ class SubStudentRegistration(models.Model):
     sub_student_school_name = models.CharField(max_length= 200, null=True, blank = True)
     sub_student_matric_number = models.CharField(max_length= 200, null=True, blank = True)
     # sub_student_admin_email = models.EmailField(max_length= 200, null=True, blank = True)
-    sub_student_admin_id = models.CharField(max_length= 200, null=True, blank = True)
+    sub_student_admin_id = models.IntegerField(null=True, blank = True)
     sub_student_password = models.EmailField(max_length= 200, null=True, blank = True)
     accountActivationStatus = models.CharField(max_length= 200, null=True, blank = True, default=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -60,7 +60,7 @@ class SubStudentRegistration(models.Model):
         ordering = ['-edited_at', '-created_at']
         
     def __str__(self):
-        return f'{self.sub_student_firstname} {self.sub_student_email_address}'
+        return f'{self.id}  {self.sub_student_firstname} {self.sub_student_email_address}'
 
 
 
@@ -82,13 +82,13 @@ class Password_Reset(models.Model):
 
 class StudentDeviceReg(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    student_admin_id = models.CharField(max_length= 200, null=True, blank = True)
+    student_admin_id = models.IntegerField(null=True, blank = True)
     device_name = models.CharField(max_length= 200, null=True, blank = True)
     # device_name = models.CharField(max_length= 200, null=True, blank = True)
     device_serial_number = models.CharField(max_length= 200, null=True, blank = True)
     device_os = models.CharField(max_length= 200, null=True, blank = True)
     # student_user_email = models.EmailField(max_length= 200, null=True, blank = True)
-    student_user_id = models.CharField(max_length= 200, null=True, blank = True)
+    student_user_id = models.IntegerField(null=True, blank = True)
     student_device_health = models.CharField(max_length= 200, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
@@ -103,8 +103,9 @@ class StudentDeviceReg(models.Model):
 
 class StudentMaintenanceRequest(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    student_requester_id = models.CharField(max_length= 200, null=True, blank = True)
-    student_admin_id = models.CharField(max_length= 200, null=True, blank = True)
+    student_requester_id = models.IntegerField(null=True, blank = True)
+    student_requester_status = models.CharField(max_length= 200)
+    student_admin_id = models.IntegerField(null=True, blank = True)
     device_id = models.CharField(max_length= 200, null=True, blank = True)
     device_name = models.CharField(max_length= 200, null=True, blank = True)
     maintenance_priority_level = models.CharField(max_length= 200, null=True, blank = True)
@@ -126,7 +127,7 @@ class StudentMaintenanceRequest(models.Model):
 
 class StudentTransactionPIN(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    student_id = models.CharField(max_length= 200, null=True, blank = True)
+    student_id = models.IntegerField(null=True, blank = True)
     student_transaction_pin = models.CharField(max_length= 200, null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
@@ -143,7 +144,7 @@ class PayStackCustomerWalletDetails(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     accountBalance = models.IntegerField(default=0)
     bank_customer_code = models.CharField(max_length= 200, null=True, blank = True)
-    student_id = models.CharField(max_length= 200, null=True, blank = True)
+    student_id = models.IntegerField(null=True, blank = True)
     # student_email_address = models.EmailField(max_length= 200, null=True, blank = True)
     bank_name = models.CharField(max_length= 200, null=True, blank = True)
     bank_name_slug = models.CharField(max_length= 200, null=True, blank = True)
@@ -182,7 +183,7 @@ class StudentTransferRecipientCode(models.Model):
 
 class VerifyEmailAddress(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    studentID = models.CharField(max_length= 200, null=True, blank = True)
+    studentID = models.IntegerField(null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
@@ -195,7 +196,7 @@ class VerifyEmailAddress(models.Model):
 
 class VerifyPhoneNumber(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    studentID = models.CharField(max_length= 200, null=True, blank = True)
+    studentID = models.IntegerField(null=True, blank = True)
     created_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 

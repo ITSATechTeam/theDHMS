@@ -1,5 +1,17 @@
+
+let uploaddevicecsv = document.querySelector('.uploaddevicecsv2')
+if (uploaddevicecsv){
+  uploaddevicecsv.addEventListener('click', () => {
+    console.log('block')
+      uploaddevicepopup.style.display = 'block'
+      shadow.style.display = 'block';
+  })
+}
+
+
 // ADD DEVICE POPUP STARTS HERE
 let addnewdevicebtn = document.querySelector('.addnewdevicebtn')
+let devinvemptystatebtn = document.querySelector('.devinvemptystatebtn')
 let registerDevice = document.querySelector('.registerDevice')
 let shadow = document.querySelector('.shadow2')
 let closeaddnewdeviceopoup = document.querySelector('.closeaddnewdeviceopoup')
@@ -8,6 +20,14 @@ addnewdevicebtn.addEventListener('click', () => {
     registerDevice.style.display = 'block'
     shadow.style.display = 'block'
 })
+
+
+if(devinvemptystatebtn){
+  devinvemptystatebtn.addEventListener('click', () => {
+      registerDevice.style.display = 'block'
+      shadow.style.display = 'block'
+  })
+}
 
 closeaddnewdeviceopoup.addEventListener('click', () => {
     registerDevice.style.display = 'none'
@@ -19,14 +39,16 @@ closeaddnewdeviceopoup.addEventListener('click', () => {
 let uploaddevicepopupintroclose = document.querySelector('.uploaddevicepopupintroclose')
 let uploaddevicepopup = document.querySelector('.uploaddevicepopup')
 let showdeviceuploadpopup = document.querySelector('.showdeviceuploadpopup')
+// let uploaddevicecsv = document.querySelector('.uploaddevicecsv2')
 
 
-
-showdeviceuploadpopup.addEventListener('click', () => {
-    console.log('showdeviceuploadpopup clicked')
-    uploaddevicepopup.style.display = 'block'
-    shadow.style.display = 'block';
-})
+if(showdeviceuploadpopup){
+  showdeviceuploadpopup.addEventListener('click', () => {
+      console.log('showdeviceuploadpopup clicked')
+      uploaddevicepopup.style.display = 'block'
+      shadow.style.display = 'block';
+  })
+}
 
 
 uploaddevicepopupintroclose.addEventListener('click', () => {

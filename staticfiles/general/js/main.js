@@ -1,72 +1,3 @@
-// console.log('working')
-// let nav = document.querySelector('.nav')
-// let outarrow = document.querySelector('.outsidebar')
-// let navimages = document.querySelector('.navimages')
-// let navlogo = document.querySelector('.navlogo')
-// let outsidebar = document.querySelector('.outsidebar')
-// let navlogout = document.querySelector('.navlogout')
-// let topbar = document.querySelector('.topbar')
-// // let mainbody = document.querySelector('.onboardbox')
-// // mainbody.style.display = 'none'
-// //
-// let main = document.querySelector('.main')
-// let hidesidebar = document.querySelector('.hidearrow')
-// // .navshow
-
-// outarrow.addEventListener('click', () => {
-//     navimages.style.display = 'none'
-//     outsidebar.style.display = 'none'
-//     navlogo.style.display = 'none'
-//     navlogout.style.display = 'none'
-//     nav.classList.toggle('navhide')
-//     // topbar.style.display = 'none'
-//     topbar.style.marginLeft = '15%'
-//     topbar.style.width = '85%'
-//     // 
-//     main.classList.toggle('navshow')
-//     main.style.display = 'block'
-// })
-
-// hidesidebar.addEventListener('click', () =>{
-//     navimages.style.display = 'block'
-//     outsidebar.style.display = 'block'
-//     navlogo.style.display = 'block'
-//     navlogout.style.display = 'block'
-//     nav.classList.toggle('navhide')
-//     topbar.style.marginLeft = '5%'
-//     topbar.style.width = '95%'
-//     // 
-//     main.classList.toggle('navshow')
-//     setTimeout(() => {
-//         main.style.display = 'none'
-//     }, 00)
-// })
-
-// // MODILE TOP BAR DISPLAYA ND HIDE SETUP
-
-// let downarrow = document.querySelector('.downarrow')
-// let uparrow = document.querySelector('.uparrow')
-// let searchandtools = document.querySelector('.searchandtools')
-
-// downarrow.addEventListener('click', () => {
-//     topbar.style.height = '200px'
-//     downarrow.style.display='none'
-//     uparrow.style.display='block'
-//     setTimeout(() => {
-//         searchandtools.style.display = 'block'
-//     }, 500)
-// })
-// uparrow.addEventListener('click', () => {
-//     topbar.style.height = '60px'
-//     downarrow.style.display='block'
-//     uparrow.style.display='none'
-//     setTimeout(() => {
-//         searchandtools.style.display = 'none'
-//     }, 0)
-// })
-
-
-
 //   NOTIFICATION DISPLAY SIGN
 let noticationSectionProper = document.querySelectorAll('.noticationSectionProper')
 let CurrentNotificationAmount = Array.from(noticationSectionProper).length
@@ -107,6 +38,7 @@ let settings = document.querySelector('.settings')
 let logout = document.querySelector('.logout')
 let software = document.querySelector('.software')
 let subadmin = document.querySelector('.subadmin')
+let students = document.querySelector('.students')
 
 let dashboardIcon = document.querySelector('#dashboardIcon')
 let dashboardIconWhite = document.querySelector('#dashboardIconWhite')
@@ -120,30 +52,12 @@ if (window.location.href.includes('dashboard')){
     dashboardIcon.style.fill='white'
 }
 
-// dashboard.addEventListener('mouseover', () => {
-//     dashboardIcon.style.fill='white'
-// })
-
-// dashboard.addEventListener('mouseout', () => {
-//     dashboardIcon.style.fill='#4F4F4F'
-// })
-
-
 
 let subadminIcon = document.querySelector('#subadminIcon')
 if (window.location.href.includes('subadmin')){
     subadmin.classList.add('active')
     subadminIcon.style.fill='white'
 }
-// subadmin.addEventListener('mouseover', () => {
-//     subadminIcon.style.fill='white'
-// })
-// subadmin.addEventListener('mouseout', () => {
-//     subadminIcon.style.fill='#4F4F4F'
-// })
-
-
-
 
 let deviceInventoryIcon = document.querySelector('#deviceInventoryIcon')
 if (window.location.href.includes('devicesinventory') || window.location.href.includes('editdevice') || window.location.href.includes('viewdevicedetails') ){
@@ -151,12 +65,6 @@ if (window.location.href.includes('devicesinventory') || window.location.href.in
     deviceinventory.classList.add('active')
     deviceInventoryIcon.style.fill='white'
 }
-// deviceinventory.addEventListener('mouseover', () => {
-//     deviceInventoryIcon.style.fill='white'
-// })
-// deviceinventory.addEventListener('mouseout', () => {
-//     deviceInventoryIcon.style.fill='#4F4F4F'
-// })
 
 
 
@@ -170,15 +78,6 @@ if (window.location.href.includes('staffmembers') || window.location.href.includ
     staffMemberIcon.style.fill='white'
     staffMemberIcon2.style.fill='white'
 }
-// staffmembers.addEventListener('mouseover', () => {
-//     staffMemberIcon.style.fill='white'
-//     staffMemberIcon2.style.fill='white'
-// })
-// staffmembers.addEventListener('mouseout', () => {
-//     staffMemberIcon.style.fill='#4F4F4F'
-//     staffMemberIcon2.style.fill='#4F4F4F'
-// })
-
 
 
 let reportIcon = document.querySelector('#reportIcon')
@@ -189,13 +88,20 @@ if (window.location.href.includes('reports')){
     reports.classList.add('active')
     reportIcon.style.fill='white'
 }
-// reports.addEventListener('mouseover', () => {
-//     reportIcon.style.fill='white'
-// })
-// reports.addEventListener('mouseout', () => {
-//     reportIcon.style.fill='#4F4F4F'
-// })
 
+
+
+// let studentsIcon = document.querySelector('#studentsIcon')
+let studentsIcon2 = document.querySelector('#studentsIcon2')
+if (window.location.href.includes('students')){
+    dashboard.classList.remove('active')
+    deviceinventory.classList.remove('active')
+    staffmembers.classList.remove('active')
+    reports.classList.remove('active')
+    students.classList.add('active')
+    // studentsIcon.style.fill='white'
+    // studentsIcon2.style.fill='white'
+}
 
 
 let supportIcon = document.querySelector('#supportIcon')
@@ -209,15 +115,6 @@ if (window.location.href.includes('support')){
     supportIcon.style.fill='white'
     supportIcon1.style.fill='white'
 }
-// supportIcon supportIcon1
-// support.addEventListener('mouseover', () => {
-//     supportIcon.style.fill='white'
-//     supportIcon1.style.fill='white'
-// })
-// support.addEventListener('mouseout', () => {
-//     supportIcon.style.fill='#4F4F4F'
-//     supportIcon1.style.fill='#4F4F4F'
-// })
 
 
 
@@ -233,15 +130,6 @@ if (window.location.href.includes('maintain') || window.location.href.includes('
     maintenanceIcon.style.fill='white'
     maintenanceIcon1.style.fill='white'
 }
-// maintain.addEventListener('mouseover', () => {
-//     maintenanceIcon.style.fill='white'
-//     maintenanceIcon1.style.fill='white'
-// })
-// maintain.addEventListener('mouseout', () => {
-//     maintenanceIcon.style.fill='#4F4F4F'
-//     maintenanceIcon1.style.fill='#4F4F4F'
-// })
-
 
 
 
@@ -256,13 +144,6 @@ if (window.location.href.includes('setting')){
     settings.classList.add('active')
     settingsIcon.style.fill='white'
 }
-// settings.addEventListener('mouseover', () => {
-//     settingsIcon.style.fill='white'
-// })
-// settings.addEventListener('mouseout', () => {
-//     settingsIcon.style.fill='#4F4F4F'
-// })
-
 
 
 if (window.location.href.includes('software')){
@@ -276,18 +157,24 @@ if (window.location.href.includes('software')){
     software.classList.add('active')
 }
 
+
+if (window.location.href.includes('students')){
+    dashboard.classList.remove('active')
+    deviceinventory.classList.remove('active')
+    staffmembers.classList.remove('active')
+    support.classList.remove('active')
+    reports.classList.remove('active')
+    maintain.classList.remove('active')
+    settings.classList.remove('active')
+    software.classList.remove('active')
+    students.classList.add('active')
+}
+
 // let logout = document.querySelector('.logout2')
 
 let logout1 = document.querySelector('#logout1')
 let logout2 = document.querySelector('#logout2')
 let logout3 = document.querySelector('#logout3')
-
-// logout.addEventListener('mouseover', () => {
-//     logout1.style.fill='white'
-//     logout2.style.fill='white'
-//     logout3.style.fill='white'
-// })
-// logout2
 
 
 

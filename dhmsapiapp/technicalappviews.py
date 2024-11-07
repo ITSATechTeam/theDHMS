@@ -114,7 +114,6 @@ def RegisterTechnicalPartner(request):
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
             "message": "An error ocured, kindly fill the form properly",
-            "error": serializer.error_messages
         })                                    
 
 
@@ -438,7 +437,6 @@ def FetchMaintenanceRequestPerMonth(request):
         })
     
 
-
 # Get maintenace request task percentage by maintenance issue type
 @swagger_auto_schema(tags=['TechnicalPartnersEndpoint'], methods=['get'])
 @csrf_exempt
@@ -483,8 +481,6 @@ def GetMaintenanceTypePercentage(request):
             "status": status.HTTP_400_BAD_REQUEST,
             "message": "An error occured. Kindly try again"
         })
-
-
 
       
 # Get last five maintenance requests tagged to logged in technician
@@ -556,8 +552,6 @@ def GetLatestFiveMaintenanceRequest(request):
 
 
 # MAINTENANCE PAGE ENDPOINTS STARTS HERE
-
-
 # Get maintenance requests tagged to logged in technician
         
 # Get maintenance requests tagged to logged in technician
@@ -571,6 +565,7 @@ def GetAllMaintenanceRequest(request):
         AllRequests = StudentMaintenanceRequest.objects.filter(techicianInCharge = request.user.email)
         for AllRequests in AllRequests:
             print(request.user.email)
+            AllRequests_ID = AllRequests.id
             AllRequests_DeviceName = AllRequests.device_name
             AllRequests_RequesterUserEmail = AllRequests.user.email
             AllRequests_RequesterID = AllRequests.student_requester_id
@@ -601,6 +596,7 @@ def GetAllMaintenanceRequest(request):
                 
             # compile requests data
             AllRequests_Data = {
+                "RequestID": AllRequests_ID,
                 "RequestDeviceName": AllRequests_DeviceName,
                 "RequestTitle": AllRequests_IssueTitle,
                 "RequestDecription": AllRequests_Decription,
@@ -637,6 +633,7 @@ def GetCompletedMaintenanceRequest(request):
     if StudentMaintenanceRequest.objects.filter(techicianInCharge = request.user.email):
         AllRequests = StudentMaintenanceRequest.objects.filter(Q(techicianInCharge = request.user.email) & Q(maintenance_status = 'Completed'))
         for AllRequests in AllRequests:
+            AllRequests_ID = AllRequests.id
             AllRequests_DeviceName = AllRequests.device_name
             AllRequests_RequesterUserEmail = AllRequests.user.email
             AllRequests_RequesterID = AllRequests.student_requester_id
@@ -667,6 +664,7 @@ def GetCompletedMaintenanceRequest(request):
                 
             # compile requests data
             AllRequests_Data = {
+                "RequestID": AllRequests_ID,
                 "RequestDeviceName": AllRequests_DeviceName,
                 "RequestTitle": AllRequests_IssueTitle,
                 "RequestDecription": AllRequests_Decription,
@@ -703,6 +701,7 @@ def GetOngoingMaintenanceRequest(request):
     if StudentMaintenanceRequest.objects.filter(techicianInCharge = request.user.email):
         AllRequests = StudentMaintenanceRequest.objects.filter(Q(techicianInCharge = request.user.email) & Q(maintenance_status = 'Ongoing'))
         for AllRequests in AllRequests:
+            AllRequests_ID = AllRequests.id
             AllRequests_DeviceName = AllRequests.device_name
             AllRequests_RequesterUserEmail = AllRequests.user.email
             AllRequests_RequesterID = AllRequests.student_requester_id
@@ -733,6 +732,7 @@ def GetOngoingMaintenanceRequest(request):
                 
             # compile requests data
             AllRequests_Data = {
+                "RequestID": AllRequests_ID,
                 "RequestDeviceName": AllRequests_DeviceName,
                 "RequestTitle": AllRequests_IssueTitle,
                 "RequestDecription": AllRequests_Decription,
@@ -769,6 +769,7 @@ def GetDeclinedMaintenanceRequest(request):
     if StudentMaintenanceRequest.objects.filter(techicianInCharge = request.user.email):
         AllRequests = StudentMaintenanceRequest.objects.filter(Q(techicianInCharge = request.user.email) & Q(maintenance_status = 'Declined'))
         for AllRequests in AllRequests:
+            AllRequests_ID = AllRequests.id
             AllRequests_DeviceName = AllRequests.device_name
             AllRequests_RequesterUserEmail = AllRequests.user.email
             AllRequests_RequesterID = AllRequests.student_requester_id
@@ -799,6 +800,7 @@ def GetDeclinedMaintenanceRequest(request):
                 
             # compile requests data
             AllRequests_Data = {
+                "RequestID": AllRequests_ID,
                 "RequestDeviceName": AllRequests_DeviceName,
                 "RequestTitle": AllRequests_IssueTitle,
                 "RequestDecription": AllRequests_Decription,
@@ -824,4 +826,248 @@ def GetDeclinedMaintenanceRequest(request):
             "message": "You have no Declined maintenance requests currently.",
         }) 
 
+        
+@swagger_auto_schema(tags=['TechnicalPartnersEndpoint'], methods=['post'], request_body=SearchSerializer)
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def SearchDevices(request):
+    SearchResult = []
+    try:
+        if request.method == 'POST':
+            serializer = SearchSerializer(data = request.data)
+            if serializer.is_valid():
+                searchKeyword = serializer.data['searchKeyword']
+                
+                if (searchKeyword is None):
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "No search term entered, kindly enter a device name to search.",
+                    })
+                #
+                deviceSearch = StudentMaintenanceRequest.objects.filter(
+                    Q(Q(device_name__icontains = searchKeyword) | 
+                        Q(maintenance_issue__icontains = searchKeyword) |
+                        Q(maintenance_description__icontains = searchKeyword) |
+                        Q(device_id__icontains = searchKeyword) |
+                        Q(maintenance_priority_level__icontains = searchKeyword) |
+                        Q(registeredMonth__icontains = searchKeyword)) 
+                    & Q(techicianInCharge = request.user.email)
+                )            
+                #  
+                for deviceSearch in deviceSearch:
+                    DeviceID = deviceSearch.id
+                    DeviceName = deviceSearch.device_name
+                    RequesterUserEmail = deviceSearch.user.email
+                    RequesterID = deviceSearch.student_requester_id
+                    IssueTitle = deviceSearch.maintenance_issue
+                    Decription = deviceSearch.maintenance_description
+                    Status = deviceSearch.maintenance_status
+                    DateRequested = deviceSearch.created_at
+                    # check if requester is a student admin
+                    if StudentDHMSSignUp.objects.filter(id = RequesterID):
+                        GetStudentAdminRequester = StudentDHMSSignUp.objects.get(id = RequesterID)
+                        GetStudentAdminRequesterFirstName = GetStudentAdminRequester.student_firstname
+                        GetStudentAdminRequesterLastName = GetStudentAdminRequester.student_lastname
+                        GetStudentAdminRequesterEmail = GetStudentAdminRequester.student_email
+                        GetStudentAdminRequesterSchool = GetStudentAdminRequester.student_school
+                    # check if requester is a sub student
+                    elif SubStudentRegistration.objects.filter(id = RequesterID):
+                        GetStudentAdminRequester = SubStudentRegistration.objects.get(id = RequesterID)
+                        GetStudentAdminRequesterFirstName = GetStudentAdminRequester.sub_student_firstname
+                        GetStudentAdminRequesterLastName = GetStudentAdminRequester.sub_student_lastname
+                        GetStudentAdminRequesterEmail = GetStudentAdminRequester.sub_student_email_address
+                        GetStudentAdminRequesterSchool = GetStudentAdminRequester.sub_student_school_name
+                    else:
+                        GetStudentAdminRequesterFirstName = None
+                        GetStudentAdminRequesterLastName = None
+                        GetStudentAdminRequesterEmail = None
+                        GetStudentAdminRequesterSchool = None                    
+                        
+                    # compile requests data
+                    AllRequests_Data = {
+                        "DeviceID": DeviceID,
+                        "DeviceName": DeviceName,
+                        "Title": IssueTitle,
+                        "Decription": Decription,
+                        "Status": Status,
+                        "DateCreated": DateRequested,
+                        # Requester details
+                        "RequesterFirstName": GetStudentAdminRequesterFirstName,
+                        "RequesterLastName": GetStudentAdminRequesterLastName,
+                        "RequesterEmail": GetStudentAdminRequesterEmail,
+                        "RequesterSchool": GetStudentAdminRequesterSchool,
+                    }
+                
+                    SearchResult.append(AllRequests_Data)
+                    
+                if len(SearchResult) < 1:
+                    return Response({
+                    "status": status.HTTP_200_OK,
+                    "message": "No search result found.",
+                    })
+
+                return Response({
+                    "status": status.HTTP_200_OK,
+                    "message": "Search result fetched successfully.",
+                    "SearchResult": SearchResult
+                })
+            else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Error processing request",
+                    "error_message": serializer.error_messages
+                })
+            
+    except:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "An error ocured, kindly fill the form properly",
+        })                                    
+ 
+
+@swagger_auto_schema(tags=['TechnicalPartnersEndpoint'], methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def GetSingleMaintenance(request, id):
+    if StudentMaintenanceRequest.objects.filter(id = id):
+        getMaintenance = StudentMaintenanceRequest.objects.get(id = id)
+        if getMaintenance.techicianInCharge == request.user.email:
+            maintenanceIssue = getMaintenance.maintenance_issue            
+            maintenanceDescription = getMaintenance.maintenance_description            
+            maintenanceStatus = getMaintenance.maintenance_status            
+            requesterID = getMaintenance.student_requester_id            
+            requesterStudentStatus = getMaintenance.student_requester_status            
+            requestPriority = getMaintenance.maintenance_priority_level            
+            dateCreated = getMaintenance.created_at
+            
+            if requesterStudentStatus == 'StudentAdmin':
+                GetStudentAdminRequester = StudentDHMSSignUp.objects.get(id = requesterID)
+                reqeusterFirstName = GetStudentAdminRequester.student_firstname
+                reqeusterLastName = GetStudentAdminRequester.student_lastname
+                reqeusterEmail = GetStudentAdminRequester.student_email
+                reqeusterPhone = GetStudentAdminRequester.student_phone
+                reqeusterSchool = GetStudentAdminRequester.student_school
+                
+            elif requesterStudentStatus == 'SubStudent':
+                GetStudentAdminRequester = SubStudentRegistration.objects.get(id = requesterID)
+                reqeusterFirstName = GetStudentAdminRequester.sub_student_firstname
+                reqeusterLastName = GetStudentAdminRequester.sub_student_lastname
+                reqeusterEmail = GetStudentAdminRequester.sub_student_email_address
+                reqeusterPhone = GetStudentAdminRequester.sub_student_phone_number
+                reqeusterSchool = GetStudentAdminRequester.sub_student_school_name
+                
+            else:
+                reqeusterFirstName = None
+                reqeusterLastName = None
+                reqeusterEmail = None
+                reqeusterPhone = None
+                reqeusterSchool = None                
+            
+            requesterData = {
+                'firstName': reqeusterFirstName,
+                'lastName': reqeusterLastName,
+                'email': reqeusterEmail,
+                'phone': reqeusterPhone,
+                'School': reqeusterSchool,
+            }
+            
+            maintenanceDetails = {
+                'maintenanceID': id,
+                'maintenanceIssue': maintenanceIssue,
+                'maintenanceDescription': maintenanceDescription,
+                'maintenanceStatus': maintenanceStatus,
+                'requesterData': requesterData,
+                'requestPriority': requestPriority,
+                'dateCreated': dateCreated,
+            }            
+            
+            return Response({
+                "status": status.HTTP_200_OK,
+                "message": "Maintenance request found.",
+                "data": maintenanceDetails
+            })
+            
+        else:
+            return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "Maintenance request with this ID was not found under requests assigned to you.",
+            })
+    else:
+        return Response({
+        "status": status.HTTP_400_BAD_REQUEST,
+        "message": "Maintenance request with the ID was not found.",
+        })
+
+
+
+@swagger_auto_schema(tags=['TechnicalPartnersEndpoint'], methods=['PUT'], request_body= GetChangeMaintenanceStatusSerializerData)
+@csrf_exempt
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def ChangeMaintenanceStatus(request):
+    if technicianModel.objects.filter(technicianEmail = request.user.email):
+        getCurrentTechnician = technicianModel.objects.get(technicianEmail = request.user.email)
+        getCurrentTechnicianEmail = getCurrentTechnician.technicianEmail
+        serializer = GetChangeMaintenanceStatusSerializerData(data = request.data)
+        if serializer.is_valid():
+            MaintenanceID = serializer.data['MaintenanceID']
+            newStatus = serializer.data['newMaintenanceStatus']
+            if newStatus not in ['Pending', 'Ongoing', 'Completed', 'Declined']:
+                print('newStatus')     
+                print(newStatus)     
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Maintenance status update failed. Maintenance status has to be either Pending, Ongoing, Completed or Declined.",
+                })
+                
+            if StudentMaintenanceRequest.objects.filter(id = MaintenanceID):
+                getMaintenance = StudentMaintenanceRequest.objects.get(id = MaintenanceID)
+                getTechnicianEmail = getMaintenance.techicianInCharge
+                
+                # authorize technician to make this change
+                if getTechnicianEmail != getCurrentTechnicianEmail:     
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "You are not authorized to update the maintenance status of this request.",
+                    })
+                    
+                # update maintenance status from here
+                newStatusToUpdate = {'maintenance_status': newStatus}
+                serializer = ChangeMaintenanceStatusSerializer(getMaintenance, data = newStatusToUpdate)
+                if serializer.is_valid():
+                    serializer.save()
+                    # maintenanceStatus = serializer.validated_data.get('maintenanceStatus')
+                    # getMaintenance.maintenance_status = maintenanceStatus
+                    # getMaintenance.save()
+                    
+                    return Response({
+                        "status": status.HTTP_200_OK,
+                        "message": "Maintenance status updated successfully.",
+                        # "data": maintenanceDetails
+                    })
+            else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Maintenance request with the ID was not found.",
+                })
+                
+            return Response({
+                "status": status.HTTP_200_OK,
+                "message": "Maintenance request found.",
+                # "data": maintenanceDetails
+            })
+        else:
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "The information you provided in invalid. Please check and try again.",
+                })
+    else:
+        return Response({
+            "status": status.HTTP_400_BAD_REQUEST,
+            "message": "You do not have access to edit this information.",
+        })
+
+# The device with the provided ID is not assigned to you.
 

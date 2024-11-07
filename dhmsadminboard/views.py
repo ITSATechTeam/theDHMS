@@ -5,6 +5,7 @@ from django.utils.crypto import get_random_string
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .models import *
+from studentdhms.models import *
 from userarea.models import CompanyFaultyDevices
 from useronboard.models import SignupForm
 from django.core.mail import send_mail, BadHeaderError
@@ -245,6 +246,7 @@ def SuperAdminDashboard(request):
     return render(request, 'dhmsadminboard/itsadashboard.html', context)
 
 
+@login_required(login_url='SuperAdminAccess')
 def AllDevices(request):
     AllDevices = DeviceRegisterUpload.objects.all()
     AllOrgs = SignupForm.objects.all()
@@ -266,8 +268,12 @@ def AllDevices(request):
     return render(request, 'dhmsadminboard/devices.html', context)
 
 
+@login_required(login_url='SuperAdminAccess')
 def AdminMaintenance(request):
     AllMaintenanceRequest = MaintenanceRequest.objects.all()
+    AllStudentMaintenanceRequest = StudentMaintenanceRequest.objects.all()
+    AllAdminStudents = StudentDHMSSignUp.objects.all()
+    AllSubStudents = SubStudentRegistration.objects.all()
     AllCompany = SignupForm.objects.all()
     AllMaintenanceRequestCount = AllMaintenanceRequest.count()
     PendingMaintenanceRequest = MaintenanceRequest.objects.filter(MaintainStatus = 'Pending')
@@ -280,11 +286,13 @@ def AdminMaintenance(request):
     OngoingMaintenanceRequestCount = OngoingMaintenanceRequest.count()
     context = {'AllMaintenanceRequest':AllMaintenanceRequest, 'AllMaintenanceRequestCount':AllMaintenanceRequestCount, 'PendingMaintenanceRequestCount':PendingMaintenanceRequestCount,
                'CompletedMaintenanceRequestCount':CompletedMaintenanceRequestCount, 'CancelledMaintenanceRequestCount':CancelledMaintenanceRequestCount,
-               'OngoingMaintenanceRequestCount':OngoingMaintenanceRequestCount, 'AllCompany':AllCompany
-               }
+               'OngoingMaintenanceRequestCount':OngoingMaintenanceRequestCount, 'AllCompany':AllCompany,
+               'AllStudentMaintenanceRequest':AllStudentMaintenanceRequest, 'AllAdminStudents':AllAdminStudents,
+               'AllSubStudents':AllSubStudents}
     return render(request, 'dhmsadminboard/superadminmaint.html', context)
 
 
+@login_required(login_url='SuperAdminAccess')
 def ITPartners(request):
     if request.method == 'POST':
         technicianName = request.POST['technicianName']
@@ -339,15 +347,18 @@ def ITPartners(request):
     return render(request, 'dhmsadminboard/partners.html', context)
 
 
+@login_required(login_url='SuperAdminAccess')
 def SuperAdminReports(request):
     return render(request, 'dhmsadminboard/superreports.html')
 
 
+@login_required(login_url='SuperAdminAccess')
 def SuperAdminSettings(request):
     return render(request, 'dhmsadminboard/supersettings.html')
 
 
 
+@login_required(login_url='SuperAdminAccess')
 def OrganizationsDetails(request, pk):
     SelectedOrg = SignupForm.objects.get(companyUniqueID = pk)
     AllOrgDevices = DeviceRegisterUpload.objects.filter(CompanyUniqueCode = pk)
@@ -372,6 +383,7 @@ def OrganizationsDetails(request, pk):
 
 
 
+@login_required(login_url='SuperAdminAccess')
 def Organizations(request):
     AllOrganizations = SignupForm.objects.all()
     AllDevices = DeviceRegisterUpload.objects.all()
@@ -462,7 +474,8 @@ def FindITPartners(request, id):
         return (render(request, 'dhmsadminboard/viewpartner.html', context))
     
 
- 
+
+@login_required(login_url='SuperAdminAccess')
 def DeleteTechnicaPartner(request, id):
     partnerToDelete = technicianModel.objects.get(id = id)
     partnerToDelete.delete()
@@ -472,5 +485,21 @@ def DeleteTechnicaPartner(request, id):
     return redirect('ITPartners')
 
 
+@login_required(login_url='SuperAdminAccess')
+def Students(request):
+    AllStudentAdmin = StudentDHMSSignUp.objects.all()
+    AllSubStudent = SubStudentRegistration.objects.all()
+    AllDevices = StudentDeviceReg.objects.all()
+    AllAdminStudentCount = AllStudentAdmin.count()
+    AllSubStudentCount = AllSubStudent.count()
+    AllStudentsCount = int(AllAdminStudentCount) + int(AllSubStudentCount)
+    numberOfDevicesPerPage = 10
+    context = {'numberOfDevicesPerPage': numberOfDevicesPerPage, 'AllStudentAdmin':AllStudentAdmin, 
+               'AllSubStudent':AllSubStudent, 'AllDevices':AllDevices, 'AllAdminStudentCount' : AllAdminStudentCount, 
+               'AllSubStudentCount' : AllSubStudentCount, 'AllStudentsCount' : AllStudentsCount
+               }
+    return (render(request, 'dhmsadminboard/students.html', context))
 
 
+
+ 

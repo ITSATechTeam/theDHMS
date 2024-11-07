@@ -224,7 +224,8 @@ def Maintainance(request):
         requesttoviewdetailsMain = request.GET['requesttoviewdetails']
         print(' see requesttoviewdetailsMain below:')
         print(requesttoviewdetailsMain)
-        currentDevice = MaintenanceRequest.objects.filter(MaintainRequestID = requesttoviewdetailsMain)
+        currentDevice = MaintenanceRequest.objects.filter(id = requesttoviewdetailsMain)
+        # currentDevice = MaintenanceRequest.objects.filter(MaintainRequestID = requesttoviewdetailsMain)
         return redirect('MaintainanceDetails', name = requesttoviewdetailsMain )
         # return redirect('ProfilePage', pk=currentUser.id)
 
@@ -278,7 +279,8 @@ def MaintainanceDetails(request, name):
         CommentedMaintainDeviceName = request.POST['CommentedMaintainDeviceName']
         CommentedMaintainDeviceUser = request.POST['CommentedMaintainDeviceUser']
         CommentedMaintainRequester = request.POST['CommentedMaintainRequester']
-        CommentedMaintainRequestID = request.POST['CommentedMaintainRequestID']
+        # CommentedMaintainRequestID = request.POST['CommentedMaintainRequestID']
+        CommentedMaintainRequestID = name
         # commenterEmail = request.POST['commenterEmail']
         form = AddedMaintenanceComments.objects.create(
             commenterEmailAddress = commenterEmailAddress,
@@ -287,15 +289,18 @@ def MaintainanceDetails(request, name):
             CommentedMaintainDeviceName = CommentedMaintainDeviceName,
             CommentedMaintainDeviceUser = CommentedMaintainDeviceUser, 
             CommentedMaintainRequester = CommentedMaintainRequester,
-            CommentedMaintainRequestID = CommentedMaintainRequestID,
+            # CommentedMaintainRequestID = CommentedMaintainRequestID,
+            CommentedMaintainRequestID = name,
             # commenterEmail = commenterEmail
         )
         form.save()
 
-    currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
-    AllCommments = AddedMaintenanceComments.objects.all()
+    currentDevice = MaintenanceRequest.objects.get(id = name).id
+    # currentDevice = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainRequestID)
+    AllCommments = AddedMaintenanceComments.objects.filter(CommentedMaintainRequestID = name)
 
-    currentDeviceMain = str(MaintenanceRequest.objects.get(MaintainRequestID = name).MaintainDeviceID)
+    # currentDeviceMain = MaintenanceRequest.objects.get(id = name)
+    currentDeviceMain = str(MaintenanceRequest.objects.get(id = name).MaintainDeviceID)
     print(currentDeviceMain)
     currentDeviceDetails = DeviceRegisterUpload.objects.get(deviceid = currentDeviceMain).staffUserID
     currentDeviceUser = StaffDataSet.objects.get(StaffID = currentDeviceDetails)
@@ -308,12 +313,12 @@ def MaintainanceDetails(request, name):
 
 
 
-def DeleteAddedComment(request, pk, name):
+def DeleteAddedComment(request, pk, maintenanceid):
     commentToDelete = AddedMaintenanceComments.objects.get(id = pk)
     commentToDelete.delete()
-    messages.error(request, 'Comment has been deleted')
+    messages.success(request, 'Comment has been deleted')
     # return response
-    return redirect('MaintainanceDetails', name = name)
+    return redirect('MaintainanceDetails', name = maintenanceid)
 
 
 def EditMaintenenceRequest(request, name):
@@ -1664,19 +1669,22 @@ def Searchresult(request):
     if request.method == 'GET':
         print(q)
         deviceSearch = DeviceRegisterUpload.objects.filter(
-       Q(Q(deviceid__icontains = q) | 
-        Q(deviceuserfirstname__icontains = q) |
-        Q(deviceuserlastname__icontains = q) |
-        Q(devicemacaddress__icontains = q) |
-        Q(deviceusedepartment__icontains = q) |
-        Q(devicestatus__icontains = q) |
-        Q(devicebrand__icontains = q) |
-        Q(created_at__icontains = q) |
-        Q(devicetype__icontains = q) |
-        Q(devicelocation__icontains = q) |
-        Q(savetimedata__icontains = q) |
-        Q(weekNumberSaved__icontains = q)
-    ) & Q(user = request.user))
+            Q(
+                Q(deviceid__icontains = q) | 
+                Q(deviceuserfirstname__icontains = q) |
+                Q(deviceuserlastname__icontains = q) |
+                Q(devicemacaddress__icontains = q) |
+                Q(deviceusedepartment__icontains = q) |
+                Q(devicestatus__icontains = q) |
+                Q(devicebrand__icontains = q) |
+                Q(created_at__icontains = q) |
+                Q(devicetype__icontains = q) |
+                Q(devicelocation__icontains = q) |
+                Q(savetimedata__icontains = q) |
+                Q(weekNumberSaved__icontains = q)
+            ) 
+            & Q(user = request.user)
+       )
 # Q(devicestatus = 'Faulty') & Q(user = request.user)
     deviceSearchCount = deviceSearch.count()
     thisYear = datetime.today().year
@@ -1684,12 +1692,12 @@ def Searchresult(request):
     dateNow = datetime.now()
     month1 = dateNow.strftime("%b")
     # month1 = 'April'
-    print("Current Month Full Name:", month1)
-    print("dateNow", dateNow)
-    print("today", today)
+    # print("Current Month Full Name:", month1)
+    # print("dateNow", dateNow)
+    # print("today", today)
     date = datetime.today()
     weekNumber = date.isocalendar().week
-    print('this week number:', weekNumber)
+    # print('this week number:', weekNumber)
     allUsers = User.objects.all()
     
     context = {'allUsers':allUsers, 'deviceSearch': deviceSearch, 'deviceSearchCount':deviceSearchCount}

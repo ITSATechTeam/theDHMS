@@ -187,11 +187,11 @@
 					<div class='item'>
 						<tr class='item'>
 							<td class='sectionCheckBox' id= "{{ allMaintains.MaintainDeviceName }}">
-								<input class='sectionCheckBoxinput' type='radio' value={{ allMaintains.MaintainRequestID }} />
+								<input class='sectionCheckBoxinput' type='radio' value= {{ allMaintains.id }} />
 								{% comment %} <input class='sectionCheckID'  value={{ allMaintains.id }} /> {% endcomment %}
 							</td>
 							<td class='maintainName'>
-								<p>{{ allMaintains.MaintainRequestID }}</p>
+								<p>{{ allMaintains.MaintainRequestID }}_{{ allMaintains.id }}</p>
 								<strong>{{ allMaintains.id }}</strong>
 							</td>
 							<td>{{ allMaintains.MaintainDeviceName }}</td>

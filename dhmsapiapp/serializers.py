@@ -11,7 +11,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
-
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -254,12 +253,6 @@ class FetchStudentTransactionPINSerializerForEdit(serializers.ModelSerializer):
     class Meta:
         model = StudentTransactionPIN
         fields = ['student_transaction_pin']
-        
-        
-# class PayStackCustomerCreationSerializer(serializers.Serializer):
-#     customer_firstname = serializers.CharField()
-#     customer_lastname = serializers.CharField()
-    
 
 
 class ValidatePayStackCustomerSerializer(serializers.Serializer):
@@ -270,6 +263,13 @@ class ValidatePayStackCustomerSerializer(serializers.Serializer):
 
 
 class Device_Health_Status_Serializer(serializers.Serializer):
+    Healthy = serializers.CharField()
+    Faulty = serializers.CharField()
+    Critical = serializers.CharField()
+
+
+
+class MaintenanceIssueOptionsSerializer(serializers.Serializer):
     Healthy = serializers.CharField()
     Faulty = serializers.CharField()
     Critical = serializers.CharField()
@@ -342,6 +342,9 @@ class PlaceTransferRequestsSerializer(serializers.Serializer):
         
         
 
+class GetLocationUsingLongLatSerializer(serializers.Serializer):
+    Longitude = serializers.FloatField()
+    Latitude = serializers.FloatField()
 
 
 

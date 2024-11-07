@@ -41,7 +41,7 @@
 					<div id="flash">
 						{% if messages %} {% for message in messages %}
 						<div class="alert alert-{{ message.tags}} m-0" role="alert">
-							<strong style="color: red">{{ message }}</strong>
+							<strong>{{ message }}</strong>
 						</div>
 						{% endfor %} {% endif %}
 					</div>
@@ -65,14 +65,16 @@
 				<div class='devicedetailssection'>
 					{{deviceuserfirstname}}
 					{% for AllMaintainDevice in AllMaintainDevice %}
-					{% if AllMaintainDevice.MaintainRequestID == currentDevice %}
+					{% if AllMaintainDevice.id == currentDevice %}
+					{% comment %} {% if AllMaintainDevice.MaintainRequestID == currentDevice %} {% endcomment %}
 					<div>
 						<br/><h3>Device Details</h3><br/>
 						<h4>Device Name: <strong>{{ AllMaintainDevice.MaintainDeviceName }}</strong></h4>
 						<h4>Device ID: <strong>{{ AllMaintainDevice.MaintainDeviceID }}</strong></h4>
 						<h4>Device Type: <strong>{{ AllMaintainDevice.MaintainDeviceType }}</strong></h4>
 						<h4>Device Unit: <strong>{{ AllMaintainDevice.MaintainDeviceUserDepartment }}</strong></h4>
-						<h4>Device is assigned to: <strong>{{ currentDeviceUser.staff_firstname }} with ID '{{currentDeviceDetails}}'</strong></h4>
+						<h4>Device is assigned to: <strong>{{ currentDeviceUser.staff_firstname }}</strong></h4>
+						{% comment %} <h4>Device is assigned to: <strong>{{ currentDeviceUser.staff_firstname }} with ID '{{currentDeviceDetails}}'</strong></h4> {% endcomment %}
 						{% comment %} <h4>Device is assigned to: <strong>{{ AllMaintainDevice.MaintainDeviceUserFirstname }} {{ AllMaintainDevice.MaintainDeviceUserLastname }} </strong></h4> {% endcomment %}
 					</div>
 					<div>
@@ -125,7 +127,7 @@
 						<hr/>
 						{% comment %} DISPLAY ALL ADDEDD COMMENTS AND COMMENTERS HERE {% endcomment %}
 						{% for AllCommments in AllCommments %}
-						{% if AllCommments.CommentedMaintainRequestID == AllMaintainDevice.MaintainRequestID %}
+						{% comment %} {% if AllCommments.CommentedMaintainRequestID == AllMaintainDevice.id %} {% endcomment %}
 						<div class='commentsSectionout'>
 							<div class='commentsSection'>
 								<h4>{{ AllCommments.commenter }}'s comment:</h4>
@@ -135,7 +137,7 @@
 										<h4>Edit</h4>
 									</div> {% endcomment %}
 									{% if request.user.email == AllCommments.commenterEmailAddress %}
-									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllMaintainDevice.MaintainRequestID}}/  >
+									<a href = /member/deletecomment/{{AllCommments.id}}/{{AllCommments.CommentedMaintainRequestID}}/  >
 										<div class='editcomment'>
 											<img src={% static 'maintenance/img/delete.png' %} />
 											<h4>Delete</h4>
@@ -148,7 +150,7 @@
 								{{ AllCommments.commentProper }}
 							</div>
 						</div>
-						{% endif %}
+						{% comment %} {% endif %} {% endcomment %}
 						{% endfor %}
 						{% comment %}  {% endcomment %}
 						

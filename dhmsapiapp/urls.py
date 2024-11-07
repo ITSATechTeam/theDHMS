@@ -33,6 +33,7 @@ urlpatterns = [
     # FETCH ALL GENERAL SUPER USER MAINTENANCE REQUEST 
     path('getallmaintenancereqs', viewsadminapi.GetAllDHMSMaintenanceReqs, name="GetAllDHMSMaintenanceReqs"),
     # GET DEVICE CONDITION STATUS ENUM
+
     path('devicestatus', views.Device_Health_Status, name="Device_Health_Status"),
     # STUDENT DHMS ENDPOINTS STARTS HERE
     path('studentreg', views.Student_Registration, name="Student_Registration"),
@@ -74,6 +75,12 @@ urlpatterns = [
     path('getmaintenancetyperate', technicalappviews.GetMaintenanceTypePercentage, name='GetMaintenanceTypePercentage'),    
     # FETCH LASTEST FIVEMAINTENANCE REQEUSTS
     path('getlastfivemaintenacereqs', technicalappviews.GetLatestFiveMaintenanceRequest, name='GetLatestFiveMaintenanceRequest'),    
+    # DEVICE SEARCH
+    path('searchdevice', technicalappviews.SearchDevices, name='SearchDevices'),    
+    # DEVICE SEARCH
+    path('changemaintenancestatus/', technicalappviews.ChangeMaintenanceStatus, name='ChangeMaintenanceStatus'),    
+    # DEVICE SEARCH
+    path('getmaintenance/<str:id>', technicalappviews.GetSingleMaintenance, name='GetSingleMaintenance'),    
     # TECHNICAL PARTNERS ENDPOINTS STARTS HERE
      
     # ITSA SUPER ADMIN ENDPOINT
@@ -142,7 +149,12 @@ urlpatterns = [
     path('reassigndevice/<str:id>', views.ReassignDevice, name='ReassignDevice'),
     path('allunassigneddevices', views.UnassignedDevices, name='UnassignedDevices'),
     path('maintenanceissuetype', views.MaintenaceRequestIssueTypes, name='MaintenaceRequestIssueTypes'),
-    # SEND SUB STUDENT EMAIL NOTIFICATION AFTER REGISTRATION
+    # GET STUDENT DATA
+    path('getprofiledata', views.GetUserProfileDetails, name='GetUserProfileDetails'),
+    # MAINTENANCE ISSUE OPTIONS
+    path('getmaintenanceoptions', views.MaintenanceIssueOptions, name='MaintenanceIssueOptions'),
+    # GET USER LOCATION USING LONGITUDE AND LATITUDE
+    path('getuserlocation', views.GetLocationUsingLongLat, name='GetLocationUsingLongLat'),
     # path('sendsubstudentemail', views.SendSubStudentEmailNotification, name='SendSubStudentEmailNotification'),
 
 

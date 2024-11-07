@@ -107,10 +107,12 @@ main{
 
 /* offerSection STARTS HERE */
 .offerSection{
-    /* background-color: #2A66B0; */
+    background-color: #eaeaeb;
     padding: 20px;
+    border-radius: 20px;
     /* margin-bottom: 30px; */
     position: relative;
+    margin-bottom: 40px;
 }
 
 .offerSectionOut{
@@ -118,7 +120,7 @@ main{
     margin: auto;
     justify-content: space-around;
     width: 100%;
-    margin-bottom: 40px;
+    padding-bottom: 10px;
     padding-top: 20px;
 }
 
@@ -126,9 +128,11 @@ main{
   text-align: center;
 }
 
-.offerproper img{
-    width: 20px;
-    margin-right: 5px;
+.offerSectionInner img{
+    width: 400px;
+    border-radius: 10px;
+    object-fit: cover;
+    height: 430px;
 }
 
 .offerproper{
@@ -141,10 +145,11 @@ main{
 }
 
 .offerSectionInner{
-    padding: 10px;
+    padding: 0px;
     background-color: white;
-    border-radius: 10px;
-    width: 320px;
+    border-radius: 5px;
+    width: 400px;
+    overflow: hidden;
     transition: .7s ease-in-out;
 }
 
@@ -569,10 +574,15 @@ main{
     padding-top: 20px;
   }
 
+  .offerSection{
+    background-color: white;
+  }
+
   .offerSectionInner{
-    padding: 10px;
+    padding: 0px;
     border-radius: 10px;
-    width: 320px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.2);
+    width: 400px;
     margin: auto;
     transition: .7s ease-in-out;
     margin-bottom: 30px;

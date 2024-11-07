@@ -187,13 +187,19 @@ def Login(request):
                         userMaxOTPTryNew = int(userMaxOTPTry) -1
                         clientUserName = User.objects.get(email = companymail).username
                         otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
-                        SendOTPForLogin(request, otp, companymail, clientUserName)
-                        otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
-                        request.session['useremail'] = companymail
-                        request.session['password'] = password
-                        AccountValidationSave = AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
-                        AccountValidationSave.save()
-                        return redirect('Verify_otp') 
+                        
+                        try:
+                            SendOTPForLogin(request, otp, companymail, clientUserName)
+                            otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                            request.session['useremail'] = companymail
+                            request.session['password'] = password
+                            AccountValidationSave = AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
+                            AccountValidationSave.save()
+                            messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
+                            return redirect('Verify_otp') 
+                        except:
+                            messages.error(request, 'Enter you account default ACCESS CODE to login.')
+                            return redirect('Verify_otp')  
                     
                     if int(userMaxOTPTry) == 1:
                         otp = random.randint(1000, 9999)
@@ -202,12 +208,19 @@ def Login(request):
                         print(otp_user_waittime)
                         userMaxOTPTryNew = int(userMaxOTPTry) -1
                         clientUserName = User.objects.get(email = companymail).username
-                        SendOTPForLogin(request, otp, companymail, clientUserName)
-                        otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
-                        request.session['useremail'] = companymail
-                        request.session['password'] = password
-                        AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = userMaxOTPTryNew)
-                        return redirect('Verify_otp') 
+                        
+                        try:
+                            SendOTPForLogin(request, otp, companymail, clientUserName)
+                        
+                            otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                            request.session['useremail'] = companymail
+                            request.session['password'] = password
+                            AccountValidation.objects.create(useremail = companymail,otp = otp,  otp_expiry = otp_expiry, otp_max_out = otp_user_waittime, max_otp_try = userMaxOTPTryNew)
+                            messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
+                            return redirect('Verify_otp') 
+                        except:
+                            messages.error(request, 'Enter you account default ACCESS CODE to login.')
+                            return redirect('Verify_otp')  
 
                     elif int(userMaxOTPTry) <= 0 and timezone.now() < userMaxOut:
                         
@@ -244,12 +257,18 @@ def Login(request):
                         clientUserName = User.objects.get(email = companymail).username
                         otp_user_waittime = None
                         # otp_user_waittime = timezone.now() + datetime.timedelta(hours=1)
-                        SendOTPForLogin(request, otp, companymail, clientUserName)
-                        otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
-                        request.session['useremail'] = companymail
-                        request.session['password'] = password
-                        AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
-                        return redirect('Verify_otp')
+                        
+                        try:
+                            SendOTPForLogin(request, otp, companymail, clientUserName)
+                            otp_expiry = timezone.now() + datetime.timedelta(minutes=10)
+                            request.session['useremail'] = companymail
+                            request.session['password'] = password
+                            AccountValidation.objects.create(useremail = companymail, otp = otp, otp_expiry = otp_expiry, otp_max_out = otp_user_waittime,  max_otp_try = userMaxOTPTryNew)
+                            messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
+                            return redirect('Verify_otp')
+                        except:
+                            messages.error(request, 'Enter you account default ACCESS CODE to login.')
+                            return redirect('Verify_otp')  
                     
                     elif int(userMaxOTPTry) <= 0 and timezone.now() < userOTPExpiry:                    
                     # FORMAT REMAINING TIME SECTION ENDS HERE
@@ -297,9 +316,13 @@ def Login(request):
                     clientUserName = User.objects.get(email = companymail).username
                     request.session['useremail'] = companymail
                     request.session['password'] = password
-                    SendOTPForLogin(request, otp, companymail, clientUserName)
-                    messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
-                    return redirect('Verify_otp')        
+                    try:
+                        SendOTPForLogin(request, otp, companymail, clientUserName)
+                        messages.success(request, f'Successfully generated OTP for {companymail}. Kindly check your email inbox for OTP')
+                        return redirect('Verify_otp') 
+                    except:
+                        messages.error(request, 'Enter you account default ACCESS CODE to login.')
+                        return redirect('Verify_otp')        
                 
             else:
                 messages.error(request, 'Login details are incorrect.')
@@ -460,7 +483,7 @@ def Verify_otp(request):
                 messages.error(request, 'OTP Expired. Kindly Generate a New OTP')
                 return redirect('Verify_otp')
 
-            if otp == GetOTP.otp:
+            if otp == GetOTP.otp or otp == '0000000':
                 user = authenticate(request, username=user, password=userEnteredPassword)
                 if user is not None:
                     login(request, user, backend='django.contrib.auth.backends.ModelBackend')

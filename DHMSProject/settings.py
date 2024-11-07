@@ -258,12 +258,12 @@ REST_FRAMEWORK = {
 # TOKEN_EXPIRED_AFTER_SECONDS = 86400
 from datetime import timedelta
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=5),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': 'oun-d6sf67@ls+sm%!0=pug',  # Use your Django SECRET_KEY or a different key
+    'SIGNING_KEY': str(os.getenv('SECRET_KEY')),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
@@ -310,7 +310,7 @@ ERROR_TEMPLATE = 'auth/{}.html'
 
 from datetime import timedelta
 AUTO_LOGOUT = {
-    'IDLE_TIME': timedelta(minutes=10),
+    'IDLE_TIME': timedelta(minutes=60),
     'Login': True,
 }
 

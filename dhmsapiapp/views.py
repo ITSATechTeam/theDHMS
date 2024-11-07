@@ -8,6 +8,7 @@ import requests
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, schema
 from dhmsapiapp.generate_code import Verify_otp, generate_validation_code
+from dhmsapiapp.getlocation import get_address_from_coordinates, get_location_from_lat_long, get_location_from_lat_long_opencage
 from dhmsapiapp.sendmails import SendSubStudentEmailNotification
 from dhmsapiapp.sendphonecode import SendPhoneVerificationCode
 from dhmsapiapp.sendtransactionmails import TransferEmailNotification
@@ -347,10 +348,10 @@ def Student_Login(request):
                             'status':status.HTTP_200_OK,
                             'message': 'Student Login was Successfull',
                             "Token": token_serializer.validated_data,
+                            # "SessionID": session_id,
                             "studentData": {"email": student_email, "phone_number": student_phoneNumber, "student_firstName":  Student_firstname, 
                                             "student_lastname": Student_lastname, "student_school": student_school, 'student_email_verification_status': student_email_verification_status, 
-                                            "student_pin_set":student_pin_set, "is_student_admin": is_Student_Admin
-                                            },
+                                            "student_pin_set":student_pin_set, "is_student_admin": is_Student_Admin},
                         })
 
                 # Sub student Login setup starts here
@@ -935,13 +936,11 @@ def UnassignDevice(request, id):
         # if request.method == 'POST':
         if id:
             checkStudentExist = StudentDeviceReg.objects.get(id = id)
-            # device_admin_id = StudentDeviceReg.objects.get(id = id).student_admin_id
+            device_admin_id = StudentDeviceReg.objects.get(id = id).student_admin_id
             # device_admin_email = User.objects.get(id = device_admin_id).email
             studentAdminID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
-            print(checkStudentExist)
-            print(studentAdminID)
             # 
-            user_update = {"student_user_id": None}
+            user_update = {"student_user_id": studentAdminID}
             serializer = UpdateDeviceAssigneeSerializer(checkStudentExist, data = user_update)
             # serializer = UpdateDeviceAssigneeSerializer(checkStudentExist, data = request.user.email)
             if serializer.is_valid():
@@ -949,7 +948,7 @@ def UnassignDevice(request, id):
                 return Response({
                     "status":status.HTTP_200_OK,
                     "message": "Device has been unassigned to student and assigned to the student admin",
-                    # "data": serializer.data
+                    "data": serializer.data 
                 })
             else: 
                 return Response({
@@ -1599,6 +1598,7 @@ def MaintenanceReg(request):
                 maintenance_description = serializer.data['maintenance_description']  
                 user = User.objects.get(email = request.user.email)
                 registeredMonth = today.strftime("%b")
+                print(f'{maintenance_priority_level} {device_id} {maintenance_description}')
                     
                 # check device ID
                 if (StudentDeviceReg.objects.filter(id = serializer.data['device_id'])):
@@ -1612,7 +1612,7 @@ def MaintenanceReg(request):
                             # signedInAdminEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email                            
                             if signedInAdminID:
                                 form = StudentMaintenanceRequest(user = user, student_requester_id= signedInAdminID, student_admin_id = signedInAdminID,
-                                device_id = device_id, device_name=device_name, maintenance_priority_level = maintenance_priority_level, 
+                                device_id = device_id, device_name=device_name, maintenance_priority_level = maintenance_priority_level, student_requester_status = 'StudentAdmin',
                                 maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description, registeredMonth = registeredMonth)
                                 form.save()
                                 return Response({
@@ -1633,7 +1633,9 @@ def MaintenanceReg(request):
                         if int(signedInSubStudentID) == int(deviceUserID):
                             form = StudentMaintenanceRequest(user = user, student_requester_id= signedInSubStudentID, device_name=device_name, 
                             maintenance_priority_level = maintenance_priority_level, student_admin_id = signedInAdminID, registeredMonth = registeredMonth,
-                            maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description, device_id = device_id)  
+                            maintenance_issue = maintenance_issue,  maintenance_description = maintenance_description, device_id = device_id,
+                            student_requester_status = 'SubStudent',
+                            )  
                             form.save()
                             return Response({
                                 "status": status.HTTP_200_OK,
@@ -2022,9 +2024,9 @@ def CreateTransactionPIN(request):
 
 
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body=UpdateStudentTransactionPINSerializer)
-@permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def UpdateTransactionPIN(request):
     # UpdateStudentTransactionPINSerializer
     try:
@@ -2082,9 +2084,9 @@ def UpdateTransactionPIN(request):
 
 # CREATE PAYSTACK CUSTOMER
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
-@permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def CreatePaystackCustomer(request):
     try:
         student_admin_id = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
@@ -2143,9 +2145,9 @@ def CreatePaystackCustomer(request):
 
 # FETCH PAYSTACK CUSTOMER
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
-@permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def FindPaystackCustomer(request):
     try:
         getRequestingUser = StudentDHMSSignUp.objects.get(student_email = request.user.email)
@@ -2241,9 +2243,9 @@ def create_transfer_recipient(request, bank_account_name, studentBankCode, bank_
 
 # CREATE VIRTUAL ACCOUNT
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
-@permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def CreateDedicatedVirtualAccount(request):
     try:
         StudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
@@ -2365,9 +2367,9 @@ def PaystackListofBanks(request):
 
 # FETCT PAYSTACK SUPPORTED BANKS
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = ValidatePayStackCustomerSerializer)
-@permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def ValidatePayStackCustomer(request):
     try:        
         serializer = ValidatePayStackCustomerSerializer(data = request.data)
@@ -2535,9 +2537,9 @@ def handle_dva_funds_received(data):
 
 # FETCT ALL DVAs
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
-@permission_classes([IsAuthenticated])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def List_DVAs(request):
     try:           
         url="https://api.paystack.co/dedicated_account"
@@ -2562,39 +2564,49 @@ def List_DVAs(request):
 
 
 
+
 # FETCT USER WALLET DETAILS
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def FetchWalletDetails(request):
     try:
-        StudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
-        if PayStackCustomerWalletDetails.objects.filter(student_id = StudentID):
-            fetchUserWalletDetails = PayStackCustomerWalletDetails.objects.get(student_id = StudentID)
-            fetchCustomerRecipientCODE = StudentTransferRecipientCode.objects.get(student_id = StudentID).recipient_code
-            serializer = FetchPayStackCustomerWalletDetails(fetchUserWalletDetails, many=False)
-            if serializer:
-                return Response({
-                        "status": 200,
-                        "message": 'Account details found',
-                        "data": serializer.data,
-                        "customer_recipient_code": fetchCustomerRecipientCODE
-                    })
+        if request.user.is_authenticated:
+        # if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
+            StudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+            if PayStackCustomerWalletDetails.objects.filter(student_id = StudentID):
+                fetchUserWalletDetails = PayStackCustomerWalletDetails.objects.get(student_id = StudentID)
+                # fetchCustomerRecipientCODE = StudentTransferRecipientCode.objects.get(student_id = StudentID).recipient_code
+                serializer = FetchPayStackCustomerWalletDetails(fetchUserWalletDetails, many=False)
+                if serializer:
+                    return Response({
+                            "status": 200,
+                            "message": 'Account details found',
+                            "data": serializer.data,
+                            # "customer_recipient_code": fetchCustomerRecipientCODE
+                        })
+                else:
+                    return Response({
+                            "status": 400,
+                            "message": 'An error occured. Kindly rey again',
+                        })
             else:
                 return Response({
                         "status": 400,
-                        "message": 'An error occured. Kindly rey again',
+                        "message": 'You have not created a wallet yet',
                     })
         else:
             return Response({
                     "status": 400,
-                    "message": 'You have not created a wallet yet',
+                    "message": 'You are not logged in',
                 })
     except:
         return Response({
             'status': status.HTTP_400_BAD_REQUEST,
             'message': 'An error occured'
         }) 
+
 
 
 # FETCT DEVICE STATUS ENUMS
@@ -2622,6 +2634,33 @@ def Device_Health_Status(request):
             'message': 'An error occured'
         })
 
+# MaintainanceIssueOption = (
+#     ("Screen Repairs", "Screen Repairs"),
+#     ("Battery Issues", "Battery Issues"),
+#     ("Keyboard Issues", "Keyboard Issues"),
+#     ("Motherboard Issues", "Motherboard Issues"),
+#     ("Others", "Others"),
+# )
+
+# FETCT DEVICE STATUS ENUMS
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+def MaintenanceIssueOptions(request):
+    try:
+        maintenanceOptions = {'Screen Repairs':'Screen Repairs', 'Battery Issues':'Battery Issues', 'Motherboard Issues': 'Motherboard Issues',
+                              'Keyboard Issues':'Keyboard Issues', 'Others':'Others'}
+        return Response({
+            'status': status.HTTP_200_OK,
+            'message': 'Maintenance issue options were fetched successfully',
+            'data': maintenanceOptions
+        })
+    except:
+        return Response({
+            'status': status.HTTP_400_BAD_REQUEST,
+            'message': 'An error occured'
+        })
+
 
 
 # TRANSFER FUNDS
@@ -2629,6 +2668,7 @@ def Device_Health_Status(request):
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = InitializeFundTransferSerializer)
 @csrf_exempt
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 # def initialize_transfer(amount, recipient_code, reason='Transfer from dedicated virtual account'):
 def initialize_transfer(request):
     try:
@@ -2829,6 +2869,7 @@ def Calculate_balance(request):
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def FetchAllTransactions(request):    
     FoundTransactions = []
     try:
@@ -2993,11 +3034,43 @@ def StudentPlaceTransferRequest(request):
         if serializer.is_valid():
             transferAmount = int(serializer.data['transferAmount']),
             transactionPIN = serializer.data['transactionPIN']
-            # Check if requester has set up transaction PIN
+            # Check if sender is a student admin
             if (StudentDHMSSignUp.objects.filter(student_email = request.user.email)):
-                GetStudentAdminID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
-                if StudentTransactionPIN.objects.filter(student_id = GetStudentAdminID):
-                    GetStudentAdminTransPIN = StudentTransactionPIN.objects.get(student_id = GetStudentAdminID).student_transaction_pin
+                GetSenderID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
+                
+                fetchSenderProfile = StudentDHMSSignUp.objects.get(student_email = request.user.email)
+                fetchSenderPhoneNumber = fetchSenderProfile.student_phone
+                senderEmail = fetchSenderProfile.student_email
+                senderFirstName = fetchSenderProfile.student_firstname
+                senderLastName = fetchSenderProfile.student_lastname
+                
+                if StudentTransactionPIN.objects.filter(student_id = GetSenderID):
+                    GetStudentAdminTransPIN = StudentTransactionPIN.objects.get(student_id = GetSenderID).student_transaction_pin
+                    # check if transaction pin is correct
+                    if (GetStudentAdminTransPIN == serializer.data['transactionPIN']):
+                        pass
+                    else:
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "Sorry, Your transaction pin is incorrect"
+                        })
+                else:
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Sorry, You have not set a transaction pin yet. Please create a transaction PIN and try again"
+                    })
+            # carry out if sender is a sub student
+            elif (SubStudentRegistration.objects.filter(sub_student_email_address = request.user.email)):
+                GetSenderID = int(SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id)
+                
+                fetchSenderProfile = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email)
+                fetchSenderPhoneNumber = fetchSenderProfile.sub_student_phone_number
+                senderEmail = fetchSenderProfile.sub_student_email_address
+                senderFirstName = fetchSenderProfile.sub_student_firstname
+                senderLastName = fetchSenderProfile.sub_student_lastname
+                
+                if StudentTransactionPIN.objects.filter(student_id = GetSenderID):
+                    GetStudentAdminTransPIN = StudentTransactionPIN.objects.get(student_id = GetSenderID).student_transaction_pin
                     # check if transaction pin is correct
                     if (GetStudentAdminTransPIN == serializer.data['transactionPIN']):
                         pass
@@ -3012,26 +3085,21 @@ def StudentPlaceTransferRequest(request):
                         "message": "Sorry, You have not set a transaction pin yet. Please create a transaction PIN and try again"
                     })
             else:
-                pass
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Sorry, You account status cannot be confirmed at this time. Kindly login and try again."
+                })
+                
+            # check if receiver is a student admin 
             if StudentDHMSSignUp.objects.filter(student_email = serializer.data['receiverEmail']):
                 receiverID = int(StudentDHMSSignUp.objects.get(student_email = serializer.data['receiverEmail']).id)
-                getRequestingID = int(StudentDHMSSignUp.objects.get(student_email = request.user.email).id)
-                fetchUserProfile = StudentDHMSSignUp.objects.get(student_email = request.user.email)
-                fetchUserPhoneNumber = fetchUserProfile.student_phone
-                # 
-                senderFirstName = fetchUserProfile.student_firstname
-                senderLastName = fetchUserProfile.student_lastname
-                senderEmail = fetchUserProfile.student_email
-                # 
+                receiverProfile = StudentDHMSSignUp.objects.get(student_email = request.user.email)
+            # check if receiver is a sub student 
             elif SubStudentRegistration.objects.filter(sub_student_email_address = serializer.data['receiverEmail']):
-                getRequestingID = int(SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id)
-                fetchUserProfile = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email)
-                receiverID = int(SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['receiverEmail']).id )    
-                fetchUserPhoneNumber = fetchUserProfile.sub_student_phone_number     
-                #                         
-                senderFirstName = fetchUserProfile.sub_student_firstname
-                senderLastName = fetchUserProfile.sub_student_lastname
-                senderEmail = fetchUserProfile.sub_student_email_address 
+                # getSubStudentReceiverID = int(SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id)
+                # fetchSubStudentReceiverProfile = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email)
+                receiverProfileProfile = SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['receiverEmail'])
+                receiverID = int(SubStudentRegistration.objects.get(sub_student_email_address = serializer.data['receiverEmail']).id ) 
                 # 
             else:
                 return Response({
@@ -3040,20 +3108,20 @@ def StudentPlaceTransferRequest(request):
                 })
             # Check if receiver has a wallet on DHMS
             if PayStackCustomerWalletDetails.objects.filter(student_id = receiverID):
-                transferID = 'TransferReq_' + str(getRequestingID) + '_' + get_random_string(length=10)
+                transferID = 'TransferReq_' + str(receiverID) + '_' + get_random_string(length=10)
                 getReceiverData = PayStackCustomerWalletDetails.objects.get(student_id = receiverID)
                 getReceiverDataAcctNumber = getReceiverData.bank_account_number
                 getReceiverCustomerID = getReceiverData.bank_customer_code
                 getReceiverAccountName = getReceiverData.bank_account_name
                 getReceiverBank = getReceiverData.bank_name
 
-                # CHECK CURRENT USER BALANCE
-                if PayStackCustomerWalletDetails.objects.get(student_id = getRequestingID):
-                    senderPaystackWallet = PayStackCustomerWalletDetails.objects.get(student_id = getRequestingID)
+                # CHECK SENDER ACCOUNT BALANCE
+                if PayStackCustomerWalletDetails.objects.get(student_id = GetSenderID):
+                    senderPaystackWallet = PayStackCustomerWalletDetails.objects.get(student_id = GetSenderID)
                     senderPaystackWalletBalance = senderPaystackWallet.accountBalance     
                     senderPaystackCustomerCode = senderPaystackWallet.bank_customer_code
                 
-                    # CHECK IF BALANCE CAN SEND FUNDS
+                    # CHECK IF BALANCE CAN SEND FUNDS 
                     if int(senderPaystackWalletBalance) < (int(serializer.data['transferAmount']) + 50.00):
                         return Response({
                             "status": status.HTTP_400_BAD_REQUEST,
@@ -3061,23 +3129,19 @@ def StudentPlaceTransferRequest(request):
                         })
                     else:
                         # SAVE DEBIT TRANSACTION IN WALLET
-                        StudentWalletTransactionsSave = StudentWalletTransactions(user = request.user, SenderStudentID = getRequestingID, 
-                            transactionID = transferID, transactionType = 'Debit', transactionCustomerPhone = fetchUserPhoneNumber, 
+                        StudentWalletTransactionsSave = StudentWalletTransactions(user = request.user, SenderStudentID = GetSenderID, 
+                            transactionID = transferID, transactionType = 'Debit', transactionCustomerPhone = fetchSenderPhoneNumber, 
                             transactionAmount = serializer.data['transferAmount'], transactionStatus = 'Pending', 
                             transactionCustomerCode = senderPaystackCustomerCode, receiverAccountNumber = getReceiverDataAcctNumber,
                             receiverCustomerID = getReceiverCustomerID, receiverAccountName =  getReceiverAccountName,
-                            receiverAccountBank = getReceiverBank, receiverAccountStudentID = getRequestingID
+                            receiverAccountBank = getReceiverBank, receiverAccountStudentID = GetSenderID
                             )
-                        # update sender account balance in DB
-                        findStudentSender = PayStackCustomerWalletDetails.objects.get(student_id=getRequestingID)
-                        oldWalletBalance = int(PayStackCustomerWalletDetails.objects.get(student_id = getRequestingID).accountBalance)
+                        # update sender account balance in DB 
+                        findStudentSender = PayStackCustomerWalletDetails.objects.get(student_id=GetSenderID)
+                        oldWalletBalance = int(PayStackCustomerWalletDetails.objects.get(student_id = GetSenderID).accountBalance)
                         newTransactionAmount = oldWalletBalance - int(serializer.data['transferAmount'] + 50)
                         newAccountBalance = {'accountBalance': newTransactionAmount}
                         serializer = UpdateWalletBalance(findStudentSender, data = newAccountBalance)
-                        #
-                        senderFirstName = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_firstname
-                        senderLastName = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_lastname
-                        senderEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
                         transferstatus = 'Pending'
                         newStudentAccountBalance = newTransactionAmount
                         amountToTransfer = transferAmount[0]
@@ -3085,11 +3149,10 @@ def StudentPlaceTransferRequest(request):
                         if serializer.is_valid():
                             serializer.save()                    
                             # Send notification email
-                            TransferEmailNotification(request, senderEmail, senderFirstName, senderLastName, amountToTransfer, getReceiverAccountName, getReceiverBank, transferstatus, newStudentAccountBalance)
-                            # try:
-                            #     TransferEmailNotification(request, senderEmail, senderFirstName, senderLastName, serializer.data['transferAmount'], getReceiverAccountName, getReceiverBank, transferstatus, newStudentAccountBalance)
-                            # except:
-                            #     print(f'email for transfer notification was not sent for user: {senderEmail}')
+                            try:
+                                TransferEmailNotification(request, senderEmail, senderFirstName, senderLastName, amountToTransfer, getReceiverAccountName, getReceiverBank, transferstatus, newStudentAccountBalance)
+                            except:
+                                print(f'email for transfer notification was not sent for user: {senderEmail}')
                             StudentWalletTransactionsSave.save()
                             print(f'{request.user.email} account balance updated')
                         else:
@@ -3097,8 +3160,7 @@ def StudentPlaceTransferRequest(request):
                                         "status":status.HTTP_400_BAD_REQUEST,
                                         "message": 'An error occured',
                                         'error': serializer.error_messages
-                                    })
-                            
+                                    })                        
                         
                         return Response({
                                         "status":status.HTTP_200_OK,
@@ -3129,10 +3191,10 @@ def StudentPlaceTransferRequest(request):
 
 
 
-@permission_classes([IsAuthenticated])
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def DashboardOverview(request):
     try:
         if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
@@ -3165,10 +3227,10 @@ def DashboardOverview(request):
     
 
 
-@permission_classes([IsAuthenticated])
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def CheckStudentPlan(request):
     try:
         StudentDHMSSignUp.objects.get(student_email = request.user.email)
@@ -3193,10 +3255,10 @@ def CheckStudentPlan(request):
     
 
 # FETCH MAINTENANCE COUNTS
-@permission_classes([IsAuthenticated])
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def FetchMaintenanceRequestCounts(request):
     # try:
         findCurrentUserID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
@@ -3276,10 +3338,10 @@ def FetchMaintenanceRequestCounts(request):
     #     })
     
 
-@permission_classes([IsAuthenticated])
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def FetchTechnicalPartners(request):
     try:
         FoundTechnicians = []
@@ -3322,6 +3384,7 @@ def FetchTechnicalPartners(request):
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['PUT'], request_body = ReassignDeviceSerializer)
 @csrf_exempt
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def ReassignDevice(request, id):
     try:
         serializer = ReassignDeviceSerializer(data = request.data)
@@ -3389,9 +3452,11 @@ def ReassignDevice(request, id):
 
 
 
+
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def UnassignedDevices(request):
     try:
         allUnAssignedDevice = []
@@ -3427,6 +3492,7 @@ def UnassignedDevices(request):
 @swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
 @csrf_exempt
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def MaintenaceRequestIssueTypes(request):
     try:
         deviceStatuses = {
@@ -3445,5 +3511,78 @@ def MaintenaceRequestIssueTypes(request):
         return Response({
             'status': status.HTTP_400_BAD_REQUEST,
             'message': 'An error occured'
+        })
+
+
+
+
+
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['GET'])
+@csrf_exempt
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def GetUserProfileDetails(request):
+    try:
+        userProfileData = {
+            'id': request.user.id,
+            'firstname': request.user.first_name,
+            'lastname': request.user.last_name,
+            'email': request.user.email,
+        }     
+        return Response({
+            'status': status.HTTP_200_OK,
+            'message': 'Profile data fetch successfull',
+            'data': userProfileData
+        })
+    except:
+        return Response({
+            'status': status.HTTP_400_BAD_REQUEST,
+            'message': 'An error occured'
+        })
+
+
+# Get user location
+@swagger_auto_schema(tags=['StudentDHMSEndpoint'], methods=['POST'], request_body = GetLocationUsingLongLatSerializer)
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def GetLocationUsingLongLat(request):
+    serializer = GetLocationUsingLongLatSerializer(data = request.data)
+    if serializer.is_valid():
+        long = serializer.data['Longitude']
+        lat = serializer.data['Latitude']
+    
+        UserLocation = get_address_from_coordinates(long, lat)
+        if UserLocation == 'Address not found':
+            determinLocationWithoutGoogle = get_location_from_lat_long(long, lat)
+            if determinLocationWithoutGoogle == 'Address not found' or determinLocationWithoutGoogle == 'Location could not be found':
+                determinLocationWithOpencage = get_location_from_lat_long_opencage(long, lat)
+                if determinLocationWithOpencage == 'No address found':
+                    return Response({
+                        'status': status.HTTP_400_BAD_REQUEST,
+                        'message': 'Location/Address not found. Kindly check you longitude, latitude and try again'
+                    })
+                else:
+                    return Response({
+                        'status': status.HTTP_200_OK,
+                        'message': 'Location fetch successfull',
+                        'location': determinLocationWithOpencage
+                    })
+            else:
+                return Response({
+                    'status': status.HTTP_200_OK,
+                    'message': 'Location fetch successfull',
+                    'location': determinLocationWithoutGoogle
+                })
+        else:
+            return Response({
+                'status': status.HTTP_200_OK,
+                'message': 'Location fetch successfull',
+                'location': UserLocation
+            })
+    else:
+        return Response({
+            'status': status.HTTP_400_BAD_REQUEST,
+            'message': 'There was an error processing the longitude and latitude you provided.'
         })
 
