@@ -47,6 +47,7 @@ urlpatterns = [
     path('api/', include("dhmsapiapp.urls")),
     path('aichat/', include("aichat.urls")),
     path('student/', include("studentdhms.urls")),
+    path('scandevice/', include("devicescanapp.urls")),
     path('comm/', include("commapp.urls")),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),

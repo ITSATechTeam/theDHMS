@@ -343,8 +343,8 @@ class PlaceTransferRequestsSerializer(serializers.Serializer):
         
 
 class GetLocationUsingLongLatSerializer(serializers.Serializer):
-    Longitude = serializers.FloatField()
     Latitude = serializers.FloatField()
+    Longitude = serializers.FloatField()
 
 
 

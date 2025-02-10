@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django import forms
-from django_countries.widgets import CountrySelectWidget
+# from django_countries.widgets import CountrySelectWidget
 from .models import *
 from useronboard.models import SignupForm, UserProfileImage
 from django.contrib.auth.models import User

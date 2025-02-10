@@ -154,7 +154,7 @@ urlpatterns = [
     # MAINTENANCE ISSUE OPTIONS
     path('getmaintenanceoptions', views.MaintenanceIssueOptions, name='MaintenanceIssueOptions'),
     # GET USER LOCATION USING LONGITUDE AND LATITUDE
-    path('getuserlocation', views.GetLocationUsingLongLat, name='GetLocationUsingLongLat'),
+    path('gettechniciansaround', views.GetLocationUsingLongLat, name='GetLocationUsingLongLat'),
     # path('sendsubstudentemail', views.SendSubStudentEmailNotification, name='SendSubStudentEmailNotification'),
 
 

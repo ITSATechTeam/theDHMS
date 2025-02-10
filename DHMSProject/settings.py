@@ -54,11 +54,20 @@ PWA_APP_LANG = 'en-US'
 
 # PWA SETTNGS ENDS HERE
 
-# AZURE AD ACTIVATION CODE STARTS HERE
+# AZURE AD ACTIVATION CODE STARTS 
 from ms_identity_web.configuration import AADConfig
 from ms_identity_web import IdentityWebPython
 
 CORS_ALLOW_ALL_ORIGINS = True  # This allows all origins (for development)
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS',
+]
 
 
 
@@ -133,6 +142,7 @@ INSTALLED_APPS = [
     'aichat.apps.AichatConfig',
     'studentdhms.apps.StudentdhmsConfig',
     'commapp.apps.CommappConfig',
+    'devicescanapp.apps.DevicescanappConfig',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework_swagger',
@@ -161,7 +171,7 @@ INSTALLED_APPS = [
 
 
 
-# # IF I WAS TO USE DIFFERENT PROVIDES, I'LL LIST SIMILAR CODE BELOW FOR THAT PROVIDER.
+# IF I WAS TO USE DIFFERENT PROVIDES, I'LL LIST SIMILAR CODE BELOW FOR THAT PROVIDER.
 SOCIALACCOUNT_PROVIDERS = {
     "google" : {
         'APP': {

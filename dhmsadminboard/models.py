@@ -9,7 +9,7 @@ SUPER_ADMIN_ACCESS = (
 )
 
 MaintainanceStatusOption = (
-    ("Ful_lTime", "Full_Time"),
+    ("Full_Time", "Full_Time"),
     ("Part_Time", "Part_Time"),
     ("Not Available", "Not Available"),
     ("Suspended", "Suspended"),

@@ -28,11 +28,6 @@ import string
 import time
 import os
 import uuid
-from getstream import Stream
-from getstream.models import (
-    CallRequest,
-    MemberRequest,
-)
 
 
 
@@ -1369,8 +1364,6 @@ def Dashboard(request):
             obj.save()
         messages.success(request, 'Device List Updated Successfully')
         return redirect('Dashboard')
-
-
     
     if request.method == 'POST' and 'deviceusedepartment' in request.POST:
         uniqueId = 'Device-' + get_random_string(length=5)

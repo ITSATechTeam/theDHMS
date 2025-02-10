@@ -142,3 +142,42 @@ def get_location_from_ip():
 
 # location = get_location_from_ip()
 # print(location)
+
+
+# ALGORITHM THAT SWITCHED BETWEEN LOCATION DETECTION OPTIONS IS DEFINED BELOW:
+
+
+        # UserLocation = get_location_from_lat_long_opencage(long, lat)
+        # # UserLocation = get_address_from_coordinates(long, lat)
+        # if UserLocation == 'Address not found':
+        #     determinLocationWithoutGoogle = get_location_from_lat_long_opencage(long, lat)
+        #     # determinLocationWithoutGoogle = get_location_from_lat_long(long, lat)
+        #     if determinLocationWithoutGoogle == 'Address not found' or determinLocationWithoutGoogle == 'Location could not be found':
+        #         determinLocationWithOpencage = get_location_from_lat_long_opencage(long, lat)
+        #         if determinLocationWithOpencage == 'No address found':
+        #             return Response({
+        #                 'status': status.HTTP_400_BAD_REQUEST,
+        #                 'message': 'Location/Address not found. Kindly check you longitude, latitude and try again'
+        #             })
+        #         else:
+        #             # technicianModel.objects.filter()
+        #             studentLocation = determinLocationWithOpencage.location
+        #             print('studentLocation')
+        #             print(studentLocation)
+        #             return Response({
+        #                 'status': status.HTTP_200_OK,
+        #                 'message': 'Location fetch successfull',
+        #                 'location': determinLocationWithOpencage
+        #             })
+        #     else:
+        #         return Response({
+        #             'status': status.HTTP_200_OK,
+        #             'message': 'Location fetch successfull',
+        #             'location': determinLocationWithoutGoogle
+        #         })
+        # else:
+        #     return Response({
+        #         'status': status.HTTP_200_OK,
+        #         'message': 'Location fetch successfulll',
+        #         'location': UserLocation
+        #     })

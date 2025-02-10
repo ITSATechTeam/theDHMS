@@ -67,7 +67,19 @@ def RegisterTechnicalPartner(request):
                         "error_message": serializer.error_messages
                     })
                     
-                # testpartner@gmail.com
+                if technicianModel.objects.filter(technicianEmail = serializer.data['technicianEmail']).exists():
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Technical partner with this email already exists",
+                    })             
+                    
+                    
+                if technicianModel.objects.filter(technicianPhoneNumber = serializer.data['technicianPhoneNumber']).exists():
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Technical partner with this phone number already exists",
+                    })
+                    
                 try:
                     form = technicianModel(technicianName=technicianName, technicianPhoneNumber = technicianPhoneNumber, technicianEmail = technicianEmail, 
                     password = password, technicianAvailability = technicianAvailability, technicianLocation = technicianLocation
@@ -106,14 +118,14 @@ def RegisterTechnicalPartner(request):
             else:
                 return Response({
                     "status": status.HTTP_400_BAD_REQUEST,
-                    "message": "Error processing request",
-                    "error_message": serializer.error_messages
+                    "message": "The data you provided are invalid, kindly check and try again.",
+                    # "error_message": serializer.error_messages
                 })
             
     except:
         return Response({
             "status": status.HTTP_400_BAD_REQUEST,
-            "message": "An error ocured, kindly fill the form properly",
+            "message": "An error ocured, kindly try again.",
         })                                    
 
 
@@ -122,55 +134,61 @@ def RegisterTechnicalPartner(request):
 @csrf_exempt
 @api_view(['POST'])
 def TechnicianPartnerLogin(request):
-    try:
-        if request.method == 'POST':
-            serializer = LoginTechnicalPartnerSerializer(data = request.data)
-            if serializer.is_valid():
-                technicianEmail = serializer.data['technicianEmail']
-                password = serializer.data['password']                   
-                if (technicianEmail is None):
-                    return Response({
-                        "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "Missing email address",
-                        "error_message": serializer.error_messages
-                    })
-                if technicianModel.objects.filter(technicianEmail = technicianEmail).exists():                    
-                    try:
-                        tokenCreationDate = {
-                            'username': technicianEmail,
-                            'password': password
-                        }
-                        token_serializer = CustomTokenObtainPairSerializer(data=tokenCreationDate)
-                        token_serializer.is_valid(raise_exception=True)
-                        
-                        return Response({
-                            "status": status.HTTP_200_OK,
-                            "message": "Technical partner Login successfull.",
-                            "Token": token_serializer.validated_data,
-                            "data": serializer.data
-                        })
-                    
-                    except:
-                        return Response({
-                            "status": status.HTTP_400_BAD_REQUEST,
-                            "message": "An error ocured, please try again"
-                        })  
-                else:
-                    return Response({
-                        "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "Error processing request. Kindly check your information and try again",
-                    })
+    # try:
+    if request.method == 'POST':
+        serializer = LoginTechnicalPartnerSerializer(data = request.data)
+        if serializer.is_valid():
+            technicianEmail = serializer.data['technicianEmail']
+            password = serializer.data['password']
+            if (technicianEmail is None):
+                return Response({
+                    "status": status.HTTP_400_BAD_REQUEST,
+                    "message": "Missing email address",
+                    "error_message": serializer.error_messages
+                })
+                
+            if technicianModel.objects.filter(technicianEmail = technicianEmail).exists():                    
+                # try:
+                
+                getTechnicianEmail = technicianEmail
+                getTechnicianPassword = password
+                tokenCreationData = {
+                    'username': getTechnicianEmail,
+                    'password': getTechnicianPassword
+                }
+                print('tokenCreationData')
+                print(tokenCreationData)
+                token_serializer = CustomTokenObtainPairSerializer(data=tokenCreationData)
+                token_serializer.is_valid(raise_exception=True)
+                
+                return Response({
+                    "status": status.HTTP_200_OK,
+                    "message": "Technical partner Login successfull.",
+                    "Token": token_serializer.validated_data,
+                    "data": serializer.data
+                })
+                
+                # except:
+                #     return Response({
+                #         "status": status.HTTP_400_BAD_REQUEST,
+                #         "message": "An error ocured, please try again"
+                #     })  
             else:
                 return Response({
                     "status": status.HTTP_400_BAD_REQUEST,
-                    "message": "Error processing data format. Kindly the information, and try again",
+                    "message": "Error processing request. The email address is invalid",
                 })
-                
-    except:
-        return Response({
-            "status": status.HTTP_400_BAD_REQUEST,
-            "message": "An error ocured, kindly fill the form properly",
-        })  
+        else:
+            return Response({
+                "status": status.HTTP_400_BAD_REQUEST,
+                "message": "Error processing data format. Kindly the information, and try again",
+            })
+            
+    # except:
+    #     return Response({
+    #         "status": status.HTTP_400_BAD_REQUEST,
+    #         "message": "An error ocured, kindly fill the form properly",
+    #     })  
 
         
 # Get maintenance requests tagged to logged in technician

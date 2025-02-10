@@ -7,6 +7,7 @@ import hashlib
 import requests
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, schema
+from dhmsapiapp.findpartners import FindTechniciansInLocation
 from dhmsapiapp.generate_code import Verify_otp, generate_validation_code
 from dhmsapiapp.getlocation import get_address_from_coordinates, get_location_from_lat_long, get_location_from_lat_long_opencage
 from dhmsapiapp.sendmails import SendSubStudentEmailNotification
@@ -38,7 +39,6 @@ from datetime import date, timedelta
 from django.utils import timezone
 from django.conf import settings
 from django.utils.crypto import get_random_string
-from drf_spectacular.utils import extend_schema
 # from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail, EmailMessage
 paystackSecretKey = str(os.getenv('paystack_secret_key'))
@@ -123,6 +123,7 @@ def Student_Registration(request):
                         "message": "No student first name provided",
                         "error_message": serializer.error_messages
                     })
+                    
                 if(student_lastname is None):
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
@@ -213,7 +214,7 @@ def Student_Registration(request):
 @csrf_exempt
 @api_view(['PUT'])
 def EditAdminStudentData(request):
-    try:            
+    try:
         serializer = Update_Student_Registration_Serializer(data = request.data)
         currentUser = StudentDHMSSignUp.objects.get(student_email = request.user.email)
         if serializer.is_valid():
@@ -297,8 +298,9 @@ def Student_Login(request):
                     # All student Login setup starts here
                     CheckUserModelAvaibility = User.objects.get(email = student_email)
                     CheckUserUsername = User.objects.get(email = student_email).username
-                    
+                                        
                     token_serializer = CustomTokenObtainPairSerializer(data=request.data)
+                    print(request.data)
                     token_serializer.is_valid(raise_exception=True)
                     
                     # Check if user email is verified
@@ -352,7 +354,7 @@ def Student_Login(request):
                             "studentData": {"email": student_email, "phone_number": student_phoneNumber, "student_firstName":  Student_firstname, 
                                             "student_lastname": Student_lastname, "student_school": student_school, 'student_email_verification_status': student_email_verification_status, 
                                             "student_pin_set":student_pin_set, "is_student_admin": is_Student_Admin},
-                        })
+                            })
 
                 # Sub student Login setup starts here
                 elif SubStudentRegistration.objects.filter(sub_student_email_address = student_email).exists():
@@ -1714,6 +1716,7 @@ def FetchMaintenaceRequests(request):
 def GetEmailValidationCode(request):
     try:
         if request.method == 'GET':
+            #  SETUP TO SEND CODE FOR ADMIN STUDENT STARTS HERE
             if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
                 StudentEmailAddress = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
                 user_update = {"email": StudentEmailAddress}
@@ -1755,7 +1758,7 @@ def GetEmailValidationCode(request):
                             print('Sent a OTP code via email')
                             return Response({
                                 "status":status.HTTP_200_OK,
-                                "message": "Validation email has been sent successfully.",
+                                "message": f"Validation email has been sent successfully to {LoggedInAdminEmailAddress}",
                             })
                         else:
                             return Response({
@@ -1772,6 +1775,68 @@ def GetEmailValidationCode(request):
                         "status": status.HTTP_400_BAD_REQUEST,
                         "message": "Email validation not sent. Kindly check you network and try again"
                     })   
+            
+            
+            #  SETUP TO SEND CODE FOR SUB STUDENT STARTS HERE
+            elif SubStudentRegistration.objects.filter(sub_student_email_address = request.user.email):
+                StudentEmailAddress = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).sub_student_email_address
+                user_update = {"email": StudentEmailAddress}
+                serializer = GetEmailAddress(data = user_update)
+                if serializer.is_valid():
+                    LoggedInSubStudentEmailAddress = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).sub_student_email_address
+                    LoggedInSubStudentName = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).sub_student_firstname
+                    recipient_list = [LoggedInSubStudentEmailAddress]
+                    # SETUP EMAIL SENDING FUNCTIONALITY
+                    email_address = LoggedInSubStudentEmailAddress
+                    otp = generate_validation_code(request, email_address)
+                    if otp == 'CODE SENT':
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": f'Max code request reached, try to login again after about 10 minutes'
+                        })
+                    elif otp == 'CODE EXPIRED':
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": 'Code expired. Kindly request for a new code'
+                        })
+                    
+                    else:
+                        context = {'userName':LoggedInSubStudentName, 'otp':otp, 'emailAddress':LoggedInSubStudentEmailAddress}
+                        html_message = render_to_string("mailouts/emailvalidationmail.html", context=context)
+                        plain_message = strip_tags(html_message)
+
+                        message = EmailMultiAlternatives(
+                            subject = "Your DHMS Verification Code", 
+                            body = plain_message,
+                            from_email = 'dhmsinventoryapp@gmail.com',
+                            to= recipient_list
+                            )        
+                        
+                        message.attach_alternative(html_message, "text/html")
+                        message.send()
+
+                        if message:
+                            print('Sent a OTP code via email')
+                            return Response({
+                                "status":status.HTTP_200_OK,
+                                "message": f"Validation email has been sent successfully to {LoggedInSubStudentEmailAddress}",
+                            })
+                        else:
+                            return Response({
+                                "status": status.HTTP_400_BAD_REQUEST,
+                                "message": f'Problem sending OTP code via email to {LoggedInSubStudentEmailAddress}, check if you typed it correctly'
+                            })
+                        # else:
+                        #     return Response({
+                        #         "status": status.HTTP_400_BAD_REQUEST,
+                        #         "message": "Email validation not sent. Kindly check you network and try again"
+                        #     })
+                else:
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "Email validation not sent. Kindly check you network and try again"
+                    })   
+                    
             else:
                 return Response({
                     "status": status.HTTP_400_BAD_REQUEST,
@@ -1863,6 +1928,7 @@ def ValidateEmailCode(request):
         if request.method == 'POST':
             serializer = GetValidationCode(data = request.data)
             if serializer.is_valid():
+                # VALIDATE CODE FOR ADMIN STUDENT
                 if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
                     StudentEmailAddress = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
                     code = serializer.data['code']
@@ -1887,8 +1953,39 @@ def ValidateEmailCode(request):
                             VerifyEmailAddress.objects.create(user = user, studentID = student_admin_id)
                         return Response({
                             "status": status.HTTP_200_OK,
-                            "message": "Code VALIDATED!"
+                            "message": "Code validated for admin student!"
                         })
+                        
+                       
+                # VALIDATE CODE FOR SUB STUDENT
+                if SubStudentRegistration.objects.filter(sub_student_email_address = request.user.email):
+                    StudentEmailAddress = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).sub_student_email_address
+                    code = serializer.data['code']
+                    ValidationStatus = Verify_otp(StudentEmailAddress, code)
+                    if ValidationStatus == 'CODE EXPIRED':
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "Code expired. Kindly try again"
+                        })
+                    elif ValidationStatus == 'CODE INVALID':
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "Code invalid. Kindly provide the correct code"
+                        })
+                    elif ValidationStatus == 'CODE VALIDATED':
+                        substudent_id = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id
+                        if VerifyEmailAddress.objects.filter(studentID = substudent_id):
+                            pass
+                        else:
+                            substudent_id = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id
+                            user = User.objects.get(email =  request.user.email)
+                            VerifyEmailAddress.objects.create(user = user, studentID = substudent_id)
+                        return Response({
+                            "status": status.HTTP_200_OK,
+                            "message": "Code validated for substudent!"
+                        })
+                        
+                        
                 else:
                     return Response({
                         "status": status.HTTP_400_BAD_REQUEST,
@@ -1969,43 +2066,51 @@ def CreateTransactionPIN(request):
             serializer = StudentTransactionPINSerializer(data = request.data)
             if serializer.is_valid():
                 student_pin = serializer.data['student_transaction_pin']
-                FindStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
-                if StudentTransactionPIN.objects.filter(student_id = FindStudentID):
-                    return Response({
-                        "status": status.HTTP_400_BAD_REQUEST,
-                        "message": "Sorry, you have an existing transaction PIN"
-                    })
-                else:
-                    if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
-                        adminStudentEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
-                        
-                        form = StudentTransactionPIN(user = user, student_id= FindStudentID, student_transaction_pin = student_pin)  
-                        form.save()
-                        return Response({
-                            "status": status.HTTP_200_OK,
-                            "message": f'Transaction PIN created successfully for admin: {adminStudentEmail}',
-                            "data": {
-                                "User_email_address": adminStudentEmail,
-                                "User_id": FindStudentID,
-                                "New_transaction_pin": student_pin,
-                            }
-                        })
-                    elif SubStudentRegistration.objects.get(sub_student_email_address = request.user.email):
-                        subStudentEmail = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).sub_student_email_address
-                        subStudentID = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id    
-                        # adminStudentID = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id  
-                        form = StudentTransactionPIN(user = user, student_id= subStudentID, student_email_address=subStudentEmail, 
-                        student_transaction_pin = student_pin)
-                        form.save()
-                        return Response({
-                            "status": status.HTTP_200_OK,
-                            "message": "Transaction PIN created successfully for substudent"
-                        })  
-                    else:
+                
+                # Execute for admin student
+                if StudentDHMSSignUp.objects.filter(student_email = request.user.email):
+                    FindStudentID = StudentDHMSSignUp.objects.get(student_email = request.user.email).id
+                    if StudentTransactionPIN.objects.filter(student_id = FindStudentID):
                         return Response({
                             "status": status.HTTP_400_BAD_REQUEST,
-                            "message": "User does not exit"
+                            "message": "Sorry, you have an existing transaction PIN"
                         })
+                    
+                    adminStudentEmail = StudentDHMSSignUp.objects.get(student_email = request.user.email).student_email
+                    
+                    form = StudentTransactionPIN(user = user, student_id= FindStudentID, student_transaction_pin = student_pin)  
+                    form.save()
+                    return Response({
+                        "status": status.HTTP_200_OK,
+                        "message": f'Transaction PIN created successfully for admin: {adminStudentEmail}',
+                        "data": {
+                            "User_email_address": adminStudentEmail,
+                            "User_id": FindStudentID,
+                            "New_transaction_pin": student_pin,
+                        }
+                    })
+                
+                # Execute for sub student
+                elif SubStudentRegistration.objects.filter(sub_student_email_address = request.user.email):
+                    FindStudentID = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id
+                    if StudentTransactionPIN.objects.filter(student_id = FindStudentID):
+                        return Response({
+                            "status": status.HTTP_400_BAD_REQUEST,
+                            "message": "Sorry, you have an existing transaction PIN"
+                        })
+                        
+                    subStudentID = SubStudentRegistration.objects.get(sub_student_email_address = request.user.email).id    
+                    form = StudentTransactionPIN(user = user, student_id= subStudentID, student_transaction_pin=student_pin)
+                    form.save()
+                    return Response({
+                        "status": status.HTTP_200_OK,
+                        "message": "Transaction PIN created successfully for substudent"
+                    })  
+                else:
+                    return Response({
+                        "status": status.HTTP_400_BAD_REQUEST,
+                        "message": "User does not exit"
+                    })
             else:
                 return Response({
                     "status": status.HTTP_400_BAD_REQUEST,
@@ -3547,42 +3652,63 @@ def GetUserProfileDetails(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def GetLocationUsingLongLat(request):
-    serializer = GetLocationUsingLongLatSerializer(data = request.data)
-    if serializer.is_valid():
-        long = serializer.data['Longitude']
-        lat = serializer.data['Latitude']
-    
-        UserLocation = get_address_from_coordinates(long, lat)
-        if UserLocation == 'Address not found':
-            determinLocationWithoutGoogle = get_location_from_lat_long(long, lat)
-            if determinLocationWithoutGoogle == 'Address not found' or determinLocationWithoutGoogle == 'Location could not be found':
-                determinLocationWithOpencage = get_location_from_lat_long_opencage(long, lat)
-                if determinLocationWithOpencage == 'No address found':
+    try:        
+        serializer = GetLocationUsingLongLatSerializer(data = request.data)
+        if serializer.is_valid():
+            lat = serializer.data['Latitude']
+            long = serializer.data['Longitude']
+            
+            determinLocationWithOpencage = get_location_from_lat_long_opencage(lat, long)
+            if determinLocationWithOpencage == 'No address found':
+                print('location found')
+                return Response({
+                    'status': status.HTTP_200_OK,
+                    'message': 'No technician found in your location',
+                })
+            else:
+                eachLocationWord = determinLocationWithOpencage.split()
+                print(eachLocationWord)
+                if ('Lagos' in eachLocationWord):
+                    foundTechiciansResult = FindTechniciansInLocation('Lagos')                    
+                    print('Lagos found')
                     return Response({
-                        'status': status.HTTP_400_BAD_REQUEST,
-                        'message': 'Location/Address not found. Kindly check you longitude, latitude and try again'
+                        'status': status.HTTP_200_OK,
+                        'message': 'We succcessfully found technicians in Lagos',
+                        'location': foundTechiciansResult
+                        # 'location': determinLocationWithOpencage
+                    })
+                elif('Imo' in eachLocationWord):
+                    foundTechiciansResult = FindTechniciansInLocation('Imo')                    
+                    print('Imo found')
+                    return Response({
+                        'status': status.HTTP_200_OK,
+                        'message': 'We succcessfully found technicians in Imo',
+                        'location': foundTechiciansResult
+                        # 'location': determinLocationWithOpencage
+                    })
+                elif('Port Harcourt' in eachLocationWord):
+                    foundTechiciansResult = FindTechniciansInLocation('Port Harcourt')                    
+                    print('Lagos found')
+                    return Response({
+                        'status': status.HTTP_200_OK,
+                        'message': 'We succcessfully found technicians in Port Harcourt',
+                        'location': foundTechiciansResult
+                        # 'location': determinLocationWithOpencage
                     })
                 else:
                     return Response({
                         'status': status.HTTP_200_OK,
-                        'message': 'Location fetch successfull',
-                        'location': determinLocationWithOpencage
+                        'message': 'No technician found in your location',
                     })
-            else:
-                return Response({
-                    'status': status.HTTP_200_OK,
-                    'message': 'Location fetch successfull',
-                    'location': determinLocationWithoutGoogle
-                })
+        
         else:
             return Response({
-                'status': status.HTTP_200_OK,
-                'message': 'Location fetch successfull',
-                'location': UserLocation
+                'status': status.HTTP_400_BAD_REQUEST,
+                'message': 'There was an error processing the longitude and latitude you provided.'
             })
-    else:
+    except:
         return Response({
             'status': status.HTTP_400_BAD_REQUEST,
-            'message': 'There was an error processing the longitude and latitude you provided.'
+            'message': 'An error occured, kindly try again'
         })
 
