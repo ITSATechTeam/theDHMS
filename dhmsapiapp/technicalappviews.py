@@ -131,7 +131,7 @@ def RegisterTechnicalPartner(request):
 
 # Technician login endpoint
 @swagger_auto_schema(tags=['TechnicalPartnersEndpoint'], methods=['post'], request_body=LoginTechnicalPartnerSerializer)
-@csrf_exempt
+# @csrf_exempt
 @api_view(['POST'])
 def TechnicianPartnerLogin(request):
     # try:

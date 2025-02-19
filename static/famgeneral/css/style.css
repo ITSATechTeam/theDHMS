@@ -432,8 +432,14 @@ nav button{
 .responsivesection{
     display: none;
 }
+
+
 .desktoplogo{
     display: block;
+}
+
+.desktoplogo img{
+    width: 200px;
 }
 
 
@@ -448,6 +454,10 @@ nav button{
 @media only screen and (max-width: 1102px){
     .desktoplogo{
         display: none;
+    }
+
+    .desktoplogo img{
+        width: 200px;
     }
     
     .responsivesection{
@@ -530,7 +540,6 @@ nav button{
         position: absolute;
     }
 
-    
     .showMenu{
         display: block;
     }
@@ -541,6 +550,11 @@ nav button{
         justify-content: space-between;
         width: 100%;
         padding-right: 25px;
+    }
+
+    .responsivesection1 img{
+        width: 150px;
+        margin-bottom: 15px;
     }
 
     .responsivesection2{

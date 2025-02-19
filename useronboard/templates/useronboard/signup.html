@@ -111,12 +111,12 @@
                                 {% comment %} <button type='submit'>Sign Up</button> {% endcomment %}
                             </div>
                         </form>                
-                        <div class='googlesignin2'>
+                        {% comment %} <div class='googlesignin2'>
                             <p>Or sign up with</p>
-                            {% comment %} <a href="{% provider_login_url 'google' %}"> {% endcomment %}
+                            <a href="{% provider_login_url 'google' %}">
                                 <img src={% static 'signup/img/google.png' %} />
-                            {% comment %} </a> {% endcomment %}
-                        </div>
+                            </a>
+                        </div> {% endcomment %}
                         <br/>
                         <p class='logininstead'>Have an account already? <a href={% url 'Login' %}>Sign In</a></p><br/><br/>
                     </div>
